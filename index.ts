@@ -20,7 +20,7 @@ const sessionStore = new MariaDBStore({
 }) as unknown as session.Store;           // Casting to session.Store to satisfy TypeScript.
 */
 
-app.use(cors({ origin: ["http://localhost:5173"] }));
+app.use(cors({ origin: ["http://localhost:4321"] }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public_views')));
 
