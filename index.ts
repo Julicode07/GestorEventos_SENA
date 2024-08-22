@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import helmet from "helmet";
 import path from "path";
 import cors from "cors";
+import fs from "fs";
 
 dotenv.config();
 
@@ -63,7 +64,12 @@ app.use("/images/", ImagesRouter);
 */
 
 app.get("/*", (_req: Request, res: Response) => {
-  res.sendFile(path.join(__dirname, 'public_views', 'index.html'));
+
+    const viewFile = path.join(__dirname, 'public_views', 'index.html');
+
+    if (fs.existsSync(viewFile)) res.sendFile(viewFile);
+    else res.redirect("https://google.com");
+
 });
 
 app.listen(port, () => {
