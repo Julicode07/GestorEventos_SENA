@@ -2,7 +2,6 @@ import { PoolConnection } from "mariadb";
 import { getConnection, pool } from "../../db/connection";
 
 export type UserRole = "Repartidor" | "Administrador";
-
 export interface IUser {
     id_user: number | undefined,
     document: number,
