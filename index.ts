@@ -1,6 +1,11 @@
 import express, { Express, Request, Response } from "express";
+import { UserRole } from "./src/repositories/users/models";
+import AuthRouter from "./src/routes/auth";
 import { createSchemas } from "./src/db/schema.handler";
+import session from "express-session";
 import UsersRouter from "./src/routes/users";
+import MariaDBStore from 'express-session-mariadb-store';
+import { pool } from "./src/db/connection"
 import dotenv from "dotenv";
 import helmet from "helmet";
 import path from "path";
@@ -20,29 +25,16 @@ app.use(express.static(path.join(__dirname, 'public_views')));
 app.set('x-powered-by', false);
 app.use(helmet({ contentSecurityPolicy: false }));
 
-//app.use("/api/accounts", AccountsRouter);
+// MariaDB session store configuration
+const sessionStore = new MariaDBStore({
+  pool,                                   // using the pool instance from DB connection setup
+  table: 'session',
+  clearExpired: true,                     // automatically clear expired sessions
+  checkExpirationInterval: 900000,        // how frequently expired sessions will be cleared; in milliseconds
+}) as unknown as session.Store;           // Casting to session.Store to satisfy TypeScript.
 
-app.use("/api/users/", UsersRouter);
-/*
-app.use("/api/categories", CategoriesRouter);
-app.use("/api/products", ProductsRouter);
-app.use("/api/auth", LogInRouter);
-app.use("/images/", ImagesRouter);
-*/
 
-app.get("/*", (_req: Request, res: Response) => {
-    const viewFile = path.join(__dirname, 'public_views', 'index.html');
-    if (fs.existsSync(viewFile)) res.sendFile(viewFile);
-    else res.redirect("https://google.com");
-});
 
-app.listen(port, () => {
-  console.log(`[server]: Server is running at http://localhost:${port}`);
-});
-
-createSchemas();
-
-/*
 // Session initializing and type declarations.
 app.use(session({
   name: 'ssid_dont_share',
@@ -55,10 +47,9 @@ app.use(session({
   }
 }));
 
-
 type UserSession = {
-  phone: number;
-  role: UserRole
+  document: number;
+  role: string;
 };
 
 declare module "express-session" { // Augment express-session with a custom SessionData object
@@ -66,15 +57,19 @@ declare module "express-session" { // Augment express-session with a custom Sess
     user: UserSession;
   }
 }
-*/
 
-/*
-// MariaDB session store configuration
-const sessionStore = new MariaDBStore({
-  pool,                                   // using the pool instance from DB connection setup
-  table: 'session',
-  clearExpired: true,                     // automatically clear expired sessions
-  checkExpirationInterval: 900000,        // how frequently expired sessions will be cleared; in milliseconds
-}) as unknown as session.Store;           // Casting to session.Store to satisfy TypeScript.
-*/
+// ROUTES.
+app.use("/api/users/", UsersRouter);
+app.use("/api/auth/", AuthRouter);
 
+app.get("/*", (_req: Request, res: Response) => {
+    const viewFile = path.join(__dirname, 'public_views', 'index.html');
+    if (fs.existsSync(viewFile)) res.sendFile(viewFile);
+    else res.redirect("https://google.com");
+});
+
+app.listen(port, () => {
+  console.log(`[server]: Server is running at http://localhost:${port}`);
+});
+
+createSchemas();

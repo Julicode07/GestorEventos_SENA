@@ -1,0 +1,29 @@
+import { LogInController } from "../controllers/auth";
+import express, { Express, Request, Response } from "express";
+import { databaseRegex } from "../helpers/regex.helper";
+
+const AuthRouter: Express = express();
+
+// Create new category endpoint.
+AuthRouter.post("/login", async (req: Request, res: Response) => {
+    try {
+        if((databaseRegex.users.document.test(req.body.document))
+            && databaseRegex.users.password.test(req.body.password)
+        ){ LogInController(req, res) }
+        else return res.status(400).end(JSON.stringify({ message: "Los parámetros enviados al servidor son incorrectos :(" }));
+    } catch (err) {
+        res.status(500).end(JSON.stringify({ message: "Error interno del servidor :(" }));
+    }
+});
+
+/*
+LogInRouter.get("/check-my-session", async (req: Request, res: Response) => {
+    try {
+        CheckSessionController(req, res);
+    } catch (err) {
+        res.status(500).end(JSON.stringify({ message: "Error interno del servidor :(" }));
+    }
+}); 
+*/
+
+export default AuthRouter;

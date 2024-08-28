@@ -1,5 +1,6 @@
 import { getConnection, pool } from "./connection";
-import { createUsersSchema } from "../repositories/users/models"
+import { createUsersSchema } from "../repositories/users/models";
+import { createWebSessionsSchema } from "../repositories/web-sessions/models";
 import { SqlError } from "mariadb";
 import dotenv from 'dotenv';
 
@@ -15,7 +16,7 @@ export default async function createSchemas(): Promise<Number> {
 
       try {
             if(await createUsersSchema() == -1) throw new Error("Couldn't create users schema.")
-            // else if(await createWebProfileSchema() == -1) throw new Error("Couldn't create web profiles schema.")   
+            else if(await createWebSessionsSchema() == -1) throw new Error("Couldn't create web sessions schema.")   
             return 1;
       } catch (err) {
             console.error(`[schema handler]: ERROR CREATING SCHEMAS: ${err}`);
