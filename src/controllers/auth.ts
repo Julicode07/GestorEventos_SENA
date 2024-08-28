@@ -26,3 +26,8 @@ export async function LogInController(req: Request, res: Response) {
 
     } else return res.status(401).send({ message: "No puedes iniciar sesión cuando ya tienes una sesión ya activa" });
 }
+
+export async function CheckSessionController(req: Request, res: Response) {
+    if(!hasActiveSession(req, "*")) return res.status(401).send({ message: "No cuentas con una sesión activa", data: { phone: null, role: null } }).end();
+    else return res.status(200).send({ message: "Tienes una sesión activa", data: { document: req.session.user?.document, role: req.session.user?.role } }).end();
+}
