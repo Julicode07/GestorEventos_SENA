@@ -24,7 +24,7 @@ AuthRouter.get("/check-my-session", async (req: Request, res: Response) => {
     } catch (err) {
         res.status(500).end(JSON.stringify({ message: "Error interno del servidor :(" }));
     }
-}); 
+});
 
 
 export default AuthRouter;

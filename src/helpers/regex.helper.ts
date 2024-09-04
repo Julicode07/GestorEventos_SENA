@@ -8,6 +8,13 @@ export const databaseRegex = {
         phone: /^[0-9]{1,16}$/,
         role: /^(Instructor|Coordinador)$/,
         password: /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,256}$/
+    },
+
+    global_events: {
+        id_global_event: /^[0-9]{1,9}$/,
+        id_user: /^[0-9]{1,9}$/,
+        name: /^[A-Za-zñ.Ñ:-á-|éí,.ó'úÁÉÍ&%$ÓÚäëïöüÄËÏÖÜ0-9\s]{1,64}$/,
+        details: /^[A-Za-zñ.Ñ:-á-|éí,.'óúÁÉÍ&%$ÓÚäëïöüÄËÏÖÜ0-9\s]{1,255}$/
     }
 }
 

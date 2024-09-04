@@ -17,7 +17,7 @@ UsersRouter.post("/", async (req: Request, res: Response) => {
         ) { CreateUserController(req, res); }
         else return res.status(400).end(JSON.stringify({ message: "Los parámetros enviados al servidor son incorrectos :(" }));
     } catch (err) {
-        res.status(500).end(JSON.stringify({ message: "Error interno del servidor :("}));
+        return res.status(500).end(JSON.stringify({ message: "Error interno del servidor :("}));
     }
 });
 

@@ -11,6 +11,7 @@ import helmet from "helmet";
 import path from "path";
 import cors from "cors";
 import fs from "fs";
+import EventsRouter from "./src/routes/events";
 
 dotenv.config();
 
@@ -61,7 +62,13 @@ declare module "express-session" { // Augment express-session with a custom Sess
 // ROUTES.
 app.use("/api/users/", UsersRouter);
 app.use("/api/auth/", AuthRouter);
+app.use("/api/events/", EventsRouter)
 
+app.get("/404.html", (req:Request, res:Response) => {
+  const viewFile = path.join(__dirname, 'public_views', '404.html');
+    if (fs.existsSync(viewFile)) res.sendFile(viewFile);
+    else res.redirect(path.join(__dirname, 'public_views', 'index.html'));
+})
 app.get("/*", (_req: Request, res: Response) => {
     const viewFile = path.join(__dirname, 'public_views', 'index.html');
     if (fs.existsSync(viewFile)) res.sendFile(viewFile);
