@@ -72,7 +72,7 @@ app.get("/404.html", (req:Request, res:Response) => {
 app.get("/*", (_req: Request, res: Response) => {
     const viewFile = path.join(__dirname, 'public_views', 'index.html');
     if (fs.existsSync(viewFile)) res.sendFile(viewFile);
-    else res.redirect(path.join(__dirname, 'public_views', '404.html'));
+    else res.sendFile(path.join(__dirname, 'public_views', '404.html'));
 });
 
 app.listen(port, () => {
