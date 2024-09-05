@@ -1,0 +1,23 @@
+name: Deploy to Home Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Install SSH key
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.HOME_SERVER_PRIVATE_KEY }}" > ~/.ssh/home-server.pem
+        chmod 600 ~/.ssh/home-server.pem
+    - name: Run deploy script on Home Server
+      run: |
+        ssh -o StrictHostKeyChecking=no -i ~/.ssh/home-server.pem -p 2020 serveradmin@179.12.221.32 'bash /home/serveradmin/dev/eventos/deploy-scripts/frontend.sh'
