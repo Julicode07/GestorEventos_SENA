@@ -2,12 +2,111 @@ import Images from "../../assets/img/images.js";
 import { Input } from "@nextui-org/input";
 import { EyeSlashFilledIcon } from "./Components/EyeSlashFilledIcon.jsx";
 import { EyeFilledIcon } from "./Components/EyeFilledIcon.jsx";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useRef, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { SessionContext } from "../../context/SessionContext.jsx";
 
 const IniciarSesion = () => {
+  const { setUserSession } = useContext(SessionContext);
+  const navigate = useNavigate();
+
+  const [loginData, setLoginData] = useState({
+    document: "",
+    password: "",
+  });
+
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+
   const [isVisible, setIsVisible] = useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
+
+  const [regexDocumentState, setRegexDocumentState] = useState(false);
+  const [regexPasswordState, setRegexPasswordState] = useState(false);
+
+  const documentRef = useRef(null);
+  const passwordRef = useRef(null);
+
+  const handleChangeLogin = (e) => {
+    const { name, value } = e.target;
+    setLoginData((prevData) => {
+      const newData = { ...prevData, [name]: value };
+      if (name === "document") {
+        regexDocument(value);
+      } else if (name === "password") {
+        regexPassword(value);
+      }
+      return newData;
+    });
+  };
+
+  const handleSubmitLogin = async (e) => {
+    e.preventDefault();
+    const { document, ...restLogin } = loginData;
+    const dataToSend = {
+      ...restLogin,
+      document: parseInt(document),
+    };
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/auth/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(dataToSend),
+        }
+      );
+      const data = await response.json();
+      if (response.status === 200) {
+        setSuccessMessage("Inicio exitoso");
+        setErrorMessage("");
+
+        setUserSession({
+          document: data.data.document,
+          role: data.data.role,
+        });
+        navigate("/");
+      } else {
+        setErrorMessage(data.message);
+        setSuccessMessage("");
+      }
+    } catch {
+      setErrorMessage("Ocurrio un error al iniciar sesión");
+      setSuccessMessage("");
+    }
+  };
+
+  const regexDocument = (document) => {
+    const documentRegex = /^[0-9]{1,16}$/;
+    const documentHasCorrectRegex = documentRegex.test(document);
+    if (!documentHasCorrectRegex) {
+      documentRef.current.textContent = "Documento inválido";
+      documentRef.current.style.color = "red";
+      setRegexDocumentState(false);
+    } else {
+      documentRef.current.textContent = "Documento válido";
+      documentRef.current.style.color = "green";
+      setRegexDocumentState(true);
+    }
+  };
+
+  const regexPassword = (password) => {
+    const regexPassword =
+      /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,256}$/;
+    const passwordHasCorrectRegex = regexPassword.test(password);
+    if (!passwordHasCorrectRegex) {
+      passwordRef.current.textContent = "Contraseña inválida";
+      passwordRef.current.style.color = "red";
+      setRegexPasswordState(false);
+    } else {
+      passwordRef.current.textContent = "Contraseña válida";
+      passwordRef.current.style.color = "green";
+      setRegexPasswordState(true);
+    }
+  };
+
   return (
     <div className="flex flex-col items-center justify-center py-4 px-4 gap-6 max-w-96 m-auto">
       <Link
@@ -40,7 +139,7 @@ const IniciarSesion = () => {
             </h1>
           </div>
           <div>
-            <form className="w-full mx-auto">
+            <form className="w-full mx-auto" onSubmit={handleSubmitLogin}>
               <div className="mb-5">
                 <label
                   htmlFor="id"
@@ -52,12 +151,15 @@ const IniciarSesion = () => {
                   size="lg"
                   type="number"
                   id="id"
+                  value={loginData.document}
+                  onChange={handleChangeLogin}
                   name="document"
                   pattern="[0-9]{1,16}"
                   placeholder="Ingresa tu numero de documento"
                   className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-2xl block w-full"
                   required
                 />
+                <p ref={documentRef}></p>
               </div>
               <div className="mb-4">
                 <label
@@ -73,6 +175,8 @@ const IniciarSesion = () => {
                   name="password"
                   placeholder="Ingresa tu contraseña"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-2xl block w-full "
+                  value={loginData.password}
+                  onChange={handleChangeLogin}
                   required
                   endContent={
                     <button
@@ -90,6 +194,7 @@ const IniciarSesion = () => {
                   }
                   type={isVisible ? "text" : "password"}
                 />
+                <p ref={passwordRef}></p>
               </div>
               <div className="flex flex-col gap-2">
                 <a
@@ -101,10 +206,20 @@ const IniciarSesion = () => {
               </div>
               <button
                 type="submit"
-                className="mt-4 w-full  font-bold rounded-lg text-sm px-5 py-2.5 text-center bg-[#277400] text-white hover:bg-[#277400]"
+                className={`mt-4 w-full  font-bold rounded-lg text-sm px-5 py-2.5 text-center
+                  ${
+                    regexDocumentState && regexPasswordState
+                      ? "bg-[#277400] text-white hover:bg-[#277400]"
+                      : "bg-gray-300 text-black cursor-not-allowed"
+                  }`}
+                disabled={!(regexDocumentState && regexPasswordState)}
               >
                 Iniciar sesión
               </button>
+              <div className="text-center mt-3">
+                {<p className="text-green-600">{successMessage}</p>}
+                {<p className="text-red-600">{errorMessage}</p>}
+              </div>
             </form>
           </div>
         </section>
@@ -112,12 +227,9 @@ const IniciarSesion = () => {
       <footer>
         <p className=" text-black font-medium text-sm text-center">
           ¿No tienes una cuenta?{" "}
-          <a
-            href="/auth/registrarse"
-            className="text-primary font-medium text-sm"
-          >
+          <Link to="/registrarse" className="text-primary font-medium text-sm">
             Regístrate
-          </a>
+          </Link>
         </p>
       </footer>
     </div>

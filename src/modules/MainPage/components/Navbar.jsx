@@ -1,7 +1,12 @@
 import { Link } from "react-router-dom";
 import Images from "./../../../assets/img/images.js";
+import { SessionContext } from "../../../context/SessionContext.jsx";
+import { useContext } from "react";
+import { a } from "framer-motion/client";
 
 const Navbar = () => {
+  const { userSession } = useContext(SessionContext);
+
   return (
     <nav className="bg-secondary sticky top-0 w-full z-20 start-0 ">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto px-3 py-2">
@@ -20,19 +25,41 @@ const Navbar = () => {
         <div className="flex gap-1 md:gap-2">
           <>
             <Link
-              to="/iniciarSesion"
+              to="/iniciarsesion"
               type="button"
               className="text-black bg-white focus:outline-none font-bold rounded-lg text-sm md:text-base px-3 py-2 md:px-4 md:py-2 text-center"
             >
               Iniciar sesión
             </Link>
             <Link
-              href="/registrarse"
+              to="/registrarse"
               type="button"
               className="text-black bg-white focus:outline-none font-bold rounded-lg text-sm md:text-base px-3 py-2 md:px-4 md:py-2 text-center"
             >
               Registrarse
             </Link>
+            {userSession.role === "Coordinador" ? (
+              <a
+                href="#"
+                className="text-black bg-white focus:outline-none font-bold rounded-lg text-sm md:text-base px-3 py-2 md:px-4 md:py-2 text-center"
+              >
+                Coordinador
+              </a>
+            ) : userSession.role === "Instructor" ? (
+              <a
+                href="#"
+                className="text-black bg-white focus:outline-none font-bold rounded-lg text-sm md:text-base px-3 py-2 md:px-4 md:py-2 text-center"
+              >
+                Instructor
+              </a>
+            ) : (
+              <a
+                href="#"
+                className="text-black bg-white focus:outline-none font-bold rounded-lg text-sm md:text-base px-3 py-2 md:px-4 md:py-2 text-center"
+              >
+                Usuario
+              </a>
+            )}
           </>
         </div>
       </div>
