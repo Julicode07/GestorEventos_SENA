@@ -4,6 +4,6 @@ import logoNegro from "./logo-negro.png";
 
 export default {
   logoBlanco: logoBlanco,
-  logoVerde,
-  logoNegro,
+  logoVerde: logoVerde,
+  logoNegro: logoNegro,
 };

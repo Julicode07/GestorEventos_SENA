@@ -1,15 +1,31 @@
 import { Link } from "react-router-dom";
-import Images from "./../../../assets/img/images.js";
-import { SessionContext } from "../../../context/SessionContext.jsx";
+import Images from "@/assets/img/images.js";
+import { SessionContext } from "../../context/SessionContext.jsx";
 import { useContext } from "react";
+import UserDropdown from "./UserDropdown";
 
 const Navbar = () => {
   const { userSession } = useContext(SessionContext);
 
+  // Determine the panel link and logout link based on the user's role
+  const getPanelLink = () => {
+    switch (userSession.role) {
+      case "Coordinador":
+        return "/admin/coordinador";
+      case "Instructor":
+        return "/admin/instructor";
+      default:
+        return "/";
+    }
+  };
+
   return (
-    <nav className="bg-secondary sticky top-0 w-full z-20 start-0 ">
+    <nav className="bg-secondary sticky top-0 w-full z-20 start-0">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto px-3 py-2">
-        <a href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
+        <Link
+          to="/"
+          className="flex items-center space-x-3 rtl:space-x-reverse"
+        >
           <img
             src={Images.logoBlanco}
             width="48"
@@ -19,7 +35,7 @@ const Navbar = () => {
           <span className="self-center text-xl md:text-2xl font-bold text-white">
             SENA
           </span>
-        </a>
+        </Link>
 
         <div className="flex gap-1 md:gap-2">
           {userSession.role === null && (
@@ -39,6 +55,15 @@ const Navbar = () => {
                 Registrarse
               </Link>
             </>
+          )}
+
+          {(userSession.role === "Coordinador" ||
+            userSession.role === "Instructor") && (
+            <UserDropdown
+              role={userSession.role}
+              profileLink={getPanelLink()}
+              logoutLink="/"
+            />
           )}
         </div>
       </div>

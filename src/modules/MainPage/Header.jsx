@@ -1,4 +1,4 @@
-import Images from "./../../../assets/img/images.js";
+import Images from "@/assets/img/images.js";
 
 const Header = () => {
   return (
