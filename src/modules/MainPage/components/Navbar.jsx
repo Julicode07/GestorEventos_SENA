@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import Images from "./../../../assets/img/images.js";
 import { SessionContext } from "../../../context/SessionContext.jsx";
 import { useContext } from "react";
-import { a } from "framer-motion/client";
 
 const Navbar = () => {
   const { userSession } = useContext(SessionContext);
@@ -23,44 +22,24 @@ const Navbar = () => {
         </a>
 
         <div className="flex gap-1 md:gap-2">
-          <>
-            <Link
-              to="/iniciarsesion"
-              type="button"
-              className="text-black bg-white focus:outline-none font-bold rounded-lg text-sm md:text-base px-3 py-2 md:px-4 md:py-2 text-center"
-            >
-              Iniciar sesión
-            </Link>
-            <Link
-              to="/registrarse"
-              type="button"
-              className="text-black bg-white focus:outline-none font-bold rounded-lg text-sm md:text-base px-3 py-2 md:px-4 md:py-2 text-center"
-            >
-              Registrarse
-            </Link>
-            {userSession.role === "Coordinador" ? (
-              <a
-                href="#"
+          {userSession.role === null && (
+            <>
+              <Link
+                to="/iniciarsesion"
+                type="button"
                 className="text-black bg-white focus:outline-none font-bold rounded-lg text-sm md:text-base px-3 py-2 md:px-4 md:py-2 text-center"
               >
-                Coordinador
-              </a>
-            ) : userSession.role === "Instructor" ? (
-              <a
-                href="#"
+                Iniciar sesión
+              </Link>
+              <Link
+                to="/registrarse"
+                type="button"
                 className="text-black bg-white focus:outline-none font-bold rounded-lg text-sm md:text-base px-3 py-2 md:px-4 md:py-2 text-center"
               >
-                Instructor
-              </a>
-            ) : (
-              <a
-                href="#"
-                className="text-black bg-white focus:outline-none font-bold rounded-lg text-sm md:text-base px-3 py-2 md:px-4 md:py-2 text-center"
-              >
-                Usuario
-              </a>
-            )}
-          </>
+                Registrarse
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </nav>
