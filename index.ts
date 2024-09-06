@@ -18,7 +18,7 @@ dotenv.config();
 const app:Express = express();
 const port = process.env.PORT || 3000;
 
-app.use(cors({ origin: ["http://localhost:4321"] }));
+app.use(cors({ origin: ["http://localhost:5173"] }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public_views')));
 
