@@ -2,7 +2,7 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import NavSideBar from "./NavSideBar";
-import NotFound from "../NotFoundAdmin.jsx";
+import NotFoundAdmin from "../NotFoundAdmin.jsx";
 import Panel from "@/modules/Admin/coordinador/panel/Panel";
 import Espacios from "@/modules/Admin/coordinador/espacios/Espacios";
 import Solicitudes from "@/modules/Admin/coordinador/solicitudes/Solicitudes";
@@ -18,7 +18,7 @@ function Coordinador() {
       <div className="p-4 sm:ml-56">
         <div className="mt-12 p-4 h-full">
           <Routes>
-            <Route path="/*" element={<NotFound />} />
+            <Route path="/*" element={<NotFoundAdmin />} />
             <Route path="/" element={<Panel />} />
             <Route path="/espacios" element={<Espacios />} />
             <Route path="/solicitudes" element={<Solicitudes />} />

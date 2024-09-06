@@ -1,12 +1,14 @@
-const NotFound = () => {
+import Images from "@/assets/img/images.js";
+
+const NotFoundAdmin = () => {
   return (
     <div className="flex flex-col justify-center">
       <div className="container mx-auto py-6 md:py-0 text-center flex flex-col items-center">
         <div className="w-full max-w-md md:max-w-base mb-4">
           <img
-            src="https://flowbite-admin-dashboard.vercel.app/images/illustrations/404.svg"
+            src={Images.NotFound}
             alt="404 Illustration"
-            className="w-full h-auto"
+            className="w-full h-auto object-cover"
           />
         </div>
         <div className="w-full max-w-2xl text-center">
@@ -40,4 +42,4 @@ const NotFound = () => {
   );
 };
 
-export default NotFound;
+export default NotFoundAdmin;

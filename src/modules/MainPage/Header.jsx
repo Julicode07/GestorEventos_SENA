@@ -10,6 +10,7 @@ const Header = () => {
               src={Images.logoBlanco}
               className="h-7 md:h-8 w-auto"
               height="48"
+              width="32"
               alt="Logo Blanco SENA"
             />
             <span className="self-center text-xl md:text-2xl font-bold whitespace-nowrap text-white">

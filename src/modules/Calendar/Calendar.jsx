@@ -87,8 +87,8 @@ export default function Calendar() {
       id="calendario"
       className="flex flex-col justify-center items-center gap-2 py-4"
     >
-      <h1 className="text-5xl font-bold">Calendario</h1>
-      <div className="bg-gray-100 mx-4 md:mx-0 rounded-xl flex flex-col lg:flex-row lg:gap-10  my-6 max-w-screen-xl h-full p-2 md:p-6">
+      <h1 className="text-4xl font-extrabold">Calendario</h1>
+      <div className="bg-gray-100 mx-4 md:mx-0 rounded-xl flex flex-col lg:flex-row lg:gap-10  my-2 max-w-screen-xl h-full p-2 md:p-6">
         <div className="flex flex-col px-4 w-full lg:w-1/2 bg-white shadow-md rounded-lg flex-grow-0 h-full">
           <div className="flex justify-center items-center h-16">
             <div className="flex items-center gap-3">

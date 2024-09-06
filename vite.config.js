@@ -4,7 +4,9 @@ import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  plugins: [react()],
+  plugins: [
+    react(),
+  ],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),
@@ -15,7 +17,8 @@ export default defineConfig(({ mode }) => ({
   },
   build: {
     minify: mode === "production",
-    sourcemap: mode !== "production",
+    cssCodeSplit: true,
+    sourcemap: false,
   },
   server: {
     open: true,
