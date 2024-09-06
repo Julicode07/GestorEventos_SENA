@@ -3,8 +3,16 @@ import MainPage from "./modules/MainPage/components/MainPage.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import IniciarSesion from "./modules/Auth/IniciarSesion.jsx";
 import Registrarse from "./modules/Auth/Registrarse.jsx";
+import { SessionContext } from "./context/SessionContext.jsx";
+import { useContext, useee, useEffect } from "react";
 
 function App() {
+  const { updateSession } = useContext(SessionContext);
+
+  useEffect(() => {
+    updateSession();
+  }, []);
+
   return (
     <BrowserRouter>
       <Routes>
