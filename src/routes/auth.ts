@@ -1,4 +1,4 @@
-import { LogInController, CheckSessionController } from "../controllers/auth";
+import { LogInController, CheckSessionController, LogOutController } from "../controllers/auth";
 import express, { Express, Request, Response } from "express";
 import { databaseRegex } from "../helpers/regex.helper";
 
@@ -26,5 +26,13 @@ AuthRouter.get("/check-my-session", async (req: Request, res: Response) => {
     }
 });
 
+AuthRouter.get("/logout", async (req:Request, res:Response) => {
+    try {
+        LogOutController(req, res);
+    } catch (err) {
+        console.error(err);
+        return res.status(500).end(JSON.stringify({ message: "Error interno del servidor :(" }));
+    }
+});
 
 export default AuthRouter;

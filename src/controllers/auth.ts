@@ -31,3 +31,14 @@ export async function CheckSessionController(req: Request, res: Response) {
     if(!hasActiveSession(req, "*")) return res.status(401).send({ message: "No cuentas con una sesión activa", data: { document: null, role: null } }).end();
     else return res.status(200).send({ message: "Tienes una sesión activa", data: { document: req.session.user?.document, role: req.session.user?.role } }).end();
 }
+
+export async function LogOutController(req: Request, res: Response) {
+    if (hasActiveSession(req, "*")) {
+        req.session.user = {
+            document: null,
+            role: null
+        }
+        return res.status(200).send({ message: "Sesión cerrada correctamente", data: { phone: null, role: null } }).end();
+    }
+    else return res.status(400).send({ message: "No tienes una sesión activa", data: { phone: null, role: null } }).end();
+}

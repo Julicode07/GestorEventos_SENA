@@ -49,8 +49,8 @@ app.use(session({
 }));
 
 type UserSession = {
-  document: number;
-  role: string;
+  document: number | null;
+  role: string | null;
 };
 
 declare module "express-session" { // Augment express-session with a custom SessionData object
