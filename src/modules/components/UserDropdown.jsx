@@ -7,11 +7,23 @@ import {
 } from "@nextui-org/react";
 import { Link } from "react-router-dom";
 
-const UserDropdown = ({ role, profileLink, logoutLink, textColor, textRole }) => {
+const UserDropdown = ({
+  role,
+  profileLink,
+  logoutLink,
+  textColor,
+  textRole,
+}) => {
   const logOut = async () => {
     await fetch(`${import.meta.env.VITE_API_URL}/api/auth/logout`);
     window.location.href = "/";
   };
+  const getInitials = (name) => {
+    const parts = name.split(" ");
+    return parts.map((part) => part.charAt(0)).join("");
+  };
+  const fullName = "Felipe Alzate";
+  const initials = getInitials(fullName);
 
   return (
     <Dropdown placement="bottom-start">
@@ -22,9 +34,18 @@ const UserDropdown = ({ role, profileLink, logoutLink, textColor, textRole }) =>
             src: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
           }}
           className={`transition-transform ${textColor}`}
-          name={<span className="text-lg font-bold">Felipe Alzate</span>}
+          name={
+            <>
+              <span className="hidden md:block text-sm font-semibold">
+                {fullName}
+              </span>
+              <span className="block md:hidden text-sm font-semibold">
+                {initials}
+              </span>
+            </>
+          }
           description={
-            <span className={`text-sm font-semibold${textRole}`}>{role}</span>
+            <span className={`hidden lg:block text-sm font-semibold${textRole}`}>{role}</span>
           }
         ></User>
       </DropdownTrigger>

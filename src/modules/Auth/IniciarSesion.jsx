@@ -1,10 +1,10 @@
-import Images from "../../assets/img/images.js";
+import Images from "@/assets/img/images.js";
 import { Input } from "@nextui-org/input";
 import { EyeSlashFilledIcon } from "./components/EyeSlashFilledIcon.jsx";
 import { EyeFilledIcon } from "./components/EyeFilledIcon.jsx";
 import { useState, useRef, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { SessionContext } from "../../context/SessionContext.jsx";
+import { SessionContext } from "@/context/SessionContext.jsx";
 
 const IniciarSesion = () => {
   const { setUserSession } = useContext(SessionContext);
@@ -108,10 +108,10 @@ const IniciarSesion = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center py-4 px-4 gap-6 max-w-96 m-auto">
+    <div className="flex flex-col items-center justify-center pt-8 py-2 px-4 gap-6 max-w-96 m-auto">
       <Link
         to="/"
-        className="flex gap-1 items-center absolute top-6 left-4 bg-primary text-white p-2 rounded-lg"
+        className="flex gap-1 items-center absolute top-2 left-2 bg-primary text-white p-2 rounded-lg"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -126,7 +126,7 @@ const IniciarSesion = () => {
       <header>
         <img
           src={Images.logoVerde}
-          className="h-16 md:h-16"
+          className="h-24 md:h-30"
           alt="Logo Blanco SENA"
         />
       </header>
@@ -156,7 +156,7 @@ const IniciarSesion = () => {
                   name="document"
                   pattern="[0-9]{1,16}"
                   placeholder="Ingresa tu numero de documento"
-                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-2xl block w-full"
+                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-2xl block w-full "
                   required
                 />
                 <p ref={documentRef}></p>
@@ -174,7 +174,7 @@ const IniciarSesion = () => {
                   id="password"
                   name="password"
                   placeholder="Ingresa tu contraseña"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-2xl block w-full "
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-2xl block w-full focus:none active:none"
                   value={loginData.password}
                   onChange={handleChangeLogin}
                   required
@@ -206,7 +206,7 @@ const IniciarSesion = () => {
               </div>
               <button
                 type="submit"
-                className={`mt-4 w-full  font-bold rounded-lg text-sm px-5 py-2.5 text-center
+                className={`mt-4 w-full  font-bold rounded-lg text-lg px-5 py-2.5 text-center
                   ${
                     regexDocumentState && regexPasswordState
                       ? "bg-[#277400] text-white hover:bg-[#277400]"

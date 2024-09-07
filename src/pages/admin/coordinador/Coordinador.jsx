@@ -1,4 +1,3 @@
-// pages/admin/Coordinador.jsx
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import NavSideBar from "./NavSideBar";
@@ -16,7 +15,7 @@ function Coordinador() {
   return (
     <div>
       <NavSideBar />
-      <div className="p-4 sm:ml-56">
+      <div className="py-4 px-1 sm:ml-56">
         <div className="mt-12 p-4 h-full">
           <Routes>
             <Route path="/*" element={<NotFoundAdmin />} />

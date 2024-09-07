@@ -8,7 +8,6 @@ import { Link, useNavigate } from "react-router-dom";
 
 const Registrarse = () => {
   const navigate = useNavigate();
-  const [watchPassword, setWatchPassword] = useState(false);
 
   const [registerUsers, setRegisterUsers] = useState({
     document: "",
@@ -187,13 +186,13 @@ const Registrarse = () => {
   };
 
   const [isVisible, setIsVisible] = React.useState(false);
-
   const toggleVisibility = () => setIsVisible(!isVisible);
+
   return (
-    <div className="flex flex-col items-center justify-center py-4 px-4 gap-6 max-w-[700px] m-auto">
+    <div className="flex flex-col items-center justify-center pt-8 py-2 px-4 gap-6 max-w-[700px] m-auto">
       <Link
         to="/"
-        className="flex gap-1 items-center absolute top-6 left-4 bg-primary text-white p-2 rounded-lg"
+        className="flex gap-1 items-center absolute top-2 left-2 bg-primary text-white p-2 rounded-lg"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -203,17 +202,17 @@ const Registrarse = () => {
         >
           <path d="M7.82843 10.9999H20V12.9999H7.82843L13.1924 18.3638L11.7782 19.778L4 11.9999L11.7782 4.22168L13.1924 5.63589L7.82843 10.9999Z"></path>
         </svg>
-        Regresar
+        Ir al inicio
       </Link>
       <header>
         <img
           src={Images.logoVerde}
-          className="h-16 md:h-16"
+          className="h-24 md:h-30"
           alt="Logo Blanco SENA"
         />
       </header>
 
-      <main className="w-full">
+      <main>
         <section className="flex flex-col gap-7">
           <div>
             <h1 className="text-4xl font-bold text-center">Crea tu cuenta</h1>
@@ -404,7 +403,16 @@ const Registrarse = () => {
               )}
               <button
                 type="submit"
-                className="w-full bg-primary hover:bg-primary-hover text-white text-lg font-bold py-3 px-4 rounded-lg focus:outline-none focus:shadow-outline mt-3 disabled:bg-gray-400 disabled:cursor-not-  allowed"
+                className={`mt-4 w-full font-bold rounded-lg text-lg px-5 py-2.5 text-center ${
+                  documentEvent &&
+                  nameEvent &&
+                  lastNamesEvent &&
+                  emailEvent &&
+                  phoneEvent &&
+                  passwordEvent
+                    ? "bg-[#277400] text-white hover:bg-[#277400]"
+                    : "bg-gray-300 text-black cursor-not-allowed"
+                }`}
                 disabled={
                   !(
                     documentEvent &&
@@ -422,8 +430,8 @@ const Registrarse = () => {
           </div>
         </section>
       </main>
-      <footer>
-        <p className=" text-black font-medium text-sm text-center">
+      <footer className="my-3">
+        <p className="text-black font-medium text-sm text-center">
           ¿Ya tienes una cuenta?{" "}
           <Link to="/iniciarsesion" className="text-primary">
             Iniciar sesión

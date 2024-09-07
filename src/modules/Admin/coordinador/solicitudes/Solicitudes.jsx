@@ -170,12 +170,12 @@ export default function App() {
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
-            Total {filteredItems.length} usuarios pendientes
+            Total {filteredItems.length} resultados
           </span>
           <label className="flex items-center text-default-400 text-small">
             Filas por página:
             <select
-              className="bg-transparent outline-none text-default-400 text-small"
+              className="max-w-full rounded-lg bg-default-100 text-default-900 text-small font-bold"
               onChange={onRowsPerPageChange}
             >
               <option value="5">5</option>
@@ -215,6 +215,7 @@ export default function App() {
       aria-label="Example table with custom cells, pagination and sorting"
       sortDescriptor={sortDescriptor}
       topContent={topContent}
+      bottomContentPlacement="outside"
       bottomContent={bottomContent}
       topContentPlacement="outside"
       onSelectionChange={setSelectedKeys}

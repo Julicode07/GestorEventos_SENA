@@ -1,4 +1,3 @@
-// Columnas para la tabla
 const columns = [
   { name: "NOMBRE", uid: "name", sortable: true },
   { name: "EVENTO GLOBAL", uid: "event" },
@@ -8,7 +7,6 @@ const columns = [
   { name: "ACCIONES", uid: "actions" },
 ];
 
-// Opciones de estado
 const statusOptions = [
   { name: "Aceptado", uid: "Aceptado" },
   { name: "Pendiente", uid: "Pendiente" },
@@ -16,7 +14,6 @@ const statusOptions = [
   { name: "Finalizado", uid: "Finalizado" },
 ];
 
-// Eventos
 const events = [
   {
     id: 1,
@@ -187,7 +184,6 @@ const events = [
     supplies: "Proyector, Ordenadores",
     status: "Pendiente",
   },
-  // Evento global
   {
     id: 12,
     user: {
@@ -235,7 +231,6 @@ const events = [
       },
     ],
   },
-  // Evento normal
   {
     id: 15,
     user: {
@@ -251,7 +246,6 @@ const events = [
     supplies: "Ordenadores, Snacks",
     status: "Aceptado",
   },
-  // Evento global
   {
     id: 16,
     user: {
@@ -299,7 +293,6 @@ const events = [
       },
     ],
   },
-  // Evento normal
   {
     id: 19,
     user: {
@@ -315,7 +308,6 @@ const events = [
     supplies: "Laptop, Notas",
     status: "Rechazado",
   },
-  // Evento normal
   {
     id: 20,
     user: {
@@ -331,7 +323,6 @@ const events = [
     supplies: "Proyector, Wi-Fi",
     status: "Finalizado",
   },
-  // Evento global
   {
     id: 21,
     user: {
@@ -364,7 +355,6 @@ const events = [
       },
     ],
   },
-  // Evento normal
   {
     id: 23,
     user: {
@@ -380,7 +370,6 @@ const events = [
     supplies: "Bebidas, Tarjetas de Visita",
     status: "Aceptado",
   },
-  // Evento normal
   {
     id: 24,
     user: {
@@ -396,7 +385,6 @@ const events = [
     supplies: "Kits de Robótica",
     status: "Rechazado",
   },
-  // Evento normal
   {
     id: 25,
     user: {

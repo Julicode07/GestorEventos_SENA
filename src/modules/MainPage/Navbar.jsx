@@ -7,7 +7,6 @@ import UserDropdown from "@/modules/components/UserDropdown.jsx";
 const Navbar = () => {
   const { userSession } = useContext(SessionContext);
 
-  // Determine the panel link and logout link based on the user's role
   const getPanelLink = () => {
     switch (userSession.role) {
       case "Coordinador":

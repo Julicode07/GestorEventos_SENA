@@ -1,4 +1,5 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
+import { useLocation } from "react-router-dom";
 import { SessionContext } from "@/context/SessionContext.jsx";
 import Images from "@/assets/img/images.js";
 import ItemsList from "../components/ItemsList.jsx";
@@ -7,18 +8,21 @@ import UserDropdown from "@/modules/components/UserDropdown.jsx";
 
 const NavSideBar = () => {
   const { userSession } = useContext(SessionContext);
-    const getPanelLink = () => {
-      switch (userSession.role) {
-        case "Coordinador":
-          return "/admin/coordinador";
-        case "Instructor":
-          return "/admin/instructor";
-        default:
-          return "/";
-      }
-    };
+  const location = useLocation();
   const [statusFilter] = useState(new Set(["Pendiente"]));
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const sidebarRef = useRef(null);
+
+  const getPanelLink = () => {
+    switch (userSession.role) {
+      case "Coordinador":
+        return "/admin/coordinador";
+      case "Instructor":
+        return "/admin/instructor";
+      default:
+        return "/";
+    }
+  };
 
   const filteredEvents = events.filter((event) =>
     Array.from(statusFilter).includes(event.status)
@@ -30,19 +34,36 @@ const NavSideBar = () => {
     setSidebarOpen(!sidebarOpen);
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+        setSidebarOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [location.pathname]);
+
   return (
     <div>
       <nav className="fixed top-0 z-40 w-full bg-white shadow-md border-b border-gray-300">
-        <div className="px-3 py-3 lg:px-5 lg:pl-3">
+        <div className="px-1 py-3 lg:px-5 lg:pl-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-start rtl:justify-end">
               <button
                 onClick={toggleSidebar}
                 aria-controls="sidebar"
                 type="button"
-                className="inline-flex items-center p-2 text-gray-800 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                className="inline-flex items-center p-2 ms-2 text-gray-800 rounded-lg sm:hidden hover:bg-gray-100"
               >
-                <span className="sr-only">Abrir menu</span>
+                <span className="sr-only">Abrir menú</span>
                 <svg
                   className="w-6 h-6"
                   aria-hidden="true"
@@ -57,14 +78,14 @@ const NavSideBar = () => {
                   ></path>
                 </svg>
               </button>
-              <a href="" className="flex items-center gap-4 ms-2 md:me-24">
+              <a href="" className="flex items-center gap-3 ms-2 md:me-24">
                 <img
                   src={Images.logoVerde}
-                  className="h-8 md:h-10 w-auto"
+                  className="h-10 w-auto"
                   height="48"
                   alt="Logo SENA"
                 />
-                <span className="self-center text-xl font-bold sm:text-2xl text-gray-800">
+                <span className="self-center text-xl font-black sm:text-2xl text-gray-800">
                   Coordinador
                 </span>
               </a>
@@ -81,8 +102,11 @@ const NavSideBar = () => {
       </nav>
 
       <aside
+        ref={sidebarRef}
         id="logo-sidebar"
-        className="fixed top-0 left-0 z-30 w-56 h-screen pt-20 transition-transform -translate-x-full bg-white shadow-xl sm:translate-x-0"
+        className={`fixed top-0 left-0 z-30 w-56 h-screen pt-20 transition-transform ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } bg-white shadow-xl sm:translate-x-0`}
         aria-label="Sidebar"
       >
         <div className="h-full px-3 pb-4 overflow-y-auto">

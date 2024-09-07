@@ -22,7 +22,6 @@ import { ChevronDownIcon } from "@/modules/Admin/components/ChevronDownIcon";
 import { columns, events, statusOptions } from "@modules/Admin/utils/data";
 import { EyeIcon } from "@/modules/Admin/components/EyeIcon";
 
-// Mapa de colores para los estados
 const statusColorMap = {
   Aceptado: "success",
   Pendiente: "warning",
@@ -30,7 +29,6 @@ const statusColorMap = {
   Finalizado: "danger",
 };
 
-// Columnas visibles por defecto
 const INITIAL_VISIBLE_COLUMNS = [
   "name",
   "event",
@@ -42,7 +40,6 @@ const INITIAL_VISIBLE_COLUMNS = [
 
 export default function Eventos() {
   const [filterValue, setFilterValue] = React.useState("");
-  const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
   const [visibleColumns, setVisibleColumns] = React.useState(
     new Set(INITIAL_VISIBLE_COLUMNS)
   );
@@ -110,10 +107,6 @@ export default function Eventos() {
 
   const renderCell = React.useCallback((event, columnKey) => {
     const cellValue = event[columnKey];
-
-    // Define el color de fondo según el tipo de evento
-    const cellBgClass =
-      event.type === "globalEvent" ? "bg-blue-100" : "bg-green-100";
 
     switch (columnKey) {
       case "name":
@@ -196,7 +189,7 @@ export default function Eventos() {
             onClear={() => onClear()}
             onValueChange={onSearchChange}
           />
-          <div className="flex items-center gap-3">
+          <div className="hidden sm:flex items-center gap-3">
             <span className="font-bold text-default-800">Filtros:</span>
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
@@ -285,10 +278,11 @@ export default function Eventos() {
 
   return (
     <Table
-      aria-label="Example table with custom cells, pagination and sorting"
+      aria-label="Tabla de eventos"
       sortDescriptor={sortDescriptor}
       topContent={topContent}
       bottomContent={bottomContent}
+      bottomContentPlacement="outside"
       topContentPlacement="outside"
       onSortChange={setSortDescriptor}
     >

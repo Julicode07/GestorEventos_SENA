@@ -1,6 +1,55 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+  @font-face {
+    font-family: "Montserrat";
+    src: url("@/fonts/Montserrat-Hairline.otf") format("opentype");
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Montserrat";
+    src: url("../fonts/Montserrat-Light.otf") format("opentype");
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Montserrat";
+    src: url("@/fonts/Montserrat-Regular.otf") format("opentype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Montserrat";
+    src: url("@/fonts/Montserrat-Bold.otf") format("opentype");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Montserrat";
+    src: url("@/fonts/Montserrat-Black.otf") format("opentype");
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  html {
+    font-family: "Montserrat", sans-serif;
+    scroll-behavior: smooth;
+    scroll-margin-top: 100px;
+  }
+
+  #calendario {
+    scroll-margin-top: 64px;
+  }
 
 ::-webkit-scrollbar {
   width: 8px;
