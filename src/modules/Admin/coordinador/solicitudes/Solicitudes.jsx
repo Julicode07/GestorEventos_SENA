@@ -12,6 +12,8 @@ import {
   User,
   Link,
   Pagination,
+  Breadcrumbs,
+  BreadcrumbItem,
 } from "@nextui-org/react";
 import { EyeIcon } from "@/modules/Admin/components/EyeIcon";
 import { SearchIcon } from "@/modules/Admin/components/SearchIcon";
@@ -211,39 +213,51 @@ export default function App() {
   }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
 
   return (
-    <Table
-      aria-label="Example table with custom cells, pagination and sorting"
-      sortDescriptor={sortDescriptor}
-      topContent={topContent}
-      bottomContentPlacement="outside"
-      bottomContent={bottomContent}
-      topContentPlacement="outside"
-      onSelectionChange={setSelectedKeys}
-      onSortChange={setSortDescriptor}
-    >
-      <TableHeader columns={headerColumns}>
-        {(column) => (
-          <TableColumn
-            key={column.uid}
-            align={column.uid === "actions" ? "center" : "start"}
-            allowsSorting={column.sortable}
-          >
-            {column.name}
-          </TableColumn>
-        )}
-      </TableHeader>
-      <TableBody
-        emptyContent={"No se encontraron eventos pendientes"}
-        items={sortedItems}
-      >
-        {(item) => (
-          <TableRow key={item.id}>
-            {(columnKey) => (
-              <TableCell>{renderCell(item, columnKey)}</TableCell>
+    <main className="flex flex-col gap-2">
+      <div>
+        <Breadcrumbs>
+          <BreadcrumbItem href=""> </BreadcrumbItem>
+          <BreadcrumbItem href="/admin/coordinador/solicitudes">
+            Solicitudes
+          </BreadcrumbItem>
+        </Breadcrumbs>
+      </div>
+      <section>
+        <Table
+          aria-label="Example table with custom cells, pagination and sorting"
+          sortDescriptor={sortDescriptor}
+          topContent={topContent}
+          bottomContentPlacement="outside"
+          bottomContent={bottomContent}
+          topContentPlacement="outside"
+          onSelectionChange={setSelectedKeys}
+          onSortChange={setSortDescriptor}
+        >
+          <TableHeader columns={headerColumns}>
+            {(column) => (
+              <TableColumn
+                key={column.uid}
+                align={column.uid === "actions" ? "center" : "start"}
+                allowsSorting={column.sortable}
+              >
+                {column.name}
+              </TableColumn>
             )}
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
+          </TableHeader>
+          <TableBody
+            emptyContent={"No se encontraron eventos pendientes"}
+            items={sortedItems}
+          >
+            {(item) => (
+              <TableRow key={item.id}>
+                {(columnKey) => (
+                  <TableCell>{renderCell(item, columnKey)}</TableCell>
+                )}
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </section>
+    </main>
   );
 }

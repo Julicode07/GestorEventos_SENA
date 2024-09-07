@@ -1,10 +1,19 @@
 import React from "react";
-
+import { BreadcrumbItem, Breadcrumbs } from "@nextui-org/react";
 function Inventario() {
   return (
-    <div>
-      <h2>Inventario</h2>
-    </div>
+    <main className="flex flex-col gap-2">
+      <div>
+        <Breadcrumbs>
+          <BreadcrumbItem href=""> </BreadcrumbItem>
+          <BreadcrumbItem href="/admin/coordinador/inventario">
+            Inventario
+          </BreadcrumbItem>
+        </Breadcrumbs>
+      </div>
+      <h1 className="text-2xl font-bold">Inventario</h1>
+      <section></section>
+    </main>
   );
 }
 

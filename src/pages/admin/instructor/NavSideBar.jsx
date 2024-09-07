@@ -47,13 +47,13 @@ const NavSideBar = () => {
     <div>
       <nav className="fixed top-0 z-40 w-full bg-white shadow-md border-b border-gray-300">
         <div className="px-1 py-3 lg:px-5 lg:pl-3">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between px-2">
             <div className="flex items-center justify-start rtl:justify-end">
               <button
                 onClick={toggleSidebar}
                 aria-controls="sidebar"
                 type="button"
-                className="inline-flex items-center p-2 ms-2 text-gray-800 rounded-lg sm:hidden hover:bg-gray-100"
+                className="inline-flex items-center p-2 text-gray-800 rounded-lg sm:hidden hover:bg-gray-100"
               >
                 <span className="sr-only">Abrir menú</span>
                 <svg
@@ -77,7 +77,7 @@ const NavSideBar = () => {
                   height="48"
                   alt="Logo SENA"
                 />
-                <span className="self-center text-xl font-black sm:text-2xl text-gray-800">
+                <span className="self-center text-xl font-bold sm:text-3xl text-gray-800">
                   Instructor
                 </span>
               </a>

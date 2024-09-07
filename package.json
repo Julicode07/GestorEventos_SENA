@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@nextui-org/breadcrumbs": "^2.0.12",
     "@nextui-org/divider": "^2.0.31",
     "@nextui-org/react": "2.4.6",
     "@nextui-org/system": "^2.2.5",

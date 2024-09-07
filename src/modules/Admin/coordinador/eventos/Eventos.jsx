@@ -16,6 +16,8 @@ import {
   Chip,
   User,
   Pagination,
+  Breadcrumbs,
+  BreadcrumbItem,
 } from "@nextui-org/react";
 import { SearchIcon } from "@/modules/Admin/components/SearchIcon";
 import { ChevronDownIcon } from "@/modules/Admin/components/ChevronDownIcon";
@@ -179,7 +181,7 @@ export default function Eventos() {
   const topContent = React.useMemo(() => {
     return (
       <div className="flex flex-col gap-4">
-        <div className="flex justify-between gap-3 items-end">
+        <div className="flex justify-between items-center gap-3">
           <Input
             isClearable
             className="w-full sm:max-w-[44%]"
@@ -233,9 +235,7 @@ export default function Eventos() {
                 onSelectionChange={setVisibleColumns}
               >
                 {columns.map((column) => (
-                  <DropdownItem key={column.uid}>
-                    {column.name}
-                  </DropdownItem>
+                  <DropdownItem key={column.uid}>{column.name}</DropdownItem>
                 ))}
               </DropdownMenu>
             </Dropdown>
@@ -277,44 +277,56 @@ export default function Eventos() {
   }, [page, filteredItems]);
 
   return (
-    <Table
-      aria-label="Tabla de eventos"
-      sortDescriptor={sortDescriptor}
-      topContent={topContent}
-      bottomContent={bottomContent}
-      bottomContentPlacement="outside"
-      topContentPlacement="outside"
-      onSortChange={setSortDescriptor}
-    >
-      <TableHeader columns={headerColumns}>
-        {(column) => (
-          <TableColumn
-            key={column.uid}
-            allowsSorting={column.sortable}
-            align={column.uid === "actions" ? "center" : "start"}
-          >
-            {column.name}
-          </TableColumn>
-        )}
-      </TableHeader>
-      <TableBody
-        emptyContent={"No hay eventos para mostrar"}
-        items={sortedItems}
-      >
-        {(event) => (
-          <TableRow>
-            {(columnKey) => (
-              <TableCell
-                className={
-                  event.type === "globalEvent" ? "bg-gray-100" : "bg-white"
-                }
+    <main className="flex flex-col gap-2">
+      <div>
+        <Breadcrumbs>
+          <BreadcrumbItem href=""> </BreadcrumbItem>
+          <BreadcrumbItem href="/admin/coordinador/eventos">
+            Eventos
+          </BreadcrumbItem>
+        </Breadcrumbs>
+      </div>
+      <section>
+        <Table
+          aria-label="Tabla de eventos"
+          sortDescriptor={sortDescriptor}
+          topContent={topContent}
+          bottomContent={bottomContent}
+          bottomContentPlacement="outside"
+          topContentPlacement="outside"
+          onSortChange={setSortDescriptor}
+        >
+          <TableHeader columns={headerColumns}>
+            {(column) => (
+              <TableColumn
+                key={column.uid}
+                allowsSorting={column.sortable}
+                align={column.uid === "actions" ? "center" : "start"}
               >
-                {renderCell(event, columnKey)}
-              </TableCell>
+                {column.name}
+              </TableColumn>
             )}
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
+          </TableHeader>
+          <TableBody
+            emptyContent={"No hay eventos para mostrar"}
+            items={sortedItems}
+          >
+            {(event) => (
+              <TableRow>
+                {(columnKey) => (
+                  <TableCell
+                    className={
+                      event.type === "globalEvent" ? "bg-gray-100" : "bg-white"
+                    }
+                  >
+                    {renderCell(event, columnKey)}
+                  </TableCell>
+                )}
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </section>
+    </main>
   );
 }
