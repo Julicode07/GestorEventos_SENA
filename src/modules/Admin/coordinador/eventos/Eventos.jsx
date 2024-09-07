@@ -17,10 +17,10 @@ import {
   User,
   Pagination,
 } from "@nextui-org/react";
-import { SearchIcon } from "./SearchIcon";
-import { ChevronDownIcon } from "./ChevronDownIcon";
+import { SearchIcon } from "@/modules/Admin/components/SearchIcon";
+import { ChevronDownIcon } from "@/modules/Admin/components/ChevronDownIcon";
 import { columns, events, statusOptions } from "@modules/Admin/utils/data";
-import { EyeIcon } from "./EyeIcon";
+import { EyeIcon } from "@/modules/Admin/components/EyeIcon";
 
 // Mapa de colores para los estados
 const statusColorMap = {

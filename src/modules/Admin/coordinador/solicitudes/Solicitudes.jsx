@@ -13,9 +13,9 @@ import {
   Link,
   Pagination,
 } from "@nextui-org/react";
-import { EyeIcon } from "./EyeIcon";
-import { SearchIcon } from "./SearchIcon";
-import { columns, events } from "../../utils/data";
+import { EyeIcon } from "@/modules/Admin/components/EyeIcon";
+import { SearchIcon } from "@/modules/Admin/components/SearchIcon";
+import { columns, events } from "@/modules/Admin/utils/data";
 
 const statusColorMap = {
   Pendiente: "warning",
@@ -59,11 +59,9 @@ export default function App() {
       filteredEvents = filteredEvents.filter(
         (event) =>
           event.user.name.toLowerCase().includes(filterValue.toLowerCase()) ||
-          event.event.toLowerCase().includes(filterValue.toLowerCase())
+          event.name.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
-
-    // Filtrar solo los eventos pendientes
     filteredEvents = filteredEvents.filter((event) =>
       Array.from(statusFilter).includes(event.status)
     );
@@ -104,7 +102,7 @@ export default function App() {
       case "event":
         return (
           <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">{event.event}</p>
+            <p className="text-bold text-small capitalize">{event.name}</p>
           </div>
         );
       case "status":

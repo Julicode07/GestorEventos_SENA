@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import Images from "@/assets/img/images.js";
 import { SessionContext } from "../../context/SessionContext.jsx";
 import { useContext } from "react";
-import UserDropdown from "./UserDropdown";
+import UserDropdown from "@/modules/components/UserDropdown.jsx";
 
 const Navbar = () => {
   const { userSession } = useContext(SessionContext);
@@ -63,6 +63,8 @@ const Navbar = () => {
               role={userSession.role}
               profileLink={getPanelLink()}
               logoutLink="/"
+              textColor="text-white"
+              textRole="text-gray-200"
             />
           )}
         </div>

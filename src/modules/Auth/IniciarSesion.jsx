@@ -1,7 +1,7 @@
 import Images from "../../assets/img/images.js";
 import { Input } from "@nextui-org/input";
-import { EyeSlashFilledIcon } from "./Components/EyeSlashFilledIcon.jsx";
-import { EyeFilledIcon } from "./Components/EyeFilledIcon.jsx";
+import { EyeSlashFilledIcon } from "./components/EyeSlashFilledIcon.jsx";
+import { EyeFilledIcon } from "./components/EyeFilledIcon.jsx";
 import { useState, useRef, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { SessionContext } from "../../context/SessionContext.jsx";

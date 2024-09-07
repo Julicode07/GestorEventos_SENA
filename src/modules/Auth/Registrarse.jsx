@@ -1,4 +1,8 @@
-import Images from "./../../assets/img/images.js";
+import React from "react";
+import { Input } from "@nextui-org/input";
+import { EyeSlashFilledIcon } from "./components/EyeSlashFilledIcon.jsx";
+import { EyeFilledIcon } from "./components/EyeFilledIcon.jsx";
+import Images from "@/assets/img/images.js";
 import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -80,7 +84,7 @@ const Registrarse = () => {
       if (response.status === 200) {
         setSuccessMessage("Usuario registrado correctamente");
         setErrorMessage("");
-        navigate("/iniciarsesion")
+        navigate("/iniciarsesion");
       } else {
         setErrorMessage(data.message);
         setSuccessMessage("");
@@ -182,11 +186,9 @@ const Registrarse = () => {
     }
   };
 
-  const typePassword = watchPassword ? "text" : "password";
-  const eyePassword = watchPassword
-    ? "ri-eye-fill cursor-pointer hover:bg-sitenary-color rounded-full text-xl"
-    : "ri-eye-off-fill cursor-pointer hover:bg-sitenary-color rounded-full text-xl";
+  const [isVisible, setIsVisible] = React.useState(false);
 
+  const toggleVisibility = () => setIsVisible(!isVisible);
   return (
     <div className="flex flex-col items-center justify-center py-4 px-4 gap-6 max-w-[700px] m-auto">
       <Link
@@ -358,20 +360,31 @@ const Registrarse = () => {
                     Contraseña
                   </label>
                   <div className="relative">
-                    <input
+                    <Input
+                      size="lg"
                       id="password"
-                      type={typePassword}
-                      placeholder="Crea una contraseña"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg block w-full px-2.5 py-3"
                       name="password"
-                      required
+                      placeholder="Crea una contraseña"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-2xl block w-full "
                       value={registerUsers.password}
                       onChange={handleChangeRegisterUser}
+                      required
+                      endContent={
+                        <button
+                          className="focus:outline-none"
+                          type="button"
+                          onClick={toggleVisibility}
+                          aria-label="toggle password visibility"
+                        >
+                          {isVisible ? (
+                            <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                          ) : (
+                            <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                          )}
+                        </button>
+                      }
+                      type={isVisible ? "text" : "password"}
                     />
-                    <i
-                      onClick={() => setWatchPassword(!watchPassword)}
-                      className={`${eyePassword} absolute top-3 right-3`}
-                    ></i>
                   </div>
                   <span
                     ref={feedbackRegexPassword}

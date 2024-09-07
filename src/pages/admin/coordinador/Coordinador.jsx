@@ -10,6 +10,7 @@ import Eventos from "@/modules/Admin/coordinador/eventos/Eventos";
 import Inventario from "@/modules/Admin/coordinador/inventario/Inventario";
 import Insumos from "@/modules/Admin/coordinador/insumos/Insumos";
 import Organizadores from "@/modules/Admin/coordinador/organizadores/Organizadores";
+import InfoEvento from "../../../modules/Admin/coordinador/eventos/InfoEvento.jsx";
 
 function Coordinador() {
   return (
@@ -23,6 +24,7 @@ function Coordinador() {
             <Route path="/espacios" element={<Espacios />} />
             <Route path="/solicitudes" element={<Solicitudes />} />
             <Route path="/eventos" element={<Eventos />} />
+            <Route path="/eventos/:id" element={<InfoEvento />} />
             <Route path="/inventario" element={<Inventario />} />
             <Route path="/insumos" element={<Insumos />} />
             <Route path="/organizadores" element={<Organizadores />} />

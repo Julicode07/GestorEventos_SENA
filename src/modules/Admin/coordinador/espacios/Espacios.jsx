@@ -1,4 +1,3 @@
-// pages/admin/coordinador/eventos/Eventos.jsx
 import React from "react";
 
 function Espacios() {
