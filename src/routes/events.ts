@@ -1,11 +1,12 @@
 import express, { Express, Request, Response } from "express";
 import { CreateGlobalEventController, GetGlobalEventsController } from "../controllers/events";
 import { databaseRegex } from "../helpers/regex.helper";
+import { isAuthenticated } from "../middlewares/auth";
 
 const EventsRouter: Express = express();
 
 // Create new web profile endpoint.
-EventsRouter.post("global/", async (req: Request, res: Response) => {
+EventsRouter.post("/global", isAuthenticated, async (req: Request, res: Response) => {
     try {
         if (databaseRegex.global_events.name.test(req.body.name)
             && databaseRegex.global_events.details.test(req.body.details)
