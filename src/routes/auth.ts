@@ -4,7 +4,6 @@ import { databaseRegex } from "../helpers/regex.helper";
 
 const AuthRouter: Express = express();
 
-// Create new category endpoint.
 AuthRouter.post("/login", async (req: Request, res: Response) => {
     try {
         if((databaseRegex.users.document.test(req.body.document))

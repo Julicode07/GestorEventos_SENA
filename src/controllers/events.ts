@@ -4,7 +4,7 @@ import { Request, Response } from 'express';
 
 export async function CreateGlobalEventController(req:Request, res:Response) {
     try {
-        const user_check = await findUserByDocument(req.session.user!.document);
+        const user_check = await findUserByDocument(req.session.user!.document as number);
         console.log(user_check[0], req.session.user!.document);
         if (user_check.length < 1) return res.status(409).end(JSON.stringify({ message: "Acceso no autorizado" }));
         else {
