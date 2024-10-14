@@ -197,7 +197,7 @@ export default function Calendar() {
                       <p className="text-gray-600">{event.description}</p>
                     </div>
                     <button
-                      className="bg-secondary text-white font-bold  text-sm rounded-lg p-3 hover:bg-secondary transition-colors"
+                      className="bg-secondary text-white font-bold text-sm rounded-lg p-3 hover:bg-secondary transition-colors"
                       onClick={() => setSelectedEvent(event)}
                     >
                       Ver evento
@@ -211,8 +211,17 @@ export default function Calendar() {
           </div>
 
           {selectedEvent && (
-            <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50 h-screen">
-              <div className="bg-white border border-gray-300 shadow-2xl p-8 rounded-2xl w-4/5 max-w-2xl flex flex-col items-center relative">
+            <div
+              className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50 h-screen"
+              onClick={() => setSelectedEvent(null)}
+            >
+              <div
+                className={`bg-white border border-gray-300 shadow-2xl p-8 rounded-2xl w-4/5 max-w-2xl flex flex-col items-center relative transition-transform transform scale-95 opacity-0
+        ${
+          selectedEvent ? "scale-100 opacity-100" : "scale-95 opacity-0"
+        } transition-all duration-300 ease-out`}
+                onClick={(e) => e.stopPropagation()}
+              >
                 <button
                   className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
                   onClick={() => setSelectedEvent(null)}

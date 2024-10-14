@@ -61,8 +61,9 @@ function Solicitudes() {
           ))}
         </ul>
       </div>
-      <div className="flex justify-center text-sm">
-        Total de solicitudes: {filteredEvents.length}
+      <div className="flex gap-1 justify-center text-sm">
+        <span className="font-bold">Total de solicitudes:</span>
+        <span className="font-medium"> {filteredEvents.length}</span>
       </div>
     </div>
   );

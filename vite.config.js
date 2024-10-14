@@ -11,7 +11,6 @@ export default defineConfig(({ mode }) => ({
       "@context": path.resolve(__dirname, "src/context"),
       "@modules": path.resolve(__dirname, "src/modules"),
       "@pages": path.resolve(__dirname, "src/pages"),
-      "@context": path.resolve(__dirname, "src/context"),
     },
   },
   build: {

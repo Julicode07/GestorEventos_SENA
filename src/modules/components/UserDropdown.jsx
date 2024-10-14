@@ -72,7 +72,7 @@ const UserDropdown = ({
           showDivider
           className="text-lg"
         >
-          <span className="text-base font-bold">Ir al panel</span>
+          <span className="text-base font-medium">Ir al panel</span>
         </DropdownItem>
         <DropdownItem
           as={Link}
