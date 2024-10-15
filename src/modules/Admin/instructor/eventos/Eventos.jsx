@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   Table,
   TableHeader,
@@ -21,7 +21,6 @@ import { SearchIcon } from "@/modules/Admin/components/SearchIcon";
 import { ChevronDownIcon } from "@/modules/Admin/components/ChevronDownIcon";
 import { columns, events, statusOptions } from "@modules/Admin/utils/data";
 import { EyeIcon } from "@/modules/Admin/components/EyeIcon";
-
 const statusColorMap = {
   Aceptado: "success",
   Pendiente: "warning",
@@ -53,6 +52,95 @@ export default function Eventos() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const hasSearchFilter = Boolean(filterValue);
+
+  // Register a global event
+  const [registerEvent, setRegisterEvent] = useState({
+    eventName: "",
+    eventDetails: "",
+  });
+
+  const eventNameRef = useRef();
+  const eventDetailsRef = useRef();
+
+  const [succesMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const [eventNameRegexIsOk, setEventNameRegexIsOk] = useState(false);
+  const [eventDetailsRegexOk, setEventDetailsRegexOk] = useState(false);
+
+  const regexEventName = (eventName) => {
+    const regex = /^[A-Za-zñ.Ñ:-á-|éí,.ó'úÁÉÍ&%$ÓÚäëïöüÄËÏÖÜ0-9\s]{1,64}$/;
+    const regexTest = regex.test(eventName);
+
+    if (regexTest) {
+      eventNameRef.current.textContent = "";
+      setEventNameRegexIsOk(true);
+    } else {
+      eventNameRef.current.textContent = "El nombre del evento no es valido";
+      eventNameRef.current.style.color = "red";
+      setEventNameRegexIsOk(false);
+    }
+  };
+
+  const regexEventDetails = (eventDetails) => {
+    const regex = /^[A-Za-zñ.Ñ:-á-|éí,.'óúÁÉÍ&%$ÓÚäëïöüÄËÏÖÜ0-9\s]{1,255}$/;
+    const regexTest = regex.test(eventDetails);
+
+    if (regexTest) {
+      eventDetailsRef.current.textContent = "";
+      setEventDetailsRegexOk(true);
+    } else {
+      eventDetailsRef.current.textContent =
+        "Los detalles del evento no son validos";
+      eventDetailsRef.current.style.color = "red";
+      setEventDetailsRegexOk(false);
+    }
+  };
+
+  const handleChangeEvent = (e) => {
+    const { name, value } = e.target;
+    setRegisterEvent((prevDataEvent) => ({
+      ...prevDataEvent,
+      [name]: value,
+    }));
+
+    if (name === "eventName") {
+      regexEventName(value);
+    } else if (name === "eventDetails") {
+      regexEventDetails(value);
+    }
+  };
+
+  const handleSubmitEvent = async (e) => {
+    e.preventDefault();
+    console.log(registerEvent);
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/events/global`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(registerEvent),
+        }
+      );
+      const data = await response.json();
+      consele.log(data);
+      if (data.status === 200) {
+        setSuccessMessage("Registro exitoso");
+        setErrorMessage("");
+      } else {
+        setSuccessMessage("");
+        setErrorMessage("No se pudo registrar el evento");
+      }
+    } catch (error) {
+      setErrorMessage("Ocurrio un error al registrar el evento", error);
+      setSuccessMessage("");
+    }
+  };
+
+  //
 
   const headerColumns = React.useMemo(() => {
     if (visibleColumns === "all") return columns;
@@ -177,184 +265,194 @@ export default function Eventos() {
     setPage(1);
   }, []);
 
-  const topContent = React.useMemo(() => {
-    return (
-      <div className="flex flex-col gap-4">
-        <div className="flex justify-between gap-3 items-end">
-          <Input
-            isClearable
-            className="w-full sm:max-w-[44%]"
-            placeholder="Buscar usuario, evento o espacio..."
-            startContent={<SearchIcon />}
-            value={filterValue}
-            onClear={() => onClear()}
-            onValueChange={onSearchChange}
-          />
-          <div className="hidden sm:flex items-center gap-2 md:gap-3">
-            <span className="font-bold text-default-800">Filtros:</span>
-            <Dropdown>
-              <DropdownTrigger className="hidden sm:flex">
-                <Button
-                  endContent={<ChevronDownIcon className="text-small" />}
-                  variant="flat"
-                >
-                  Estado
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                disallowEmptySelection
-                aria-label="Table Columns"
-                closeOnSelect={false}
-                selectedKeys={statusFilter}
-                selectionMode="multiple"
-                onSelectionChange={setStatusFilter}
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="flex justify-between gap-3 items-end">
+        <Input
+          isClearable
+          className="w-full sm:max-w-[44%]"
+          placeholder="Buscar usuario, evento o espacio..."
+          startContent={<SearchIcon />}
+          value={filterValue}
+          onClear={() => onClear()}
+          onValueChange={onSearchChange}
+        />
+        <div className="hidden sm:flex items-center gap-2 md:gap-3">
+          <span className="font-bold text-default-800">Filtros:</span>
+          <Dropdown>
+            <DropdownTrigger className="hidden sm:flex">
+              <Button
+                endContent={<ChevronDownIcon className="text-small" />}
+                variant="flat"
               >
-                {statusOptions.map((status) => (
-                  <DropdownItem key={status.uid} className="capitalize">
-                    {status.name}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
-            <Dropdown>
-              <DropdownTrigger className="hidden sm:flex">
-                <Button
-                  endContent={<ChevronDownIcon className="text-small" />}
-                  variant="flat"
-                >
-                  Columnas
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                disallowEmptySelection
-                aria-label="Table Columns"
-                closeOnSelect={false}
-                selectedKeys={visibleColumns}
-                selectionMode="multiple"
-                onSelectionChange={setVisibleColumns}
-              >
-                {columns.map((column) => (
-                  <DropdownItem key={column.uid}>{column.name}</DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
-
-            {/* Modal to create event */}
-            <Button
-              className="bg-primary hover:bg-primary/100 text-white"
-              onClick={() => setIsModalOpen(true)}
+                Estado
+              </Button>
+            </DropdownTrigger>
+            <DropdownMenu
+              disallowEmptySelection
+              aria-label="Table Columns"
+              closeOnSelect={false}
+              selectedKeys={statusFilter}
+              selectionMode="multiple"
+              onSelectionChange={setStatusFilter}
             >
-              Crear Evento
-            </Button>
+              {statusOptions.map((status) => (
+                <DropdownItem key={status.uid} className="capitalize">
+                  {status.name}
+                </DropdownItem>
+              ))}
+            </DropdownMenu>
+          </Dropdown>
+          <Dropdown>
+            <DropdownTrigger className="hidden sm:flex">
+              <Button
+                endContent={<ChevronDownIcon className="text-small" />}
+                variant="flat"
+              >
+                Columnas
+              </Button>
+            </DropdownTrigger>
+            <DropdownMenu
+              disallowEmptySelection
+              aria-label="Table Columns"
+              closeOnSelect={false}
+              selectedKeys={visibleColumns}
+              selectionMode="multiple"
+              onSelectionChange={setVisibleColumns}
+            >
+              {columns.map((column) => (
+                <DropdownItem key={column.uid}>{column.name}</DropdownItem>
+              ))}
+            </DropdownMenu>
+          </Dropdown>
 
-            {isModalOpen && (
-              <>
-                <div
-                  className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-40"
-                  onClick={(e) => {
-                    if (e.target === e.currentTarget) {
-                      setIsModalOpen(false);
-                    }
-                  }}
-                >
-                  <div className="relative p-4 w-full max-w-2xl z-50">
-                    <div className="relative bg-white rounded-lg shadow">
-                      <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t ">
-                        <h3 className="text-3xl font-semibold text-gray-900">
-                          Crear evento
-                        </h3>
-                        <button
-                          type="button"
-                          className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center "
-                          onClick={() => setIsModalOpen(false)}
+          {/* Modal to create event */}
+          <Button
+            className="bg-primary hover:bg-primary/100 text-white"
+            onClick={() => setIsModalOpen(true)}
+          >
+            Crear Evento
+          </Button>
+
+          {isModalOpen && (
+            <>
+              <div
+                className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-40"
+                onClick={(e) => {
+                  if (e.target === e.currentTarget) {
+                    setIsModalOpen(false);
+                  }
+                }}
+              >
+                <div className="relative p-4 w-full max-w-2xl z-50">
+                  <div className="relative bg-white rounded-lg shadow">
+                    <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t ">
+                      <h3 className="text-3xl font-semibold text-gray-900">
+                        Crear evento
+                      </h3>
+                      <button
+                        type="button"
+                        className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center "
+                        onClick={() => setIsModalOpen(false)}
+                      >
+                        <svg
+                          className="w-3 h-3"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 14 14"
                         >
-                          <svg
-                            className="w-3 h-3"
-                            aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 14 14"
+                          <path
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="m1 1 6 6m0 0 6-6M7 7l6 6m-6-6-6 6"
+                          />
+                        </svg>
+                        <span className="sr-only">Cerrar modal</span>
+                      </button>
+                    </div>
+
+                    <div className="p-4 md:p-5">
+                      <form className="space-y-4" onSubmit={handleSubmitEvent}>
+                        <div>
+                          <label className="block mb-2 text-lg font-bold text-gray-900 ">
+                            Nombre del Evento
+                          </label>
+                          <input
+                            type="text"
+                            name="eventName"
+                            id="eventName"
+                            value={registerEvent.eventName}
+                            className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg block w-full p-2.5 outline-none"
+                            placeholder="Semana del instructor"
+                            onChange={handleChangeEvent}
+                          />
+                          <span ref={eventNameRef}></span>
+                        </div>
+                        <div>
+                          <label className="block mb-2 text-lg font-bold text-gray-900">
+                            Descripción del evento
+                          </label>
+                          <textarea
+                            name="eventDetails"
+                            id="eventDetails"
+                            value={registerEvent.eventDetails}
+                            placeholder="Escribe la descripción del evento"
+                            className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg block w-full p-2.5 outline-none"
+                            rows="4"
+                            onChange={handleChangeEvent}
+                          ></textarea>
+                          <span ref={eventDetailsRef}></span>
+                        </div>
+                        <div className="flex items-center justify-center p-4 md:p-5 space-x-3 rtl:space-x-reverse border-t border-gray-200 rounded-b">
+                          <button
+                            type="button"
+                            className="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-red-700 "
+                            onClick={() => setIsModalOpen(false)}
                           >
-                            <path
-                              stroke="currentColor"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="2"
-                              d="m1 1 6 6m0 0 6-6M7 7l6 6m-6-6-6 6"
-                            />
-                          </svg>
-                          <span className="sr-only">Cerrar modal</span>
-                        </button>
-                      </div>
-
-                      <div className="p-4 md:p-5">
-                        <form className="space-y-4" action="#">
-                          <div>
-                            <label className="block mb-2 text-lg font-bold text-gray-900 ">
-                              Nombre del Evento
-                            </label>
-                            <input
-                              type="text"
-                              name="nameEvent"
-                              id="nameEvent"
-                              className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg block w-full p-2.5 outline-none"
-                              placeholder="Semana del instructor"
-                              required
-                            />
-                          </div>
-                          <div>
-                            <label className="block mb-2 text-lg font-bold text-gray-900">
-                              Descripción del evento
-                            </label>
-                            <textarea
-                              name="description"
-                              id="description"
-                              placeholder="Escribe la descripción del evento"
-                              className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg block w-full p-2.5 outline-none"
-                              required
-                              rows="4"
-                            ></textarea>
-                          </div>
-                        </form>
-                      </div>
-
-                      <div className="flex items-center justify-center p-4 md:p-5 space-x-3 rtl:space-x-reverse border-t border-gray-200 rounded-b">
-                        <button
-                          type="button"
-                          className="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-red-700 "
-                          onClick={() => setIsModalOpen(false)}
-                        >
-                          Cancelar
-                        </button>
-                        <button
-                          type="button"
-                          className="text-white bg-primary hover:bg-primary/90 focus:outline-none  font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                          onClick={() => setIsModalOpen(false)}
-                        >
-                          Crear Evento
-                        </button>
-                      </div>
+                            Cancelar
+                          </button>
+                          <button
+                            type="submit"
+                            className="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                            style={{
+                              background:
+                                eventNameRegexIsOk && eventDetailsRegexOk
+                                  ? "green"
+                                  : "rgba(0, 0, 0, 0.2)",
+                              PointerEvent:
+                                eventNameRegexIsOk && eventDetailsRegexOk
+                                  ? "auto"
+                                  : "none",
+                              color:
+                                eventNameRegexIsOk && eventDetailsRegexOk
+                                  ? "white"
+                                  : "black",
+                            }}
+                          >
+                            Crear Evento
+                          </button>
+                        </div>
+                        <div className="flex justify-center">
+                          {succesMessage && (
+                            <p className="text-green-600">{succesMessage}</p>
+                          )}
+                          {errorMessage && (
+                            <p className="text-red-600">{errorMessage}</p>
+                          )}
+                        </div>
+                      </form>
                     </div>
                   </div>
                 </div>
-              </>
-            )}
-          </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
-    );
-  }, [
-    filterValue,
-    onSearchChange,
-    onClear,
-    statusFilter,
-    visibleColumns,
-    isModalOpen,
-  ]);
-
-  return (
-    <>
-      {topContent}
+      {/* table */}
       <Table
         aria-label="Example table with dynamic content"
         className="mt-4 min-w-full"
@@ -396,6 +494,6 @@ export default function Eventos() {
           onChange={(newPage) => setPage(newPage)}
         />
       </div>
-    </>
+    </div>
   );
 }
