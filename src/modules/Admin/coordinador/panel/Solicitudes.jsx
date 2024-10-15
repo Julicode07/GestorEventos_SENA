@@ -24,10 +24,7 @@ function Solicitudes() {
         </a>
       </div>
       <div className="w-full flow-root">
-        <ul
-          role="list"
-          className="divide-y divide-gray-200 dark:divide-gray-700"
-        >
+        <ul role="list" className="divide-y divide-gray-200">
           {recentEvents.map((event) => (
             <li key={event.id} className="py-3 sm:py-4">
               <div className="flex items-center">
@@ -39,12 +36,10 @@ function Solicitudes() {
                   />
                 </div>
                 <div className="flex-1 min-w-0 ms-4">
-                  <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
+                  <p className="text-sm font-medium text-gray-900 truncate">
                     {event.user.name}
                   </p>
-                  <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                    {event.name}
-                  </p>
+                  <p className="text-sm text-gray-500 truncate">{event.name}</p>
                 </div>
                 <div className="inline-flex items-center text-sm font-medium text-gray-900">
                   <Chip

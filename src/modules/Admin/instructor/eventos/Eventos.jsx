@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Table,
   TableHeader,
@@ -39,18 +39,18 @@ const INITIAL_VISIBLE_COLUMNS = [
 ];
 
 export default function Eventos() {
-  const [filterValue, setFilterValue] = React.useState("");
-  const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
-  const [visibleColumns, setVisibleColumns] = React.useState(
+  const [filterValue, setFilterValue] = useState("");
+  const [visibleColumns, setVisibleColumns] = useState(
     new Set(INITIAL_VISIBLE_COLUMNS)
   );
-  const [statusFilter, setStatusFilter] = React.useState("all");
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [sortDescriptor, setSortDescriptor] = React.useState({
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [sortDescriptor, setSortDescriptor] = useState({
     column: "status",
     direction: "ascending",
   });
-  const [page, setPage] = React.useState(1);
+  const [page, setPage] = useState(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const hasSearchFilter = Boolean(filterValue);
 
@@ -143,7 +143,7 @@ export default function Eventos() {
               className="bg-secondary text-white"
             >
               <Button
-                href={`/admin/coordinador/eventos/${event.id}`}
+                href={`/admin/instructor/eventos/${event.id}`}
                 as="a"
                 isIconOnly
                 className="bg-green-700 hover:bg-green-800"
@@ -190,7 +190,7 @@ export default function Eventos() {
             onClear={() => onClear()}
             onValueChange={onSearchChange}
           />
-          <div className="hidden sm:flex items-center gap-3">
+          <div className="hidden sm:flex items-center gap-2 md:gap-3">
             <span className="font-bold text-default-800">Filtros:</span>
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
@@ -234,88 +234,168 @@ export default function Eventos() {
                 onSelectionChange={setVisibleColumns}
               >
                 {columns.map((column) => (
-                  <DropdownItem key={column.uid}>
-                    {column.name}
-                  </DropdownItem>
+                  <DropdownItem key={column.uid}>{column.name}</DropdownItem>
                 ))}
               </DropdownMenu>
             </Dropdown>
+
+            {/* Modal to create event */}
+            <Button
+              className="bg-primary hover:bg-primary/100 text-white"
+              onClick={() => setIsModalOpen(true)}
+            >
+              Crear Evento
+            </Button>
+
+            {isModalOpen && (
+              <>
+                <div
+                  className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-40"
+                  onClick={(e) => {
+                    if (e.target === e.currentTarget) {
+                      setIsModalOpen(false);
+                    }
+                  }}
+                >
+                  <div className="relative p-4 w-full max-w-2xl z-50">
+                    <div className="relative bg-white rounded-lg shadow">
+                      <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t ">
+                        <h3 className="text-3xl font-semibold text-gray-900">
+                          Crear evento
+                        </h3>
+                        <button
+                          type="button"
+                          className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center "
+                          onClick={() => setIsModalOpen(false)}
+                        >
+                          <svg
+                            className="w-3 h-3"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 14 14"
+                          >
+                            <path
+                              stroke="currentColor"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="m1 1 6 6m0 0 6-6M7 7l6 6m-6-6-6 6"
+                            />
+                          </svg>
+                          <span className="sr-only">Cerrar modal</span>
+                        </button>
+                      </div>
+
+                      <div className="p-4 md:p-5">
+                        <form className="space-y-4" action="#">
+                          <div>
+                            <label className="block mb-2 text-lg font-bold text-gray-900 ">
+                              Nombre del Evento
+                            </label>
+                            <input
+                              type="text"
+                              name="nameEvent"
+                              id="nameEvent"
+                              className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg block w-full p-2.5 outline-none"
+                              placeholder="Semana del instructor"
+                              required
+                            />
+                          </div>
+                          <div>
+                            <label className="block mb-2 text-lg font-bold text-gray-900">
+                              Descripción del evento
+                            </label>
+                            <textarea
+                              name="description"
+                              id="description"
+                              placeholder="Escribe la descripción del evento"
+                              className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg block w-full p-2.5 outline-none"
+                              required
+                              rows="4"
+                            ></textarea>
+                          </div>
+                        </form>
+                      </div>
+
+                      <div className="flex items-center justify-center p-4 md:p-5 space-x-3 rtl:space-x-reverse border-t border-gray-200 rounded-b">
+                        <button
+                          type="button"
+                          className="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-red-700 "
+                          onClick={() => setIsModalOpen(false)}
+                        >
+                          Cancelar
+                        </button>
+                        <button
+                          type="button"
+                          className="text-white bg-primary hover:bg-primary/90 focus:outline-none  font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                          onClick={() => setIsModalOpen(false)}
+                        >
+                          Crear Evento
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         </div>
-        <div className="flex justify-between items-center gap-2">
-          <span className="text-default-400 text-small">
-            Total {filteredItems.length} resultados
-          </span>
-          <label className="flex items-center text-default-400 text-small">
-            Filas por página:
-            <select
-              className="max-w-full rounded-lg bg-default-100 text-default-900 text-small font-bold"
-              onChange={onRowsPerPageChange}
-              value={rowsPerPage}
-            >
-              <option value={5}>5</option>
-              <option value={10}>10</option>
-              <option value={15}>15</option>
-            </select>
-          </label>
-        </div>
       </div>
     );
-  }, [filterValue, statusFilter, visibleColumns, rowsPerPage]);
-
-  const bottomContent = React.useMemo(() => {
-    return (
-      <div className="py-2 px-2 flex justify-center items-center border-t border-divider">
-        <Pagination
-          showControls
-          isCompact
-          page={page}
-          total={pages}
-          onChange={(page) => setPage(page)}
-        />
-      </div>
-    );
-  }, [page, filteredItems]);
+  }, [
+    filterValue,
+    onSearchChange,
+    onClear,
+    statusFilter,
+    visibleColumns,
+    isModalOpen,
+  ]);
 
   return (
-    <Table
-      aria-label="Example table with custom cells, pagination and sorting"
-      sortDescriptor={sortDescriptor}
-      topContent={topContent}
-      bottomContentPlacement="outside"
-      bottomContent={bottomContent}
-      topContentPlacement="outside"
-      onSortChange={setSortDescriptor}
-    >
-      <TableHeader columns={headerColumns}>
-        {(column) => (
-          <TableColumn
-            key={column.uid}
-            allowsSorting={column.sortable}
-            align={column.uid === "actions" ? "center" : "start"}
-          >
-            {column.name}
-          </TableColumn>
-        )}
-      </TableHeader>
-      <TableBody
-        emptyContent={"No hay eventos para mostrar"}
-        items={sortedItems}
+    <>
+      {topContent}
+      <Table
+        aria-label="Example table with dynamic content"
+        className="mt-4 min-w-full"
+        sortDescriptor={sortDescriptor}
+        onSortChange={setSortDescriptor}
+        pagination={{
+          rowsPerPage,
+          page,
+          onRowsPerPageChange,
+          onPageChange: setPage,
+        }}
       >
-        {(event) => (
-          <TableRow>
-            {(columnKey) => (
-              <TableCell
-                className={
-                  event.type === "globalEvent" ? "bg-gray-100" : "bg-white"
-                }
-              >
-                {renderCell(event, columnKey)}
-              </TableCell>
-            )}
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
+        <TableHeader columns={headerColumns}>
+          {(column) => (
+            <TableColumn
+              key={column.uid}
+              allowsSorting={column.sortable}
+              isHidden={column.uid === "actions"}
+            >
+              {column.name}
+            </TableColumn>
+          )}
+        </TableHeader>
+        <TableBody items={sortedItems}>
+          {(item) => (
+            <TableRow key={item.id}>
+              {(columnKey) => (
+                <TableCell>{renderCell(item, columnKey)}</TableCell>
+              )}
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+
+      <div className="mt-4 flex justify-center">
+        <Pagination
+          total={pages}
+          page={page}
+          onChange={(newPage) => setPage(newPage)}
+        />
+      </div>
+    </>
   );
 }

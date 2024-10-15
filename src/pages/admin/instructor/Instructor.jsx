@@ -7,6 +7,7 @@ import Espacios from "@/modules/Admin/instructor/espacios/Espacios";
 import Eventos from "@/modules/Admin/instructor/eventos/Eventos";
 import Inventario from "@/modules/Admin/instructor/inventario/Inventario";
 import Insumos from "@/modules/Admin/instructor/insumos/Insumos";
+import InfoEvento from "../../../modules/Admin/instructor/eventos/InfoEvento";
 
 function Coordinador() {
   return (
@@ -19,6 +20,7 @@ function Coordinador() {
             <Route path="/" element={<Panel />} />
             <Route path="/espacios" element={<Espacios />} />
             <Route path="/eventos" element={<Eventos />} />
+            <Route path="/eventos/:id" element={<InfoEvento />} />
             <Route path="/inventario" element={<Inventario />} />
             <Route path="/insumos" element={<Insumos />} />
           </Routes>
