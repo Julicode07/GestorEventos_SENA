@@ -5,7 +5,7 @@ export const SessionContext = createContext();
 export const SessionContextProvider = ({ children }) => {
   const [userSession, setUserSession] = useState({
     document: null,
-    role: "Instructor",
+    role: null,
   });
 
   const updateSession = useCallback(async () => {
@@ -17,7 +17,7 @@ export const SessionContextProvider = ({ children }) => {
       if (response.ok) {
         setUserSession({
           document: data.data.document,
-          role: "Instructor",
+          role: data.data.role,
         });
       } else {
         console.log("You don´t have any active session in eventos.");
