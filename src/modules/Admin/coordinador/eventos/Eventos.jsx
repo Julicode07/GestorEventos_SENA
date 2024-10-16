@@ -217,28 +217,6 @@ export default function Eventos() {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Dropdown>
-              <DropdownTrigger className="hidden sm:flex">
-                <Button
-                  endContent={<ChevronDownIcon className="text-small" />}
-                  variant="flat"
-                >
-                  Columnas
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                disallowEmptySelection
-                aria-label="Table Columns"
-                closeOnSelect={false}
-                selectedKeys={visibleColumns}
-                selectionMode="multiple"
-                onSelectionChange={setVisibleColumns}
-              >
-                {columns.map((column) => (
-                  <DropdownItem key={column.uid}>{column.name}</DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
           </div>
         </div>
         <div className="flex justify-between items-center gap-2">

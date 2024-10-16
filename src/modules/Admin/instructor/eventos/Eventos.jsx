@@ -277,9 +277,11 @@ export default function Eventos() {
           onClear={() => onClear()}
           onValueChange={onSearchChange}
         />
-        <div className="hidden sm:flex items-center gap-2 md:gap-3">
-          <span className="font-bold text-default-800">Filtros:</span>
-          <Dropdown>
+        <div className="flex items-center gap-2 md:gap-3">
+          <span className="hidden sm:flex font-bold text-default-800">
+            Filtros:
+          </span>
+          <Dropdown className="hidden sm:flex">
             <DropdownTrigger className="hidden sm:flex">
               <Button
                 endContent={<ChevronDownIcon className="text-small" />}
@@ -300,28 +302,6 @@ export default function Eventos() {
                 <DropdownItem key={status.uid} className="capitalize">
                   {status.name}
                 </DropdownItem>
-              ))}
-            </DropdownMenu>
-          </Dropdown>
-          <Dropdown>
-            <DropdownTrigger className="hidden sm:flex">
-              <Button
-                endContent={<ChevronDownIcon className="text-small" />}
-                variant="flat"
-              >
-                Columnas
-              </Button>
-            </DropdownTrigger>
-            <DropdownMenu
-              disallowEmptySelection
-              aria-label="Table Columns"
-              closeOnSelect={false}
-              selectedKeys={visibleColumns}
-              selectionMode="multiple"
-              onSelectionChange={setVisibleColumns}
-            >
-              {columns.map((column) => (
-                <DropdownItem key={column.uid}>{column.name}</DropdownItem>
               ))}
             </DropdownMenu>
           </Dropdown>
@@ -452,6 +432,23 @@ export default function Eventos() {
           )}
         </div>
       </div>
+      <div className="flex justify-between items-center gap-2">
+        <span className="text-default-400 text-small">
+          Total {filteredItems.length} resultados
+        </span>
+        <label className="flex items-center text-default-400 text-small">
+          Filas por página:
+          <select
+            className="max-w-full rounded-lg bg-default-100 text-default-900 text-small font-bold"
+            onChange={onRowsPerPageChange}
+            value={rowsPerPage}
+          >
+            <option value={5}>5</option>
+            <option value={10}>10</option>
+            <option value={15}>15</option>
+          </select>
+        </label>
+      </div>
       {/* table */}
       <Table
         aria-label="Example table with dynamic content"
@@ -488,11 +485,15 @@ export default function Eventos() {
       </Table>
 
       <div className="mt-4 flex justify-center">
-        <Pagination
-          total={pages}
-          page={page}
-          onChange={(newPage) => setPage(newPage)}
-        />
+        <div className="py-2 px-2 flex justify-center items-center">
+          <Pagination
+            showControls
+            isCompact
+            page={page}
+            total={pages}
+            onChange={(page) => setPage(page)}
+          />
+        </div>
       </div>
     </div>
   );
