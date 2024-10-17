@@ -1,7 +1,7 @@
 import express, { Express, Request, Response } from "express";
 import { CreateGlobalEventController, GetGlobalEventsController } from "../controllers/events";
 import { databaseRegex } from "../helpers/regex.helper";
-import { isAuthenticated, isInstructor } from "../middlewares/auth";
+import { isInstructor } from "../middlewares/auth";
 
 const EventsRouter: Express = express();
 
