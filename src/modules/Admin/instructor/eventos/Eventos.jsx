@@ -131,12 +131,15 @@ export default function Eventos() {
         setSuccessMessage("Registro exitoso");
         setErrorMessage("");
       } else {
-        setSuccessMessage("");
-        setErrorMessage("No se pudo registrar el evento");
+        // setSuccessMessage("");
+        // setErrorMessage("No se pudo registrar el evento");
+        console.log(data.message);
       }
     } catch (error) {
-      setErrorMessage("Ocurrio un error al registrar el evento", error);
-      setSuccessMessage("");
+      console.error(error);
+      console.log(data.message);
+      // setErrorMessage("Ocurrio un error al registrar el evento", error);
+      // setSuccessMessage("");
     }
   };
 

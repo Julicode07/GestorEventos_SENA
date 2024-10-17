@@ -19,14 +19,18 @@ export const SessionContextProvider = ({ children }) => {
           document: data.data.document,
           role: data.data.role,
         });
+        console.log(userSession);
       } else {
         console.log("You don´t have any active session in eventos.");
+        console.log(userSession);
+
         setUserSession({
           document: null,
           role: null,
         });
       }
     } catch (error) {
+        console.log(userSession);
       setUserSession({
         document: null,
         role: null,
