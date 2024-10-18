@@ -126,13 +126,13 @@ export default function Eventos() {
         }
       );
       const data = await response.json();
-      console.log("the data is: ".data);
+      console.log("the data is: ", data);
       if (data.status === 200) {
         setSuccessMessage("Registro exitoso");
         setErrorMessage("");
       } else {
         setSuccessMessage("");
-        setErrorMessage("No se pudo registrar el evento" . data.message);
+        setErrorMessage(data.message);
       }
     } catch (error) {
       setErrorMessage("Ocurrio un error al registrar el evento", error);
