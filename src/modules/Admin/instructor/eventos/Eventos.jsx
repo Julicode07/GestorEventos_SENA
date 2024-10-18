@@ -132,7 +132,7 @@ export default function Eventos() {
         setErrorMessage("");
       } else {
         setSuccessMessage("");
-        setErrorMessage("No se pudo registrar el evento");
+        setErrorMessage("No se pudo registrar el evento" . data.message);
       }
     } catch (error) {
       setErrorMessage("Ocurrio un error al registrar el evento", error);
