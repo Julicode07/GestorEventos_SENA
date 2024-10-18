@@ -417,10 +417,10 @@ export default function Eventos() {
                         </div>
                         <div className="flex justify-center">
                           {succesMessage && (
-                            <p className="text-green-600">{succesMessage}</p>
+                            <p className="text-green-600 text-center">{succesMessage}</p>
                           )}
                           {errorMessage && (
-                            <p className="text-red-600">{errorMessage}</p>
+                            <p className="text-red-600 text-center">{errorMessage}</p>
                           )}
                         </div>
                       </form>
