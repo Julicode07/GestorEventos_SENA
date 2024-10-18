@@ -126,7 +126,7 @@ export default function Eventos() {
         }
       );
       const data = await response.json();
-      consele.log(data);
+      console.log("the data is: ".data);
       if (data.status === 200) {
         setSuccessMessage("Registro exitoso");
         setErrorMessage("");
