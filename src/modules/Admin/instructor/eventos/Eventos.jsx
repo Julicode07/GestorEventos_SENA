@@ -21,7 +21,6 @@ import { SearchIcon } from "@/modules/Admin/components/SearchIcon";
 import { ChevronDownIcon } from "@/modules/Admin/components/ChevronDownIcon";
 import { columns, events, statusOptions } from "@modules/Admin/utils/data";
 import { EyeIcon } from "@/modules/Admin/components/EyeIcon";
-import { details } from "framer-motion/client";
 const statusColorMap = {
   Aceptado: "success",
   Pendiente: "warning",
@@ -429,9 +428,9 @@ export default function Eventos() {
                           ) : (
                             (<p className="text-red-600 text-center">
                               {errorMessage}
-                            </p>)()
+                            </p>)
                           )}
-                        </div>
+                        </div>  
                       </form>
                     </div>
                   </div>
