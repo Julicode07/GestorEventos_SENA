@@ -21,6 +21,7 @@ import { SearchIcon } from "@/modules/Admin/components/SearchIcon";
 import { ChevronDownIcon } from "@/modules/Admin/components/ChevronDownIcon";
 import { columns, events, statusOptions } from "@modules/Admin/utils/data";
 import { EyeIcon } from "@/modules/Admin/components/EyeIcon";
+import { details } from "framer-motion/client";
 const statusColorMap = {
   Aceptado: "success",
   Pendiente: "warning",
@@ -104,9 +105,9 @@ export default function Eventos() {
       [name]: value,
     }));
 
-    if (name === "eventName") {
+    if (name === "name") {
       regexEventName(value);
-    } else if (name === "eventDetails") {
+    } else if (name === "details") {
       regexEventDetails(value);
     }
   };
@@ -364,7 +365,7 @@ export default function Eventos() {
                             type="text"
                             name="name"
                             id="eventName"
-                            value={registerEvent.eventName}
+                            value={registerEvent.name}
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg block w-full p-2.5 outline-none"
                             placeholder="Semana del instructor"
                             onChange={handleChangeEvent}
@@ -378,7 +379,7 @@ export default function Eventos() {
                           <textarea
                             name="details"
                             id="eventDetails"
-                            value={registerEvent.eventDetails}
+                            value={registerEvent.details}
                             placeholder="Escribe la descripción del evento"
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg block w-full p-2.5 outline-none"
                             rows="4"
@@ -417,10 +418,14 @@ export default function Eventos() {
                         </div>
                         <div className="flex justify-center">
                           {succesMessage && (
-                            <p className="text-green-600 text-center">{succesMessage}</p>
+                            <p className="text-green-600 text-center">
+                              {succesMessage}
+                            </p>
                           )}
                           {errorMessage && (
-                            <p className="text-red-600 text-center">{errorMessage}</p>
+                            <p className="text-red-600 text-center">
+                              {errorMessage}
+                            </p>
                           )}
                         </div>
                       </form>
