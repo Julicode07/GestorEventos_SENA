@@ -8,7 +8,7 @@ export async function CreateGlobalEventController(req:Request, res:Response) {
         console.log(user_check[0], req.session.user!.document);
         if (user_check.length < 1) return res.status(409).end(JSON.stringify({ message: "Acceso no autorizado" }));
         else {
-            console.log("Arrived to create global event function")
+            console.log("body", req.body.name, req.body.details);
             const result = await createGlobalEvent({
                 id_global_event: undefined,
                 id_user: user_check[0].id_user,
