@@ -55,8 +55,8 @@ export default function Eventos() {
 
   // Register a global event
   const [registerEvent, setRegisterEvent] = useState({
-    eventName: "",
-    eventDetails: "",
+    name: "",
+    details: "",
   });
 
   const eventNameRef = useRef();
@@ -362,7 +362,7 @@ export default function Eventos() {
                           </label>
                           <input
                             type="text"
-                            name="eventName"
+                            name="name"
                             id="eventName"
                             value={registerEvent.eventName}
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg block w-full p-2.5 outline-none"
@@ -376,7 +376,7 @@ export default function Eventos() {
                             Descripción del evento
                           </label>
                           <textarea
-                            name="eventDetails"
+                            name="details"
                             id="eventDetails"
                             value={registerEvent.eventDetails}
                             placeholder="Escribe la descripción del evento"
