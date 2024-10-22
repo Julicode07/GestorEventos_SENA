@@ -422,10 +422,14 @@ export default function Eventos() {
                               {succesMessage}
                             </p>
                           )}
-                          {errorMessage && (
-                            <p className="text-red-600 text-center">
+                          {errorMessage === "Evento creado correctamente" ? (
+                            <p className="text-green-600 text-center">
                               {errorMessage}
                             </p>
+                          ) : (
+                            (<p className="text-red-600 text-center">
+                              {errorMessage}
+                            </p>)()
                           )}
                         </div>
                       </form>
