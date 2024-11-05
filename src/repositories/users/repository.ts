@@ -30,6 +30,19 @@ export async function createUser(user: IUser): Promise<number> {
     }
 }
 
+export async function findAllUsers(): Promise<IUser[]> {
+    const connection:PoolConnection = await getConnection(pool);
+    try {
+        const results = await connection.query(`SELECT id_user, document, name, last_names, email, phone, role FROM users`);
+        return (results.length === 0) ? [] : results;
+    } catch (err) {
+        console.error(`[user repository]: ${err}`);
+        return [];
+    } finally {
+        connection.release();
+    }
+}
+
 export async function findUserByDocument(document: number): Promise<IUser[]> {
     const connection:PoolConnection = await getConnection(pool);
     try {

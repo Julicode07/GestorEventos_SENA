@@ -1,11 +1,11 @@
 import express, { Express, Request, Response } from "express";
-import { CreateUserController } from "../controllers/users";
+import { CreateUserController, GetUsersController } from "../controllers/users";
 import { databaseRegex } from "../helpers/regex.helper";
 
 const UsersRouter: Express = express();
 
 // Create new web profile endpoint.
-UsersRouter.post("/", async (req: Request, res: Response) => {
+UsersRouter.post("/", async (req:Request, res:Response) => {
     try {
         if ( databaseRegex.users.phone.test(req.body.phone)
             && databaseRegex.users.document.test(req.body.document)
@@ -19,6 +19,10 @@ UsersRouter.post("/", async (req: Request, res: Response) => {
     } catch (err) {
         return res.status(500).end(JSON.stringify({ message: "Error interno del servidor :("}));
     }
+});
+
+UsersRouter.get("/all", async (req:Request, res:Response) => {
+    GetUsersController(req, res);
 });
 
 /*

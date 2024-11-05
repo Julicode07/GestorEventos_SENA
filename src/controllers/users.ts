@@ -1,4 +1,4 @@
-import { createUser, findUserByDocument, findUserByEmail } from '../repositories/users/repository';
+import { createUser, findAllUsers, findUserByDocument, findUserByEmail } from '../repositories/users/repository';
 import { Request, Response } from 'express';
 
 export async function CreateUserController(req: Request, res: Response) {
@@ -19,4 +19,9 @@ export async function CreateUserController(req: Request, res: Response) {
         });
         return (result == 1) ? res.status(200).end(JSON.stringify({ message: "Perfil creado correctamente" })) : res.status(500).end(JSON.stringify({ message: "Error interno del servidor al crear el perfil" }));
     }
+}
+
+export async function GetUsersController (req:Request, res:Response) {
+    const users = findAllUsers();
+    return res.status(200).end(JSON.stringify(users)); 
 }
