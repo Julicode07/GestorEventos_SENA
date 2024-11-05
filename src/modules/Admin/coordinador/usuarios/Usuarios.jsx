@@ -122,7 +122,7 @@ export default function Usuarios() {
       case "last_names":
       case "email":
       case "phone":
-        return <div className="text-small capitalize">{cellValue}</div>;
+        return <div className="text-small">{cellValue}</div>;
       case "actions":
         return (
           <div className="relative flex justify-center items-center gap-2">
