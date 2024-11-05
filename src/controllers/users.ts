@@ -23,5 +23,6 @@ export async function CreateUserController(req: Request, res: Response) {
 
 export async function GetUsersController (req:Request, res:Response) {
     const users = findAllUsers();
-    return res.status(200).end(JSON.stringify(users)); 
+    console.log("controller", users);
+    return res.status(200).send(JSON.stringify(users)); 
 }

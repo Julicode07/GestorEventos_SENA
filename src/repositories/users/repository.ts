@@ -34,6 +34,7 @@ export async function findAllUsers(): Promise<IUser[]> {
     const connection:PoolConnection = await getConnection(pool);
     try {
         const results = await connection.query(`SELECT id_user, document, name, last_names, email, phone, role FROM users`);
+        console.log("repo", results);
         return (results.length === 0) ? [] : results;
     } catch (err) {
         console.error(`[user repository]: ${err}`);
