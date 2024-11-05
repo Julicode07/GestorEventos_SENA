@@ -1,5 +1,5 @@
-import express, { Express, Request, Response } from "express";
 import { CreateGlobalEventController, GetGlobalEventsController } from "../controllers/events";
+import express, { Express, Request, Response } from "express";
 import { databaseRegex } from "../helpers/regex.helper";
 import { isInstructor } from "../middlewares/auth";
 

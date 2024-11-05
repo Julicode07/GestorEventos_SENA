@@ -1,13 +1,17 @@
 import { findUserByDocument } from '../repositories/users/repository';
 import { Request, Response } from 'express';
 import { hasActiveSession } from '../helpers/session.checker';
+import bcrypt from "bcrypt";
 
 export async function LogInController(req: Request, res: Response) {
     if(!hasActiveSession(req, "*")) {
         const user_result = await findUserByDocument(parseInt(req.body.document));
         if (user_result.length === 0) return res.status(403).end(JSON.stringify({ message: "Usuario o contraseña incorrectos" }));
         else {
-            if (req.body.password != user_result[0].password) return res.status(403).end(JSON.stringify({ message: "Usuario o contraseña incorrectos" }));
+            const isPasswordValid = await bcrypt.compare(req.body.password, user_result[0].password);
+            if (!isPasswordValid) {
+                return res.status(403).json({ message: "Usuario o contraseña incorrectos" });
+            }
             else {
                 req.session.user = {
                     document: parseInt(req.body.document),
