@@ -112,6 +112,11 @@ const NavSideBar = () => {
         <div className="h-full px-3 pb-4 overflow-y-auto">
           <ul className="space-y-2 font-bold">
             <ItemsList
+              to={"/admin/coordinador/usuarios"}
+              logo="ri--fill flex w-5 h-5 text-xl justify-center items-center text-primary transition duration-75 group-hover:text-gray-600"
+              title="Usuarios"
+            />
+            <ItemsList
               to={"/admin/coordinador"}
               logo="ri-dashboard-horizontal-fill flex w-5 h-5 text-xl justify-center items-center text-primary transition duration-75 group-hover:text-gray-600"
               title="Panel"
