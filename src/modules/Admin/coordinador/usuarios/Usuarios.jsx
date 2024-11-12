@@ -172,7 +172,7 @@ export default function Usuarios() {
           <Input
             isClearable
             className="w-full sm:max-w-[44%]"
-            placeholder="Buscar usuario, evento o espacio..."
+            placeholder="Buscar usuario"
             startContent={<SearchIcon />}
             value={filterValue}
             onClear={() => onClear()}
@@ -246,7 +246,7 @@ export default function Usuarios() {
       <div>
         <Breadcrumbs>
           <BreadcrumbItem href=""> </BreadcrumbItem>
-          <BreadcrumbItem href="/admin/coordinador/eventos">
+          <BreadcrumbItem href="/admin/coordinador/usuarios">
             Usuarios
           </BreadcrumbItem>
         </Breadcrumbs>

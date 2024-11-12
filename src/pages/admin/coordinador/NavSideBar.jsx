@@ -53,7 +53,7 @@ const NavSideBar = () => {
 
   return (
     <div>
-      <nav className="fixed top-0 z-40 w-full bg-white shadow-md border-b border-gray-300">
+      <nav className="fixed top-0 z-10 w-full bg-white shadow-md border-b border-gray-300">
         <div className="px-1 py-3 lg:px-5 lg:pl-3">
           <div className="flex items-center justify-between px-2">
             <div className="flex items-center justify-start rtl:justify-end">
@@ -104,7 +104,7 @@ const NavSideBar = () => {
       <aside
         ref={sidebarRef}
         id="logo-sidebar"
-        className={`fixed top-0 left-0 z-30 w-56 h-screen pt-20 transition-transform ${
+        className={`fixed top-0 left-0 z-0 w-56 h-screen pt-20 transition-transform ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         } bg-white shadow-xl sm:translate-x-0`}
         aria-label="Sidebar"
@@ -113,7 +113,7 @@ const NavSideBar = () => {
           <ul className="space-y-2 font-bold">
             <ItemsList
               to={"/admin/coordinador/usuarios"}
-              logo="ri--fill flex w-5 h-5 text-xl justify-center items-center text-primary transition duration-75 group-hover:text-gray-600"
+              logo="ri-user-fill flex w-5 h-5 text-xl justify-center items-center text-primary transition duration-75 group-hover:text-gray-600"
               title="Usuarios"
             />
             <ItemsList
