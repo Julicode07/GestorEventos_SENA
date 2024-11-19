@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useContext } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import { useLocation } from "react-router-dom";
 import { SessionContext } from "@/context/SessionContext.jsx";
 import Images from "@/assets/img/images.js";

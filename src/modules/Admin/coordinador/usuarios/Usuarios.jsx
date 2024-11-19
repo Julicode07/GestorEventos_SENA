@@ -9,17 +9,12 @@ import {
   Input,
   Button,
   Tooltip,
-  DropdownTrigger,
-  Dropdown,
-  DropdownMenu,
-  DropdownItem,
   Pagination,
   Breadcrumbs,
   BreadcrumbItem,
 } from "@nextui-org/react";
 import { SearchIcon } from "@/modules/Admin/components/SearchIcon";
-import { ChevronDownIcon } from "@/modules/Admin/components/ChevronDownIcon";
-import { columns, statusOptions } from "@modules/Admin/utils/data";
+import { columns } from "@modules/Admin/utils/data";
 import { EyeIcon } from "@/modules/Admin/components/EyeIcon";
 
 const INITIAL_VISIBLE_COLUMNS = [
@@ -35,11 +30,8 @@ const INITIAL_VISIBLE_COLUMNS = [
 
 export default function Usuarios() {
   const [filterValue, setFilterValue] = React.useState("");
-  const [visibleColumns, setVisibleColumns] = React.useState(
-    new Set(INITIAL_VISIBLE_COLUMNS)
-  );
+  const [visibleColumns] = React.useState(new Set(INITIAL_VISIBLE_COLUMNS));
   const [showEvents, setShowEvents] = useState([]);
-  const [statusFilter, setStatusFilter] = React.useState("all");
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [sortDescriptor, setSortDescriptor] = React.useState({
     column: "status",
@@ -73,26 +65,19 @@ export default function Usuarios() {
     let filteredEvents = [...showEvents];
 
     if (hasSearchFilter) {
-      filteredEvents = filteredEvents.filter(
+      filteredEvents = showEvents.filter(
         (event) =>
-          event.user.name.toLowerCase().includes(filterValue.toLowerCase()) ||
+          event.document.toLowerCase().includes(filterValue.toLowerCase()) ||
           event.name.toLowerCase().includes(filterValue.toLowerCase()) ||
-          (event.space &&
-            event.space.toLowerCase().includes(filterValue.toLowerCase()))
-      );
-    }
-
-    if (
-      statusFilter !== "all" &&
-      Array.from(statusFilter).length !== statusOptions.length
-    ) {
-      filteredEvents = filteredEvents.filter((event) =>
-        Array.from(statusFilter).includes(event.status)
+          event.last_names.toLowerCase().includes(filterValue.toLowerCase()) ||
+          event.email.toLowerCase().includes(filterValue.toLowerCase()) ||
+          event.phone.toLowerCase().includes(filterValue.toLowerCase()) ||
+          event.role.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
 
     return filteredEvents;
-  }, [showEvents, filterValue, statusFilter]);
+  }, [showEvents, filterValue]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -166,6 +151,7 @@ export default function Usuarios() {
   }, []);
 
   const topContent = React.useMemo(() => {
+    let allUsers = [...showEvents];
     return (
       <div className="flex flex-col gap-4">
         <div className="flex justify-between items-center gap-3">
@@ -178,37 +164,10 @@ export default function Usuarios() {
             onClear={() => onClear()}
             onValueChange={onSearchChange}
           />
-          <div className="hidden sm:flex items-center gap-3">
-            <span className="font-bold text-default-800">Filtros:</span>
-            <Dropdown>
-              <DropdownTrigger className="hidden sm:flex">
-                <Button
-                  endContent={<ChevronDownIcon className="text-small" />}
-                  variant="flat"
-                >
-                  Estado
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                disallowEmptySelection
-                aria-label="Table Columns"
-                closeOnSelect={false}
-                selectedKeys={statusFilter}
-                selectionMode="multiple"
-                onSelectionChange={setStatusFilter}
-              >
-                {statusOptions.map((status) => (
-                  <DropdownItem key={status.uid} className="capitalize">
-                    {status.name}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
-          </div>
         </div>
         <div className="flex justify-between items-center gap-2">
           <span className="text-default-400 text-small">
-            Total {filteredItems.length} resultados
+            Total {allUsers.length} usuarios
           </span>
           <label className="flex items-center text-default-400 text-small">
             Filas por página:
@@ -225,7 +184,7 @@ export default function Usuarios() {
         </div>
       </div>
     );
-  }, [filterValue, statusFilter, visibleColumns, rowsPerPage]);
+  }, [filterValue, visibleColumns, rowsPerPage]);
 
   const bottomContent = React.useMemo(() => {
     return (
