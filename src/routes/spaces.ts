@@ -6,7 +6,7 @@ import { CreateSpaceController } from "../controllers/spaces";
 const SpacesRouter: Express = express();
 
 // Create new web profile endpoint.
-SpacesRouter.post("/spaces/new", isInstructor, async (req: Request, res: Response) => {
+SpacesRouter.post("/new", isInstructor, async (req: Request, res: Response) => {
     try {
        if(  databaseRegex.spaces.name.test(req.body.name)
          && databaseRegex.spaces.capacity.test(req.body.capacity)
