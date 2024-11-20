@@ -13,7 +13,7 @@ SpacesRouter.post("/spaces/new", isInstructor, async (req: Request, res: Respons
          && databaseRegex.spaces.type.test(req.body.type)
          && databaseRegex.spaces.status.test(req.body.status)
          && databaseRegex.spaces.details.test(req.body.details)
-        ) { CreateSpaceController(req, res); }
+        ) { CreateSpaceController(req, res) }
     } catch (err) {
         res.status(500).end(JSON.stringify({ message: "Error interno del servidor :("}));
     }

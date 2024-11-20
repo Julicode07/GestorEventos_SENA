@@ -12,6 +12,7 @@ import path from "path";
 import cors from "cors";
 import fs from "fs";
 import EventsRouter from "./src/routes/events";
+import SpacesRouter from "./src/routes/spaces";
 
 dotenv.config();
 
@@ -63,6 +64,7 @@ declare module "express-session" { // Augment express-session with a custom Sess
 app.use("/api/users/", UsersRouter);
 app.use("/api/auth/", AuthRouter);
 app.use("/api/events/", EventsRouter)
+app.use("/api/spaces/", SpacesRouter);
 
 app.get("/404.html", (req:Request, res:Response) => {
   const viewFile = path.join(__dirname, 'public_views', '404.html');
