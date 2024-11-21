@@ -7,7 +7,7 @@ export async function createSpace(space: ISpace): Promise<number> {
     try {
         const result = await connection.query(`
             INSERT INTO
-                places (name, capacity, type, status, details)
+                spaces (name, capacity, type, status, details)
             VALUES
                 (?,?,?,?,?)`, 
             [space.name, space.capacity, space.type, space.status, space.details])
