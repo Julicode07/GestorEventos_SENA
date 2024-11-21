@@ -16,6 +16,7 @@ import {
 import { SearchIcon } from "@/modules/Admin/components/SearchIcon";
 import { columns } from "@modules/Admin/utils/data";
 import { EyeIcon } from "@/modules/Admin/components/EyeIcon";
+import { getAllUsers } from "./api/getUsers";
 
 const INITIAL_VISIBLE_COLUMNS = [
   "id_user",
@@ -31,7 +32,7 @@ const INITIAL_VISIBLE_COLUMNS = [
 export default function Usuarios() {
   const [filterValue, setFilterValue] = React.useState("");
   const [visibleColumns] = React.useState(new Set(INITIAL_VISIBLE_COLUMNS));
-  const [showEvents, setShowEvents] = useState([]);
+  const [showUsers, setShowUsers] = useState([]);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [sortDescriptor, setSortDescriptor] = React.useState({
     column: "status",
@@ -40,15 +41,12 @@ export default function Usuarios() {
   const [page, setPage] = React.useState(1);
 
   useEffect(() => {
-    const getAllUsers = async () => {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/users/all`
-      );
-      const data = await response.json();
-      setShowEvents(data);
+    const fetchData = async () => {
+      const data = await getAllUsers();
+      setShowUsers(data);
+      getAllUsers();
     };
-
-    getAllUsers();
+    fetchData();
   }, []);
 
   const hasSearchFilter = Boolean(filterValue);
@@ -62,22 +60,22 @@ export default function Usuarios() {
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
-    let filteredEvents = [...showEvents];
+    let filterUsers = [...showUsers];
 
     if (hasSearchFilter) {
-      filteredEvents = showEvents.filter(
-        (event) =>
-          event.document.toLowerCase().includes(filterValue.toLowerCase()) ||
-          event.name.toLowerCase().includes(filterValue.toLowerCase()) ||
-          event.last_names.toLowerCase().includes(filterValue.toLowerCase()) ||
-          event.email.toLowerCase().includes(filterValue.toLowerCase()) ||
-          event.phone.toLowerCase().includes(filterValue.toLowerCase()) ||
-          event.role.toLowerCase().includes(filterValue.toLowerCase())
+      filterUsers = showUsers.filter(
+        (user) =>
+          user.document.toLowerCase().includes(filterValue.toLowerCase()) ||
+          user.name.toLowerCase().includes(filterValue.toLowerCase()) ||
+          user.last_names.toLowerCase().includes(filterValue.toLowerCase()) ||
+          user.email.toLowerCase().includes(filterValue.toLowerCase()) ||
+          user.phone.toLowerCase().includes(filterValue.toLowerCase()) ||
+          user.role.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
 
-    return filteredEvents;
-  }, [showEvents, filterValue]);
+    return filterUsers;
+  }, [showUsers, filterValue]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -151,7 +149,7 @@ export default function Usuarios() {
   }, []);
 
   const topContent = React.useMemo(() => {
-    let allUsers = [...showEvents];
+    let allUsers = [...showUsers];
     return (
       <div className="flex flex-col gap-4">
         <div className="flex justify-between items-center gap-3">

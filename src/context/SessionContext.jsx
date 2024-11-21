@@ -31,6 +31,7 @@ export const SessionContextProvider = ({ children }) => {
         document: null,
         role: null,
       });
+      console.log("We had an error", error);
     }
   }, []);
 

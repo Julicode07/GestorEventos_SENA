@@ -5,11 +5,21 @@ import { EyeFilledIcon } from "./components/EyeFilledIcon.jsx";
 import Images from "@/assets/img/images.js";
 import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import useRegisterUser from "./hooks/useRegisterUser.jsx";
+import {
+  regexDocument,
+  regexName,
+  regexLastNames,
+  regexEmail,
+  regexPhone,
+  regexPassword,
+} from "./validations/registerValidation.js";
 
 const Registrarse = () => {
   const navigate = useNavigate();
 
-  const [registerUsers, setRegisterUsers] = useState({
+  const { registerUser, error } = useRegisterUser();
+  const [formData, setFormData] = useState({
     document: "",
     name: "",
     last_names: "",
@@ -38,23 +48,23 @@ const Registrarse = () => {
 
   const handleChangeRegisterUser = (e) => {
     const { name, value } = e.target;
-    setRegisterUsers((prevData) => {
+    setFormData((prevData) => {
       const newDataRegister = {
         ...prevData,
         [name]: value,
       };
       if (name === "document") {
-        regexDocument(value);
+        regexDocument(value, feedbackRegexDocument, setDocumentEvent);
       } else if (name === "name") {
-        regexName(value);
+        regexName(value, feedbackRegexName, setNameEvent);
       } else if (name === "last_names") {
-        regexLastNames(value);
+        regexLastNames(value, feedbackRegexLastNames, setLastNamesEvent);
       } else if (name === "email") {
-        regexEmail(value);
+        regexEmail(value, feedbackRegexEmail, setEmailEvent);
       } else if (name === "phone") {
-        regexPhone(value);
+        regexPhone(value, feedbackRegexPhone, setPhoneEvent);
       } else if (name === "password") {
-        regexPassword(value);
+        regexPassword(value, feedbackRegexPassword, setPasswordEvent);
       }
       return newDataRegister;
     });
@@ -62,126 +72,25 @@ const Registrarse = () => {
 
   const handleSubmitRegisterUsers = async (e) => {
     e.preventDefault();
-    const { document, phone, ...restData } = registerUsers;
-    const dataToSend = {
-      ...restData,
-      document: parseInt(document),
-      phone: parseInt(phone),
-    };
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/users`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(dataToSend),
-        }
-      );
-      const data = await response.json();
-      if (response.status === 200) {
-        setSuccessMessage("Usuario registrado correctamente");
-        setErrorMessage("");
-        navigate("/iniciarsesion");
-      } else {
-        setErrorMessage(data.message);
-        setSuccessMessage("");
-      }
-    } catch {
+      const result = await registerUser(formData);
+      setSuccessMessage("Usuario registrado correctamente!");
+      setErrorMessage("");
+      console.log("Usuario registrado:", result);
+      setFormData({
+        document: "",
+        name: "",
+        last_names: "",
+        email: "",
+        phone: "",
+        role: "Instructor",
+        password: "",
+      });
+      navigate("/iniciarsesion");
+    } catch (error) {
       setErrorMessage("Error al registrar el usuario");
+      console.error("Error registering user:", error);
       setSuccessMessage("");
-    }
-  };
-
-  const regexDocument = (document) => {
-    const documentRegex = /^[0-9]{1,16}$/;
-    const documentHasCorrectRegex = documentRegex.test(document);
-
-    if (!documentHasCorrectRegex) {
-      feedbackRegexDocument.current.textContent = "Documento inválido";
-      feedbackRegexDocument.current.style.color = "red";
-      setDocumentEvent(false);
-    } else {
-      feedbackRegexDocument.current.textContent = "Documento válido";
-      feedbackRegexDocument.current.style.color = "green";
-      setDocumentEvent(true);
-    }
-  };
-
-  const regexName = (name) => {
-    const nameRegex = /^[A-Za-zñ.Ñ:-á-|éí,óúÁÉÍ&%$ÓÚäëïöüÄËÏÖÜ0-9\s]{1,64}$/;
-    const nameHasCorrectRegex = nameRegex.test(name);
-
-    if (!nameHasCorrectRegex) {
-      feedbackRegexName.current.textContent = "Nombre inválido";
-      feedbackRegexName.current.style.color = "red";
-      setNameEvent(false);
-    } else {
-      feedbackRegexName.current.textContent = "Nombre válido";
-      feedbackRegexName.current.style.color = "green";
-      setNameEvent(true);
-    }
-  };
-
-  const regexLastNames = (last_names) => {
-    const lastNamesRegex = /^[A-Za-zñÑáéíóúÁÉÍÓÚäëïöüÄËÏÖÜ\s]{1,64}$/;
-    const lastNamesHasCorrectRegex = lastNamesRegex.test(last_names);
-
-    if (lastNamesHasCorrectRegex) {
-      feedbackRegexLastNames.current.textContent = "Apellidos válidos";
-      feedbackRegexLastNames.current.style.color = "green";
-      setLastNamesEvent(true);
-    } else {
-      feedbackRegexLastNames.current.textContent = "Apellidos inválidos";
-      feedbackRegexLastNames.current.style.color = "red";
-      setLastNamesEvent(false);
-    }
-  };
-
-  const regexEmail = (email) => {
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    const emailHasCorrectRegex = emailRegex.test(email);
-
-    if (!emailHasCorrectRegex) {
-      feedbackRegexEmail.current.textContent = "Correo inválido";
-      feedbackRegexEmail.current.style.color = "red";
-      setEmailEvent(false);
-    } else {
-      feedbackRegexEmail.current.textContent = "Correo válido";
-      feedbackRegexEmail.current.style.color = "green";
-      setEmailEvent(true);
-    }
-  };
-
-  const regexPhone = (phone) => {
-    const regexPhone = /^[0-9]{1,16}$/;
-    const phoneHasCorrectRegex = regexPhone.test(phone);
-
-    if (!phoneHasCorrectRegex) {
-      feedbackRegexPhone.current.textContent = "Teléfono inválido";
-      feedbackRegexPhone.current.style.color = "red";
-      setPhoneEvent(false);
-    } else {
-      feedbackRegexPhone.current.textContent = "Teléfono válido";
-      feedbackRegexPhone.current.style.color = "green";
-      setPhoneEvent(true);
-    }
-  };
-
-  const regexPassword = (password) => {
-    const regexPassword =
-      /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,256}$/;
-    const passwordHasCorrectRegex = regexPassword.test(password);
-
-    if (!passwordHasCorrectRegex) {
-      feedbackRegexPassword.current.textContent = "Contraseña inválida";
-      feedbackRegexPassword.current.style.color = "red";
-      setPasswordEvent(false);
-    } else {
-      feedbackRegexPassword.current.textContent = "Contraseña válida";
-      feedbackRegexPassword.current.style.color = "green";
-      setPasswordEvent(true);
     }
   };
 
@@ -234,7 +143,7 @@ const Registrarse = () => {
                     id="role"
                     name="role"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg block w-full px-2.5 py-3"
-                    value={registerUsers.role}
+                    value={formData.role}
                     onChange={handleChangeRegisterUser}
                   >
                     <option value="Coordinador">Coordinador</option>
@@ -255,7 +164,7 @@ const Registrarse = () => {
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg block w-full px-2.5 py-3"
                     name="document"
                     required
-                    value={registerUsers.document}
+                    value={formData.document}
                     onChange={handleChangeRegisterUser}
                   />
                   <span
@@ -277,7 +186,7 @@ const Registrarse = () => {
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg block w-full px-2.5 py-3"
                     name="name"
                     required
-                    value={registerUsers.name}
+                    value={formData.name}
                     onChange={handleChangeRegisterUser}
                   />
                   <span
@@ -299,7 +208,7 @@ const Registrarse = () => {
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg block w-full px-2.5 py-3"
                     name="last_names"
                     required
-                    value={registerUsers.last_names}
+                    value={formData.last_names}
                     onChange={handleChangeRegisterUser}
                   />
                   <span
@@ -321,7 +230,7 @@ const Registrarse = () => {
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg block w-full px-2.5 py-3"
                     name="email"
                     required
-                    value={registerUsers.email}
+                    value={formData.email}
                     onChange={handleChangeRegisterUser}
                   />
                   <span
@@ -343,7 +252,7 @@ const Registrarse = () => {
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg block w-full px-2.5 py-3"
                     name="phone"
                     required
-                    value={registerUsers.phone}
+                    value={formData.phone}
                     onChange={handleChangeRegisterUser}
                   />
                   <span
@@ -365,7 +274,7 @@ const Registrarse = () => {
                       name="password"
                       placeholder="Crea una contraseña"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-2xl block w-full "
-                      value={registerUsers.password}
+                      value={formData.password}
                       onChange={handleChangeRegisterUser}
                       required
                       endContent={
