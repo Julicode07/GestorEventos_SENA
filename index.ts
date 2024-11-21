@@ -63,7 +63,7 @@ declare module "express-session" { // Augment express-session with a custom Sess
 // ROUTES.
 app.use("/api/users/", UsersRouter);
 app.use("/api/auth/", AuthRouter);
-app.use("/api/events/", EventsRouter)
+app.use("/api/events/", EventsRouter);
 app.use("/api/spaces/", SpacesRouter);
 
 app.get("/404.html", (req:Request, res:Response) => {
