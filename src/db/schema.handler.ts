@@ -4,6 +4,8 @@ import { createWebSessionsSchema } from "../repositories/web-sessions/models";
 import { createGlobalEventsSchema } from "../repositories/events/models";
 import { SqlError } from "mariadb";
 import dotenv from 'dotenv';
+import { createSpace } from "../repositories/spaces/repository";
+import { createSpacesSchema } from "../repositories/spaces/models";
 
 dotenv.config();
 
@@ -19,6 +21,7 @@ export default async function createSchemas(): Promise<Number> {
             if(await createUsersSchema() == -1) throw new Error("Couldn't create users schema.")
             else if(await createWebSessionsSchema() == -1) throw new Error("Couldn't create web sessions schema.")  
             else if(await createGlobalEventsSchema() == -1) throw new Error("Couldn't create global events schema.")
+            else if(await createSpacesSchema() == -1) throw new Error("Couldn't create global events schema.")
             return 1;
       } catch (err) {
             console.error(`[schema handler]: ERROR CREATING SCHEMAS: ${err}`);
