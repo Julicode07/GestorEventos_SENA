@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
-import { createSpace } from '../repositories/spaces/repository';
+import { createSpace, getSpaces } from '../repositories/spaces/repository';
+import { bigIntReplacer } from '../helpers/json.helper';
 
 export async function CreateSpaceController(req:Request, res:Response) {
     try {
@@ -15,5 +16,13 @@ export async function CreateSpaceController(req:Request, res:Response) {
     } catch (err) {
         return res.status(500).end(JSON.stringify({ message: "Error interno del servidor :("}));
     }
-    
+}
+
+export async function GetSpacesController(req:Request, res:Response) {
+    try {
+        const spaces = await getSpaces();
+        return res.status(200).send(JSON.stringify(spaces, bigIntReplacer));
+    } catch (err){
+        return res.status(500).end(JSON.stringify({ message: "Error interno del servidor :("}));
+    }
 }

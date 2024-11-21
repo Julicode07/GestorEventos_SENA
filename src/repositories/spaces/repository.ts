@@ -26,3 +26,20 @@ export async function createSpace(space: ISpace): Promise<number> {
         connection.release();
     }
 }
+
+export async function getSpaces(): Promise<number> {
+    const connection:PoolConnection = await getConnection(pool);
+    try {
+        const result = await connection.query(`
+            SELECT
+                *
+            FROM
+                spaces`)
+        return (result.length == 0) ? [] : result;
+    } catch (err) {
+        console.error(`[user repository]: ERROR GETTING PLACES: ${err}`);
+        return -1;
+    } finally {
+        connection.release();
+    }
+}
