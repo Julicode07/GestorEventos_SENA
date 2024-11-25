@@ -5,7 +5,7 @@ import { EyeFilledIcon } from "./components/EyeFilledIcon.jsx";
 import Images from "@/assets/img/images.js";
 import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import useRegisterUser from "./hooks/useRegisterUser.jsx";
+import useRegister from "../hooks/useRegister.jsx";
 import {
   regexDocument,
   regexName,
@@ -18,7 +18,7 @@ import {
 const Registrarse = () => {
   const navigate = useNavigate();
 
-  const { registerUser, error } = useRegisterUser();
+  const { register, error } = useRegister();
   const [formData, setFormData] = useState({
     document: "",
     name: "",
@@ -73,7 +73,7 @@ const Registrarse = () => {
   const handleSubmitRegisterUsers = async (e) => {
     e.preventDefault();
     try {
-      const result = await registerUser(formData);
+      const result = await register(formData, "/api/users");
       setSuccessMessage("Usuario registrado correctamente!");
       setErrorMessage("");
       console.log("Usuario registrado:", result);

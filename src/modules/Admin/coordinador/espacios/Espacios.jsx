@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Table,
   TableHeader,
@@ -12,8 +12,6 @@ import {
   Dropdown,
   DropdownMenu,
   DropdownItem,
-  Chip,
-  User,
   Pagination,
   Textarea,
 } from "@nextui-org/react";
@@ -22,23 +20,88 @@ import { Select, SelectItem } from "@nextui-org/react";
 import { VerticalDotsIcon } from "../../components/VerticalDotsIcon";
 import { SearchIcon } from "../../components/SearchIcon";
 import { ChevronDownIcon } from "../../components/ChevronDownIcon";
-import { columns, users, statusOptions } from "./data";
+import { columns, spaces } from "./data";
+import useRegister from "../../../hooks/useRegister";
+import { getAllSpaces } from "../../api/getDataToShow";
 import { capitalize } from "../../utils/utils";
 
-const statusColorMap = {
-  active: "success",
-  paused: "danger",
-  vacation: "warning",
-};
+const INITIAL_VISIBLE_COLUMNS = [
+  "id_space",
+  "name",
+  "capacity",
+  "type",
+  "status",
+  "details",
+  "actions",
+];
 
-const INITIAL_VISIBLE_COLUMNS = ["name", "role", "status", "actions"];
+const statusOptions = [
+  { name: "Activo", uid: "Activo" },
+  { name: "Inactivo", uid: "Inactivo" },
+];
 
 export default function App() {
+  const { register, error } = useRegister();
+  const [formData, setFormData] = useState({
+    name: "",
+    capacity: "",
+    type: "",
+    status: "",
+    details: "",
+  });
+  const [showSpaces, setShowSpaces] = useState([]);
+  const [success, setSuccess] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleChangeRegisterSpaces = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => {
+      const newDataRegister = {
+        ...prevData,
+        [name]: value,
+      };
+      return newDataRegister;
+    });
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getAllSpaces();
+      setShowSpaces(data);
+    };
+    fetchData();
+  }, []);
+
+  const handleSubmitRegisterSpaces = async (e) => {
+    e.preventDefault();
+    try {
+      const { capacity, ...data } = formData;
+      const newDataToSend = {
+        ...data,
+        capacity: Number(capacity),
+      };
+      console.log(newDataToSend);
+      const result = await register(newDataToSend, "/api/spaces/new");
+      setSuccess("Espacio registrado con exito!");
+      setErrorMessage("");
+      console.log("Espacio registrado:", result);
+      setFormData({
+        name: "",
+        capacity: "",
+        type: "",
+        status: "",
+        details: "",
+      });
+    } catch (error) {
+      setErrorMessage("Error al registrar el espacio");
+      console.error("Error registering user:", error);
+      setSuccess("");
+    }
+  };
+
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
-  const [visibleColumns, setVisibleColumns] = React.useState(
-    new Set(INITIAL_VISIBLE_COLUMNS)
-  );
+  const [visibleColumns] = React.useState(new Set(INITIAL_VISIBLE_COLUMNS));
   const [statusFilter, setStatusFilter] = React.useState("all");
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [sortDescriptor, setSortDescriptor] = React.useState({
@@ -57,25 +120,27 @@ export default function App() {
     );
   }, [visibleColumns]);
 
-  const filteredItems = React.useMemo(() => {
-    let filteredUsers = [...users];
+  const filteredItems = useMemo(() => {
+    let filterSpaces = [...showSpaces];
 
     if (hasSearchFilter) {
-      filteredUsers = filteredUsers.filter((user) =>
-        user.name.toLowerCase().includes(filterValue.toLowerCase())
+      filterSpaces = filterSpaces.filter((space) =>
+        space.name.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
-    if (
-      statusFilter !== "all" &&
-      Array.from(statusFilter).length !== statusOptions.length
-    ) {
-      filteredUsers = filteredUsers.filter((user) =>
-        Array.from(statusFilter).includes(user.status)
+    if (statusFilter !== "all") {
+      filterSpaces = filterSpaces.filter(
+        (space) => space.status.toLowerCase() === statusFilter.toLowerCase()
       );
     }
 
-    return filteredUsers;
-  }, [filterValue, statusFilter]);
+    return filterSpaces;
+  }, [showSpaces, filterValue, statusFilter]);
+
+  const handleStatusSelectionChange = (keys) => {
+    const selected = Array.from(keys)[0]; 
+    setStatusFilter(selected || "all"); 
+  };
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -94,40 +159,31 @@ export default function App() {
     });
   }, [sortDescriptor, items]);
 
-  const renderCell = React.useCallback((user, columnKey) => {
-    const cellValue = user[columnKey];
-
+  const renderCell = React.useCallback((space, columnKey) => {
+    const cellValue = space[columnKey];
     switch (columnKey) {
+      case "id_space":
+        return <div className="text-small">{cellValue}</div>;
       case "name":
-        return (
-          <User
-            avatarProps={{ radius: "lg", src: user.avatar }}
-            description={user.email}
-            name={cellValue}
-          >
-            {user.email}
-          </User>
-        );
-      case "role":
-        return (
-          <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">{cellValue}</p>
-            <p className="text-bold text-tiny capitalize text-default-400">
-              {user.team}
-            </p>
-          </div>
-        );
+        return <div className="text-small">{cellValue}</div>;
+      case "capacity":
+        return <div className="text-small">{cellValue}</div>;
+      case "type":
+        return <div className="text-small">{cellValue}</div>;
       case "status":
         return (
-          <Chip
-            className="capitalize"
-            color={statusColorMap[user.status]}
-            size="sm"
-            variant="flat"
+          <div
+            className={`${
+              cellValue === "activo"
+                ? "text-green-700 bg-green-200"
+                : "text-red-700 bg-red-200"
+            } capitalize text-center px-2 py-0.5 text-xs rounded-lg w-fit`}
           >
             {cellValue}
-          </Chip>
+          </div>
         );
+      case "details":
+        return <div className="text-small">{cellValue}</div>;
       case "actions":
         return (
           <div className="relative flex justify-end items-center gap-2">
@@ -150,18 +206,6 @@ export default function App() {
     }
   }, []);
 
-  const onNextPage = React.useCallback(() => {
-    if (page < pages) {
-      setPage(page + 1);
-    }
-  }, [page, pages]);
-
-  const onPreviousPage = React.useCallback(() => {
-    if (page > 1) {
-      setPage(page - 1);
-    }
-  }, [page]);
-
   const onRowsPerPageChange = React.useCallback((e) => {
     setRowsPerPage(Number(e.target.value));
     setPage(1);
@@ -177,7 +221,7 @@ export default function App() {
     setPage(1);
   }, []);
 
-  const topContent = React.useMemo(() => {
+  const topContent = useMemo(() => {
     return (
       <div className="flex flex-col gap-4">
         <div className="flex justify-between gap-3 items-end">
@@ -187,7 +231,7 @@ export default function App() {
             placeholder="Search by name..."
             startContent={<SearchIcon />}
             value={filterValue}
-            onClear={onClear}
+            onClear={() => onClear()}
             onValueChange={onSearchChange}
           />
           <div className="flex gap-3">
@@ -197,17 +241,20 @@ export default function App() {
                   endContent={<ChevronDownIcon className="text-small" />}
                   variant="flat"
                 >
-                  Status
+                  Estado
                 </Button>
               </DropdownTrigger>
               <DropdownMenu
                 disallowEmptySelection
                 aria-label="Table Columns"
-                closeOnSelect={false}
-                selectedKeys={statusFilter}
-                selectionMode="multiple"
-                onSelectionChange={setStatusFilter}
+                closeOnSelect={true}
+                selectedKeys={new Set([statusFilter])}
+                selectionMode="single"
+                onSelectionChange={handleStatusSelectionChange}
               >
+                <DropdownItem key="all" className="capitalize">
+                  All
+                </DropdownItem>
                 {statusOptions.map((status) => (
                   <DropdownItem key={status.uid} className="capitalize">
                     {capitalize(status.name)}
@@ -219,92 +266,137 @@ export default function App() {
               Nuevo Espacio
             </Button>
             {isModalOpen && (
-              <div
-                className="fixed inset-0 bg-black bg-opacity-30 flex justify-center items-center z-50 h-screen"
-                onClick={() => setIsModalOpen(false)}
-              >
+              <form action="" onSubmit={handleSubmitRegisterSpaces}>
                 <div
-                  className={`bg-white border border-gray-300 shadow-2xl p-8 rounded-2xl w-4/5 max-w-2xl flex flex-col items-center relative transition-transform transform ${
-                    isModalOpen ? "scale-100 opacity-100" : "scale-95 opacity-0"
-                  } transition-all duration-300 ease-out`}
-                  onClick={(e) => e.stopPropagation()}
-                  style={{ maxHeight: "90vh" }}
+                  className="fixed inset-0 bg-black bg-opacity-30 flex justify-center items-center z-50 h-screen"
+                  onClick={() => setIsModalOpen(false)}
                 >
-                  <button
-                    className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
-                    onClick={() => setIsModalOpen(false)}
+                  <div
+                    className={`bg-white border border-gray-300 shadow-2xl p-8 rounded-2xl w-4/5 max-w-2xl flex flex-col items-center relative transition-transform transform ${
+                      isModalOpen
+                        ? "scale-100 opacity-100"
+                        : "scale-95 opacity-0"
+                    } transition-all duration-300 ease-out`}
+                    onClick={(e) => e.stopPropagation()}
+                    style={{ maxHeight: "90vh" }}
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                      className="w-6 h-6"
+                    <button
+                      className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+                      onClick={() => setIsModalOpen(false)}
                     >
-                      <path d="M10.5859 12L2.79297 4.20706L4.20718 2.79285L12.0001 10.5857L19.793 2.79285L21.2072 4.20706L13.4143 12L21.2072 19.7928L19.793 21.2071L12.0001 13.4142L4.20718 21.2071L2.79297 19.7928L10.5859 12Z"></path>
-                    </svg>
-                  </button>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        className="w-6 h-6"
+                      >
+                        <path d="M10.5859 12L2.79297 4.20706L4.20718 2.79285L12.0001 10.5857L19.793 2.79285L21.2072 4.20706L13.4143 12L21.2072 19.7928L19.793 21.2071L12.0001 13.4142L4.20718 21.2071L2.79297 19.7928L10.5859 12Z"></path>
+                      </svg>
+                    </button>
 
-                  <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
-                    Añadir un nuevo espacio
-                  </h2>
+                    <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
+                      Añadir un nuevo espacio
+                    </h2>
+                    <div className="w-full overflow-y-auto max-h-[50vh] px-2">
+                      <div className="w-full">
+                        <label className="pl-1">
+                          Ingrese el nombre del espacio
+                        </label>
+                        <Input
+                          className="w-full mb-4"
+                          placeholder="Nombre"
+                          name="name"
+                          onChange={handleChangeRegisterSpaces}
+                          value={formData.name}
+                        />
+                      </div>
+                      <div className="w-full">
+                        <label className="pl-1">Ingrese la capacidad</label>
+                        <Input
+                          className="w-full mb-4"
+                          placeholder="Capacidad"
+                          type="number"
+                          name="capacity"
+                          value={formData.capacity}
+                          onChange={handleChangeRegisterSpaces}
+                        />
+                      </div>
+                      <div className="w-full mb-4">
+                        <label className="pl-1">
+                          Seleccione el tipo de espacio
+                        </label>
 
-                  <div className="w-full overflow-y-auto max-h-[50vh] px-2">
-                    <div className="w-full">
-                      <label className="pl-1">
-                        Ingrese el nombre del espacio
-                      </label>
-                      <Input className="w-full mb-4" placeholder="Nombre" />
-                    </div>
-                    <div className="w-full">
-                      <label className="pl-1">Ingrese la capacidad</label>
-                      <Input
-                        className="w-full mb-4"
-                        placeholder="Capacidad"
-                        type="number"
-                      />
-                    </div>
-                    <div className="w-full mb-4">
-                      <label className="pl-1">
-                        Seleccione el tipo de espacio
-                      </label>
+                        <Select
+                          label="Tipo de espacio"
+                          className=""
+                          name="type"
+                          value={formData.type}
+                          onChange={handleChangeRegisterSpaces}
+                        >
+                          <SelectItem key="">Seleccione el tipo</SelectItem>
+                          <SelectItem key="aula">Aula</SelectItem>
+                          <SelectItem key="piso">Piso</SelectItem>
+                          <SelectItem key="edificio">Edificio</SelectItem>
+                          <SelectItem key="oficina">Oficina</SelectItem>
+                        </Select>
+                      </div>
+                      <div className="w-full mb-4">
+                        <label className="pl-1">
+                          Seleccione el estado del espacio
+                        </label>
 
-                      <Select label="Tipo de espacio" className="">
-                        <SelectItem key="aula">Aula</SelectItem>
-                        <SelectItem key="piso">Piso</SelectItem>
-                        <SelectItem key="edificio">Edificio</SelectItem>
-                        <SelectItem key="oficina">Oficina</SelectItem>
-                      </Select>
+                        <Select
+                          label="Estado del espacio"
+                          className=""
+                          name="status"
+                          value={formData.status}
+                          onChange={handleChangeRegisterSpaces}
+                        >
+                          <SelectItem key="activo">Activo</SelectItem>
+                          <SelectItem key="inactivo">Inactivo</SelectItem>
+                        </Select>
+                      </div>
+                      <div className="w-full">
+                        <label className="pl-1">
+                          Ingrese las observaciones
+                        </label>
+                        <Textarea
+                          placeholder="Observaciones"
+                          className="mb-4"
+                          name="details"
+                          value={formData.details}
+                          onChange={handleChangeRegisterSpaces}
+                        />
+                      </div>
                     </div>
-                    <div className="w-full mb-4">
-                      <label className="pl-1">
-                        Seleccione el estado del espacio
-                      </label>
 
-                      <Select label="Estado del espacio" className="">
-                        <SelectItem key="activo">Activo</SelectItem>
-                        <SelectItem key="inactivo">Inactivo</SelectItem>
-                      </Select>
+                    <div className="my-2">
+                      {success && (
+                        <div className="text-center text-sm text-green-600 font-bold">
+                          {success}
+                        </div>
+                      )}
+                      {errorMessage && (
+                        <div className="text-center text-sm text-red-600 font-bold">
+                          {errorMessage}
+                        </div>
+                      )}
                     </div>
-                    <div className="w-full">
-                      <label className="pl-1">Ingrese las observaciones</label>
-                      <Textarea placeholder="Observaciones" className="mb-4" />
-                    </div>
+                    <Button color="primary" type="submit">
+                      Crear espacio
+                    </Button>
                   </div>
-
-                  <Button color="primary" onClick={() => setIsModalOpen(false)}>
-                    Crear espacio
-                  </Button>
                 </div>
-              </div>
+              </form>
             )}
           </div>
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
-            Total {users.length} users
+            Total {showSpaces.length} espacios
           </span>
           <label className="flex items-center text-default-400 text-small">
-            Rows per page:
+            FIlas por página
             <select
               className="bg-transparent outline-none text-default-400 text-small"
               onChange={onRowsPerPageChange}
@@ -319,36 +411,40 @@ export default function App() {
     );
   }, [
     filterValue,
-    onClear,
-    onSearchChange,
     statusFilter,
-    statusOptions,
-    onRowsPerPageChange,
-    users.length,
-    setIsModalOpen,
+    visibleColumns,
+    rowsPerPage,
     isModalOpen,
+    formData,
+    showSpaces,
   ]);
+
+  const bottomContent = useMemo(() => {
+    return (
+      <div className="py-2 px-2 flex justify-center items-center border-t border-divider">
+        <Pagination
+          showControls
+          showShadow
+          isCompact
+          page={page}
+          total={pages}
+          onChange={(page) => setPage(page)}
+        />
+      </div>
+    );
+  }, [page, filteredItems]);
 
   return (
     <Table
       aria-label="Example table with custom cells, pagination and sorting"
       sortDescriptor={sortDescriptor}
       onSortChange={setSortDescriptor}
-      selectedKeys={selectedKeys}
-      onSelectionChange={setSelectedKeys}
       topContent={topContent}
-      bottomContent={
-        <div className="py-2 px-2 flex justify-between items-center">
-          <Pagination
-            showControls
-            isCompact
-            page={page}
-            onNext={onNextPage}
-            onPrevious={onPreviousPage}
-            total={pages}
-          />
-        </div>
-      }
+      selectedKeys={selectedKeys}
+      topContentPlacement="outside"
+      onSelectionChange={setSelectedKeys}
+      bottomContent={bottomContent}
+      bottomContentPlacement="outside"
     >
       <TableHeader columns={headerColumns}>
         {(column) => (
@@ -363,7 +459,7 @@ export default function App() {
       </TableHeader>
       <TableBody items={sortedItems}>
         {(item) => (
-          <TableRow key={item.id}>
+          <TableRow key={item.id_space}>
             {(columnKey) => (
               <TableCell>{renderCell(item, columnKey)}</TableCell>
             )}

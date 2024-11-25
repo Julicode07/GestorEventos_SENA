@@ -16,7 +16,7 @@ import {
 import { SearchIcon } from "@/modules/Admin/components/SearchIcon";
 import { columns } from "@modules/Admin/utils/data";
 import { EyeIcon } from "@/modules/Admin/components/EyeIcon";
-import { getAllUsers } from "./api/getUsers";
+import { getAllUsers } from "../../api/getDataToShow";
 
 const INITIAL_VISIBLE_COLUMNS = [
   "id_user",
@@ -42,9 +42,12 @@ export default function Usuarios() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getAllUsers();
-      setShowUsers(data);
-      getAllUsers();
+      try {
+        const data = await getAllUsers();
+        setShowUsers(data);
+      } catch (error) {
+        console.error("Whe had an error to show the data", error);
+      }
     };
     fetchData();
   }, []);
@@ -149,7 +152,6 @@ export default function Usuarios() {
   }, []);
 
   const topContent = React.useMemo(() => {
-    let allUsers = [...showUsers];
     return (
       <div className="flex flex-col gap-4">
         <div className="flex justify-between items-center gap-3">
@@ -165,7 +167,7 @@ export default function Usuarios() {
         </div>
         <div className="flex justify-between items-center gap-2">
           <span className="text-default-400 text-small">
-            Total {allUsers.length} usuarios
+            Total {showUsers.length} usuarios
           </span>
           <label className="flex items-center text-default-400 text-small">
             Filas por página:
@@ -182,7 +184,7 @@ export default function Usuarios() {
         </div>
       </div>
     );
-  }, [filterValue, visibleColumns, rowsPerPage]);
+  }, [filterValue, visibleColumns, rowsPerPage, showUsers]);
 
   const bottomContent = React.useMemo(() => {
     return (
@@ -190,6 +192,7 @@ export default function Usuarios() {
         <Pagination
           showControls
           isCompact
+          showShadow
           page={page}
           total={pages}
           onChange={(page) => setPage(page)}

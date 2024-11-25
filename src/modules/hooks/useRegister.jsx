@@ -1,24 +1,24 @@
 import { useState } from "react";
 
-const useRegisterUser = () => {
+const useRegister = () => {
   const [error, setError] = useState(null);
 
-  const registerUser = async (userData) => {
+  const register = async (data, endpoint) => {
     setError(null);
 
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/users`,
+        `${import.meta.env.VITE_API_URL}${endpoint}`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(userData),
+          body: JSON.stringify(data),
         }
       );
       if (!response.ok) {
-        throw new Error("Failed to register user");
+        throw new Error("Failed to register the data");
       }
 
       const result = await response.json();
@@ -28,7 +28,7 @@ const useRegisterUser = () => {
       throw error;
     }
   };
-  return { registerUser, error };
+  return { register, error };
 };
 
-export default useRegisterUser;
+export default useRegister;
