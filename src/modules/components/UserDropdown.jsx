@@ -5,7 +5,9 @@ import {
   DropdownTrigger,
   User,
 } from "@nextui-org/react";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
+import { SessionContext } from "../../context/SessionContext";
 
 const UserDropdown = ({
   role,
@@ -14,6 +16,7 @@ const UserDropdown = ({
   textColor,
   textRole,
 }) => {
+  const { names } = useContext(SessionContext);
   const logOut = async () => {
     await fetch(`${import.meta.env.VITE_API_URL}/api/auth/logout`);
     window.location.href = "/";
@@ -22,7 +25,7 @@ const UserDropdown = ({
     const parts = name.split(" ");
     return parts.map((part) => part.charAt(0)).join("");
   };
-  const fullName = "Felipe Alzate";
+  const fullName = `${names.name} ${names.lastName}`;
   const initials = getInitials(fullName);
 
   return (
@@ -45,7 +48,11 @@ const UserDropdown = ({
             </>
           }
           description={
-            <span className={`hidden lg:block text-sm font-semibold${textRole}`}>{role}</span>
+            <span
+              className={`hidden lg:block text-sm font-semibold${textRole}`}
+            >
+              {role}
+            </span>
           }
         ></User>
       </DropdownTrigger>
@@ -62,7 +69,7 @@ const UserDropdown = ({
             }}
             className="transition-transform text-xl"
             description={role}
-            name="Felipe Alzate"
+            name={fullName}
           />
         </DropdownItem>
         <DropdownItem

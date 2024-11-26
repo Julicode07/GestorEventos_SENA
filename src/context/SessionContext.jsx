@@ -8,6 +8,11 @@ export const SessionContextProvider = ({ children }) => {
     role: null,
   });
 
+  const [names, setNames] = useState({
+    name: null,
+    lastName: null,
+  });
+
   const updateSession = useCallback(async () => {
     try {
       const response = await fetch(
@@ -19,17 +24,29 @@ export const SessionContextProvider = ({ children }) => {
           document: data.data.document,
           role: data.data.role,
         });
+        setNames({
+          name: data.data.name,
+          lastName: data.data.last_names,
+        });
       } else {
         console.log("You don´t have any active session in eventos.");
         setUserSession({
           document: null,
           role: null,
         });
+        setNames({
+          name: null,
+          lastName: null,
+        });
       }
     } catch (error) {
       setUserSession({
         document: null,
         role: null,
+      });
+      setNames({
+        name: null,
+        lastName: null,
       });
       console.log("We had an error", error);
     }
@@ -41,6 +58,7 @@ export const SessionContextProvider = ({ children }) => {
         userSession,
         setUserSession,
         updateSession,
+        names,
       }}
     >
       {children}
