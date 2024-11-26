@@ -3,13 +3,13 @@ import { useLocation } from "react-router-dom";
 import { SessionContext } from "@/context/SessionContext.jsx";
 import Images from "@/assets/img/images.js";
 import ItemsList from "../components/ItemsList.jsx";
-import { events } from "@modules/Admin/utils/data";
+// import { events } from "@modules/Admin/utils/data";
 import UserDropdown from "@/modules/components/UserDropdown.jsx";
 
 const NavSideBar = () => {
   const { userSession } = useContext(SessionContext);
   const location = useLocation();
-  const [statusFilter] = useState(new Set(["Pendiente"]));
+  // const [statusFilter] = useState(new Set(["Pendiente"]));
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const sidebarRef = useRef(null);
 
@@ -24,11 +24,11 @@ const NavSideBar = () => {
     }
   };
 
-  const filteredEvents = events.filter((event) =>
-    Array.from(statusFilter).includes(event.status)
-  );
+  // const filteredEvents = events.filter((event) =>
+  //   Array.from(statusFilter).includes(event.status)
+  // );
 
-  const pendingEventsCount = filteredEvents.length;
+  // const pendingEventsCount = filteredEvents.length;
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -136,7 +136,7 @@ const NavSideBar = () => {
               title="Solicitudes"
             >
               <span className="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-white bg-primary rounded-full">
-                {pendingEventsCount}
+                {/* {pendingEventsCount} */} 10
               </span>
             </ItemsList>
             <ItemsList

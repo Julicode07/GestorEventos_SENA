@@ -8,5 +8,19 @@ const columns = [
   { name: "ACTIONS", uid: "actions" },
 ];
 
-const spaces = [];
-export { columns, spaces };
+const INITIAL_VISIBLE_COLUMNS = [
+  "id_space",
+  "name",
+  "capacity",
+  "type",
+  "status",
+  "details",
+  "actions",
+];
+
+const statusOptions = [
+  { name: "Activo", uid: "Activo" },
+  { name: "Inactivo", uid: "Inactivo" },
+];
+
+export { columns, INITIAL_VISIBLE_COLUMNS, statusOptions };

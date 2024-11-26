@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
   Input,
   Button,
   Tooltip,
@@ -17,6 +11,9 @@ import { SearchIcon } from "@/modules/Admin/components/SearchIcon";
 import { columns } from "@modules/Admin/utils/data";
 import { EyeIcon } from "@/modules/Admin/components/EyeIcon";
 import { getAllUsers } from "../../api/getDataToShow";
+const TableShowData = React.lazy(() =>
+  import("./../../components/TableShowData.jsx")
+);
 
 const INITIAL_VISIBLE_COLUMNS = [
   "id_user",
@@ -212,39 +209,19 @@ export default function Usuarios() {
         </Breadcrumbs>
       </div>
       <section>
-        <Table
-          aria-label="Tabla de usuarios"
+        <TableShowData
           sortDescriptor={sortDescriptor}
+          onSortChange={setSortDescriptor}
           topContent={topContent}
+          topContentPlacement="outside"
           bottomContent={bottomContent}
           bottomContentPlacement="outside"
-          topContentPlacement="outside"
-          onSortChange={setSortDescriptor}
-        >
-          <TableHeader columns={headerColumns}>
-            {(column) => (
-              <TableColumn
-                key={column.uid}
-                allowsSorting={column.sortable}
-                align={column.uid === "actions" ? "center" : "start"}
-              >
-                {column.name}
-              </TableColumn>
-            )}
-          </TableHeader>
-          <TableBody
-            emptyContent={"No hay usuarios para mostrar"}
-            items={sortedItems}
-          >
-            {(user) => (
-              <TableRow key={user.id_user}>
-                {(columnKey) => (
-                  <TableCell>{renderCell(user, columnKey)}</TableCell>
-                )}
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+          columns={headerColumns}
+          items={sortedItems}
+          renderCell={renderCell}
+          id="id_user"
+          aria="Table to show the data of users"
+        />
       </section>
     </main>
   );
