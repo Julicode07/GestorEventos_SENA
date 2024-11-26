@@ -2,7 +2,7 @@ import React from "react";
 import { BreadcrumbItem, Breadcrumbs } from "@nextui-org/react";
 function Inventario() {
   return (
-    <main className="flex flex-col gap-2">
+    <main className="flex flex-col gap-2 relative -z-10 ">
       <div>
         <Breadcrumbs>
           <BreadcrumbItem href=""> </BreadcrumbItem>

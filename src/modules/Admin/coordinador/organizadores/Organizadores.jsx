@@ -3,7 +3,7 @@ import { Breadcrumbs, BreadcrumbItem } from "@nextui-org/react";
 
 function Organizadores() {
   return (
-    <main className="flex flex-col gap-2">
+    <main className="flex flex-col gap-2 relative -z-10">
       <div>
         <Breadcrumbs>
           <BreadcrumbItem href=""> </BreadcrumbItem>

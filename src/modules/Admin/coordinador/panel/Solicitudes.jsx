@@ -10,58 +10,69 @@ const statusColorMap = {
 };
 
 function Solicitudes() {
-  return (
-    <div className="relative flex flex-col items-center justify-center w-full px-4 pt-4 pb-2 bg-white border border-gray-200 rounded-lg shadow sm:pt-6">
-      <div className="w-full flex items-center justify-between mb-4">
-        <h5 className="text-xl sm:text-2xl font-bold leading-none text-gray-900 whitespace-nowrap">
-          Últimas solicitudes
+  if (filteredEvents.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center w-full px-4 pt-4 pb-2 bg-white border border-gray-200 rounded-lg shadow sm:pt-6">
+        <h5 className="text-xl sm:text-4xl font-bold leading-none text-gray-900 whitespace-nowrap py-10 sm:py-0">
+          No hay solicitudes pendientes
         </h5>
-        <a
-          href="/admin/coordinador/solicitudes"
-          className="bg-primary p-2 text-sm sm:text-base font-medium text-white rounded-lg transition-all duration-300 ease-in-out whitespace-nowrap"
-        >
-          Ver todas
-        </a>
       </div>
-      <div className="w-full flow-root">
-        <ul role="list" className="divide-y divide-gray-200">
-          {recentEvents.map((event) => (
-            <li key={event.id} className="py-3 sm:py-4">
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <img
-                    className="w-8 h-8 rounded-full"
-                    src={event.user.avatar}
-                    alt={event.user.name}
-                  />
+    );
+  } else
+    return (
+      <div className="relative flex flex-col items-center justify-center w-full px-4 pt-4 pb-2 bg-white border border-gray-200 rounded-lg shadow sm:pt-6">
+        <div className="w-full flex items-center justify-between mb-4">
+          <h5 className="text-xl sm:text-2xl font-bold leading-none text-gray-900 whitespace-nowrap">
+            Últimas solicitudes
+          </h5>
+          <a
+            href="/admin/coordinador/solicitudes"
+            className="bg-primary p-2 text-sm sm:text-base font-medium text-white rounded-lg transition-all duration-300 ease-in-out whitespace-nowrap"
+          >
+            Ver todas
+          </a>
+        </div>
+        <div className="w-full flow-root">
+          <ul role="list" className="divide-y divide-gray-200">
+            {recentEvents.map((event) => (
+              <li key={event.id} className="py-3 sm:py-4">
+                <div className="flex items-center">
+                  <div className="flex-shrink-0">
+                    <img
+                      className="w-8 h-8 rounded-full"
+                      src={event.user.avatar}
+                      alt={event.user.name}
+                    />
+                  </div>
+                  <div className="flex-1 min-w-0 ms-4">
+                    <p className="text-sm font-medium text-gray-900 truncate">
+                      {event.user.name}
+                    </p>
+                    <p className="text-sm text-gray-500 truncate">
+                      {event.name}
+                    </p>
+                  </div>
+                  <div className="inline-flex items-center text-sm font-medium text-gray-900">
+                    <Chip
+                      className="capitalize"
+                      color={statusColorMap[event.status]}
+                      size="sm"
+                      variant="flat"
+                    >
+                      {event.status}
+                    </Chip>
+                  </div>
                 </div>
-                <div className="flex-1 min-w-0 ms-4">
-                  <p className="text-sm font-medium text-gray-900 truncate">
-                    {event.user.name}
-                  </p>
-                  <p className="text-sm text-gray-500 truncate">{event.name}</p>
-                </div>
-                <div className="inline-flex items-center text-sm font-medium text-gray-900">
-                  <Chip
-                    className="capitalize"
-                    color={statusColorMap[event.status]}
-                    size="sm"
-                    variant="flat"
-                  >
-                    {event.status}
-                  </Chip>
-                </div>
-              </div>
-            </li>
-          ))}
-        </ul>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="flex gap-1 justify-center text-sm">
+          <span className="font-bold">Total de solicitudes:</span>
+          <span className="font-medium"> {filteredEvents.length}</span>
+        </div>
       </div>
-      <div className="flex gap-1 justify-center text-sm">
-        <span className="font-bold">Total de solicitudes:</span>
-        <span className="font-medium"> {filteredEvents.length}</span>
-      </div>
-    </div>
-  );
+    );
 }
 
 export default Solicitudes;

@@ -36,7 +36,11 @@ const NavSideBar = () => {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+      if (
+        sidebarRef.current &&
+        !sidebarRef.current.contains(event.target) &&
+        !event.target.closest('[aria-controls="sidebar"]') // Asegúrate de que no proviene del botón
+      ) {
         setSidebarOpen(false);
       }
     };
@@ -112,14 +116,14 @@ const NavSideBar = () => {
         <div className="h-full px-3 pb-4 overflow-y-auto">
           <ul className="space-y-2 font-bold">
             <ItemsList
-              to={"/admin/coordinador/usuarios"}
-              logo="ri-user-fill flex w-5 h-5 text-xl justify-center items-center text-primary transition duration-75 group-hover:text-gray-600"
-              title="Usuarios"
-            />
-            <ItemsList
               to={"/admin/coordinador"}
               logo="ri-dashboard-horizontal-fill flex w-5 h-5 text-xl justify-center items-center text-primary transition duration-75 group-hover:text-gray-600"
               title="Panel"
+            />
+            <ItemsList
+              to={"/admin/coordinador/usuarios"}
+              logo="ri-user-fill flex w-5 h-5 text-xl justify-center items-center text-primary transition duration-75 group-hover:text-gray-600"
+              title="Usuarios"
             />
             <ItemsList
               to={"/admin/coordinador/espacios"}

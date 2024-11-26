@@ -14,6 +14,8 @@ import {
   DropdownItem,
   Pagination,
   Textarea,
+  Breadcrumbs,
+  BreadcrumbItem,
 } from "@nextui-org/react";
 import { Select, SelectItem } from "@nextui-org/react";
 
@@ -138,8 +140,8 @@ export default function App() {
   }, [showSpaces, filterValue, statusFilter]);
 
   const handleStatusSelectionChange = (keys) => {
-    const selected = Array.from(keys)[0]; 
-    setStatusFilter(selected || "all"); 
+    const selected = Array.from(keys)[0];
+    setStatusFilter(selected || "all");
   };
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
@@ -435,37 +437,49 @@ export default function App() {
   }, [page, filteredItems]);
 
   return (
-    <Table
-      aria-label="Example table with custom cells, pagination and sorting"
-      sortDescriptor={sortDescriptor}
-      onSortChange={setSortDescriptor}
-      topContent={topContent}
-      selectedKeys={selectedKeys}
-      topContentPlacement="outside"
-      onSelectionChange={setSelectedKeys}
-      bottomContent={bottomContent}
-      bottomContentPlacement="outside"
-    >
-      <TableHeader columns={headerColumns}>
-        {(column) => (
-          <TableColumn
-            key={column.uid}
-            align={column.uid === "actions" ? "center" : "start"}
-            allowsSorting={column.sortable}
-          >
-            {column.name}
-          </TableColumn>
-        )}
-      </TableHeader>
-      <TableBody items={sortedItems}>
-        {(item) => (
-          <TableRow key={item.id_space}>
-            {(columnKey) => (
-              <TableCell>{renderCell(item, columnKey)}</TableCell>
+    <main className="flex flex-col gap-2 relative -z-10">
+      <div>
+        <Breadcrumbs>
+          <BreadcrumbItem href=""> </BreadcrumbItem>
+          <BreadcrumbItem href="/admin/coordinador/espacios">
+            Espacios
+          </BreadcrumbItem>
+        </Breadcrumbs>
+      </div>
+      <section>
+        <Table
+          aria-label="Example table with custom cells, pagination and sorting"
+          sortDescriptor={sortDescriptor}
+          onSortChange={setSortDescriptor}
+          topContent={topContent}
+          selectedKeys={selectedKeys}
+          topContentPlacement="outside"
+          onSelectionChange={setSelectedKeys}
+          bottomContent={bottomContent}
+          bottomContentPlacement="outside"
+        >
+          <TableHeader columns={headerColumns}>
+            {(column) => (
+              <TableColumn
+                key={column.uid}
+                align={column.uid === "actions" ? "center" : "start"}
+                allowsSorting={column.sortable}
+              >
+                {column.name}
+              </TableColumn>
             )}
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
+          </TableHeader>
+          <TableBody items={sortedItems}>
+            {(item) => (
+              <TableRow key={item.id_space}>
+                {(columnKey) => (
+                  <TableCell>{renderCell(item, columnKey)}</TableCell>
+                )}
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </section>
+    </main>
   );
 }

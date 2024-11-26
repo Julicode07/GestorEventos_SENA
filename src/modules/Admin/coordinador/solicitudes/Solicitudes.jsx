@@ -213,7 +213,7 @@ export default function App() {
   }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
 
   return (
-    <main className="flex flex-col gap-2">
+    <main className="flex flex-col gap-2 relative -z-10">
       <div>
         <Breadcrumbs>
           <BreadcrumbItem href=""> </BreadcrumbItem>
