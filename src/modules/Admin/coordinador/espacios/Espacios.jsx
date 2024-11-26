@@ -230,7 +230,7 @@ export default function App() {
           <Input
             isClearable
             className="w-full sm:max-w-[44%]"
-            placeholder="Search by name..."
+            placeholder="Buscar espacios"
             startContent={<SearchIcon />}
             value={filterValue}
             onClear={() => onClear()}
@@ -437,7 +437,7 @@ export default function App() {
   }, [page, filteredItems]);
 
   return (
-    <main className="flex flex-col gap-2 relative -z-10">
+    <main className="flex flex-col gap-2">
       <div>
         <Breadcrumbs>
           <BreadcrumbItem href=""> </BreadcrumbItem>

@@ -202,7 +202,7 @@ export default function Usuarios() {
   }, [page, filteredItems]);
 
   return (
-    <main className="flex flex-col gap-2 relative -z-10">
+    <main className="flex flex-col gap-2">
       <div>
         <Breadcrumbs>
           <BreadcrumbItem href=""> </BreadcrumbItem>
