@@ -26,6 +26,7 @@ const UserDropdown = ({
     return parts.map((part) => part.charAt(0)).join("");
   };
   const fullName = `${names.name} ${names.lastName}`;
+  console.log(fullName);
   const initials = getInitials(fullName);
 
   return (

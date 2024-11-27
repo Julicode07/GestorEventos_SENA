@@ -18,7 +18,7 @@ import {
 const Registrarse = () => {
   const navigate = useNavigate();
 
-  const { register, error } = useRegister();
+  const { register } = useRegister();
   const [formData, setFormData] = useState({
     document: "",
     name: "",
