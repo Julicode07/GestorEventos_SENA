@@ -128,6 +128,7 @@ const ModalEspacios = () => {
                     className=""
                     name="type"
                     value={formData.type}
+                    data-testid="tipo-espacios"
                     onChange={handleChangeRegisterSpaces}
                   >
                     <SelectItem key="">Seleccione el tipo</SelectItem>
@@ -147,6 +148,7 @@ const ModalEspacios = () => {
                     className=""
                     name="status"
                     value={formData.status}
+                    data-testid="estado-espacio"
                     onChange={handleChangeRegisterSpaces}
                   >
                     <SelectItem key="activo">Activo</SelectItem>
