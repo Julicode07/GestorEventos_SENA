@@ -91,8 +91,11 @@ const ModalEspacios = () => {
               </h2>
               <div className="w-full overflow-y-auto max-h-[50vh] px-2">
                 <div className="w-full">
-                  <label className="pl-1">Ingrese el nombre del espacio</label>
+                  <label className="pl-1" htmlFor="nombre-espacio">
+                    Ingrese el nombre del espacio
+                  </label>
                   <Input
+                    id="nombre-espacio"
                     className="w-full mb-4"
                     placeholder="Nombre"
                     name="name"
@@ -101,8 +104,11 @@ const ModalEspacios = () => {
                   />
                 </div>
                 <div className="w-full">
-                  <label className="pl-1">Ingrese la capacidad</label>
+                  <label className="pl-1" htmlFor="capacidad">
+                    Ingrese la capacidad
+                  </label>
                   <Input
+                    id="capacidad"
                     className="w-full mb-4"
                     placeholder="Capacidad"
                     type="number"
@@ -112,9 +118,12 @@ const ModalEspacios = () => {
                   />
                 </div>
                 <div className="w-full mb-4">
-                  <label className="pl-1">Seleccione el tipo de espacio</label>
+                  <label className="pl-1" htmlFor="tipo-espacio">
+                    Seleccione el tipo de espacio
+                  </label>
 
                   <Select
+                    id="tipo-espacio"
                     label="Tipo de espacio"
                     className=""
                     name="type"
@@ -129,11 +138,11 @@ const ModalEspacios = () => {
                   </Select>
                 </div>
                 <div className="w-full mb-4">
-                  <label className="pl-1">
+                  <label className="pl-1" htmlFor="estado-espacio">
                     Seleccione el estado del espacio
                   </label>
-
                   <Select
+                    id="estado-espacio"
                     label="Estado del espacio"
                     className=""
                     name="status"
@@ -145,8 +154,11 @@ const ModalEspacios = () => {
                   </Select>
                 </div>
                 <div className="w-full">
-                  <label className="pl-1">Ingrese las observaciones</label>
+                  <label className="pl-1" htmlFor="observaciones">
+                    Ingrese las observaciones
+                  </label>
                   <Textarea
+                    id="observaciones"
                     placeholder="Observaciones"
                     className="mb-4"
                     name="details"
