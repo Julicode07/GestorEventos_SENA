@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import {
   Table,
   TableHeader,
@@ -21,6 +21,7 @@ import { SearchIcon } from "@/modules/Admin/components/SearchIcon";
 import { ChevronDownIcon } from "@/modules/Admin/components/ChevronDownIcon";
 import { columns, events, statusOptions } from "@modules/Admin/utils/data";
 import { EyeIcon } from "@/modules/Admin/components/EyeIcon";
+import ModalEventos from "./ModalEventos";
 const statusColorMap = {
   Aceptado: "success",
   Pendiente: "warning",
@@ -39,9 +40,7 @@ const INITIAL_VISIBLE_COLUMNS = [
 
 export default function Eventos() {
   const [filterValue, setFilterValue] = useState("");
-  const [visibleColumns, setVisibleColumns] = useState(
-    new Set(INITIAL_VISIBLE_COLUMNS)
-  );
+  const [visibleColumns] = useState(new Set(INITIAL_VISIBLE_COLUMNS));
   const [statusFilter, setStatusFilter] = useState("all");
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [sortDescriptor, setSortDescriptor] = useState({
@@ -49,96 +48,10 @@ export default function Eventos() {
     direction: "ascending",
   });
   const [page, setPage] = useState(1);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const hasSearchFilter = Boolean(filterValue);
 
   // Register a global event
-  const [registerEvent, setRegisterEvent] = useState({
-    name: "",
-    details: "",
-  });
-
-  const eventNameRef = useRef();
-  const eventDetailsRef = useRef();
-
-  const [succesMessage, setSuccessMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-
-  const [eventNameRegexIsOk, setEventNameRegexIsOk] = useState(false);
-  const [eventDetailsRegexOk, setEventDetailsRegexOk] = useState(false);
-
-  const regexEventName = (eventName) => {
-    const regex = /^[A-Za-zñ.Ñ:-á-|éí,.ó'úÁÉÍ&%$ÓÚäëïöüÄËÏÖÜ0-9\s]{1,64}$/;
-    const regexTest = regex.test(eventName);
-
-    if (regexTest) {
-      eventNameRef.current.textContent = "";
-      setEventNameRegexIsOk(true);
-    } else {
-      eventNameRef.current.textContent = "El nombre del evento no es valido";
-      eventNameRef.current.style.color = "red";
-      setEventNameRegexIsOk(false);
-    }
-  };
-
-  const regexEventDetails = (eventDetails) => {
-    const regex = /^[A-Za-zñ.Ñ:-á-|éí,.'óúÁÉÍ&%$ÓÚäëïöüÄËÏÖÜ0-9\s]{1,255}$/;
-    const regexTest = regex.test(eventDetails);
-
-    if (regexTest) {
-      eventDetailsRef.current.textContent = "";
-      setEventDetailsRegexOk(true);
-    } else {
-      eventDetailsRef.current.textContent =
-        "Los detalles del evento no son validos";
-      eventDetailsRef.current.style.color = "red";
-      setEventDetailsRegexOk(false);
-    }
-  };
-
-  const handleChangeEvent = (e) => {
-    const { name, value } = e.target;
-    setRegisterEvent((prevDataEvent) => ({
-      ...prevDataEvent,
-      [name]: value,
-    }));
-
-    if (name === "name") {
-      regexEventName(value);
-    } else if (name === "details") {
-      regexEventDetails(value);
-    }
-  };
-
-  const handleSubmitEvent = async (e) => {
-    e.preventDefault();
-    console.log(registerEvent);
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/events/global`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(registerEvent),
-        }
-      );
-      const data = await response.json();
-      console.log("the data is: ", data);
-      if (data.status === 200) {
-        setSuccessMessage("Registro exitoso");
-        setErrorMessage("");
-      } else {
-        setSuccessMessage("");
-        setErrorMessage(data.message);
-      }
-    } catch (error) {
-      setErrorMessage("Ocurrio un error al registrar el evento", error);
-      setSuccessMessage("");
-    }
-  };
 
   //
 
@@ -305,139 +218,8 @@ export default function Eventos() {
               ))}
             </DropdownMenu>
           </Dropdown>
-
-          {/* Modal to create event */}
-          <Button
-            className="bg-primary hover:bg-primary/100 text-white"
-            onClick={() => setIsModalOpen(true)}
-          >
-            Crear Evento
-          </Button>
-
-          {isModalOpen && (
-            <>
-              <div
-                className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-40"
-                onClick={(e) => {
-                  if (e.target === e.currentTarget) {
-                    setIsModalOpen(false);
-                  }
-                }}
-              >
-                <div className="relative p-4 w-full max-w-2xl z-50">
-                  <div className="relative bg-white rounded-lg shadow">
-                    <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t ">
-                      <h3 className="text-3xl font-semibold text-gray-900">
-                        Crear evento
-                      </h3>
-                      <button
-                        type="button"
-                        className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center "
-                        onClick={() => setIsModalOpen(false)}
-                      >
-                        <svg
-                          className="w-3 h-3"
-                          aria-hidden="true"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 14 14"
-                        >
-                          <path
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="m1 1 6 6m0 0 6-6M7 7l6 6m-6-6-6 6"
-                          />
-                        </svg>
-                        <span className="sr-only">Cerrar modal</span>
-                      </button>
-                    </div>
-
-                    <div className="p-4 md:p-5">
-                      <form className="space-y-4" onSubmit={handleSubmitEvent}>
-                        <div>
-                          <label className="block mb-2 text-lg font-bold text-gray-900 ">
-                            Nombre del Evento
-                          </label>
-                          <input
-                            type="text"
-                            name="name"
-                            id="eventName"
-                            value={registerEvent.name}
-                            className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg block w-full p-2.5 outline-none"
-                            placeholder="Semana del instructor"
-                            onChange={handleChangeEvent}
-                          />
-                          <span ref={eventNameRef}></span>
-                        </div>
-                        <div>
-                          <label className="block mb-2 text-lg font-bold text-gray-900">
-                            Descripción del evento
-                          </label>
-                          <textarea
-                            name="details"
-                            id="eventDetails"
-                            value={registerEvent.details}
-                            placeholder="Escribe la descripción del evento"
-                            className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg block w-full p-2.5 outline-none"
-                            rows="4"
-                            onChange={handleChangeEvent}
-                          ></textarea>
-                          <span ref={eventDetailsRef}></span>
-                        </div>
-                        <div className="flex items-center justify-center p-4 md:p-5 space-x-3 rtl:space-x-reverse border-t border-gray-200 rounded-b">
-                          <button
-                            type="button"
-                            className="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-red-700 "
-                            onClick={() => setIsModalOpen(false)}
-                          >
-                            Cancelar
-                          </button>
-                          <button
-                            type="submit"
-                            className="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                            style={{
-                              background:
-                                eventNameRegexIsOk && eventDetailsRegexOk
-                                  ? "green"
-                                  : "rgba(0, 0, 0, 0.2)",
-                              PointerEvent:
-                                eventNameRegexIsOk && eventDetailsRegexOk
-                                  ? "auto"
-                                  : "none",
-                              color:
-                                eventNameRegexIsOk && eventDetailsRegexOk
-                                  ? "white"
-                                  : "black",
-                            }}
-                          >
-                            Crear Evento
-                          </button>
-                        </div>
-                        <div className="flex justify-center">
-                          {succesMessage && (
-                            <p className="text-green-600 text-center">
-                              {succesMessage}
-                            </p>
-                          )}
-                          {errorMessage === "Evento creado correctamente" ? (
-                            <p className="text-green-600 text-center">
-                              {errorMessage}
-                            </p>
-                          ) : (
-                            (<p className="text-red-600 text-center">
-                              {errorMessage}
-                            </p>)
-                          )}
-                        </div>  
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </>
-          )}
+          {/* Modal eventos */}
+          <ModalEventos />
         </div>
       </div>
       <div className="flex justify-between items-center gap-2">
