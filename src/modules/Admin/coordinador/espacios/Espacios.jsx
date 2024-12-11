@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import {
   Input,
   Button,
@@ -15,7 +21,7 @@ import { SearchIcon } from "../../components/SearchIcon";
 import { ChevronDownIcon } from "../../components/ChevronDownIcon";
 import { columns, INITIAL_VISIBLE_COLUMNS, statusOptions } from "./utils";
 import { getAllSpaces } from "../../api/getDataToShow";
-import { capitalize } from "../../utils/utils";
+import { capitalize } from "../../utils/utils"; 
 const ModalEspacios = React.lazy(() => import("./ModalEspacios.jsx"));
 const TableShowData = React.lazy(() =>
   import("./../../components/TableShowData.jsx")
@@ -233,32 +239,34 @@ export default function App() {
   }, [page, filteredItems]);
 
   return (
-    <main className="flex flex-col gap-2">
-      <div>
-        <Breadcrumbs>
-          <BreadcrumbItem href=""> </BreadcrumbItem>
-          <BreadcrumbItem href="/admin/coordinador/espacios">
-            Espacios
-          </BreadcrumbItem>
-        </Breadcrumbs>
-      </div>
-      <section>
-        <TableShowData
-          sortDescriptor={sortDescriptor}
-          onSortChange={setSortDescriptor}
-          topContent={topContent}
-          selectedKeys={selectedKeys}
-          topContentPlacement="outside"
-          onSelectionChange={setSelectedKeys}
-          bottomContent={bottomContent}
-          bottomContentPlacement="outside"
-          columns={headerColumns}
-          items={sortedItems}
-          renderCell={renderCell}
-          id="id_space"
-          aria="Table to show the data of spaces"
-        />
-      </section>
-    </main>
+    <>
+      <main className="flex flex-col gap-2">
+        <div>
+          <Breadcrumbs>
+            <BreadcrumbItem href=""> </BreadcrumbItem>
+            <BreadcrumbItem href="/admin/coordinador/espacios">
+              Espacios
+            </BreadcrumbItem>
+          </Breadcrumbs>
+        </div>
+        <section>
+          <TableShowData
+            sortDescriptor={sortDescriptor}
+            onSortChange={setSortDescriptor}
+            topContent={topContent}
+            selectedKeys={selectedKeys}
+            topContentPlacement="outside"
+            onSelectionChange={setSelectedKeys}
+            bottomContent={bottomContent}
+            bottomContentPlacement="outside"
+            columns={headerColumns}
+            items={sortedItems}
+            renderCell={renderCell}
+            id="id_space"
+            aria="Table to show the data of spaces"
+          />
+        </section>
+      </main>
+    </>
   );
 }
