@@ -20,8 +20,7 @@ import { VerticalDotsIcon } from "../../components/VerticalDotsIcon";
 import { SearchIcon } from "../../components/SearchIcon";
 import { ChevronDownIcon } from "../../components/ChevronDownIcon";
 import { columns, INITIAL_VISIBLE_COLUMNS, statusOptions } from "./utils";
-import { getAllSpaces } from "../../api/getDataToShow";
-import { capitalize } from "../../utils/utils"; 
+import { capitalize } from "../../utils/utils";
 const ModalEspacios = React.lazy(() => import("./ModalEspacios.jsx"));
 const TableShowData = React.lazy(() =>
   import("./../../components/TableShowData.jsx")
@@ -30,13 +29,21 @@ const TableShowData = React.lazy(() =>
 export default function App() {
   const [showSpaces, setShowSpaces] = useState([]);
 
+  const getAllSpaces = useCallback(async () => {
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/spaces/all`
+    );
+    const data = await response.json();
+    return data;
+  }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       const data = await getAllSpaces();
       setShowSpaces(data);
     };
     fetchData();
-  }, []);
+  }, [getAllSpaces]);
 
   const [filterValue, setFilterValue] = useState("");
   const [selectedKeys, setSelectedKeys] = useState(new Set([]));

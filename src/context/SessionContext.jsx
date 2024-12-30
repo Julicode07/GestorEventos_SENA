@@ -25,11 +25,10 @@ export const SessionContextProvider = ({ children }) => {
           role: data.data.role,
         });
         setNames({
-          name: data.data.name,
-          lastName: data.data.last_names,
+          name: "Felipe",
+          lastName: "Alzate",
         });
       } else {
-        console.log("You don´t have any active session in eventos.");
         setUserSession({
           document: null,
           role: null,

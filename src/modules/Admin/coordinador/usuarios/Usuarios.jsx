@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
   Input,
   Button,
@@ -10,7 +10,6 @@ import {
 import { SearchIcon } from "@/modules/Admin/components/SearchIcon";
 import { columns } from "@modules/Admin/utils/data";
 import { EyeIcon } from "@/modules/Admin/components/EyeIcon";
-import { getAllUsers } from "../../api/getDataToShow";
 const TableShowData = React.lazy(() =>
   import("./../../components/TableShowData.jsx")
 );
@@ -37,6 +36,14 @@ export default function Usuarios() {
   });
   const [page, setPage] = React.useState(1);
 
+  const getAllUsers = useCallback(async () => {
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/users/all`
+    );
+    const data = await response.json();
+    return data;
+  }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -47,7 +54,7 @@ export default function Usuarios() {
       }
     };
     fetchData();
-  }, []);
+  }, [getAllUsers]);
 
   const hasSearchFilter = Boolean(filterValue);
 

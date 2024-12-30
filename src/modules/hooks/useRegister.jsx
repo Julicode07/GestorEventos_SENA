@@ -18,7 +18,8 @@ const useRegister = () => {
         }
       );
       if (!response.ok) {
-        throw new Error("Failed to register the data");
+        const result = await response.json();
+        throw new Error(result.message);
       }
 
       const result = await response.json();

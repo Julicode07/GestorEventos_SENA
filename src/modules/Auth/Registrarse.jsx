@@ -84,11 +84,11 @@ const Registrarse = () => {
         email: "",
         phone: "",
         role: "Instructor",
-        password: "",
+        password: ","
       });
       navigate("/iniciarsesion");
     } catch (error) {
-      setErrorMessage("Error al registrar el usuario");
+      setErrorMessage(error.message);
       console.error("Error registering user:", error);
       setSuccessMessage("");
     }
