@@ -18,7 +18,7 @@ export async function CreateSpaceController(req:Request, res:Response) {
     }
 }
 
-export async function GetSpacesController(req:Request, res:Response) {
+export async function GetSpacesController(_req:Request, res:Response) {
     try {
         const spaces = await getSpaces();
         return res.status(200).send(JSON.stringify(spaces, bigIntReplacer));

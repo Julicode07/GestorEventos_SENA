@@ -24,7 +24,7 @@ export async function LogInController(req: Request, res: Response) {
                         role: user_result[0].role
                     }
                 };
-                return res.status(200).send(JSON.stringify(responseData)).end();
+                return res.status(200).send(JSON.stringify(responseData)).end()
             }
         }
 

@@ -26,6 +26,7 @@ InventoryRouter.post(
       res
         .status(500)
         .end(JSON.stringify({ message: "Error interno del servidor :(" }));
+      console.log(err)
     }
   }
 );
