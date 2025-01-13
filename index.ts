@@ -67,7 +67,7 @@ app.use("/api/users/", UsersRouter);
 app.use("/api/auth/", AuthRouter);
 app.use("/api/events/", EventsRouter);
 app.use("/api/spaces/", SpacesRouter);
-app.use("api/inventory/", InventoryRouter);
+app.use("/api/inventory/", InventoryRouter);
 
 app.get("/404.html", (req: Request, res: Response) => {
   const viewFile = path.join(__dirname, "public_views", "404.html");
