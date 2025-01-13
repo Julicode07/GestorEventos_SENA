@@ -22,7 +22,7 @@ InventoryRouter.post(
         );
 
       if (validateData) {
-        CreateSpaceInventoryController(req, res);
+        await CreateSpaceInventoryController(req, res);
       } else
         return res.status(400).end(
           JSON.stringify({
