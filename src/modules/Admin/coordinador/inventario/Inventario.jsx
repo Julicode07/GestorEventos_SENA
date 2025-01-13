@@ -1,4 +1,3 @@
-import React from "react";
 import { BreadcrumbItem, Breadcrumbs } from "@nextui-org/react";
 function Inventario() {
   return (

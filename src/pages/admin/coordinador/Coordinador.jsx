@@ -33,29 +33,29 @@ function Coordinador() {
   }
   return (
     <>
-      {userSession === "Coordinador" ? (
-        <div>
-          <NavSideBar />
-          <div className="py-4 px-1 sm:ml-56">
-            <div className="mt-12 p-4 h-full">
-              <Routes>
-                <Route path="/*" element={<NotFoundAdmin />} />
-                <Route path="/" element={<Panel />} />
-                <Route path="/espacios" element={<Espacios />} />
-                <Route path="/solicitudes" element={<Solicitudes />} />
-                <Route path="/eventos" element={<Eventos />} />
-                <Route path="/eventos/:id" element={<InfoEvento />} />
-                <Route path="/inventario" element={<Inventario />} />
-                <Route path="/insumos" element={<Insumos />} />
-                <Route path="/organizadores" element={<Organizadores />} />
-                <Route path="/usuarios" element={<Usuarios />} />
-              </Routes>
-            </div>
+      {/* {userSession.role === "Coordinador" ? ( */}
+      <div>
+        <NavSideBar />
+        <div className="py-4 px-1 sm:ml-56">
+          <div className="mt-12 p-4 h-full">
+            <Routes>
+              <Route path="/*" element={<NotFoundAdmin />} />
+              <Route path="/" element={<Panel />} />
+              <Route path="/espacios" element={<Espacios />} />
+              <Route path="/solicitudes" element={<Solicitudes />} />
+              <Route path="/eventos" element={<Eventos />} />
+              <Route path="/eventos/:id" element={<InfoEvento />} />
+              <Route path="/inventario" element={<Inventario />} />
+              <Route path="/insumos" element={<Insumos />} />
+              <Route path="/organizadores" element={<Organizadores />} />
+              <Route path="/usuarios" element={<Usuarios />} />
+            </Routes>
           </div>
         </div>
-      ) : (
+      </div>
+      {/* ) : (
         <Navigate to="/iniciarsesion" />
-      )}
+      )} */}
     </>
   );
 }

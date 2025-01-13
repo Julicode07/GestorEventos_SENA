@@ -1,4 +1,3 @@
-import React from "react";
 import { Breadcrumbs, BreadcrumbItem } from "@nextui-org/react";
 
 function Organizadores() {
