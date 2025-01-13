@@ -29,3 +29,5 @@ InventoryRouter.post(
     }
   }
 );
+
+export default InventoryRouter;

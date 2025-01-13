@@ -4,8 +4,8 @@ import AuthRouter from "./src/routes/auth";
 import { createSchemas } from "./src/db/schema.handler";
 import session from "express-session";
 import UsersRouter from "./src/routes/users";
-import MariaDBStore from 'express-session-mariadb-store';
-import { pool } from "./src/db/connection"
+import MariaDBStore from "express-session-mariadb-store";
+import { pool } from "./src/db/connection";
 import dotenv from "dotenv";
 import helmet from "helmet";
 import path from "path";
@@ -13,48 +13,50 @@ import cors from "cors";
 import fs from "fs";
 import EventsRouter from "./src/routes/events";
 import SpacesRouter from "./src/routes/spaces";
+import InventoryRouter from "./src/routes/inventory";
 
 dotenv.config();
 
-const app:Express = express();
+const app: Express = express();
 const port = process.env.PORT || 3000;
 
 app.use(cors({ origin: ["http://localhost:5173"] }));
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public_views')));
+app.use(express.static(path.join(__dirname, "public_views")));
 
 // Some security options.
-app.set('x-powered-by', false);
+app.set("x-powered-by", false);
 app.use(helmet({ contentSecurityPolicy: false }));
 
 // MariaDB session store configuration
 const sessionStore = new MariaDBStore({
-  pool,                                   // using the pool instance from DB connection setup
-  table: 'session',
-  clearExpired: true,                     // automatically clear expired sessions
-  checkExpirationInterval: 900000,        // how frequently expired sessions will be cleared; in milliseconds
-}) as unknown as session.Store;           // Casting to session.Store to satisfy TypeScript.
-
-
+  pool, // using the pool instance from DB connection setup
+  table: "session",
+  clearExpired: true, // automatically clear expired sessions
+  checkExpirationInterval: 900000, // how frequently expired sessions will be cleared; in milliseconds
+}) as unknown as session.Store; // Casting to session.Store to satisfy TypeScript.
 
 // Session initializing and type declarations.
-app.use(session({
-  name: 'ssid_dont_share',
-  secret: process.env.SESSION_SECRET as string,
-  store: sessionStore,
-  resave: false,
-  saveUninitialized: true,
-  cookie: {
-    maxAge: 1000 * 60 * 60 * 24 * 3
-  }
-}));
+app.use(
+  session({
+    name: "ssid_dont_share",
+    secret: process.env.SESSION_SECRET as string,
+    store: sessionStore,
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24 * 3,
+    },
+  })
+);
 
 type UserSession = {
   document: number | null;
   role: string | null;
 };
 
-declare module "express-session" { // Augment express-session with a custom SessionData object
+declare module "express-session" {
+  // Augment express-session with a custom SessionData object
   interface SessionData {
     user: UserSession;
   }
@@ -65,17 +67,18 @@ app.use("/api/users/", UsersRouter);
 app.use("/api/auth/", AuthRouter);
 app.use("/api/events/", EventsRouter);
 app.use("/api/spaces/", SpacesRouter);
+app.use("api/inventory/", InventoryRouter);
 
-app.get("/404.html", (req:Request, res:Response) => {
-  const viewFile = path.join(__dirname, 'public_views', '404.html');
-    if (fs.existsSync(viewFile)) res.sendFile(viewFile);
-    else res.redirect(path.join(__dirname, 'public_views', 'index.html'));
-})
+app.get("/404.html", (req: Request, res: Response) => {
+  const viewFile = path.join(__dirname, "public_views", "404.html");
+  if (fs.existsSync(viewFile)) res.sendFile(viewFile);
+  else res.redirect(path.join(__dirname, "public_views", "index.html"));
+});
 app.get("/*", (_req: Request, res: Response) => {
-    const viewFile = path.join(__dirname, 'public_views', 'index.html');
-    if (fs.existsSync(viewFile)) res.sendFile(viewFile);
-    else {
-      return res.status(403).send(`<!DOCTYPE html>
+  const viewFile = path.join(__dirname, "public_views", "index.html");
+  if (fs.existsSync(viewFile)) res.sendFile(viewFile);
+  else {
+    return res.status(403).send(`<!DOCTYPE html>
         <html lang="es">
         <head>
             <meta charset="UTF-8">
@@ -143,7 +146,7 @@ app.get("/*", (_req: Request, res: Response) => {
         </body>
         </html>
         `);
-    }
+  }
 });
 
 app.listen(port, () => {
