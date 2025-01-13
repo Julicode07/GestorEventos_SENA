@@ -10,16 +10,7 @@ export async function CreateSpaceInventoryController(
     const inventory = req.body;
 
     const result = await Promise.all(
-      inventory.map((item: ISpaceInventory) =>
-        createSpaceInventory({
-          id_inventory: undefined,
-          id_space: item.id_space,
-          article_name: item.article_name,
-          description: item.description,
-          quantity: item.quantity,
-          type: item.type,
-        })
-      )
+      inventory.map((item: ISpaceInventory) => createSpaceInventory(item))
     );
     const successCount = result.filter((result) => result === 1).length;
     return successCount === inventory.length

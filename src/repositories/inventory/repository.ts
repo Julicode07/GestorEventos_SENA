@@ -9,22 +9,20 @@ export async function createSpaceInventory(
   try {
     await connection.beginTransaction();
 
-    for (const item of Object.values(spaceInventoryData)) {
-      await connection.query(
-        `
+    await connection.query(
+      `
         INSERT INTO 
         space_inventory (id_space, article_name, description, quantity, type)
         VALUES
           (?,?,?,?,?)`,
-        [
-          item.id_space,
-          item.article_name,
-          item.description,
-          item.quantity,
-          item.type,
-        ]
-      );
-    }
+      [
+        spaceInventoryData.id_space,
+        spaceInventoryData.article_name,
+        spaceInventoryData.description,
+        spaceInventoryData.quantity,
+        spaceInventoryData.type,
+      ]
+    );
 
     await connection.commit();
     console.log(`[inventory repository]: INVENTORY INSERTED SUCCESSFULLY.`);
