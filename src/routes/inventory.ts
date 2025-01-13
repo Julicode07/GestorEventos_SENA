@@ -11,13 +11,16 @@ InventoryRouter.post(
     try {
       const inventory = req.body;
 
-      const validateData = inventory.every(
-        () =>
-          databaseRegex.inventory.article_name.test(req.body.article_name) &&
-          databaseRegex.inventory.description.test(req.body.description) &&
-          databaseRegex.inventory.quantity.test(req.body.quantity) &&
-          databaseRegex.inventory.type.test(req.body.type)
-      );
+      const validateData =
+        Array.isArray(inventory) &&
+        inventory.every(
+          (item) =>
+            databaseRegex.inventory.article_name.test(item.article_name) &&
+            databaseRegex.inventory.description.test(item.description) &&
+            databaseRegex.inventory.quantity.test(item.quantity) &&
+            databaseRegex.inventory.type.test(item.type)
+        );
+
       if (validateData) {
         CreateSpaceInventoryController(req, res);
       } else
