@@ -6,13 +6,6 @@ export async function CreateSpaceInventoryController(
   res: Response
 ) {
   try {
-    console.log(
-      "body",
-      req.body.article_name,
-      req.body.description,
-      req.body.quantity,
-      req.body.type
-    );
     const result = await createSpaceInventory({
       id_inventory: undefined,
       id_space: req.body.id_space,

@@ -4,7 +4,7 @@ import { databaseRegex } from "../helpers/regex.helper";
 
 const InventoryRouter: Express = express();
 
-//Cretae new inventory endpoint.
+//Create new inventory endpoint.
 InventoryRouter.post(
   "/spacesInventory",
   async (req: Request, res: Response) => {
@@ -23,10 +23,10 @@ InventoryRouter.post(
           })
         );
     } catch (err) {
-      res
+      console.log(err);
+      return res
         .status(500)
         .end(JSON.stringify({ message: "Error interno del servidor :(" }));
-      console.log(err)
     }
   }
 );

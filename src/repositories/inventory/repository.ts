@@ -7,13 +7,11 @@ export async function createSpaceInventory(
 ): Promise<number> {
   const connection: PoolConnection = await getConnection(pool);
   try {
-    const result = await connection.query(
-      `
-            INSERT INTO 
-                space_inventory
-                (id_space, article_name, description, quantity, type)
-            VALUES
-                (?,?,?,?,?)`,
+    const result = await connection.query(`
+      INSERT INTO 
+          space_inventory (id_space, article_name, description, quantity, type)
+      VALUES
+          (?,?,?,?,?)`,
       [
         spaceInventoryData.id_space,
         spaceInventoryData.article_name,
