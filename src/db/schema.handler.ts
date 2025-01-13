@@ -6,6 +6,8 @@ import { SqlError } from "mariadb";
 import dotenv from 'dotenv';
 import { createSpace } from "../repositories/spaces/repository";
 import { createSpacesSchema } from "../repositories/spaces/models";
+import { createSpaceInventory } from "../repositories/inventory/repository";
+import { createSpaceInventorySchema } from "../repositories/inventory/models";
 
 dotenv.config();
 
@@ -22,6 +24,7 @@ export default async function createSchemas(): Promise<Number> {
             else if(await createWebSessionsSchema() == -1) throw new Error("Couldn't create web sessions schema.")  
             else if(await createGlobalEventsSchema() == -1) throw new Error("Couldn't create global events schema.")
             else if(await createSpacesSchema() == -1) throw new Error("Couldn't create spaces schema.")
+            else if(await createSpaceInventorySchema() == -1) throw new Error("Couldn't create space inventories schema.")
             return 1;
       } catch (err) {
             console.error(`[schema handler]: ERROR CREATING SCHEMAS: ${err}`);
