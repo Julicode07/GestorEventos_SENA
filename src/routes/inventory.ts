@@ -9,12 +9,16 @@ InventoryRouter.post(
   "/spacesInventory",
   async (req: Request, res: Response) => {
     try {
-      if (
-        databaseRegex.inventory.article_name.test(req.body.article_name) &&
-        databaseRegex.inventory.description.test(req.body.description) &&
-        databaseRegex.inventory.quantity.test(req.body.quantity) &&
-        databaseRegex.inventory.type.test(req.body.type)
-      ) {
+      const inventory = req.body;
+
+      const validateData = inventory.every(
+        () =>
+          databaseRegex.inventory.article_name.test(req.body.article_name) &&
+          databaseRegex.inventory.description.test(req.body.description) &&
+          databaseRegex.inventory.quantity.test(req.body.quantity) &&
+          databaseRegex.inventory.type.test(req.body.type)
+      );
+      if (validateData) {
         CreateSpaceInventoryController(req, res);
       } else
         return res.status(400).end(

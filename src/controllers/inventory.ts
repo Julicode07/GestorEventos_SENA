@@ -1,20 +1,28 @@
 import { createSpaceInventory } from "../repositories/inventory/repository";
 import { Request, Response } from "express";
+import { ISpaceInventory } from "../repositories/inventory/models";
 
 export async function CreateSpaceInventoryController(
   req: Request,
   res: Response
 ) {
   try {
-    const result = await createSpaceInventory({
-      id_inventory: undefined,
-      id_space: req.body.id_space,
-      article_name: req.body.article_name,
-      description: req.body.description,
-      quantity: req.body.quantity,
-      type: req.body.type,
-    });
-    return result == 1
+    const inventory = req.body;
+
+    const result = await Promise.all(
+      inventory.map((item: ISpaceInventory) =>
+        createSpaceInventory({
+          id_inventory: undefined,
+          id_space: item.id_space,
+          article_name: item.article_name,
+          description: item.description,
+          quantity: item.quantity,
+          type: item.type,
+        })
+      )
+    );
+    const successCount = result.filter((result) => result === 1).length;
+    return successCount === inventory.length
       ? res
           .status(200)
           .end(JSON.stringify({ message: "Inventario creado correctamente" }))

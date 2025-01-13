@@ -7,30 +7,30 @@ export async function createSpaceInventory(
 ): Promise<number> {
   const connection: PoolConnection = await getConnection(pool);
   try {
-    const result = await connection.query(`
-      INSERT INTO 
-          space_inventory (id_space, article_name, description, quantity, type)
-      VALUES
+    await connection.beginTransaction();
+
+    for (const item of Object.values(spaceInventoryData)) {
+      await connection.query(
+        `
+        INSERT INTO 
+        space_inventory (id_space, article_name, description, quantity, type)
+        VALUES
           (?,?,?,?,?)`,
-      [
-        spaceInventoryData.id_space,
-        spaceInventoryData.article_name,
-        spaceInventoryData.description,
-        spaceInventoryData.quantity,
-        spaceInventoryData.type,
-      ]
-    );
-    switch (result.affectedRows) {
-      case 1:
-        console.log(
-          `[inventory repository]: Space inventory ${result.insertId}: INSERTED SUCCESSFULLY.`
-        );
-        return 1;
-      default:
-        console.error(`[inventory repository]: ERROR CREATING SPACE INVENTORY`);
-        return -1;
+        [
+          item.id_space,
+          item.article_name,
+          item.description,
+          item.quantity,
+          item.type,
+        ]
+      );
     }
+
+    await connection.commit();
+    console.log(`[inventory repository]: INVENTORY INSERTED SUCCESSFULLY.`);
+    return 1;
   } catch (err) {
+    await connection.rollback();
     console.error(`[inventory repository]: ${err}`);
     return -1;
   } finally {
