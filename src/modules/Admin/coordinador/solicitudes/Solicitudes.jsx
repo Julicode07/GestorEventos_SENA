@@ -35,7 +35,6 @@ const INITIAL_VISIBLE_COLUMNS = [
 
 export default function App() {
   const [filterValue, setFilterValue] = React.useState("");
-  const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
   const [visibleColumns] = React.useState(new Set(INITIAL_VISIBLE_COLUMNS));
   const [statusFilter] = React.useState(new Set(["Pendiente"]));
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -69,7 +68,7 @@ export default function App() {
     );
 
     return filteredEvents;
-  }, [events, filterValue, statusFilter]);
+  }, [filterValue, statusFilter, hasSearchFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -191,9 +190,9 @@ export default function App() {
   }, [
     filterValue,
     filteredItems.length,
+    onClear,
     onRowsPerPageChange,
     onSearchChange,
-    hasSearchFilter,
   ]);
 
   const bottomContent = React.useMemo(() => {
@@ -210,7 +209,7 @@ export default function App() {
         />
       </div>
     );
-  }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
+  }, [page, pages]);
 
   return (
     <main className="flex flex-col gap-2">
@@ -230,7 +229,6 @@ export default function App() {
           bottomContentPlacement="outside"
           bottomContent={bottomContent}
           topContentPlacement="outside"
-          onSelectionChange={setSelectedKeys}
           onSortChange={setSortDescriptor}
         >
           <TableHeader columns={headerColumns}>

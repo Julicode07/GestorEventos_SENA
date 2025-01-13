@@ -1,4 +1,3 @@
-import React from "react";
 import { Breadcrumbs, BreadcrumbItem } from "@nextui-org/react";
 import Solicitudes from "./Solicitudes";
 import MesEventos from "./MesEventos";
@@ -28,8 +27,6 @@ const countEventsForCurrentMonth = (events) => {
 
   return events.filter((event) => {
     const startDate = new Date(event.startDate);
-    const endDate = new Date(event.endDate);
-
     return (
       startDate.getFullYear() === currentYear &&
       startDate.getMonth() === currentMonthIndex

@@ -80,7 +80,7 @@ export default function App() {
     }
 
     return filterSpaces;
-  }, [showSpaces, filterValue, statusFilter]);
+  }, [filterValue, statusFilter, showSpaces, hasSearchFilter]);
 
   const handleStatusSelectionChange = (keys) => {
     const selected = Array.from(keys)[0];
@@ -215,35 +215,44 @@ export default function App() {
             Total {showSpaces.length} espacios
           </span>
           <label className="flex items-center text-default-400 text-small">
-            FIlas por página
+            Filas por página:
             <select
-              className="bg-transparent outline-none text-default-400 text-small"
+              className="max-w-full rounded-lg bg-default-100 text-default-900 text-small font-bold"
               onChange={onRowsPerPageChange}
+              value={rowsPerPage}
             >
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="25">25</option>
+              <option value={5}>5</option>
+              <option value={10}>10</option>
+              <option value={15}>15</option>
             </select>
           </label>
         </div>
       </div>
     );
-  }, [filterValue, statusFilter, visibleColumns, rowsPerPage, showSpaces]);
+  }, [
+    filterValue,
+    onClear,
+    onRowsPerPageChange,
+    onSearchChange,
+    rowsPerPage,
+    showSpaces.length,
+    statusFilter,
+  ]);
 
   const bottomContent = useMemo(() => {
     return (
-      <div className="py-2 px-2 flex justify-center items-center border-t border-divider">
+      <div className="py-0 px-2 flex justify-center items-center">
         <Pagination
           showControls
-          showShadow
           isCompact
+          showShadow
           page={page}
           total={pages}
           onChange={(page) => setPage(page)}
         />
       </div>
     );
-  }, [page, filteredItems]);
+  }, [page, pages]);
 
   return (
     <>

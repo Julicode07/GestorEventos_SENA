@@ -86,7 +86,7 @@ export default function Eventos() {
     }
 
     return filteredEvents;
-  }, [events, filterValue, statusFilter]);
+  }, [statusFilter, filterValue, hasSearchFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -238,21 +238,30 @@ export default function Eventos() {
         </div>
       </div>
     );
-  }, [filterValue, statusFilter, visibleColumns, rowsPerPage]);
+  }, [
+    filterValue,
+    filteredItems.length,
+    rowsPerPage,
+    statusFilter,
+    onClear,
+    onRowsPerPageChange,
+    onSearchChange,
+  ]);
 
   const bottomContent = React.useMemo(() => {
     return (
-      <div className="py-2 px-2 flex justify-center items-center border-t border-divider">
+      <div className="py-0 px-2 flex justify-center items-center">
         <Pagination
           showControls
           isCompact
+          showShadow
           page={page}
           total={pages}
           onChange={(page) => setPage(page)}
         />
       </div>
     );
-  }, [page, filteredItems]);
+  }, [page, pages]);
 
   return (
     <main className="flex flex-col gap-2">

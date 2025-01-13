@@ -82,7 +82,7 @@ export default function Usuarios() {
     }
 
     return filterUsers;
-  }, [showUsers, filterValue]);
+  }, [showUsers, hasSearchFilter, filterValue]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -188,11 +188,18 @@ export default function Usuarios() {
         </div>
       </div>
     );
-  }, [filterValue, visibleColumns, rowsPerPage, showUsers]);
+  }, [
+    filterValue,
+    onClear,
+    onRowsPerPageChange,
+    onSearchChange,
+    rowsPerPage,
+    showUsers.length,
+  ]);
 
   const bottomContent = React.useMemo(() => {
     return (
-      <div className="py-2 px-2 flex justify-center items-center border-t border-divider">
+      <div className="py-0 px-2 flex justify-center items-center">
         <Pagination
           showControls
           isCompact
@@ -203,7 +210,7 @@ export default function Usuarios() {
         />
       </div>
     );
-  }, [page, filteredItems]);
+  }, [page, pages]);
 
   return (
     <main className="flex flex-col gap-2">

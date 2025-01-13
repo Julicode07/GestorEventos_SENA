@@ -1,4 +1,3 @@
-import React from "react";
 import { useParams } from "react-router-dom";
 import { Breadcrumbs, BreadcrumbItem } from "@nextui-org/react";
 import { events } from "@modules/Admin/utils/data";
