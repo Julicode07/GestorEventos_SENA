@@ -19,6 +19,7 @@ export async function createSpaceInventorySchema(): Promise<Number> {
             article_name VARCHAR(64) NOT NULL,
             description VARCHAR(255),
             quantity INT NOT NULL,
+            type VARCHAR(45) NOT NULL,
             CONSTRAINT fk_space_inventory_has_space FOREIGN KEY (id_space) REFERENCES spaces(id_space)`);
     console.log(
       `[inventory repository - models]: CREATED space inventory SCHEMA.`

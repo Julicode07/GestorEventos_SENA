@@ -24,10 +24,10 @@ export async function CreateSpaceInventoryController(
     return result == 1
       ? res
           .status(200)
-          .end(JSON.stringify({ message: " Inventario creado correctamente" }))
+          .end(JSON.stringify({ message: "Inventario creado correctamente" }))
       : res.status(500).end(
           JSON.stringify({
-            message: "Error interno del servidor al crear el evento",
+            message: "Error interno del servidor al crear el inventario",
           })
         );
   } catch (err) {
