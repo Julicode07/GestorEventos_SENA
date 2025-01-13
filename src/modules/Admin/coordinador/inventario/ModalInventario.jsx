@@ -1,9 +1,9 @@
-import { Input, Button, Textarea, Select, SelectItem } from "@nextui-org/react";
+import { Input, Button, Select, SelectItem } from "@nextui-org/react";
 import { useState } from "react";
 import useRegister from "../../../hooks/useRegister";
 import { PlusIcon } from "@modules/Admin/components/PlusIcon";
 
-const ModalEspacios = () => {
+const ModalInventario = () => {
   const { register } = useRegister();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -62,7 +62,7 @@ const ModalEspacios = () => {
         onClick={() => setIsModalOpen(true)}
         endContent={<PlusIcon />}
       >
-        Nuevo Espacio
+        Añadir
       </Button>
       {isModalOpen && (
         <form action="" onSubmit={handleSubmitRegisterSpaces}>
@@ -92,15 +92,15 @@ const ModalEspacios = () => {
               </button>
 
               <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
-                Añadir un nuevo espacio
+                Añadir objeto al inventario
               </h2>
               <div className="w-full overflow-y-auto max-h-[50vh] px-2">
                 <div className="w-full">
-                  <label className="pl-1" htmlFor="nombre-espacio">
-                    Ingrese el nombre del espacio
+                  <label className="pl-1" htmlFor="nombre">
+                    Ingrese el nombre
                   </label>
                   <Input
-                    id="nombre-espacio"
+                    id="nombre"
                     className="w-full mb-4"
                     placeholder="Nombre"
                     name="name"
@@ -109,69 +109,72 @@ const ModalEspacios = () => {
                   />
                 </div>
                 <div className="w-full">
-                  <label className="pl-1" htmlFor="capacidad">
-                    Ingrese la capacidad
+                  <label className="pl-1" htmlFor="descripcion">
+                    Ingrese la descripcion
                   </label>
                   <Input
-                    id="capacidad"
+                    id="descripcion"
                     className="w-full mb-4"
-                    placeholder="Capacidad"
+                    placeholder="Descripcion"
                     type="number"
-                    name="capacity"
+                    name="description"
+                    value={formData.capacity}
+                    onChange={handleChangeRegisterSpaces}
+                  />
+                </div>
+                <div className="w-full">
+                  <label className="pl-1" htmlFor="cantidad">
+                    Ingrese la cantidad
+                  </label>
+                  <Input
+                    id="cantidad"
+                    className="w-full mb-4"
+                    placeholder="Cantidad"
+                    type="number"
+                    name="quantity"
                     value={formData.capacity}
                     onChange={handleChangeRegisterSpaces}
                   />
                 </div>
                 <div className="w-full mb-4">
-                  <label className="pl-1" htmlFor="tipo-espacio">
-                    Seleccione el tipo de espacio
+                  <label className="pl-1" htmlFor="tipo-objeto">
+                    Seleccione el tipo de objeto
                   </label>
 
                   <Select
-                    id="tipo-espacio"
-                    label="Tipo de espacio"
+                    id="tipo-objeto"
+                    label="Tipo de objeto"
                     className=""
+                    size="sm"
                     name="type"
                     value={formData.type}
-                    data-testid="tipo-espacios"
+                    data-testid="tipo-objeto"
                     onChange={handleChangeRegisterSpaces}
                   >
-                    <SelectItem key="">Seleccione el tipo</SelectItem>
-                    <SelectItem key="aula">Aula</SelectItem>
-                    <SelectItem key="piso">Piso</SelectItem>
-                    <SelectItem key="edificio">Edificio</SelectItem>
-                    <SelectItem key="oficina">Oficina</SelectItem>
+                    <SelectItem key="sonido">Sonido</SelectItem>
+                    <SelectItem key="proyeccion">Proyección</SelectItem>
+                    <SelectItem key="mobiliario">Mobiliario</SelectItem>
                   </Select>
                 </div>
                 <div className="w-full mb-4">
-                  <label className="pl-1" htmlFor="estado-espacio">
-                    Seleccione el estado del espacio
+                  <label className="pl-1" htmlFor="nombre-espacio">
+                    Seleccione el espacio al que pertenece
                   </label>
+
                   <Select
-                    id="estado-espacio"
-                    label="Estado del espacio"
+                    id="nombre-espacio"
+                    label="Nombre del espacio"
                     className=""
-                    name="status"
-                    value={formData.status}
-                    data-testid="estado-espacio"
+                    size="sm"
+                    name="space_name"
+                    value={formData.type}
+                    data-testid="tipo-objeto"
                     onChange={handleChangeRegisterSpaces}
                   >
-                    <SelectItem key="activo">Activo</SelectItem>
-                    <SelectItem key="inactivo">Inactivo</SelectItem>
+                    <SelectItem key="sonido">Aditorio principal</SelectItem>
+                    <SelectItem key="proyeccion">Salon 101</SelectItem>
+                    <SelectItem key="mobiliario">Salon 202</SelectItem>
                   </Select>
-                </div>
-                <div className="w-full">
-                  <label className="pl-1" htmlFor="observaciones">
-                    Ingrese las observaciones
-                  </label>
-                  <Textarea
-                    id="observaciones"
-                    placeholder="Observaciones"
-                    className="mb-4"
-                    name="details"
-                    value={formData.details}
-                    onChange={handleChangeRegisterSpaces}
-                  />
                 </div>
               </div>
 
@@ -188,7 +191,7 @@ const ModalEspacios = () => {
                 )}
               </div>
               <Button color="primary" type="submit">
-                Crear espacio
+                Crear objeto
               </Button>
             </div>
           </div>
@@ -198,4 +201,4 @@ const ModalEspacios = () => {
   );
 };
 
-export default ModalEspacios;
+export default ModalInventario;

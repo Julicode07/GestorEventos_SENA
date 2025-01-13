@@ -20,6 +20,7 @@ import { PlusIcon } from "@modules/Admin/components/PlusIcon";
 import { VerticalDotsIcon } from "@modules/Admin/components/VerticalDotsIcon";
 import { SearchIcon } from "@modules/Admin/components/SearchIcon";
 import { ChevronDownIcon } from "@modules/Admin/components/ChevronDownIcon";
+import ModalInventario from "./ModalInventario";
 
 export const columns = [
   { name: "ID", uid: "id", sortable: true },
@@ -365,9 +366,7 @@ export default function App() {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Button color="primary" endContent={<PlusIcon />}>
-              Add New
-            </Button>
+            <ModalInventario />
           </div>
         </div>
         <div className="flex justify-between items-center">
