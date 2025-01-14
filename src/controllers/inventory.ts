@@ -7,17 +7,19 @@ export async function CreateSpaceInventoryController(
   res: Response
 ) {
   try {
-    const inventory = req.body;
-    const idSpace = inventory[0].id_space;
+    const inventory: ISpaceInventory[] = req.body;
+    const idSpace: number | undefined = inventory[0].id_space;
 
-    if (!idSpace) {
+    if (idSpace === undefined) {
       return res.status(400).json({ message: "Falta el id_space" });
     }
 
-    const inventoryData = inventory.slice(1).map((item: ISpaceInventory) => ({
-      ...item,
-      id_space: idSpace,
-    }));
+    const inventoryData: ISpaceInventory[] = inventory
+      .slice(1)
+      .map((item: ISpaceInventory) => ({
+        ...item,
+        id_space: idSpace,
+      }));
 
     const result = await Promise.all(
       inventoryData.map((item: ISpaceInventory) => createSpaceInventory(item))

@@ -20,7 +20,15 @@ InventoryRouter.post(
       }
 
       // Validar si el primer objeto tiene solo id_space
-      const firstItem = inventory[0];
+      const firstItem:
+        | {
+            id_space: string;
+            article_name?: string;
+            description?: string;
+            quantity?: number;
+            type?: string;
+          }
+        | undefined = inventory[0];
       if (
         firstItem &&
         !firstItem.article_name &&
