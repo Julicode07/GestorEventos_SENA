@@ -8,12 +8,23 @@ export async function CreateSpaceInventoryController(
 ) {
   try {
     const inventory = req.body;
+    const idSpace = inventory[0].id_space;
+
+    if (!idSpace) {
+      return res.status(400).json({ message: "Falta el id_space" });
+    }
+
+    const inventoryData = inventory.slice(1).map((item: ISpaceInventory) => ({
+      ...item,
+      id_space: idSpace,
+    }));
 
     const result = await Promise.all(
-      inventory.map((item: ISpaceInventory) => createSpaceInventory(item))
+      inventoryData.map((item: ISpaceInventory) => createSpaceInventory(item))
     );
+
     const successCount = result.filter((result) => result === 1).length;
-    return successCount === inventory.length
+    return successCount === inventoryData.length
       ? res
           .status(200)
           .end(JSON.stringify({ message: "Inventario creado correctamente" }))

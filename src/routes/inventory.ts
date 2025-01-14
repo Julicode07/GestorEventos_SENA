@@ -15,6 +15,7 @@ InventoryRouter.post(
         Array.isArray(inventory) &&
         inventory.every(
           (item) =>
+            databaseRegex.inventory.id_space.test(item.id_space) &&
             databaseRegex.inventory.article_name.test(item.article_name) &&
             databaseRegex.inventory.description.test(item.description) &&
             databaseRegex.inventory.quantity.test(item.quantity) &&
