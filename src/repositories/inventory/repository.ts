@@ -25,7 +25,7 @@ export async function createSpaceInventory(
     );
 
     await connection.commit();
-    console.log(`[inventory repository]: INVENTORY INSERTED SUCCESSFULLY.`);
+    console.log(`[ inventory repository] : INVENTORY INSERTED SUCCESSFULLY.`);
     return 1;
   } catch (err) {
     await connection.rollback();
