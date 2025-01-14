@@ -66,6 +66,9 @@ export default function App() {
   }, [visibleColumns]);
 
   const filteredItems = useMemo(() => {
+    if (!Array.isArray(showSpaces)) {
+      return []; // O un valor por defecto que prefieras
+    }
     let filterSpaces = [...showSpaces];
 
     if (hasSearchFilter) {

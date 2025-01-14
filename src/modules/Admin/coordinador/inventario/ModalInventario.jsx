@@ -1,5 +1,5 @@
 import { Input, Button, Select, SelectItem } from "@nextui-org/react";
-import { useState } from "react";
+import { useState, useCallback, useEffect } from "react";
 import useRegister from "../../../hooks/useRegister";
 import { PlusIcon } from "@modules/Admin/components/PlusIcon";
 
@@ -8,53 +8,87 @@ const ModalInventario = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const [formData, setFormData] = useState({
-    name: "",
-    capacity: "",
-    type: "",
-    status: "",
-    details: "",
-  });
+  const [formData, setFormData] = useState([
+    { id_space: "" },
+    {
+      article_name: "",
+      description: "",
+      quantity: "",
+      type: "",
+    },
+  ]);
+
+  const [spaceInfo, setSpaceInfo] = useState([]);
+
+  const getAllSpaces = useCallback(async () => {
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/spaces/all`
+    );
+    const data = await response.json();
+    setSpaceInfo(data);
+  }, []);
+
+  useEffect(() => {
+    getAllSpaces();
+  }, [getAllSpaces]);
+
   const [success, setSuccess] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const handleChangeRegisterSpaces = (e) => {
+  const handleChangeRegisterInventory = (e, index) => {
     const { name, value } = e.target;
+
     setFormData((prevData) => {
-      const newDataRegister = {
-        ...prevData,
+      const newDataRegister = [...prevData];
+      newDataRegister[index] = {
+        ...newDataRegister[index],
         [name]: value,
       };
       return newDataRegister;
     });
   };
 
-  const handleSubmitRegisterSpaces = async (e) => {
+  const handleSubmitRegisterInventory = async (e) => {
     e.preventDefault();
+
     try {
-      const { capacity, ...data } = formData;
-      const newDataToSend = {
-        ...data,
-        capacity: Number(capacity),
-      };
-      console.log(newDataToSend);
-      const result = await register(newDataToSend, "/api/spaces/new");
-      setSuccess("Espacio registrado con exito!");
+      const id_space = formData[0].id_space;
+      const newDataToSend = formData.slice(1).map((item) => ({
+        ...item,
+        quantity: Number(item.quantity),
+      }));
+
+      const dataToSend = [{ id_space: Number(id_space) }, ...newDataToSend];
+
+      console.log(dataToSend);
+      const result = await register(
+        dataToSend,
+        "/api/inventory/spacesInventory"
+      );
+
+      setSuccess("Inventario registrado con éxito!");
       setErrorMessage("");
-      console.log("Espacio registrado:", result);
-      setFormData({
-        name: "",
-        capacity: "",
-        type: "",
-        status: "",
-        details: "",
-      });
+      console.log("Inventario registrado:", result);
+
+      setFormData([
+        { id_space: "" },
+        { article_name: "", description: "", quantity: "", type: "" },
+      ]);
+      window.location.reload();
     } catch (error) {
-      setErrorMessage("Error al registrar el espacio");
-      console.error("Error registering user:", error);
+      setErrorMessage("Error al registrar el inventario");
+      console.error("Error registering inventory:", error);
       setSuccess("");
     }
   };
+
+  const handleAddItem = () => {
+    setFormData((prevData) => [
+      ...prevData,
+      { article_name: "", description: "", quantity: "", type: "" },
+    ]);
+  };
+
   return (
     <>
       <Button
@@ -65,7 +99,7 @@ const ModalInventario = () => {
         Añadir
       </Button>
       {isModalOpen && (
-        <form action="" onSubmit={handleSubmitRegisterSpaces}>
+        <form action="" onSubmit={handleSubmitRegisterInventory}>
           <div
             className="fixed inset-0 bg-black bg-opacity-30 flex justify-center items-center z-50 h-screen"
             onClick={() => setIsModalOpen(false)}
@@ -96,87 +130,108 @@ const ModalInventario = () => {
               </h2>
               <div className="w-full overflow-y-auto max-h-[50vh] px-2">
                 <div className="w-full">
-                  <label className="pl-1" htmlFor="nombre">
-                    Ingrese el nombre
+                  <label className="pl-1" htmlFor="space">
+                    Ingrese al espacio al que quiere asignar
                   </label>
-                  <Input
-                    id="nombre"
-                    className="w-full mb-4"
-                    placeholder="Nombre"
-                    name="name"
-                    onChange={handleChangeRegisterSpaces}
-                    value={formData.name}
-                  />
-                </div>
-                <div className="w-full">
-                  <label className="pl-1" htmlFor="descripcion">
-                    Ingrese la descripcion
-                  </label>
-                  <Input
-                    id="descripcion"
-                    className="w-full mb-4"
-                    placeholder="Descripcion"
-                    type="number"
-                    name="description"
-                    value={formData.capacity}
-                    onChange={handleChangeRegisterSpaces}
-                  />
-                </div>
-                <div className="w-full">
-                  <label className="pl-1" htmlFor="cantidad">
-                    Ingrese la cantidad
-                  </label>
-                  <Input
-                    id="cantidad"
-                    className="w-full mb-4"
-                    placeholder="Cantidad"
-                    type="number"
-                    name="quantity"
-                    value={formData.capacity}
-                    onChange={handleChangeRegisterSpaces}
-                  />
-                </div>
-                <div className="w-full mb-4">
-                  <label className="pl-1" htmlFor="tipo-objeto">
-                    Seleccione el tipo de objeto
-                  </label>
-
                   <Select
-                    id="tipo-objeto"
-                    label="Tipo de objeto"
-                    className=""
+                    id="space"
+                    label="Espacio"
                     size="sm"
-                    name="type"
-                    value={formData.type}
-                    data-testid="tipo-objeto"
-                    onChange={handleChangeRegisterSpaces}
+                    name="id_space"
+                    value={formData[0].id_space}
+                    data-testid="space"
+                    onChange={(e) => handleChangeRegisterInventory(e, 0)}
                   >
-                    <SelectItem key="sonido">Sonido</SelectItem>
-                    <SelectItem key="proyeccion">Proyección</SelectItem>
-                    <SelectItem key="mobiliario">Mobiliario</SelectItem>
+                    {spaceInfo.map((space) => (
+                      <SelectItem key={space.id_space}>{space.name}</SelectItem>
+                    ))}
                   </Select>
                 </div>
-                <div className="w-full mb-4">
-                  <label className="pl-1" htmlFor="nombre-espacio">
-                    Seleccione el espacio al que pertenece
-                  </label>
 
-                  <Select
-                    id="nombre-espacio"
-                    label="Nombre del espacio"
-                    className=""
-                    size="sm"
-                    name="space_name"
-                    value={formData.type}
-                    data-testid="tipo-objeto"
-                    onChange={handleChangeRegisterSpaces}
-                  >
-                    <SelectItem key="sonido">Aditorio principal</SelectItem>
-                    <SelectItem key="proyeccion">Salon 101</SelectItem>
-                    <SelectItem key="mobiliario">Salon 202</SelectItem>
-                  </Select>
-                </div>
+                {formData.slice(1).map((data, index) => (
+                  <div key={index + 1}>
+                    <div className="w-full">
+                      <label className="pl-1" htmlFor="nombre">
+                        Ingrese el nombre
+                      </label>
+                      <Input
+                        id="nombre"
+                        className="w-full mb-4"
+                        placeholder="Nombre"
+                        name="article_name"
+                        onChange={(e) =>
+                          handleChangeRegisterInventory(e, index + 1)
+                        }
+                        value={data.article_name}
+                      />
+                    </div>
+                    <div className="w-full">
+                      <label className="pl-1" htmlFor="descripcion">
+                        Ingrese la descripcion
+                      </label>
+                      <Input
+                        id="descripcion"
+                        className="w-full mb-4"
+                        placeholder="Descripcion"
+                        type="text"
+                        name="description"
+                        value={data.description}
+                        onChange={(e) =>
+                          handleChangeRegisterInventory(e, index + 1)
+                        }
+                      />
+                    </div>
+                    <div className="w-full">
+                      <label className="pl-1" htmlFor="cantidad">
+                        Ingrese la cantidad
+                      </label>
+                      <Input
+                        id="cantidad"
+                        className="w-full mb-4"
+                        placeholder="Cantidad"
+                        type="number"
+                        name="quantity"
+                        value={data.quantity}
+                        onChange={(e) =>
+                          handleChangeRegisterInventory(e, index + 1)
+                        }
+                      />
+                    </div>
+                    <div className="w-full mb-4">
+                      <label className="pl-1" htmlFor="tipo-objeto">
+                        Seleccione el tipo de objeto
+                      </label>
+
+                      <Select
+                        id="tipo-objeto"
+                        label="Tipo de objeto"
+                        className=""
+                        size="sm"
+                        name="type"
+                        value={data.type}
+                        data-testid="tipo-objeto"
+                        onChange={(e) =>
+                          handleChangeRegisterInventory(e, index + 1)
+                        }
+                      >
+                        <SelectItem key="sonido">Sonido</SelectItem>
+                        <SelectItem key="proyeccion">Proyección</SelectItem>
+                        <SelectItem key="mobiliario">Mobiliario</SelectItem>
+                      </Select>
+                    </div>
+                    <hr className="border-2 my-3"/>
+                  </div>
+                ))}
               </div>
+
+              <Button
+                color="secondary"
+                className="self-start"
+                onClick={handleAddItem}
+                endContent={<PlusIcon />}
+              >
+                Añadir más inventario {formData.slice(1).length}
+              </Button>
 
               <div className="my-2">
                 {success && (
@@ -191,7 +246,7 @@ const ModalInventario = () => {
                 )}
               </div>
               <Button color="primary" type="submit">
-                Crear objeto
+                Crear Inventario
               </Button>
             </div>
           </div>
