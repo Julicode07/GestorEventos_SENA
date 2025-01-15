@@ -1,6 +1,10 @@
-import { createSpaceInventory } from "../repositories/inventory/repository";
+import {
+  createSpaceInventory,
+  getSpaceInventory,
+} from "../repositories/inventory/repository";
 import { Request, Response } from "express";
 import { ISpaceInventory } from "../repositories/inventory/models";
+import { bigIntReplacer } from "../helpers/json.helper";
 
 export async function CreateSpaceInventoryController(
   req: Request,
@@ -35,6 +39,20 @@ export async function CreateSpaceInventoryController(
             message: "Error interno del servidor al crear el inventario",
           })
         );
+  } catch (err) {
+    return res
+      .status(500)
+      .end(JSON.stringify({ message: "Error interno del servidor :(" }));
+  }
+}
+
+export async function GetSpaceInventoryController(
+  _req: Request,
+  res: Response
+) {
+  try {
+    const spaceInventory = await getSpaceInventory();
+    return res.status(200).send(JSON.stringify(spaceInventory, bigIntReplacer));
   } catch (err) {
     return res
       .status(500)
