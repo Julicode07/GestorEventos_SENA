@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Table,
   TableHeader,
@@ -16,204 +16,19 @@ import {
   Breadcrumbs,
   BreadcrumbItem,
 } from "@nextui-org/react";
-import { PlusIcon } from "@modules/Admin/components/PlusIcon";
 import { VerticalDotsIcon } from "@modules/Admin/components/VerticalDotsIcon";
 import { SearchIcon } from "@modules/Admin/components/SearchIcon";
 import { ChevronDownIcon } from "@modules/Admin/components/ChevronDownIcon";
 import ModalInventario from "./ModalInventario";
 
 export const columns = [
-  { name: "ID", uid: "id", sortable: true },
-  { name: "NOMBRE", uid: "name", sortable: true },
-  { name: "DESCRIPCION", uid: "description" },
+  { name: "ID", uid: "id_inventory", sortable: true },
+  { name: "ESPACIO", uid: "name", sortable: true },
+  { name: "NOMBRE", uid: "article_name" },
+  { name: "DESCRIPCIÓN", uid: "description", sortable: true },
   { name: "CANTIDAD", uid: "quantity", sortable: true },
   { name: "TIPO", uid: "type", sortable: true },
-  { name: "ID_ESPACIO", uid: "space_id", sortable: true },
-  { name: "NOMBRE ESPACIO", uid: "space_name", sortable: true },
   { name: "ACTIONS", uid: "actions" },
-];
-
-export const users = [
-  {
-    id: 1,
-    name: "Micrófono",
-    description: "Micrófono inalámbrico",
-    quantity: 2,
-    type: "Sonido",
-    space_id: 101,
-    space_name: "Auditorio Principal",
-  },
-  {
-    id: 2,
-    name: "Proyector",
-    description: "Proyector Epson Full HD",
-    quantity: 1,
-    type: "Proyección",
-    space_id: 102,
-    space_name: "Salón 10",
-  },
-  {
-    id: 3,
-    name: "Silla",
-    description: "Silla plástica negra",
-    quantity: 50,
-    type: "Mobiliario",
-    space_id: 103,
-    space_name: "Salón de Conferencias",
-  },
-  {
-    id: 4,
-    name: "Mesa",
-    description: "Mesa rectangular blanca",
-    quantity: 10,
-    type: "Mobiliario",
-    space_id: 104,
-    space_name: "Sala de Reuniones",
-  },
-  {
-    id: 5,
-    name: "Parlante",
-    description: "Parlante JBL 100W",
-    quantity: 4,
-    type: "Sonido",
-    space_id: 105,
-    space_name: "Auditorio Principal",
-  },
-  {
-    id: 6,
-    name: "Pizarra",
-    description: "Pizarra acrílica",
-    quantity: 1,
-    type: "Escritura",
-    space_id: 102,
-    space_name: "Salón 10",
-  },
-  {
-    id: 7,
-    name: "Computador",
-    description: "Laptop Dell i7",
-    quantity: 3,
-    type: "Tecnología",
-    space_id: 106,
-    space_name: "Oficina 3",
-  },
-  {
-    id: 8,
-    name: "Control Remoto",
-    description: "Control para proyector",
-    quantity: 2,
-    type: "Accesorios",
-    space_id: 102,
-    space_name: "Salón 10",
-  },
-  {
-    id: 9,
-    name: "Micrófono de solapa",
-    description: "Micrófono para conferencias",
-    quantity: 3,
-    type: "Sonido",
-    space_id: 105,
-    space_name: "Auditorio Principal",
-  },
-  {
-    id: 10,
-    name: "Televisor",
-    description: "Televisor Samsung 55 pulgadas",
-    quantity: 1,
-    type: "Proyección",
-    space_id: 107,
-    space_name: "Sala VIP",
-  },
-  {
-    id: 11,
-    name: "Cámara",
-    description: "Cámara web Logitech HD",
-    quantity: 2,
-    type: "Grabación",
-    space_id: 106,
-    space_name: "Oficina 3",
-  },
-  {
-    id: 12,
-    name: "Cargador portátil",
-    description: "Cargador universal USB",
-    quantity: 5,
-    type: "Accesorios",
-    space_id: 108,
-    space_name: "Bodega 2",
-  },
-  {
-    id: 13,
-    name: "Lámpara",
-    description: "Lámpara LED de escritorio",
-    quantity: 4,
-    type: "Iluminación",
-    space_id: 106,
-    space_name: "Oficina 3",
-  },
-  {
-    id: 14,
-    name: "Extensión eléctrica",
-    description: "Extensión de 6 tomas",
-    quantity: 6,
-    type: "Accesorios",
-    space_id: 103,
-    space_name: "Salón de Conferencias",
-  },
-  {
-    id: 15,
-    name: "Atril",
-    description: "Atril de madera",
-    quantity: 1,
-    type: "Mobiliario",
-    space_id: 105,
-    space_name: "Auditorio Principal",
-  },
-  {
-    id: 16,
-    name: "Router",
-    description: "Router WiFi TP-Link",
-    quantity: 1,
-    type: "Tecnología",
-    space_id: 108,
-    space_name: "Bodega 2",
-  },
-  {
-    id: 17,
-    name: "Monitor",
-    description: "Monitor LG 24 pulgadas",
-    quantity: 3,
-    type: "Tecnología",
-    space_id: 106,
-    space_name: "Oficina 3",
-  },
-  {
-    id: 18,
-    name: "Equipo de sonido",
-    description: "Sistema de sonido Bose",
-    quantity: 1,
-    type: "Sonido",
-    space_id: 105,
-    space_name: "Auditorio Principal",
-  },
-  {
-    id: 19,
-    name: "Tóner de impresora",
-    description: "Tóner negro HP",
-    quantity: 5,
-    type: "Accesorios",
-    space_id: 109,
-    space_name: "Sala de Impresión",
-  },
-  {
-    id: 20,
-    name: "Panel LED",
-    description: "Panel LED para iluminación",
-    quantity: 8,
-    type: "Iluminación",
-    space_id: 105,
-    space_name: "Auditorio Principal",
-  },
 ];
 
 export function capitalize(s) {
@@ -221,13 +36,12 @@ export function capitalize(s) {
 }
 
 const INITIAL_VISIBLE_COLUMNS = [
-  "id",
+  "id_inventory",
   "name",
+  "article_name",
   "description",
   "quantity",
   "type",
-  "space_id",
-  "space_name",
   "actions",
 ];
 
@@ -243,6 +57,23 @@ export default function App() {
   });
   const [page, setPage] = React.useState(1);
 
+  //get inventory
+  const [inventory, setInventory] = useState([]);
+
+  const getInventory = useCallback(async () => {
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/inventory/all`
+    );
+    const data = await response.json();
+    setInventory(data);
+  }, []);
+
+  useEffect(() => {
+    getInventory();
+  }, [getInventory]);
+
+  //
+
   const hasSearchFilter = Boolean(filterValue);
 
   const headerColumns = React.useMemo(() => {
@@ -254,7 +85,7 @@ export default function App() {
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
-    let filteredUsers = [...users];
+    let filteredUsers = [...inventory];
 
     if (hasSearchFilter) {
       filteredUsers = filteredUsers.filter((user) =>
@@ -262,7 +93,7 @@ export default function App() {
       );
     }
     return filteredUsers;
-  }, [filterValue, hasSearchFilter]);
+  }, [filterValue, hasSearchFilter, inventory]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -371,7 +202,7 @@ export default function App() {
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
-            Total {users.length} resultados
+            Total {inventory.length} resultados
           </span>
           <label className="flex items-center text-default-400 text-small">
             Filas por página:
@@ -395,6 +226,7 @@ export default function App() {
     onSearchChange,
     rowsPerPage,
     visibleColumns,
+    inventory.length,
   ]);
 
   const bottomContent = React.useMemo(() => {
@@ -447,9 +279,9 @@ export default function App() {
               </TableColumn>
             )}
           </TableHeader>
-          <TableBody emptyContent={"No users found"} items={sortedItems}>
+          <TableBody emptyContent={"No inventory found"} items={sortedItems}>
             {(item) => (
-              <TableRow key={item.id}>
+              <TableRow key={item.id_inventory}>
                 {(columnKey) => (
                   <TableCell>{renderCell(item, columnKey)}</TableCell>
                 )}

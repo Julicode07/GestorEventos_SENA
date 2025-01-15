@@ -61,10 +61,7 @@ const ModalInventario = () => {
       const dataToSend = [{ id_space: Number(id_space) }, ...newDataToSend];
 
       console.log(dataToSend);
-      const result = await register(
-        dataToSend,
-        "/api/inventory/spacesInventory"
-      );
+      const result = await register(dataToSend, "/api/inventory/create");
 
       setSuccess("Inventario registrado con éxito!");
       setErrorMessage("");
@@ -150,6 +147,9 @@ const ModalInventario = () => {
 
                 {formData.slice(1).map((data, index) => (
                   <div key={index + 1}>
+                    <h2 className="font-bold text-xl text-center mt-5">
+                      Item {index + 1}
+                    </h2>
                     <div className="w-full">
                       <label className="pl-1" htmlFor="nombre">
                         Ingrese el nombre
@@ -219,14 +219,14 @@ const ModalInventario = () => {
                         <SelectItem key="mobiliario">Mobiliario</SelectItem>
                       </Select>
                     </div>
-                    <hr className="border-2 my-3"/>
+                    <hr className="border-2 my-3" />
                   </div>
                 ))}
               </div>
 
               <Button
                 color="secondary"
-                className="self-start"
+                className="self-start mt-4"
                 onClick={handleAddItem}
                 endContent={<PlusIcon />}
               >

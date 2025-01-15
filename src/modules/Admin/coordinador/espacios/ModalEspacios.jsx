@@ -49,6 +49,7 @@ const ModalEspacios = () => {
         status: "",
         details: "",
       });
+      window.location.reload();
     } catch (error) {
       setErrorMessage("Error al registrar el espacio");
       console.error("Error registering user:", error);

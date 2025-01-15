@@ -7,8 +7,6 @@ const useRegister = () => {
     setError(null);
 
     try {
-      // const validation =
-      //   endpoint !== "/api/inventory/spacesInventory" ? data : [data];
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}${endpoint}`,
         {
