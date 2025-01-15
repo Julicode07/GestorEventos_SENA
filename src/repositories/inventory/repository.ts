@@ -44,9 +44,12 @@ export async function getSpaceInventory(): Promise<number> {
   try {
     const result = await connection.query(`
       SELECT 
-          *
+          space_inventory.*,
+          space.name AS space_name
       FROM
-          spaces`);
+          space_inventory
+          INNER JOIN spaces 
+          ON space_inventory.id_space = spaces.id_space`);
     return result.length == 0 ? [] : result;
   } catch (err) {
     console.log(`[inventory repository]: ERROR GETTING INVENTORY: ${err}`);
