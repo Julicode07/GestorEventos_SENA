@@ -1,9 +1,4 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Input,
   Button,
@@ -20,6 +15,8 @@ import { SearchIcon } from "../../components/SearchIcon";
 import { ChevronDownIcon } from "../../components/ChevronDownIcon";
 import { columns, INITIAL_VISIBLE_COLUMNS, statusOptions } from "./utils";
 import { capitalize } from "../../utils/utils";
+import ModalInventario from "../inventario/ModalInventario.jsx";
+import { Link } from "react-router-dom";
 const ModalEspacios = React.lazy(() => import("./ModalEspacios.jsx"));
 const TableShowData = React.lazy(() =>
   import("./../../components/TableShowData.jsx")
@@ -48,7 +45,7 @@ export default function App() {
   const [selectedKeys, setSelectedKeys] = useState(new Set([]));
   const [visibleColumns] = useState(new Set(INITIAL_VISIBLE_COLUMNS));
   const [statusFilter, setStatusFilter] = useState("all");
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(15);
   const [sortDescriptor, setSortDescriptor] = useState({
     column: "age",
     direction: "ascending",
@@ -141,6 +138,13 @@ export default function App() {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
+                <DropdownItem className="text-white bg-secondary">
+                  <Link
+                    to={`/admin/coordinador/inventario/espacio/${space.id_space}`}
+                  >
+                    Inventario <i className="ri-list-check"></i>
+                  </Link>
+                </DropdownItem>
                 <DropdownItem>View</DropdownItem>
                 <DropdownItem>Edit</DropdownItem>
                 <DropdownItem>Delete</DropdownItem>
@@ -210,6 +214,7 @@ export default function App() {
               </DropdownMenu>
             </Dropdown>
             <ModalEspacios />
+            <ModalInventario />
           </div>
         </div>
         <div className="flex justify-between items-center">

@@ -45,7 +45,7 @@ function Coordinador() {
               <Route path="/solicitudes" element={<Solicitudes />} />
               <Route path="/eventos" element={<Eventos />} />
               <Route path="/eventos/:id" element={<InfoEvento />} />
-              <Route path="/inventario" element={<Inventario />} />
+              <Route path="/inventario/espacio/:id" element={<Inventario />} />
               <Route path="/insumos" element={<Insumos />} />
               <Route path="/organizadores" element={<Organizadores />} />
               <Route path="/usuarios" element={<Usuarios />} />

@@ -89,11 +89,11 @@ const ModalInventario = () => {
   return (
     <>
       <Button
-        color="primary"
+        color="secondary"
         onClick={() => setIsModalOpen(true)}
         endContent={<PlusIcon />}
       >
-        Añadir
+        Añadir Inventario
       </Button>
       {isModalOpen && (
         <form action="" onSubmit={handleSubmitRegisterInventory}>

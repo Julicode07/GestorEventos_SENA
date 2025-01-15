@@ -19,7 +19,7 @@ import {
 import { VerticalDotsIcon } from "@modules/Admin/components/VerticalDotsIcon";
 import { SearchIcon } from "@modules/Admin/components/SearchIcon";
 import { ChevronDownIcon } from "@modules/Admin/components/ChevronDownIcon";
-import ModalInventario from "./ModalInventario";
+import { useParams } from "react-router-dom";
 
 export const columns = [
   { name: "ID", uid: "id_inventory", sortable: true },
@@ -46,11 +46,12 @@ const INITIAL_VISIBLE_COLUMNS = [
 ];
 
 export default function App() {
+  const { id } = useParams();
   const [filterValue, setFilterValue] = React.useState("");
   const [visibleColumns, setVisibleColumns] = React.useState(
     new Set(INITIAL_VISIBLE_COLUMNS)
   );
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(15);
   const [sortDescriptor, setSortDescriptor] = React.useState({
     column: "age",
     direction: "ascending",
@@ -62,11 +63,11 @@ export default function App() {
 
   const getInventory = useCallback(async () => {
     const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/inventory/all`
+      `${import.meta.env.VITE_API_URL}/api/inventory/space/${id}`
     );
     const data = await response.json();
     setInventory(data);
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     getInventory();
@@ -197,7 +198,6 @@ export default function App() {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <ModalInventario />
           </div>
         </div>
         <div className="flex justify-between items-center">
@@ -248,9 +248,11 @@ export default function App() {
     <main className="flex flex-col gap-2">
       <div>
         <Breadcrumbs>
-          <BreadcrumbItem href=""> </BreadcrumbItem>
-          <BreadcrumbItem href="/admin/coordinador/inventario">
-            Inventario
+          <BreadcrumbItem href="/admin/coordinador/espacios">
+            Espacios
+          </BreadcrumbItem>
+          <BreadcrumbItem href="/admin/coordinador/inventario/espacio/1">
+            Inventario del espacio {id}
           </BreadcrumbItem>
         </Breadcrumbs>
       </div>

@@ -128,7 +128,7 @@ const NavSideBar = () => {
             <ItemsList
               to={"/admin/coordinador/espacios"}
               logo="ri-road-map-fill flex w-5 h-5 text-xl justify-center items-center text-primary transition duration-75 group-hover:text-gray-600"
-              title="Espacios"
+              title="Espacios e Inventario"
             />
             <ItemsList
               to={"/admin/coordinador/solicitudes/"}
@@ -143,11 +143,6 @@ const NavSideBar = () => {
               to={"/admin/coordinador/eventos/"}
               logo="ri-inbox-2-fill flex w-5 h-5 text-xl justify-center items-center text-primary transition duration-75 group-hover:text-gray-600"
               title="Eventos"
-            />
-            <ItemsList
-              to={"/admin/coordinador/inventario"}
-              logo="ri-pencil-ruler-fill flex w-5 h-5 text-xl justify-center items-center text-primary transition duration-75 group-hover:text-gray-600"
-              title="Inventario"
             />
             <ItemsList
               to={"/admin/coordinador/insumos"}
