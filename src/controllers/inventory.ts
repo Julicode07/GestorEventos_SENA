@@ -1,6 +1,6 @@
 import {
   createSpaceInventory,
-  getSpaceInventory,
+  getSpaceInventoryById,
 } from "../repositories/inventory/repository";
 import { Request, Response } from "express";
 import { ISpaceInventory } from "../repositories/inventory/models";
@@ -46,12 +46,13 @@ export async function CreateSpaceInventoryController(
   }
 }
 
-export async function GetSpaceInventoryController(
-  _req: Request,
+export async function GetSpaceInventoryByIdController(
+  req: Request,
   res: Response
 ) {
   try {
-    const spaceInventory = await getSpaceInventory();
+    const { id_space } = req.params;
+    const spaceInventory = await getSpaceInventoryById(Number(id_space));
     return res.status(200).send(JSON.stringify(spaceInventory, bigIntReplacer));
   } catch (err) {
     return res

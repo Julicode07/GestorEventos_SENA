@@ -1,6 +1,6 @@
 import {
   CreateSpaceInventoryController,
-  GetSpaceInventoryController,
+  GetSpaceInventoryByIdController,
 } from "../controllers/inventory";
 import express, { Express, Request, Response } from "express";
 import { databaseRegex } from "../helpers/regex.helper";
@@ -99,9 +99,9 @@ InventoryRouter.post("/create", async (req: Request, res: Response) => {
   }
 });
 
-InventoryRouter.get("/all", async (req: Request, res: Response) => {
+InventoryRouter.get("/space/:id_space", async (req: Request, res: Response) => {
   try {
-    return GetSpaceInventoryController(req, res);
+    return GetSpaceInventoryByIdController(req, res);
   } catch (err) {
     return res
       .status(500)
