@@ -47,3 +47,39 @@ export async function getSpaces(): Promise<number> {
     connection.release();
   }
 }
+
+export async function updateSpaceById(
+  id_space: number,
+  spaceData: ISpace
+): Promise<Number> {
+  const connection: PoolConnection = await getConnection(pool);
+  try {
+    const result = await connection.query(
+      `
+      UPDATE
+          spaces
+      SET 
+          name = IFNULL(?, name), 
+          capacity = IFNULL(?, capacity), 
+          type = IFNULL(?, type), 
+          status = IFNULL(?, status), 
+          details = IFNULL(?, details)
+      WHERE id_space = ?`,
+      [
+        spaceData.name,
+        spaceData.capacity,
+        spaceData.type,
+        spaceData.status,
+        spaceData.details,
+        spaceData.id_space,
+      ]
+    );
+    if (result.affectedRows > 0) return 1;
+    else throw new Error(`Could not update space ${id_space}`);
+  } catch (err) {
+    console.error(`[space repository]: ${err}`);
+    return -1;
+  } finally {
+    connection.release();
+  }
+}

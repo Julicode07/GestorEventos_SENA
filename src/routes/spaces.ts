@@ -4,6 +4,7 @@ import { isInstructor } from "../middlewares/auth";
 import {
   CreateSpaceController,
   GetSpacesController,
+  updateSpaceByIdController,
 } from "../controllers/spaces";
 
 const SpacesRouter: Express = express();
@@ -30,6 +31,16 @@ SpacesRouter.post("/new", async (req: Request, res: Response) => {
 SpacesRouter.get("/all", async (req: Request, res: Response) => {
   try {
     return GetSpacesController(req, res);
+  } catch (err) {
+    return res
+      .status(500)
+      .end(JSON.stringify({ message: "Error interno del servidor :(" }));
+  }
+});
+
+SpacesRouter.patch("/update/:id", async (req: Request, res: Response) => {
+  try {
+    return updateSpaceByIdController(req, res);
   } catch (err) {
     return res
       .status(500)
