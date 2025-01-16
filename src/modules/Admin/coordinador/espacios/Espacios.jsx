@@ -17,6 +17,7 @@ import { columns, INITIAL_VISIBLE_COLUMNS, statusOptions } from "./utils";
 import { capitalize } from "../../utils/utils";
 import ModalInventario from "../inventario/ModalInventario.jsx";
 import { Link } from "react-router-dom";
+import ModalEspaciosActualizar from "./ModalEspaciosActualizar.jsx";
 const ModalEspacios = React.lazy(() => import("./ModalEspacios.jsx"));
 const TableShowData = React.lazy(() =>
   import("./../../components/TableShowData.jsx")
@@ -147,7 +148,9 @@ export default function App() {
                 </DropdownItem>
                 <DropdownItem>View</DropdownItem>
                 <DropdownItem>Edit</DropdownItem>
-                <DropdownItem>Delete</DropdownItem>
+                <DropdownItem>
+                  <ModalEspaciosActualizar />
+                </DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </div>
