@@ -1,6 +1,7 @@
 import {
   createGlobalEvent,
   findAllGlobalEvents,
+  updateGlobalEventById,
 } from "../repositories/events/repository";
 import { findUserByDocument } from "../repositories/users/repository";
 import { Request, Response } from "express";
@@ -27,13 +28,11 @@ export async function CreateGlobalEventController(req: Request, res: Response) {
         ? res
             .status(200)
             .end(JSON.stringify({ message: "Evento creado correctamente" }))
-        : res
-            .status(500)
-            .end(
-              JSON.stringify({
-                message: "Error interno del servidor al crear el evento",
-              })
-            );
+        : res.status(500).end(
+            JSON.stringify({
+              message: "Error interno del servidor al crear el evento",
+            })
+          );
     }
   } catch (err) {
     return res
@@ -50,5 +49,25 @@ export async function GetGlobalEventsController(req: Request, res: Response) {
     return res
       .status(500)
       .end(JSON.stringify({ message: "Error interno del servidor :(" }));
+  }
+}
+
+export async function updateGlobalEventsByIdController(
+  req: Request,
+  res: Response
+) {
+  try {
+    const { id } = req.params;
+    const globalEvents = await updateGlobalEventById(Number(id), req.body);
+    return res.status(200).send(
+      JSON.stringify({
+        message: `Se actualizo el evento global ${id}`,
+        data: globalEvents,
+      })
+    );
+  } catch (err) {
+    return res
+      .status(500)
+      .end(JSON.stringify({ message: "Error interno del servidor" }));
   }
 }

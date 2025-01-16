@@ -71,7 +71,7 @@ export async function updateSpaceById(
         spaceData.type,
         spaceData.status,
         spaceData.details,
-        spaceData.id_space,
+        id_space,
       ]
     );
     if (result.affectedRows > 0) return 1;

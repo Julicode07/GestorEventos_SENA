@@ -45,11 +45,11 @@ export async function GetSpacesController(_req: Request, res: Response) {
 
 export async function updateSpaceByIdController(req: Request, res: Response) {
   try {
-    const { id_space } = req.params;
-    const space = await updateSpaceById(Number(id_space), req.body);
+    const { id } = req.params;
+    const space = await updateSpaceById(Number(id), req.body);
     return res.status(200).send(
       JSON.stringify({
-        message: `Se actualizo el espacio ${id_space}`,
+        message: `Se actualizo el espacio ${id}`,
         data: space,
       })
     );

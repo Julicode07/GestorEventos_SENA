@@ -1,16 +1,18 @@
 import {
   CreateSpaceInventoryController,
   GetSpaceInventoryByIdController,
+  updateSpaceInventoryByIdController,
 } from "../controllers/inventory";
 import express, { Express, Request, Response } from "express";
 import { databaseRegex } from "../helpers/regex.helper";
+import { ISpaceInventory } from "../repositories/inventory/models";
 
 const InventoryRouter: Express = express();
 
 // Crear nuevo inventario en el endpoint.
 InventoryRouter.post("/create", async (req: Request, res: Response) => {
   try {
-    const inventory = req.body;
+    const inventory: ISpaceInventory = req.body;
 
     // Verificar si el cuerpo de la solicitud es un array
     if (!Array.isArray(inventory)) {
@@ -108,5 +110,18 @@ InventoryRouter.get("/space/:id_space", async (req: Request, res: Response) => {
       .end(JSON.stringify({ message: "Error interno del servidor : (" }));
   }
 });
+
+InventoryRouter.patch(
+  "/update/space/:id",
+  async (req: Request, res: Response) => {
+    try {
+      return updateSpaceInventoryByIdController(req, res);
+    } catch (err) {
+      return res
+        .status(500)
+        .end(JSON.stringify({ message: "Error interno del servidor :(" }));
+    }
+  }
+);
 
 export default InventoryRouter;
