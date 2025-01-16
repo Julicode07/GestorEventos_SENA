@@ -42,6 +42,7 @@ export default function App() {
     fetchData();
   }, [getAllSpaces]);
 
+  const [updateModalSpace, setUpdateModalSpace] = useState(false);
   const [filterValue, setFilterValue] = useState("");
   const [selectedKeys, setSelectedKeys] = useState(new Set([]));
   const [visibleColumns] = useState(new Set(INITIAL_VISIBLE_COLUMNS));
@@ -104,61 +105,66 @@ export default function App() {
     });
   }, [sortDescriptor, items]);
 
-  const renderCell = useCallback((space, columnKey) => {
-    const cellValue = space[columnKey];
-    switch (columnKey) {
-      case "id_space":
-        return <div className="text-small">{cellValue}</div>;
-      case "name":
-        return <div className="text-small">{cellValue}</div>;
-      case "capacity":
-        return <div className="text-small">{cellValue}</div>;
-      case "type":
-        return <div className="text-small">{cellValue}</div>;
-      case "status":
-        return (
-          <div
-            className={`${
-              cellValue === "activo"
-                ? "text-green-700 bg-green-200"
-                : "text-red-700 bg-red-200"
-            } capitalize text-center px-2 py-0.5 text-xs rounded-lg w-fit`}
-          >
-            {cellValue}
-          </div>
-        );
-      case "details":
-        return <div className="text-small">{cellValue}</div>;
-      case "actions":
-        return (
-          <div className="relative flex justify-end items-center gap-2">
-            <Dropdown>
-              <DropdownTrigger>
-                <Button isIconOnly size="sm" variant="light">
-                  <VerticalDotsIcon className="text-default-300" />
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu>
-                <DropdownItem className="text-white bg-secondary">
-                  <Link
-                    to={`/admin/coordinador/inventario/espacio/${space.id_space}`}
+  const renderCell = useCallback(
+    (space, columnKey) => {
+      const cellValue = space[columnKey];
+      switch (columnKey) {
+        case "id_space":
+          return <div className="text-small">{cellValue}</div>;
+        case "name":
+          return <div className="text-small">{cellValue}</div>;
+        case "capacity":
+          return <div className="text-small">{cellValue}</div>;
+        case "type":
+          return <div className="text-small">{cellValue}</div>;
+        case "status":
+          return (
+            <div
+              className={`${
+                cellValue === "activo"
+                  ? "text-green-700 bg-green-200"
+                  : "text-red-700 bg-red-200"
+              } capitalize text-center px-2 py-0.5 text-xs rounded-lg w-fit`}
+            >
+              {cellValue}
+            </div>
+          );
+        case "details":
+          return <div className="text-small">{cellValue}</div>;
+        case "actions":
+          return (
+            <div className="relative flex justify-end items-center gap-2">
+              <Dropdown>
+                <DropdownTrigger>
+                  <Button isIconOnly size="sm" variant="light">
+                    <VerticalDotsIcon className="text-default-300" />
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu>
+                  <DropdownItem className="text-white bg-secondary">
+                    <Link
+                      to={`/admin/coordinador/inventario/espacio/${space.id_space}`}
+                    >
+                      Inventario <i className="ri-list-check"></i>
+                    </Link>
+                  </DropdownItem>
+                  <DropdownItem>View</DropdownItem>
+                  <DropdownItem
+                    className="bg-primary text-white"
+                    onClick={() => setUpdateModalSpace(!updateModalSpace)}
                   >
-                    Inventario <i className="ri-list-check"></i>
-                  </Link>
-                </DropdownItem>
-                <DropdownItem>View</DropdownItem>
-                <DropdownItem>Edit</DropdownItem>
-                <DropdownItem>
-                  <ModalEspaciosActualizar />
-                </DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-          </div>
-        );
-      default:
-        return cellValue;
-    }
-  }, []);
+                    Actualizar
+                  </DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            </div>
+          );
+        default:
+          return cellValue;
+      }
+    },
+    [updateModalSpace]
+  );
 
   const onRowsPerPageChange = useCallback((e) => {
     setRowsPerPage(Number(e.target.value));
@@ -218,6 +224,10 @@ export default function App() {
             </Dropdown>
             <ModalEspacios />
             <ModalInventario />
+            <ModalEspaciosActualizar
+              isOpen={updateModalSpace}
+              setIsOpen={setUpdateModalSpace}
+            />
           </div>
         </div>
         <div className="flex justify-between items-center">
@@ -247,6 +257,7 @@ export default function App() {
     rowsPerPage,
     showSpaces.length,
     statusFilter,
+    updateModalSpace,
   ]);
 
   const bottomContent = useMemo(() => {

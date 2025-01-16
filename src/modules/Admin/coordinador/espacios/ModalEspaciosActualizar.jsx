@@ -3,36 +3,28 @@ import { useState } from "react";
 import useRegister from "../../../hooks/useRegister";
 import { PlusIcon } from "@modules/Admin/components/PlusIcon";
 
-const ModalEspaciosActualizar = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+const ModalEspaciosActualizar = ({ isOpen, setIsOpen }) => {
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   return (
     <>
-      <Button
-        color="primary"
-        onClick={() => setIsModalOpen(true)}
-        endContent={<PlusIcon />}
-      >
-        Actualizar
-      </Button>
-      {isModalOpen && (
+      {isOpen && (
         <form action="">
           <div
             className="fixed inset-0 bg-black bg-opacity-30 flex justify-center items-center z-50 h-screen"
-            onClick={() => setIsModalOpen(false)}
+            onClick={() => setIsOpen(false)}
           >
             <div
               className={`bg-white border border-gray-300 shadow-2xl p-8 rounded-2xl w-4/5 max-w-2xl flex flex-col items-center relative transition-transform transform ${
-                isModalOpen ? "scale-100 opacity-100" : "scale-95 opacity-0"
+                isOpen ? "scale-100 opacity-100" : "scale-95 opacity-0"
               } transition-all duration-300 ease-out`}
               onClick={(e) => e.stopPropagation()}
               style={{ maxHeight: "90vh" }}
             >
               <button
                 className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
-                onClick={() => setIsModalOpen(false)}
+                onClick={() => setIsOpen(false)}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
