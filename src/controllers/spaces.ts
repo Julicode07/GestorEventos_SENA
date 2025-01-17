@@ -35,13 +35,7 @@ export async function CreateSpaceController(req: Request, res: Response) {
 export async function GetSpacesController(_req: Request, res: Response) {
   try {
     const spaces = await getSpaces();
-    return spaces == 1
-      ? res.status(200).send(JSON.stringify(spaces, bigIntReplacer))
-      : res.status(400).end(
-          JSON.stringify({
-            message: "No se pudo obtener los datos",
-          })
-        );
+    return res.status(200).send(JSON.stringify(spaces, bigIntReplacer));
   } catch (err) {
     return res
       .status(500)
