@@ -1,46 +1,31 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
   Input,
   Button,
-  Tooltip,
   DropdownTrigger,
   Dropdown,
   DropdownMenu,
   DropdownItem,
-  Chip,
-  User,
   Pagination,
+  BreadcrumbItem,
+  Breadcrumbs,
 } from "@nextui-org/react";
 import { SearchIcon } from "@/modules/Admin/components/SearchIcon";
 import { ChevronDownIcon } from "@/modules/Admin/components/ChevronDownIcon";
-import { columns, events, statusOptions } from "@modules/Admin/utils/data";
-import { EyeIcon } from "@/modules/Admin/components/EyeIcon";
+import { columns, INITIAL_VISIBLE_COLUMNS, statusOptions } from "./utils.js";
+import { capitalize } from "../../utils/utils";
+import { VerticalDotsIcon } from "../../components/VerticalDotsIcon";
 import ModalEventos from "./ModalEventos";
-const statusColorMap = {
-  Aceptado: "success",
-  Pendiente: "warning",
-  Rechazado: "secondary",
-  Finalizado: "danger",
-};
-
-const INITIAL_VISIBLE_COLUMNS = [
-  "name",
-  "event",
-  "startDate",
-  "endDate",
-  "status",
-  "actions",
-];
+import ModalEventosActualizar from "./ModalEventosActualizar.jsx";
+const TableShowData = React.lazy(() =>
+  import("./../../components/TableShowData.jsx")
+);
 
 export default function Eventos() {
   const [filterValue, setFilterValue] = useState("");
   const [visibleColumns] = useState(new Set(INITIAL_VISIBLE_COLUMNS));
+  const [selectedKeys, setSelectedKeys] = useState(new Set([]));
+
   const [statusFilter, setStatusFilter] = useState("all");
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [sortDescriptor, setSortDescriptor] = useState({
@@ -51,8 +36,25 @@ export default function Eventos() {
 
   const hasSearchFilter = Boolean(filterValue);
 
-  // Register a global event
+  // Show global event
+  const [showGlobalEvent, setShowGlobalEvent] = useState([]);
 
+  const getGlobalEvents = useCallback(async () => {
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/events/global/all`
+    );
+    const data = await response.json();
+    setShowGlobalEvent(data);
+  }, []);
+
+  useEffect(() => {
+    getGlobalEvents();
+  }, [getGlobalEvents]);
+  //
+
+  // actualizar modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [idEvent, setIdEvent] = useState("");
   //
 
   const headerColumns = React.useMemo(() => {
@@ -64,7 +66,7 @@ export default function Eventos() {
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
-    let filteredEvents = [...events];
+    let filteredEvents = [...showGlobalEvent];
 
     if (hasSearchFilter) {
       filteredEvents = filteredEvents.filter(
@@ -86,7 +88,7 @@ export default function Eventos() {
     }
 
     return filteredEvents;
-  }, [events, filterValue, statusFilter]);
+  }, [filterValue, statusFilter, hasSearchFilter, showGlobalEvent]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -111,47 +113,48 @@ export default function Eventos() {
     const cellValue = event[columnKey];
 
     switch (columnKey) {
-      case "name":
+      case "id_host_user":
         return (
-          <User
-            avatarProps={{ radius: "lg", src: event.user.avatar }}
-            name={event.user.name}
-            description={event.user.email}
-          ></User>
+          <div className="flex flex-col">
+            <p className="text-bold text-small capitalize">{event.id_user}</p>
+          </div>
         );
-      case "event":
+      case "name":
         return (
           <div className="flex flex-col">
             <p className="text-bold text-small capitalize">{event.name}</p>
           </div>
         );
-      case "status":
+      case "details":
         return (
-          <Chip
-            className="capitalize"
-            color={statusColorMap[event.status]}
-            size="sm"
-            variant="flat"
-          >
-            {cellValue}
-          </Chip>
+          <div className="flex flex-col">
+            <p className="text-bold text-small capitalize">{event.details}</p>
+          </div>
         );
       case "actions":
         return (
-          <div className="relative flex justify-center items-center gap-2">
-            <Tooltip
-              content="Ver información"
-              className="bg-secondary text-white"
-            >
-              <Button
-                href={`/admin/instructor/eventos/${event.id}`}
-                as="a"
-                isIconOnly
-                className="bg-green-700 hover:bg-green-800"
-              >
-                <EyeIcon className="w-6 h-6 text-white " />
-              </Button>
-            </Tooltip>
+          <div className="relative flex justify-end items-center gap-2">
+            <Dropdown>
+              <DropdownTrigger>
+                <Button isIconOnly size="sm" variant="light">
+                  <VerticalDotsIcon className="text-default-300" />
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu>
+                <DropdownItem>
+                  <Button
+                    className="bg-primary hover:bg-primary/100 text-white"
+                    onClick={() => {
+                      setIsModalOpen(true);
+                      setIdEvent(event.id_global_event);
+                    }}
+                  >
+                    Actualizar Evento
+                  </Button>
+                </DropdownItem>
+                <DropdownItem>View</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
           </div>
         );
       default:
@@ -178,113 +181,128 @@ export default function Eventos() {
     setPage(1);
   }, []);
 
-  return (
-    <div className="flex flex-col gap-4">
-      <div className="flex justify-between gap-3 items-end">
-        <Input
-          isClearable
-          className="w-full sm:max-w-[44%]"
-          placeholder="Buscar usuario, evento o espacio..."
-          startContent={<SearchIcon />}
-          value={filterValue}
-          onClear={() => onClear()}
-          onValueChange={onSearchChange}
-        />
-        <div className="flex items-center gap-2 md:gap-3">
-          <span className="hidden sm:flex font-bold text-default-800">
-            Filtros:
-          </span>
-          <Dropdown className="hidden sm:flex">
-            <DropdownTrigger className="hidden sm:flex">
-              <Button
-                endContent={<ChevronDownIcon className="text-small" />}
-                variant="flat"
+  const handleStatusSelectionChange = (keys) => {
+    const selected = Array.from(keys)[0];
+    setStatusFilter(selected || "all");
+  };
+
+  const topContent = useMemo(() => {
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="flex justify-between gap-3 items-end">
+          <Input
+            isClearable
+            className="w-full sm:max-w-[44%]"
+            placeholder="Buscar espacios"
+            startContent={<SearchIcon />}
+            value={filterValue}
+            onClear={() => onClear()}
+            onValueChange={onSearchChange}
+          />
+          <div className="flex gap-3">
+            <Dropdown>
+              <DropdownTrigger className="hidden sm:flex">
+                <Button
+                  endContent={<ChevronDownIcon className="text-small" />}
+                  variant="flat"
+                >
+                  Estado
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu
+                disallowEmptySelection
+                aria-label="Table Columns"
+                closeOnSelect={true}
+                selectedKeys={new Set([statusFilter])}
+                selectionMode="single"
+                onSelectionChange={handleStatusSelectionChange}
               >
-                Estado
-              </Button>
-            </DropdownTrigger>
-            <DropdownMenu
-              disallowEmptySelection
-              aria-label="Table Columns"
-              closeOnSelect={false}
-              selectedKeys={statusFilter}
-              selectionMode="multiple"
-              onSelectionChange={setStatusFilter}
-            >
-              {statusOptions.map((status) => (
-                <DropdownItem key={status.uid} className="capitalize">
-                  {status.name}
+                <DropdownItem key="all" className="capitalize">
+                  All
                 </DropdownItem>
-              ))}
-            </DropdownMenu>
-          </Dropdown>
-          {/* Modal eventos */}
-          <ModalEventos />
+                {statusOptions.map((status) => (
+                  <DropdownItem key={status.uid} className="capitalize">
+                    {capitalize(status.name)}
+                  </DropdownItem>
+                ))}
+              </DropdownMenu>
+            </Dropdown>
+            {/* Modal eventos */}
+            <ModalEventos />
+          </div>
+        </div>
+        <div className="flex justify-between items-center">
+          <span className="text-default-400 text-small">Total 5 espacios</span>
+          <label className="flex items-center text-default-400 text-small">
+            Filas por página:
+            <select
+              className="max-w-full rounded-lg bg-default-100 text-default-900 text-small font-bold"
+              onChange={onRowsPerPageChange}
+              value={rowsPerPage}
+            >
+              <option value={5}>5</option>
+              <option value={10}>10</option>
+              <option value={15}>15</option>
+            </select>
+          </label>
         </div>
       </div>
-      <div className="flex justify-between items-center gap-2">
-        <span className="text-default-400 text-small">
-          Total {filteredItems.length} resultados
-        </span>
-        <label className="flex items-center text-default-400 text-small">
-          Filas por página:
-          <select
-            className="max-w-full rounded-lg bg-default-100 text-default-900 text-small font-bold"
-            onChange={onRowsPerPageChange}
-            value={rowsPerPage}
-          >
-            <option value={5}>5</option>
-            <option value={10}>10</option>
-            <option value={15}>15</option>
-          </select>
-        </label>
+    );
+  }, [
+    filterValue,
+    onClear,
+    onRowsPerPageChange,
+    onSearchChange,
+    rowsPerPage,
+    statusFilter,
+  ]);
+
+  const bottomContent = useMemo(() => {
+    return (
+      <div className="py-0 px-2 flex justify-center items-center">
+        <Pagination
+          showControls
+          isCompact
+          showShadow
+          page={page}
+          total={pages}
+          onChange={(page) => setPage(page)}
+        />
+      </div>
+    );
+  }, [page, pages]);
+
+  return (
+    <main className="flex flex-col gap-2">
+      <div>
+        <Breadcrumbs>
+          <BreadcrumbItem href=""> </BreadcrumbItem>
+          <BreadcrumbItem href="/admin/instructor/espacios">
+            Eventos
+          </BreadcrumbItem>
+        </Breadcrumbs>
+        <ModalEventosActualizar
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+          idEvent={idEvent}
+        />
       </div>
       {/* table */}
-      <Table
-        aria-label="Example table with dynamic content"
-        className="mt-4 min-w-full"
+      <TableShowData
         sortDescriptor={sortDescriptor}
         onSortChange={setSortDescriptor}
-        pagination={{
-          rowsPerPage,
-          page,
-          onRowsPerPageChange,
-          onPageChange: setPage,
-        }}
-      >
-        <TableHeader columns={headerColumns}>
-          {(column) => (
-            <TableColumn
-              key={column.uid}
-              allowsSorting={column.sortable}
-              isHidden={column.uid === "actions"}
-            >
-              {column.name}
-            </TableColumn>
-          )}
-        </TableHeader>
-        <TableBody items={sortedItems}>
-          {(item) => (
-            <TableRow key={item.id}>
-              {(columnKey) => (
-                <TableCell>{renderCell(item, columnKey)}</TableCell>
-              )}
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-
-      <div className="mt-4 flex justify-center">
-        <div className="py-2 px-2 flex justify-center items-center">
-          <Pagination
-            showControls
-            isCompact
-            page={page}
-            total={pages}
-            onChange={(page) => setPage(page)}
-          />
-        </div>
-      </div>
-    </div>
+        topContent={topContent}
+        selectedKeys={selectedKeys}
+        topContentPlacement="outside"
+        onSelectionChange={setSelectedKeys}
+        bottomContent={bottomContent}
+        bottomContentPlacement="outside"
+        columns={headerColumns}
+        items={sortedItems}
+        renderCell={renderCell}
+        id="id_global_event"
+        aria="Table to show the data of global events"
+      />
+    </main>
   );
 }
