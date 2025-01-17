@@ -35,7 +35,13 @@ export async function CreateSpaceController(req: Request, res: Response) {
 export async function GetSpacesController(_req: Request, res: Response) {
   try {
     const spaces = await getSpaces();
-    return res.status(200).send(JSON.stringify(spaces, bigIntReplacer));
+    return spaces == 1
+      ? res.status(200).send(JSON.stringify(spaces, bigIntReplacer))
+      : res.status(400).end(
+          JSON.stringify({
+            message: "No se pudo obtener los datos",
+          })
+        );
   } catch (err) {
     return res
       .status(500)
@@ -47,12 +53,17 @@ export async function updateSpaceByIdController(req: Request, res: Response) {
   try {
     const { id } = req.params;
     const space = await updateSpaceById(Number(id), req.body);
-    return res.status(200).send(
-      JSON.stringify({
-        message: `Se actualizo el espacio ${id}`,
-        data: space,
-      })
-    );
+    if (space)
+      return res.status(200).send(
+        JSON.stringify({
+          message: `Se actualizo el espacio ${id}`,
+          data: space,
+        })
+      );
+    else
+      return res
+        .status(400)
+        .end(JSON.stringify({ message: `No se actualizo el espacio ${id}` }));
   } catch (err) {
     return res
       .status(500)

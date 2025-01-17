@@ -45,7 +45,7 @@ EventsRouter.get("/global/all", async (req: Request, res: Response) => {
   }
 });
 
-InventoryRouter.patch(
+EventsRouter.patch(
   "/update/global/:id",
   async (req: Request, res: Response) => {
     try {
