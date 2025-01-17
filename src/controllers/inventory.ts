@@ -54,13 +54,7 @@ export async function GetSpaceInventoryByIdController(
   try {
     const { id_space } = req.params;
     const spaceInventory = await getSpaceInventoryById(Number(id_space));
-    return spaceInventory == 1
-      ? res.status(200).send(JSON.stringify(spaceInventory, bigIntReplacer))
-      : res.status(400).end(
-          JSON.stringify({
-            message: `No se pudo obtener los items del espacio ${id_space}`,
-          })
-        );
+    return res.status(200).send(JSON.stringify(spaceInventory, bigIntReplacer));
   } catch (err) {
     return res
       .status(500)
