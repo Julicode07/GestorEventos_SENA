@@ -53,17 +53,16 @@ export async function updateSpaceByIdController(req: Request, res: Response) {
   try {
     const { id } = req.params;
     const space = await updateSpaceById(Number(id), req.body);
-    if (space)
-      return res.status(200).send(
-        JSON.stringify({
-          message: `Se actualizo el espacio ${id}`,
-          data: space,
-        })
-      );
-    else
-      return res
-        .status(400)
-        .end(JSON.stringify({ message: `No se actualizo el espacio ${id}` }));
+    return space == 1
+      ? res.status(200).send(
+          JSON.stringify({
+            message: `Se actualizo el espacio ${id}`,
+            data: space,
+          })
+        )
+      : res
+          .status(400)
+          .end(JSON.stringify({ message: `No se actualizo el espacio ${id}` }));
   } catch (err) {
     return res
       .status(500)

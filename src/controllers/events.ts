@@ -59,18 +59,17 @@ export async function updateGlobalEventsByIdController(
   try {
     const { id } = req.params;
     const globalEvents = await updateGlobalEventById(Number(id), req.body);
-    if (globalEvents)
-      return res.status(200).send(
-        JSON.stringify({
-          message: `Se actualizo el evento global ${id}`,
-          data: globalEvents,
-        })
-      );
-    else
-      return res
-        .status(400)
-        .end(
-          JSON.stringify({ message: `No se actualizo el evento global ${id}` })
+    return globalEvents == 1
+      ? res.status(200).send(
+          JSON.stringify({
+            message: `Se actualizo el evento global ${id}`,
+            data: globalEvents,
+          })
+        )
+      : res.status(400).end(
+          JSON.stringify({
+            message: `No se actualizo el evento global ${id}`,
+          })
         );
   } catch (err) {
     return res
