@@ -108,7 +108,7 @@ export async function getGlobalEventById(id_event: number): Promise<number> {
           users.id_user,
           users.name,
           users.last_names,
-          global_events.name,
+          global_events.name AS event_name,
           global_events.details
           FROM
               global_events
