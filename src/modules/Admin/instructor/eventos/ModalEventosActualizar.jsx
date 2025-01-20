@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useUpdate from "../../../hooks/useUpdate";
 
 const ModalEventosActualizar = ({ isModalOpen, setIsModalOpen, idEvent }) => {
@@ -6,6 +6,7 @@ const ModalEventosActualizar = ({ isModalOpen, setIsModalOpen, idEvent }) => {
 
   const [succesMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [restOfData, setRestOfData] = useState([]);
 
   const [registerEvent, setRegisterEvent] = useState({
     name: "",
@@ -13,13 +14,31 @@ const ModalEventosActualizar = ({ isModalOpen, setIsModalOpen, idEvent }) => {
   });
 
   // update
-  // const [getDataToUpdate, setGetDataToUpdate] = useState([]);
+  const [getDataToUpdate, setGetDataToUpdate] = useState([]);
 
-  // const getData = useCallback(async () => {
-  //   const response = await fetch(
-  //     `${import.meta.env.VITE_API_URL}/api/events/global/all`
-  //   );
-  // });
+  const getData = useCallback(async () => {
+    if (!idEvent) return;
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/events/global/${idEvent}`
+    );
+    const data = await response.json();
+    setGetDataToUpdate(data);
+  }, [idEvent]);
+
+  useEffect(() => {
+    if (getDataToUpdate.length > 0) {
+      setRegisterEvent({
+        name: getDataToUpdate[0].event_name || "",
+        details: getDataToUpdate[0].details || "",
+      });
+      setRestOfData(getDataToUpdate);
+    }
+  }, [getDataToUpdate]);
+
+  useEffect(() => {
+    getData();
+  }, [getData]);
+  //
 
   const handleChangeEvent = (e) => {
     const { name, value } = e.target;
@@ -68,7 +87,7 @@ const ModalEventosActualizar = ({ isModalOpen, setIsModalOpen, idEvent }) => {
               <div className="relative bg-white rounded-lg shadow">
                 <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t ">
                   <h3 className="text-3xl font-semibold text-gray-900">
-                    Actualizar evento {idEvent}
+                    Actualizar evento "{restOfData[0]?.event_name}"
                   </h3>
                   <button
                     type="button"

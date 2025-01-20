@@ -2,10 +2,17 @@ const columns = [
   { name: "ID", uid: "id_global_event", sortable: true },
   { name: "Nombre", uid: "name", sortable: true },
   { name: "Detalles", uid: "details" },
+  { name: "Estado", uid: "status" },
   { name: "ACTIONS", uid: "actions" },
 ];
 
-const INITIAL_VISIBLE_COLUMNS = ["id_global_event", "name", "details", "actions"];
+const INITIAL_VISIBLE_COLUMNS = [
+  "id_global_event",
+  "name",
+  "details",
+  "status",
+  "actions",
+];
 
 const statusOptions = [
   { name: "Activo", uid: "Activo" },

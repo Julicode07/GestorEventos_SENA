@@ -131,6 +131,22 @@ export default function Eventos() {
             <p className="text-bold text-small capitalize">{event.details}</p>
           </div>
         );
+      case "status":
+        return (
+          <div className="flex flex-col">
+            <p
+              className={`text-bold text-small text-center rounded-lg capitalize ${
+                event.status === "Pendiente"
+                  ? "bg-warning-100 text-warning"
+                  : event.status === "Rechazado"
+                  ? "bg-danger-100 text-danger"
+                  : "bg-success "
+              }`}
+            >
+              {event.status}
+            </p>
+          </div>
+        );
       case "actions":
         return (
           <div className="relative flex justify-end items-center gap-2">
