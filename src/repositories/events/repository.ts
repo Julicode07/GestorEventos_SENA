@@ -46,7 +46,7 @@ export async function findAllGlobalEvents(): Promise<IGlobalEvent[]> {
             SELECT
                 ge.name,
                 ge.details,
-                ge.status
+                ge.status, 
                 ge.id_global_event,
                 us.name as host_name,
                 us.last_names as host_last_names,
