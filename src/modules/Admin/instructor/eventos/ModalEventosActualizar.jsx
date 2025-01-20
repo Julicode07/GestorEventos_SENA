@@ -1,5 +1,4 @@
-import { useState, useRef } from "react";
-import { regexEventName, regexEventDetails } from "./eventsValidation";
+import { useCallback, useState } from "react";
 import useUpdate from "../../../hooks/useUpdate";
 
 const ModalEventosActualizar = ({ isModalOpen, setIsModalOpen, idEvent }) => {
@@ -8,16 +7,19 @@ const ModalEventosActualizar = ({ isModalOpen, setIsModalOpen, idEvent }) => {
   const [succesMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const [eventNameRegexIsOk, setEventNameRegexIsOk] = useState(false);
-  const [eventDetailsRegexOk, setEventDetailsRegexOk] = useState(false);
-
   const [registerEvent, setRegisterEvent] = useState({
     name: "",
     details: "",
   });
 
-  const eventNameRef = useRef();
-  const eventDetailsRef = useRef();
+  // update
+  // const [getDataToUpdate, setGetDataToUpdate] = useState([]);
+
+  // const getData = useCallback(async () => {
+  //   const response = await fetch(
+  //     `${import.meta.env.VITE_API_URL}/api/events/global/all`
+  //   );
+  // });
 
   const handleChangeEvent = (e) => {
     const { name, value } = e.target;
@@ -25,12 +27,6 @@ const ModalEventosActualizar = ({ isModalOpen, setIsModalOpen, idEvent }) => {
       ...prevDataEvent,
       [name]: value,
     }));
-
-    if (name === "name") {
-      regexEventName(value, eventNameRef, setEventNameRegexIsOk);
-    } else if (name === "details") {
-      regexEventDetails(value, eventDetailsRef, setEventDetailsRegexOk);
-    }
   };
 
   const handleSubmitEvent = async (e) => {
@@ -116,7 +112,6 @@ const ModalEventosActualizar = ({ isModalOpen, setIsModalOpen, idEvent }) => {
                         placeholder="Semana del instructor"
                         onChange={handleChangeEvent}
                       />
-                      <span ref={eventNameRef}></span>
                     </div>
                     <div>
                       <label
@@ -134,7 +129,6 @@ const ModalEventosActualizar = ({ isModalOpen, setIsModalOpen, idEvent }) => {
                         rows="4"
                         onChange={handleChangeEvent}
                       ></textarea>
-                      <span ref={eventDetailsRef}></span>
                     </div>
                     <div className="flex items-center justify-center p-4 md:p-5 space-x-3 rtl:space-x-reverse border-t border-gray-200 rounded-b">
                       <button
@@ -146,22 +140,7 @@ const ModalEventosActualizar = ({ isModalOpen, setIsModalOpen, idEvent }) => {
                       </button>
                       <button
                         type="submit"
-                        className="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                        disabled={!eventNameRegexIsOk && !eventDetailsRegexOk}
-                        style={{
-                          background:
-                            eventNameRegexIsOk && eventDetailsRegexOk
-                              ? "green"
-                              : "rgba(0, 0, 0, 0.2)",
-                          color:
-                            eventNameRegexIsOk && eventDetailsRegexOk
-                              ? "white"
-                              : "black",
-                          cursor:
-                            eventNameRegexIsOk && eventDetailsRegexOk
-                              ? "pointer"
-                              : "not-allowed",
-                        }}
+                        className="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-primary text-white"
                         aria-label="Crear evento"
                         data-testid="crear-evento"
                       >

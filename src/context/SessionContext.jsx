@@ -9,6 +9,7 @@ export const SessionContextProvider = ({ children }) => {
   });
 
   const [names, setNames] = useState({
+    id_user: null,
     name: null,
     lastName: null,
   });
@@ -25,9 +26,12 @@ export const SessionContextProvider = ({ children }) => {
           role: data.data.role,
         });
         setNames({
-          name: "Felipe",
-          lastName: "Alzate",
+          id_user: data.data.id_user,
+          name: data.data.name,
+          lastName: data.data.last_name,
         });
+        console.log(userSession);
+        console.log(names);
       } else {
         setUserSession({
           document: null,

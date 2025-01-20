@@ -1,25 +1,28 @@
-import { useState, useRef } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Button } from "@nextui-org/react";
-import { regexEventName, regexEventDetails } from "./eventsValidation";
 import useRegister from "../../../hooks/useRegister";
+import { SessionContext } from "@/context/SessionContext.jsx";
 
 const ModalEventos = () => {
   const { register } = useRegister();
+  const { userSession, updateSession } = useContext(SessionContext);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [succesMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const [eventNameRegexIsOk, setEventNameRegexIsOk] = useState(false);
-  const [eventDetailsRegexOk, setEventDetailsRegexOk] = useState(false);
+  // Sesión
+  useEffect(() => {
+    updateSession();
+  }, [updateSession]);
+  //
 
   const [registerEvent, setRegisterEvent] = useState({
+    id_user: 1,
     name: "",
     eventDetails: "",
+    status: "Pendiente",
   });
-
-  const eventNameRef = useRef();
-  const eventDetailsRef = useRef();
 
   const handleChangeEvent = (e) => {
     const { name, value } = e.target;
@@ -27,12 +30,6 @@ const ModalEventos = () => {
       ...prevDataEvent,
       [name]: value,
     }));
-
-    if (name === "name") {
-      regexEventName(value, eventNameRef, setEventNameRegexIsOk);
-    } else if (name === "eventDetails") {
-      regexEventDetails(value, eventDetailsRef, setEventDetailsRegexOk);
-    }
   };
 
   const handleSubmitEvent = async (e) => {
@@ -121,7 +118,6 @@ const ModalEventos = () => {
                         placeholder="Semana del instructor"
                         onChange={handleChangeEvent}
                       />
-                      <span ref={eventNameRef}></span>
                     </div>
                     <div>
                       <label
@@ -139,7 +135,6 @@ const ModalEventos = () => {
                         rows="4"
                         onChange={handleChangeEvent}
                       ></textarea>
-                      <span ref={eventDetailsRef}></span>
                     </div>
                     <div className="flex items-center justify-center p-4 md:p-5 space-x-3 rtl:space-x-reverse border-t border-gray-200 rounded-b">
                       <button
@@ -151,22 +146,7 @@ const ModalEventos = () => {
                       </button>
                       <button
                         type="submit"
-                        className="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                        disabled={!eventNameRegexIsOk && !eventDetailsRegexOk}
-                        style={{
-                          background:
-                            eventNameRegexIsOk && eventDetailsRegexOk
-                              ? "green"
-                              : "rgba(0, 0, 0, 0.2)",
-                          color:
-                            eventNameRegexIsOk && eventDetailsRegexOk
-                              ? "white"
-                              : "black",
-                          cursor:
-                            eventNameRegexIsOk && eventDetailsRegexOk
-                              ? "pointer"
-                              : "not-allowed",
-                        }}
+                        className="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center text-white bg-primary"
                         aria-label="Crear evento"
                         data-testid="crear-evento"
                       >
