@@ -14,7 +14,12 @@ export async function createGlobalEvent(
                 (id_user, name, details, status)
             VALUES
                 (?,?,?)`,
-      [globalEventData.id_user, globalEventData.name, globalEventData.details]
+      [
+        globalEventData.id_user,
+        globalEventData.name,
+        globalEventData.details,
+        globalEventData.status,
+      ]
     );
     switch (result.affectedRows) {
       case 1:
@@ -75,7 +80,13 @@ export async function updateGlobalEventById(
             details = IFNULL(?, details),
             status = IFNULL(?, status),
         WHERE id_global_event = ?`,
-      [eventData.id_user, eventData.name, eventData.details, id_event]
+      [
+        eventData.id_user,
+        eventData.name,
+        eventData.details,
+        eventData.status,
+        id_event,
+      ]
     );
     if (result.affectedRows > 0) return 1;
     else throw new Error(`Could not update global event ${id_event}`);

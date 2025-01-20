@@ -16,6 +16,7 @@ export const databaseRegex = {
     id_user: /^[0-9]{1,9}$/,
     name: /^[A-Za-zñ.Ñ:-á-|éí,.ó'úÁÉÍ&%$ÓÚäëïöüÄËÏÖÜ0-9\s]{1,64}$/,
     details: /^[A-Za-zñ.Ñ:-á-|éí,.'óúÁÉÍ&%$ÓÚäëïöüÄËÏÖÜ0-9\s]{1,255}$/,
+    status: /^(Rechazado|Pendiente|Aceptado)$/,
   },
 
   spaces: {

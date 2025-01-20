@@ -23,6 +23,7 @@ export async function CreateGlobalEventController(req: Request, res: Response) {
         id_user: user_check[0].id_user,
         name: req.body.name,
         details: req.body.details,
+        status: req.body.status,
       });
       return result == 1
         ? res

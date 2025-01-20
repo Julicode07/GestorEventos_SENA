@@ -18,7 +18,8 @@ EventsRouter.post(
     try {
       if (
         databaseRegex.global_events.name.test(req.body.name) &&
-        databaseRegex.global_events.details.test(req.body.details)
+        databaseRegex.global_events.details.test(req.body.details) &&
+        databaseRegex.global_events.status.test(req.body.status)
       ) {
         CreateGlobalEventController(req, res);
       } else
