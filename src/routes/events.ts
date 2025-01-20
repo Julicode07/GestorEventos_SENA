@@ -5,7 +5,7 @@ import {
 } from "../controllers/events";
 import express, { Express, Request, Response } from "express";
 import { databaseRegex } from "../helpers/regex.helper";
-import { isInstructor } from "../middlewares/auth";
+// import { isInstructor } from "../middlewares/auth";
 import InventoryRouter from "./inventory";
 
 const EventsRouter: Express = express();
@@ -13,7 +13,7 @@ const EventsRouter: Express = express();
 // Create new web profile endpoint.
 EventsRouter.post(
   "/global",
-  isInstructor,
+  // isInstructor,
   async (req: Request, res: Response) => {
     try {
       if (
