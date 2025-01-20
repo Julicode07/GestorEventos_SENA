@@ -5,7 +5,7 @@ import {
   DropdownTrigger,
   User,
 } from "@nextui-org/react";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { SessionContext } from "../../context/SessionContext";
 
@@ -16,7 +16,12 @@ const UserDropdown = ({
   textColor,
   textRole,
 }) => {
-  const { names } = useContext(SessionContext);
+  const { names, updateSession } = useContext(SessionContext);
+
+  useEffect(() => {
+    updateSession();
+  }, [updateSession]);
+
   const logOut = async () => {
     await fetch(`${import.meta.env.VITE_API_URL}/api/auth/logout`);
     window.location.href = "/";
@@ -26,7 +31,7 @@ const UserDropdown = ({
     return parts.map((part) => part.charAt(0)).join("");
   };
 
-  const fullName = `${names.name || ""} ${names.lastName || ""}`;
+  const fullName = `${names.name || "Usuario"} ${names.lastName || ""}`;
   const initials = getInitials(fullName);
 
   return (
