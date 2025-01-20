@@ -53,6 +53,9 @@ app.use(
 type UserSession = {
   document: number | null;
   role: string | null;
+  id_user: number | null;
+  name: string | null;
+  last_name: string | null;
 };
 
 declare module "express-session" {
