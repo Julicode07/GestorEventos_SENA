@@ -11,7 +11,7 @@ export async function createGlobalEvent(
       `
             INSERT INTO
                 global_events
-                (id_user, name, details)
+                (id_user, name, details, status)
             VALUES
                 (?,?,?)`,
       [globalEventData.id_user, globalEventData.name, globalEventData.details]
@@ -41,6 +41,7 @@ export async function findAllGlobalEvents(): Promise<IGlobalEvent[]> {
             SELECT
                 ge.name,
                 ge.details,
+                ge.status
                 ge.id_global_event,
                 us.name as host_name,
                 us.last_names as host_last_names,
@@ -71,7 +72,8 @@ export async function updateGlobalEventById(
         SET
             id_user = IFNULL(?, id_user),
             name = IFNULL(?, name),
-            details = IFNULL(?, details)
+            details = IFNULL(?, details),
+            status = IFNULL(?, status),
         WHERE id_global_event = ?`,
       [eventData.id_user, eventData.name, eventData.details, id_event]
     );
@@ -90,7 +92,7 @@ export async function updateGlobalEventById(
 //   try {
 //     const result = await connection.query(
 //       `
-//       SELECT 
+//       SELECT
 //           global_events.id_global_event`
 //     )
 //   } catch (err) {}
