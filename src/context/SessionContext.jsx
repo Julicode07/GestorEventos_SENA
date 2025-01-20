@@ -30,8 +30,6 @@ export const SessionContextProvider = ({ children }) => {
           name: data.data.name,
           lastName: data.data.last_name,
         });
-        console.log(userSession);
-        console.log(names);
       } else {
         setUserSession({
           document: null,

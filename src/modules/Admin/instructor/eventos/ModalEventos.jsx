@@ -5,7 +5,7 @@ import { SessionContext } from "@/context/SessionContext.jsx";
 
 const ModalEventos = () => {
   const { register } = useRegister();
-  const { userSession, updateSession } = useContext(SessionContext);
+  const { names, updateSession } = useContext(SessionContext);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [succesMessage, setSuccessMessage] = useState("");
@@ -18,7 +18,7 @@ const ModalEventos = () => {
   //
 
   const [registerEvent, setRegisterEvent] = useState({
-    id_user: 1,
+    id_user: names.id_user,
     name: "",
     eventDetails: "",
     status: "Pendiente",
