@@ -1,6 +1,8 @@
+import { bigIntReplacer } from "../helpers/json.helper";
 import {
   createGlobalEvent,
   findAllGlobalEvents,
+  getGlobalEventById,
   updateGlobalEventById,
 } from "../repositories/events/repository";
 import { findUserByDocument } from "../repositories/users/repository";
@@ -76,5 +78,20 @@ export async function updateGlobalEventsByIdController(
     return res
       .status(500)
       .end(JSON.stringify({ message: "Error interno del servidor" }));
+  }
+}
+
+export async function getGlobalEventByIdController(
+  req: Request,
+  res: Response
+) {
+  try {
+    const { id_event } = req.params;
+    const globalEvent = await getGlobalEventById(Number(id_event));
+    return res.status(200).send(JSON.stringify(globalEvent, bigIntReplacer));
+  } catch (err) {
+    return res
+      .status(500)
+      .end(JSON.stringify({ message: "Error interno del servidor :(" }));
   }
 }

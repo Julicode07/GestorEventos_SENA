@@ -98,13 +98,32 @@ export async function updateGlobalEventById(
   }
 }
 
-// export async function getGlobalEventById(id_event: number): Promise<number> {
-//   const connection: PoolConnection = await getConnection(pool);
-//   try {
-//     const result = await connection.query(
-//       `
-//       SELECT
-//           global_events.id_global_event`
-//     )
-//   } catch (err) {}
-// }
+export async function getGlobalEventById(id_event: number): Promise<number> {
+  const connection: PoolConnection = await getConnection(pool);
+  try {
+    const result = await connection.query(
+      `
+      SELECT
+          global_events.id_global_event,
+          users.id_user,
+          users.name,
+          users.last_names,
+          global_events.name,
+          global_events.details,
+          FROM
+              global_events
+              INNER JOIN users
+              ON global_events.id_user = users.id_user
+              WHERE global_events.id_global_event = ?`,
+      [id_event]
+    );
+    return result.length == 0 ? [] : result;
+  } catch (err) {
+    console.log(
+      `[global events repository]: ERROR GETTING global events INVENTORY: ${err}`
+    );
+    return -1;
+  } finally {
+    connection.release();
+  }
+}

@@ -1,5 +1,6 @@
 import {
   CreateGlobalEventController,
+  getGlobalEventByIdController,
   GetGlobalEventsController,
   updateGlobalEventsByIdController,
 } from "../controllers/events";
@@ -58,5 +59,15 @@ EventsRouter.patch(
     }
   }
 );
+
+EventsRouter.get("/global/:id_event", async (req: Request, res: Response) => {
+  try {
+    return getGlobalEventByIdController(req, res);
+  } catch (err) {
+    return res
+      .status(500)
+      .end(JSON.stringify({ message: "Error interno del servidor :(" }));
+  }
+});
 
 export default EventsRouter;
