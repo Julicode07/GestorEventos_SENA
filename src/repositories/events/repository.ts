@@ -73,13 +73,14 @@ export async function updateGlobalEventById(
     const result = await connection.query(
       `
         UPDATE
-            global_events
-        SET
-            id_user = IFNULL(?, id_user),
-            name = IFNULL(?, name),
-            details = IFNULL(?, details),
-            status = IFNULL(?, status),
-        WHERE id_global_event = ?`,
+    global_events
+SET
+    id_user = IFNULL(?, id_user),
+    name = IFNULL(?, name),
+    details = IFNULL(?, details),
+    status = IFNULL(?, status)
+WHERE id_global_event = ?
+`,
       [
         eventData.id_user,
         eventData.name,
