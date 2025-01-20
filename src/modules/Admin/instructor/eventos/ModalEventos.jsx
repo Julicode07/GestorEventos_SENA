@@ -20,7 +20,7 @@ const ModalEventos = () => {
   const [registerEvent, setRegisterEvent] = useState({
     id_user: names.id_user,
     name: "",
-    eventDetails: "",
+    details: "",
     status: "Pendiente",
   });
 
@@ -43,6 +43,7 @@ const ModalEventos = () => {
       setRegisterEvent({
         name: "",
         details: "",
+        status: "",
       });
     } catch (error) {
       setErrorMessage("Ocurrio un error al registrar el evento", error);
@@ -127,7 +128,7 @@ const ModalEventos = () => {
                         Descripción del evento
                       </label>
                       <textarea
-                        name="eventDetails"
+                        name="details"
                         id="eventDetails"
                         value={registerEvent.details}
                         placeholder="Escribe la descripción del evento"
