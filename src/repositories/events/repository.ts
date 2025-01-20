@@ -13,7 +13,7 @@ export async function createGlobalEvent(
                 global_events
                 (id_user, name, details, status)
             VALUES
-                (?,?,?)`,
+                (?,?,?,?)`,
       [
         globalEventData.id_user,
         globalEventData.name,

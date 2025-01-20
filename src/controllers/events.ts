@@ -12,29 +12,29 @@ export async function CreateGlobalEventController(req: Request, res: Response) {
       req.session.user!.document as number
     );
     console.log(user_check[0], req.session.user!.document);
-    // if (user_check.length < 1)
-    //   return res
-    //     .status(409)
-    //     .end(JSON.stringify({ message: "Acceso no autorizado" }));
-    // else {
-    console.log("body", req.body.name, req.body.details);
-    const result = await createGlobalEvent({
-      id_global_event: undefined,
-      id_user: user_check[0].id_user,
-      name: req.body.name,
-      details: req.body.details,
-      status: req.body.status,
-    });
-    return result == 1
-      ? res
-          .status(200)
-          .end(JSON.stringify({ message: "Evento creado correctamente" }))
-      : res.status(500).end(
-          JSON.stringify({
-            message: "Error interno del servidor al crear el evento",
-          })
-        );
-    // }
+    if (user_check.length < 1)
+      return res
+        .status(409)
+        .end(JSON.stringify({ message: "Acceso no autorizado" }));
+    else {
+      console.log("body", req.body.name, req.body.details, req.body.status);
+      const result = await createGlobalEvent({
+        id_global_event: undefined,
+        id_user: user_check[0].id_user,
+        name: req.body.name,
+        details: req.body.details,
+        status: req.body.status,
+      });
+      return result == 1
+        ? res
+            .status(200)
+            .end(JSON.stringify({ message: "Evento creado correctamente" }))
+        : res.status(500).end(
+            JSON.stringify({
+              message: "Error interno del servidor al crear el evento",
+            })
+          );
+    }
   } catch (err) {
     return res
       .status(500)
