@@ -84,3 +84,14 @@ export async function updateGlobalEventById(
     connection.release();
   }
 }
+
+// export async function getGlobalEventById(id_event: number): Promise<number> {
+//   const connection: PoolConnection = await getConnection(pool);
+//   try {
+//     const result = await connection.query(
+//       `
+//       SELECT 
+//           global_events.id_global_event`
+//     )
+//   } catch (err) {}
+// }

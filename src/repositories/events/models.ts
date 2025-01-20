@@ -16,6 +16,7 @@ export async function createGlobalEventsSchema(): Promise<Number> {
             id_user INT NOT NULL,
             name VARCHAR(64) NOT NULL,
             details VARCHAR(255),
+            status VARCHAR(45),
             CONSTRAINT fk_global_event_has_user FOREIGN KEY (id_user) REFERENCES users(id_user)
         )`);
         console.log(`[events repository - models]: CREATED global events SCHEMA.`);
