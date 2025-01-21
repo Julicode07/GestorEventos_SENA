@@ -63,6 +63,7 @@ const ModalEventosActualizar = ({ isModalOpen, setIsModalOpen, idEvent }) => {
         name: "",
         details: "",
       });
+      window.location.reload();
     } catch (error) {
       setErrorMessage("Ocurrio un error al actualizar el evento", error);
       setSuccessMessage("");

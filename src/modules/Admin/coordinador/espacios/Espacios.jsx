@@ -223,7 +223,6 @@ export default function App() {
               </DropdownMenu>
             </Dropdown>
             <ModalEspacios />
-            <ModalInventario />
             <ModalEspaciosActualizar
               isOpen={updateModalSpace}
               setIsOpen={setUpdateModalSpace}
@@ -262,16 +261,21 @@ export default function App() {
 
   const bottomContent = useMemo(() => {
     return (
-      <div className="py-0 px-2 flex justify-center items-center">
-        <Pagination
-          showControls
-          isCompact
-          showShadow
-          page={page}
-          total={pages}
-          onChange={(page) => setPage(page)}
-        />
-      </div>
+      <>
+        <div className="block">
+          <ModalInventario />
+        </div>
+        <div className="py-0 px-2 flex justify-center items-center">
+          <Pagination
+            showControls
+            isCompact
+            showShadow
+            page={page}
+            total={pages}
+            onChange={(page) => setPage(page)}
+          />
+        </div>
+      </>
     );
   }, [page, pages]);
 

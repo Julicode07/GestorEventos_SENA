@@ -21,7 +21,7 @@ const ModalEventos = () => {
     id_user: names.id_user,
     name: "",
     details: "",
-    status: "Pendiente",
+    status: "Aceptado",
   });
 
   const handleChangeEvent = (e) => {
@@ -45,6 +45,7 @@ const ModalEventos = () => {
         details: "",
         status: "",
       });
+      window.location.reload();
     } catch (error) {
       setErrorMessage("Ocurrio un error al registrar el evento", error);
       setSuccessMessage("");
@@ -58,7 +59,7 @@ const ModalEventos = () => {
         className="bg-primary hover:bg-primary/100 text-white"
         onClick={() => setIsModalOpen(true)}
       >
-        Crear Evento
+        Crear Evento Global
       </Button>
 
       {isModalOpen && (
@@ -75,7 +76,7 @@ const ModalEventos = () => {
               <div className="relative bg-white rounded-lg shadow">
                 <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t ">
                   <h3 className="text-3xl font-semibold text-gray-900">
-                    Crear evento
+                    Crear evento global
                   </h3>
                   <button
                     type="button"

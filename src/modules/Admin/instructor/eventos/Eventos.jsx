@@ -17,6 +17,7 @@ import { capitalize } from "../../utils/utils";
 import { VerticalDotsIcon } from "../../components/VerticalDotsIcon";
 import ModalEventos from "./ModalEventos";
 import ModalEventosActualizar from "./ModalEventosActualizar.jsx";
+import SubEventosModal from "./SubEventosModal.jsx";
 const TableShowData = React.lazy(() =>
   import("./../../components/TableShowData.jsx")
 );
@@ -159,7 +160,16 @@ export default function Eventos() {
               <DropdownMenu>
                 <DropdownItem>
                   <Button
-                    className="bg-primary hover:bg-primary/100 text-white"
+                    disabled={
+                      event.status === "Rechazado" ||
+                      event.status === "Aceptado"
+                    }
+                    className={`${
+                      event.status === "Rechazado" ||
+                      event.status === "Aceptado"
+                        ? "bg-gray-300 text-black"
+                        : "bg-primary hover:bg-primary/100 text-white"
+                    }`}
                     onClick={() => {
                       setIsModalOpen(true);
                       setIdEvent(event.id_global_event);
@@ -275,16 +285,22 @@ export default function Eventos() {
 
   const bottomContent = useMemo(() => {
     return (
-      <div className="py-0 px-2 flex justify-center items-center">
-        <Pagination
-          showControls
-          isCompact
-          showShadow
-          page={page}
-          total={pages}
-          onChange={(page) => setPage(page)}
-        />
-      </div>
+      <>
+        <div className="block">
+          {/* Modal subeventos */}
+          <SubEventosModal />
+        </div>
+        <div className="py-0 px-2 flex justify-center items-center">
+          <Pagination
+            showControls
+            isCompact
+            showShadow
+            page={page}
+            total={pages}
+            onChange={(page) => setPage(page)}
+          />
+        </div>
+      </>
     );
   }, [page, pages]);
 
