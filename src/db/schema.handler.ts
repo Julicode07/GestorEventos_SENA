@@ -38,6 +38,7 @@ export default async function createSchemas(): Promise<Number> {
       throw new Error("Couldn't create space inventories schema.");
     else if ((await createSubeventSchema()) == -1)
       throw new Error("Couldn't create space inventories schema.");
+    return 1;
   } catch (err) {
     console.error(`[schema handler]: ERROR CREATING SCHEMAS: ${err}`);
     return -1;
