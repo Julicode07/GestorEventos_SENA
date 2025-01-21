@@ -58,14 +58,6 @@ SubEventsRouter.post("/create", async (req: Request, res: Response) => {
           valid: databaseRegex.subEvents.headquarters.test(item.headquarters),
         },
         {
-          field: "start_date",
-          valid: databaseRegex.subEvents.start_date.test(item.start_date),
-        },
-        {
-          field: "end_date",
-          valid: databaseRegex.subEvents.end_date.test(item.end_date),
-        },
-        {
           field: "description",
           valid: databaseRegex.subEvents.description.test(item.description),
         },
