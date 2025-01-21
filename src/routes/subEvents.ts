@@ -1,4 +1,7 @@
-import { CreateSubeventsController } from "../controllers/subEvents";
+import {
+  CreateSubeventsController,
+  GetSubEventsByIdController,
+} from "../controllers/subEvents";
 import express, { Express, Request, Response } from "express";
 import { databaseRegex } from "../helpers/regex.helper";
 import { ISubEvent } from "../repositories/subEvents/models";
@@ -96,4 +99,14 @@ SubEventsRouter.post("/create", async (req: Request, res: Response) => {
   }
 });
 
+SubEventsRouter.get(
+  "/subEvents/:id_global_event",
+  async (req: Request, res: Response) => {
+    try {
+      return GetSubEventsByIdController(req, res);
+    } catch (err) {
+      return res.status(500).json({ message: "Error interno del servidor :(" });
+    }
+  }
+);
 export default SubEventsRouter;

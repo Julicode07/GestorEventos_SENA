@@ -33,3 +33,34 @@ export async function createSubEvent(subEventData: ISubEvent): Promise<number> {
     connection.release();
   }
 }
+
+export async function getSubEventsByGlobalEventId(
+  id_global_event: number
+): Promise<number> {
+  const connection: PoolConnection = await getConnection(pool);
+  try {
+    const result = await connection.query(
+      `
+            SELECT
+                se.id_sub_event,
+                ge.name as global_event_name,
+                se.name,
+                se.headquarters,
+                se.start_date,
+                se.end_date,
+                se.description
+                FROM
+                    sub_events se
+                    INNER JOIN global_events ge
+                    ON se.id_global_event = ge.id_global_event WHERE se.id_global_event = ?`[
+        id_global_event
+      ]
+    );
+    return result.length == 0 ? [] : result;
+  } catch (err) {
+    console.log(`[subevents repository]: ERROR GETTING subEvents ${err}`);
+    return -1;
+  } finally {
+    connection.release();
+  }
+}

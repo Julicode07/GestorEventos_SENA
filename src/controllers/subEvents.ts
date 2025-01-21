@@ -1,4 +1,7 @@
-import { createSubEvent } from "../repositories/subEvents/repository";
+import {
+  createSubEvent,
+  getSubEventsByGlobalEventId,
+} from "../repositories/subEvents/repository";
 import { Request, Response } from "express";
 import { ISubEvent } from "../repositories/subEvents/models";
 import { bigIntReplacer } from "../helpers/json.helper";
@@ -32,6 +35,20 @@ export async function CreateSubeventsController(req: Request, res: Response) {
             message: "Error interno del servidor al crear el subevento",
           })
         );
+  } catch (err) {
+    return res
+      .status(500)
+      .end(JSON.stringify({ message: "Error interno del servidor :(" }));
+  }
+}
+
+export async function GetSubEventsByIdController(req: Request, res: Response) {
+  try {
+    const { id_global_event } = req.params;
+    const subEvents = await getSubEventsByGlobalEventId(
+      Number(id_global_event)
+    );
+    return res.status(200).send(JSON.stringify(subEvents, bigIntReplacer));
   } catch (err) {
     return res
       .status(500)
