@@ -100,7 +100,7 @@ SubEventsRouter.post("/create", async (req: Request, res: Response) => {
 });
 
 SubEventsRouter.get(
-  "/subEvents/:id_global_event",
+  "/:id_global_event",
   async (req: Request, res: Response) => {
     try {
       return GetSubEventsByIdController(req, res);
