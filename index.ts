@@ -14,6 +14,7 @@ import fs from "fs";
 import EventsRouter from "./src/routes/events";
 import SpacesRouter from "./src/routes/spaces";
 import InventoryRouter from "./src/routes/inventory";
+import SubEventsRouter from "./src/routes/subEvents";
 
 dotenv.config();
 
@@ -71,6 +72,7 @@ app.use("/api/auth/", AuthRouter);
 app.use("/api/events/", EventsRouter);
 app.use("/api/spaces/", SpacesRouter);
 app.use("/api/inventory/", InventoryRouter);
+app.use("/api/subEvents/", SubEventsRouter);
 
 app.get("/404.html", (req: Request, res: Response) => {
   const viewFile = path.join(__dirname, "public_views", "404.html");
@@ -143,7 +145,7 @@ app.get("/*", (_req: Request, res: Response) => {
             <div class="container">
                 <h1 class="emoji">🚧👷🏻‍♂️</h1>
                 <h1>Estamos en mantenimiento</h1>
-                <p>Vuelve pronto para seguir comprando.</p>
+                <p>Vuelve pronto para seguir agendando.</p>
                 <a href="https://google.com" class="button">Salir</a>
             </div>
         </body>
