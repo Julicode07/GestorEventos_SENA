@@ -18,6 +18,7 @@ import { VerticalDotsIcon } from "../../components/VerticalDotsIcon";
 import ModalEventos from "./ModalEventos";
 import ModalEventosActualizar from "./ModalEventosActualizar.jsx";
 import SubEventosModal from "./SubEventosModal.jsx";
+import { Link } from "react-router-dom";
 const TableShowData = React.lazy(() =>
   import("./../../components/TableShowData.jsx")
 );
@@ -141,7 +142,7 @@ export default function Eventos() {
                   ? "bg-warning-100 text-warning"
                   : event.status === "Rechazado"
                   ? "bg-danger-100 text-danger"
-                  : "bg-success "
+                  : "bg-success-100 text-success"
               }`}
             >
               {event.status}
@@ -179,6 +180,13 @@ export default function Eventos() {
                   </Button>
                 </DropdownItem>
                 <DropdownItem>View</DropdownItem>
+                <DropdownItem className="text-white bg-secondary">
+                  <Link
+                    to={`/admin/instructor/subeventos/${event.id_global_event}`}
+                  >
+                    SubEventos <i className="ri-list-check"></i>
+                  </Link>
+                </DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </div>

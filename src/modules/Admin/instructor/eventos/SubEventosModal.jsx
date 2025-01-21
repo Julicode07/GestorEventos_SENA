@@ -1,8 +1,11 @@
 import { Button, Select, SelectItem, Textarea } from "@nextui-org/react";
 import { useState, useEffect, useCallback } from "react";
 import { PlusIcon } from "@modules/Admin/components/PlusIcon";
+import useRegister from "../../../hooks/useRegister";
+import dayjs from "dayjs";
 
 const SubEventosModal = () => {
+  const { register } = useRegister();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [registerSubEvents, setRegisterSubEvents] = useState([
     { id_global_event: "" },
@@ -14,6 +17,9 @@ const SubEventosModal = () => {
       description: "",
     },
   ]);
+
+  const [succesMessage, setSuccesMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [globalEvents, setGlobalEvents] = useState([]);
 
@@ -40,6 +46,45 @@ const SubEventosModal = () => {
       };
       return newDataToRegister;
     });
+  };
+
+  const handleSubmitSubEvent = async (e) => {
+    e.preventDefault();
+    console.log(registerSubEvents);
+    try {
+      const idGlobalEvent = registerSubEvents[0].id_global_event;
+      const newDataToSend = registerSubEvents.slice(1).map((item) => ({
+        ...item,
+        start_date: dayjs(item.start_date).format("YYYY-MM-DD HH:mm:ss"),
+        end_date: dayjs(item.end_date).format("YYYY-MM-DD HH:mm:ss"),
+      }));
+      const dataToSend = [
+        { id_global_event: Number(idGlobalEvent) },
+        ...newDataToSend,
+      ];
+      console.log(dataToSend);
+      const result = await register(dataToSend, "/api/subEvents/create");
+      setSuccesMessage("SubEvento creado correctamente");
+      setErrorMessage("");
+      console.log("Subevento registrado:", result);
+      setRegisterSubEvents([
+        {
+          id_global_event: "",
+        },
+        {
+          name: "",
+          headquarters: "",
+          start_date: "",
+          end_date: "",
+          description: "",
+        },
+      ]);
+      window.location.reload();
+    } catch (error) {
+      setErrorMessage("Error al registrar el subevento", error);
+      console.error("Error al registrar el subevento", error);
+      setSuccesMessage("");
+    }
   };
 
   const handleAddSubEvent = async () => {
@@ -69,7 +114,7 @@ const SubEventosModal = () => {
         <>
           <div
             className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-40"
-            onClick={() => setIsModalOpen(!isModalOpen)}
+            onClick={() => setIsModalOpen(true)}
           >
             <div className="relative p-4 w-full max-w-2xl z-50">
               <div className="relative bg-white rounded-lg shadow">
@@ -102,7 +147,7 @@ const SubEventosModal = () => {
                 </div>
 
                 <div className="p-4 md:p-5">
-                  <form className="min-h-full">
+                  <form className="min-h-full" onSubmit={handleSubmitSubEvent}>
                     <div className="overflow-y-auto max-h-[57vh] space-y-4">
                       <div className="flex flex-col mb-5">
                         <label
@@ -194,13 +239,14 @@ const SubEventosModal = () => {
                                 Fecha de Inicio
                               </label>
                               <input
-                                type="date"
+                                type="datetime-local"
                                 className="bg-gray-100 text-gray-900 text-base rounded-lg block w-full p-2.5 outline-none"
                                 label={"Fecha Inicio"}
                                 id="fechaInicio"
                                 onChange={(e) =>
                                   handleChangeSubEvent(e, index + 1)
                                 }
+                                name="start_date"
                                 value={data.start_date}
                               />
                             </div>
@@ -212,13 +258,14 @@ const SubEventosModal = () => {
                                 Fecha de Fin
                               </label>
                               <input
-                                type="date"
+                                type="datetime-local"
                                 className="bg-gray-100 text-gray-900 text-base rounded-lg block w-full p-2.5 outline-none"
                                 label={"Fecha Fin"}
                                 id="fechaFin"
                                 onChange={(e) =>
                                   handleChangeSubEvent(e, index + 1)
                                 }
+                                name="end_date"
                                 value={data.end_date}
                               />
                             </div>
@@ -234,7 +281,7 @@ const SubEventosModal = () => {
                               id="descripcion"
                               placeholder="Observaciones"
                               className="mb-4"
-                              name="details"
+                              name="description"
                               onChange={(e) =>
                                 handleChangeSubEvent(e, index + 1)
                               }
@@ -269,10 +316,10 @@ const SubEventosModal = () => {
                         aria-label="Crear evento"
                         data-testid="crear-evento"
                       >
-                        Crear Evento
+                        Crear Subevento
                       </button>
                     </div>
-                    {/* <div className="flex justify-center">
+                    <div className="flex justify-center">
                       {succesMessage && (
                         <p className="text-green-600 text-center">
                           {succesMessage}
@@ -287,7 +334,7 @@ const SubEventosModal = () => {
                           {errorMessage}
                         </p>
                       )}
-                    </div> */}
+                    </div>
                   </form>
                 </div>
               </div>

@@ -5,7 +5,7 @@ import NotFoundAdmin from "../NotFoundAdmin";
 import Panel from "@/modules/Admin/instructor/panel/Panel";
 import Espacios from "@/modules/Admin/instructor/espacios/Espacios";
 import Eventos from "@/modules/Admin/instructor/eventos/Eventos";
-import Inventario from "@/modules/Admin/instructor/inventario/Inventario";
+import SubEventos from "@/modules/Admin/instructor/SubEventos/SubEventos";
 import Insumos from "@/modules/Admin/instructor/insumos/Insumos";
 import InfoEvento from "../../../modules/Admin/instructor/eventos/InfoEvento";
 import Loader from "../../../Loader/Loader";
@@ -43,7 +43,7 @@ function Coordinador() {
               <Route path="/espacios" element={<Espacios />} />
               <Route path="/eventos" element={<Eventos />} />
               <Route path="/eventos/:id" element={<InfoEvento />} />
-              <Route path="/inventario" element={<Inventario />} />
+              <Route path="/subeventos/:id" element={<SubEventos />} />
               <Route path="/insumos" element={<Insumos />} />
             </Routes>
           </div>
