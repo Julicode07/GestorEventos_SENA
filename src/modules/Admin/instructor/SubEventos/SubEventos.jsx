@@ -309,7 +309,7 @@ export default function SubEventos() {
             Eventos
           </BreadcrumbItem>
           <BreadcrumbItem href={`/admin/instructor/subeventos/${id}`}>
-            SubEvento {id}
+            SubEvento
           </BreadcrumbItem>
         </Breadcrumbs>
       </div>

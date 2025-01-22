@@ -38,6 +38,10 @@ export default function Eventos() {
 
   const hasSearchFilter = Boolean(filterValue);
 
+  // modal de subeventos
+  const [isSubEventosModalOpen, setIsSubEventosModalOpen] = useState(false);
+  //
+
   // Show global event
   const [showGlobalEvent, setShowGlobalEvent] = useState([]);
 
@@ -57,6 +61,7 @@ export default function Eventos() {
   // actualizar modal
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [idEvent, setIdEvent] = useState("");
+  const [globalEventName, setGlobalEventName] = useState("");
   //
 
   const headerColumns = React.useMemo(() => {
@@ -159,7 +164,7 @@ export default function Eventos() {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem>
+                <DropdownItem textValue="Actualizar Evento">
                   <Button
                     disabled={
                       event.status === "Rechazado" ||
@@ -172,20 +177,56 @@ export default function Eventos() {
                         : "bg-primary hover:bg-primary/100 text-white"
                     }`}
                     onClick={() => {
+                      if (
+                        event.status === "Rechazado" ||
+                        event.status === "Aceptado"
+                      ) {
+                        return;
+                      }
                       setIsModalOpen(true);
                       setIdEvent(event.id_global_event);
+                      setGlobalEventName(event.name);
                     }}
                   >
                     Actualizar Evento
                   </Button>
                 </DropdownItem>
-                <DropdownItem>View</DropdownItem>
-                <DropdownItem className="text-white bg-secondary">
-                  <Link
-                    to={`/admin/instructor/subeventos/${event.id_global_event}`}
+                <DropdownItem textValue="Crear subeventos">
+                  <Button
+                    disabled={
+                      event.status === "Rechazado" ||
+                      event.status === "Aceptado"
+                    }
+                    className={`${
+                      event.status === "Rechazado" ||
+                      event.status === "Aceptado"
+                        ? "bg-gray-300 text-black"
+                        : "bg-warning hover:bg-warning/100 text-white"
+                    }`}
+                    onClick={() => {
+                      if (
+                        event.status === "Rechazado" ||
+                        event.status === "Aceptado"
+                      ) {
+                        return;
+                      }
+                      setIsSubEventosModalOpen(true);
+                      setIdEvent(event.id_global_event);
+                      setGlobalEventName(event.name);
+                    }}
+                    color="warning"
                   >
-                    SubEventos <i className="ri-list-check"></i>
-                  </Link>
+                    Crear subeventos <i className="ri-add-line"></i>
+                  </Button>
+                </DropdownItem>
+                <DropdownItem textValue="SubEventos">
+                  <Button color="secondary">
+                    <Link
+                      to={`/admin/instructor/subeventos/${event.id_global_event}`}
+                    >
+                      SubEventos <i className="ri-list-check"></i>
+                    </Link>
+                  </Button>
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
@@ -296,7 +337,12 @@ export default function Eventos() {
       <>
         <div className="block">
           {/* Modal subeventos */}
-          <SubEventosModal />
+          <SubEventosModal
+            isSubEventosModalOpen={isSubEventosModalOpen}
+            setIsSubEventosModalOpen={setIsSubEventosModalOpen}
+            idEvent={idEvent}
+            globalEventname={globalEventName}
+          />
         </div>
         <div className="py-0 px-2 flex justify-center items-center">
           <Pagination
@@ -310,7 +356,7 @@ export default function Eventos() {
         </div>
       </>
     );
-  }, [page, pages]);
+  }, [page, pages, isSubEventosModalOpen, idEvent, globalEventName]);
 
   return (
     <main className="flex flex-col gap-2">

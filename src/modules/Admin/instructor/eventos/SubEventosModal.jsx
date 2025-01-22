@@ -4,9 +4,13 @@ import { PlusIcon } from "@modules/Admin/components/PlusIcon";
 import useRegister from "../../../hooks/useRegister";
 import dayjs from "dayjs";
 
-const SubEventosModal = () => {
+const SubEventosModal = ({
+  isSubEventosModalOpen,
+  setIsSubEventosModalOpen,
+  idEvent,
+  globalEventname,
+}) => {
   const { register } = useRegister();
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [registerSubEvents, setRegisterSubEvents] = useState([
     { id_global_event: "" },
     {
@@ -18,22 +22,25 @@ const SubEventosModal = () => {
     },
   ]);
 
+  useEffect(() => {
+    if (idEvent !== 0) {
+      setRegisterSubEvents([
+        {
+          id_global_event: idEvent,
+        },
+        {
+          name: "",
+          headquarters: "",
+          start_date: "",
+          end_date: "",
+          description: "",
+        },
+      ]);
+    }
+  }, [idEvent]);
+
   const [succesMessage, setSuccesMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-
-  const [globalEvents, setGlobalEvents] = useState([]);
-
-  const getGlobalEvent = useCallback(async () => {
-    const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/events/global/all`
-    );
-    const data = await response.json();
-    setGlobalEvents(data);
-  }, []);
-
-  useEffect(() => {
-    getGlobalEvent();
-  }, [getGlobalEvent]);
 
   const handleChangeSubEvent = (e, index) => {
     const { name, value } = e.target;
@@ -102,30 +109,26 @@ const SubEventosModal = () => {
   return (
     <>
       {/* Modal to create event */}
-      <Button
-        color="secondary"
-        onClick={() => setIsModalOpen(true)}
-        endContent={<PlusIcon />}
-      >
-        Crear SubEvento
-      </Button>
 
-      {isModalOpen && (
+      {isSubEventosModalOpen && (
         <>
           <div
             className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-40"
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => setIsSubEventosModalOpen(false)}
           >
-            <div className="relative p-4 w-full max-w-2xl z-50">
+            <div
+              className="relative p-4 w-full max-w-2xl z-50"
+              onClick={(e) => e.stopPropagation()}
+            >
               <div className="relative bg-white rounded-lg shadow">
-                <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t ">
-                  <h3 className="text-3xl font-semibold text-gray-900">
-                    Crear SubEvento
+                <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+                  <h3 className="text-2xl font-semibold text-gray-900">
+                    Crear SubEvento para "{globalEventname}"
                   </h3>
                   <button
                     type="button"
                     className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center "
-                    onClick={() => setIsModalOpen(false)}
+                    onClick={() => setIsSubEventosModalOpen(false)}
                   >
                     <svg
                       className="w-3 h-3"
@@ -149,41 +152,15 @@ const SubEventosModal = () => {
                 <div className="p-4 md:p-5">
                   <form className="min-h-full" onSubmit={handleSubmitSubEvent}>
                     <div className="overflow-y-auto max-h-[57vh] space-y-4">
-                      <div className="flex flex-col mb-5">
-                        <label
-                          className="mb-2 text-lg text-center font-bold text-gray-900"
-                          htmlFor="globalEvent"
-                        >
-                          Escoge el evento Global para asociarlo
-                        </label>
-                        <Select
-                          id="globalEvent"
-                          label="Ecoge el evento Global"
-                          name="id_global_event"
-                          data-testid="tipo-espacios"
-                          value={registerSubEvents[0].id_global_event}
-                          onChange={(e) => handleChangeSubEvent(e, 0)}
-                        >
-                          {globalEvents.map((event) => (
-                            <SelectItem
-                              key={event.id_global_event}
-                              textValue={event.name}
-                            >
-                              {event.name}
-                            </SelectItem>
-                          ))}
-                        </Select>
-                      </div>
-
                       {registerSubEvents.slice(1).map((data, index) => (
                         <div key={index + 1} className="px-4">
-                          <h2 className="font-bold text-2xl text-center mt-5">
+                          <h2 className="font-bold text-xl text-center">
                             SubEvento {index + 1}
                           </h2>
                           <div className="grid grid-cols-2 gap-4 items-center">
                             <div className="flex flex-col">
                               <label
-                                className="mb-2 text-lg font-bold text-gray-900"
+                                className="mb-2 text-base font-bold text-gray-900"
                                 htmlFor="subeventName"
                               >
                                 Nombre del SubEvento
@@ -202,7 +179,7 @@ const SubEventosModal = () => {
                             </div>
                             <div className="flex flex-col">
                               <label
-                                className="block mb-2 text-lg font-bold text-gray-900"
+                                className="block mb-2 text-base font-bold text-gray-900"
                                 htmlFor="sede"
                               >
                                 Sede
@@ -233,7 +210,7 @@ const SubEventosModal = () => {
                           <div className="grid grid-cols-2 gap-4 items-center">
                             <div className="flex flex-col">
                               <label
-                                className="block mb-2 text-lg font-bold text-gray-900"
+                                className="block mb-2 text-base font-bold text-gray-900"
                                 htmlFor="fechaInicio"
                               >
                                 Fecha de Inicio
@@ -252,7 +229,7 @@ const SubEventosModal = () => {
                             </div>
                             <div className="flex flex-col">
                               <label
-                                className="block mb-2 text-lg font-bold text-gray-900"
+                                className="block mb-2 text-base font-bold text-gray-900"
                                 htmlFor="fechaFin"
                               >
                                 Fecha de Fin
@@ -272,7 +249,7 @@ const SubEventosModal = () => {
                           </div>
                           <div className="flex flex-col">
                             <label
-                              className="block mb-2 text-center text-lg font-bold text-gray-900"
+                              className="block mb-2 text-center text-base font-bold text-gray-900"
                               htmlFor="descripcion"
                             >
                               Descripción
@@ -299,14 +276,14 @@ const SubEventosModal = () => {
                       onClick={handleAddSubEvent}
                       endContent={<PlusIcon />}
                     >
-                      Añadir más subEventos {registerSubEvents.slice(1).length}
+                      Crear nuevo subevento {registerSubEvents.slice(1).length}
                     </Button>
 
                     <div className="flex items-center justify-center p-4 md:p-5 space-x-3 rtl:space-x-reverse border-t border-gray-200 rounded-b">
                       <button
                         type="button"
                         className="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-red-700 "
-                        onClick={() => setIsModalOpen(false)}
+                        onClick={() => setIsSubEventosModalOpen(false)}
                       >
                         Cancelar
                       </button>

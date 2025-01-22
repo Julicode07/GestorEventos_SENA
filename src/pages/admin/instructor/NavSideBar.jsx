@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useContext } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import { useLocation } from "react-router-dom";
 import { SessionContext } from "@/context/SessionContext.jsx";
 import Images from "@/assets/img/images.js";
@@ -28,7 +28,11 @@ const NavSideBar = () => {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+      if (
+        sidebarRef.current &&
+        !sidebarRef.current.contains(event.target) &&
+        !event.target.closest('[aria-controls="sidebar"]') // Asegúrate de que no proviene del botón
+      ) {
         setSidebarOpen(false);
       }
     };
