@@ -1,6 +1,7 @@
 import {
   createSubEvent,
   getSubEventsByGlobalEventId,
+  updateSubEventsById,
 } from "../repositories/subEvents/repository";
 import { Request, Response } from "express";
 import { ISubEvent } from "../repositories/subEvents/models";
@@ -53,5 +54,31 @@ export async function GetSubEventsByIdController(req: Request, res: Response) {
     return res
       .status(500)
       .end(JSON.stringify({ message: "Error interno del servidor :(" }));
+  }
+}
+
+export async function UpdateSubEventsByIdController(
+  req: Request,
+  res: Response
+) {
+  try {
+    const { id_sub_event } = req.params;
+    const subEvents = await updateSubEventsById(Number(id_sub_event), req.body);
+    return subEvents == 1
+      ? res.status(200).send(
+          JSON.stringify({
+            message: `Se actualizo el sub evento ${id_sub_event}`,
+            data: subEvents,
+          })
+        )
+      : res.status(400).end(
+          JSON.stringify({
+            message: `No se actulizo el sub evento ${id_sub_event}`,
+          })
+        );
+  } catch (err) {
+    return res
+      .status(500)
+      .end(JSON.stringify({ message: "Error interno del servidor" }));
   }
 }

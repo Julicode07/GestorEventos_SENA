@@ -67,3 +67,41 @@ export async function getSubEventsByGlobalEventId(
     connection.release();
   }
 }
+
+export async function updateSubEventsById(
+  id_sub_event: number,
+  subEventsdata: ISubEvent
+): Promise<number> {
+  const connection: PoolConnection = await getConnection(pool);
+  try {
+    const result = await connection.query(
+      `
+      UPDATE 
+        sub_events
+      SET
+        id_global_event = IFNULL(?, id_global_event),
+        name = IFNULL(?, name),
+        headquarters = IFNULL(?, headquarters),
+        start_date = IFNULL(?, start_date),
+        end_date = IFNULL(?, end_date),
+        description = IFNULL(?, description)
+      WHERE id_sub_event = ?`,
+      [
+        subEventsdata.id_global_event,
+        subEventsdata.name,
+        subEventsdata.headquarters,
+        subEventsdata.start_date,
+        subEventsdata.end_date,
+        subEventsdata.description,
+        id_sub_event,
+      ]
+    );
+    if (result.affectedRows > 0) return 1;
+    else throw new Error(`Could not update sub_event ${id_sub_event}`);
+  } catch (err) {
+    console.error(`[subEvent repository]: ${err}`);
+    return -1;
+  } finally {
+    connection.release();
+  }
+}
