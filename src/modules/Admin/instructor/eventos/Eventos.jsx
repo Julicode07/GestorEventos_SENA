@@ -19,6 +19,7 @@ import ModalEventos from "./ModalEventos";
 import ModalEventosActualizar from "./ModalEventosActualizar.jsx";
 import SubEventosModal from "./SubEventosModal.jsx";
 import { Link } from "react-router-dom";
+import Alert from "../../components/Alert.jsx";
 const TableShowData = React.lazy(() =>
   import("./../../components/TableShowData.jsx")
 );
@@ -27,9 +28,11 @@ export default function Eventos() {
   const [filterValue, setFilterValue] = useState("");
   const [visibleColumns] = useState(new Set(INITIAL_VISIBLE_COLUMNS));
   const [selectedKeys, setSelectedKeys] = useState(new Set([]));
+  const [alert, setAlert] = useState(false);
+  const [statusAlert, setStatusAlert] = useState("");
 
   const [statusFilter, setStatusFilter] = useState("all");
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(15);
   const [sortDescriptor, setSortDescriptor] = useState({
     column: "status",
     direction: "ascending",
@@ -164,69 +167,60 @@ export default function Eventos() {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem textValue="Actualizar Evento">
-                  <Button
-                    disabled={
+                <DropdownItem
+                  textValue="Actualizar Evento"
+                  disabled={
+                    event.status === "Rechazado" || event.status === "Aceptado"
+                  }
+                  onClick={() => {
+                    setStatusAlert(event.status);
+                    if (
                       event.status === "Rechazado" ||
                       event.status === "Aceptado"
+                    ) {
+                      setAlert(true);
+                      setTimeout(() => {
+                        setAlert(false);
+                      }, 1500);
+                      return;
                     }
-                    className={`${
-                      event.status === "Rechazado" ||
-                      event.status === "Aceptado"
-                        ? "bg-gray-300 text-black"
-                        : "bg-primary hover:bg-primary/100 text-white"
-                    }`}
-                    onClick={() => {
-                      if (
-                        event.status === "Rechazado" ||
-                        event.status === "Aceptado"
-                      ) {
-                        return;
-                      }
-                      setIsModalOpen(true);
-                      setIdEvent(event.id_global_event);
-                      setGlobalEventName(event.name);
-                    }}
-                  >
-                    Actualizar Evento
-                  </Button>
+                    setIsModalOpen(true);
+                    setIdEvent(event.id_global_event);
+                    setGlobalEventName(event.name);
+                  }}
+                >
+                  Actualizar Evento
                 </DropdownItem>
-                <DropdownItem textValue="Crear subeventos">
-                  <Button
-                    disabled={
+                <DropdownItem
+                  textValue="Crear subeventos"
+                  disabled={
+                    event.status === "Rechazado" || event.status === "Aceptado"
+                  }
+                  onClick={() => {
+                    setStatusAlert(event.status);
+                    if (
                       event.status === "Rechazado" ||
                       event.status === "Aceptado"
+                    ) {
+                      setAlert(true);
+                      setTimeout(() => {
+                        setAlert(false);
+                      }, 1500);
+                      return;
                     }
-                    className={`${
-                      event.status === "Rechazado" ||
-                      event.status === "Aceptado"
-                        ? "bg-gray-300 text-black"
-                        : "bg-warning hover:bg-warning/100 text-white"
-                    }`}
-                    onClick={() => {
-                      if (
-                        event.status === "Rechazado" ||
-                        event.status === "Aceptado"
-                      ) {
-                        return;
-                      }
-                      setIsSubEventosModalOpen(true);
-                      setIdEvent(event.id_global_event);
-                      setGlobalEventName(event.name);
-                    }}
-                    color="warning"
-                  >
-                    Crear subeventos <i className="ri-add-line"></i>
-                  </Button>
+                    setIsSubEventosModalOpen(true);
+                    setIdEvent(event.id_global_event);
+                    setGlobalEventName(event.name);
+                  }}
+                >
+                  Crear subeventos <i className="ri-add-line"></i>
                 </DropdownItem>
                 <DropdownItem textValue="SubEventos">
-                  <Button color="secondary">
-                    <Link
-                      to={`/admin/instructor/subeventos/${event.id_global_event}`}
-                    >
-                      SubEventos <i className="ri-list-check"></i>
-                    </Link>
-                  </Button>
+                  <Link
+                    to={`/admin/instructor/subeventos/${event.id_global_event}`}
+                  >
+                    SubEventos <i className="ri-list-check"></i>
+                  </Link>
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
@@ -340,7 +334,7 @@ export default function Eventos() {
           <SubEventosModal
             isSubEventosModalOpen={isSubEventosModalOpen}
             setIsSubEventosModalOpen={setIsSubEventosModalOpen}
-            idEvent={idEvent}
+            idEvent={Number(idEvent)}
             globalEventname={globalEventName}
           />
         </div>
@@ -360,6 +354,11 @@ export default function Eventos() {
 
   return (
     <main className="flex flex-col gap-2">
+      {alert && (
+        <Alert
+          message={`No se puede acceder a esa acción porque el estado es ${statusAlert}`}
+        />
+      )}
       <div>
         <Breadcrumbs>
           <BreadcrumbItem href=""> </BreadcrumbItem>
@@ -370,7 +369,7 @@ export default function Eventos() {
         <ModalEventosActualizar
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
-          idEvent={idEvent}
+          idEvent={Number(idEvent)}
         />
       </div>
       {/* table */}

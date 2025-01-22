@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import useUpdate from "../../../hooks/useUpdate";
+import PropTypes from "prop-types";
 
 const ModalEventosActualizar = ({ isModalOpen, setIsModalOpen, idEvent }) => {
   const { update } = useUpdate();
@@ -88,7 +89,7 @@ const ModalEventosActualizar = ({ isModalOpen, setIsModalOpen, idEvent }) => {
               <div className="relative bg-white rounded-lg shadow">
                 <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t ">
                   <h3 className="text-3xl font-semibold text-gray-900">
-                    Actualizar evento "{restOfData[0]?.event_name}"
+                    Actualizar evento `{restOfData[0]?.event_name}`
                   </h3>
                   <button
                     type="button"
@@ -192,6 +193,12 @@ const ModalEventosActualizar = ({ isModalOpen, setIsModalOpen, idEvent }) => {
       )}
     </>
   );
+};
+
+ModalEventosActualizar.propTypes = {
+  isModalOpen: PropTypes.bool,
+  setIsModalOpen: PropTypes.func,
+  idEvent: PropTypes.number,
 };
 
 export default ModalEventosActualizar;

@@ -22,9 +22,12 @@ const ModalEspacios = React.lazy(() => import("./ModalEspacios.jsx"));
 const TableShowData = React.lazy(() =>
   import("./../../components/TableShowData.jsx")
 );
+import { PlusIcon } from "@modules/Admin/components/PlusIcon";
 
 export default function App() {
   const [showSpaces, setShowSpaces] = useState([]);
+  const [idSpaces, setIdSpaces] = useState("");
+  const [isInventoryModalOpen, setIsInventoryModalOpen] = useState(false);
 
   const getAllSpaces = useCallback(async () => {
     const response = await fetch(
@@ -141,19 +144,30 @@ export default function App() {
                   </Button>
                 </DropdownTrigger>
                 <DropdownMenu>
-                  <DropdownItem className="text-white bg-secondary">
+                  <DropdownItem textValue="Inventario">
                     <Link
                       to={`/admin/coordinador/inventario/espacio/${space.id_space}`}
                     >
                       Inventario <i className="ri-list-check"></i>
                     </Link>
                   </DropdownItem>
-                  <DropdownItem>View</DropdownItem>
                   <DropdownItem
-                    className="bg-primary text-white"
-                    onClick={() => setUpdateModalSpace(!updateModalSpace)}
+                    textValue="Actualizar"
+                    onClick={() => {
+                      setIdSpaces(space.id_space);
+                      setUpdateModalSpace(!updateModalSpace);
+                    }}
                   >
-                    Actualizar
+                    Actualizar <i className="ri-refresh-fill"></i>
+                  </DropdownItem>
+                  <DropdownItem
+                    onClick={() => {
+                      setIdSpaces(space.id_space);
+                      setIsInventoryModalOpen(true);
+                    }}
+                    endContent={<PlusIcon />}
+                  >
+                    Añadir Inventario
                   </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
@@ -226,6 +240,7 @@ export default function App() {
             <ModalEspaciosActualizar
               isOpen={updateModalSpace}
               setIsOpen={setUpdateModalSpace}
+              idSpaces={idSpaces}
             />
           </div>
         </div>
@@ -257,13 +272,18 @@ export default function App() {
     showSpaces.length,
     statusFilter,
     updateModalSpace,
+    idSpaces,
   ]);
 
   const bottomContent = useMemo(() => {
     return (
       <>
         <div className="block">
-          <ModalInventario />
+          <ModalInventario
+            isInventoryModalOpen={isInventoryModalOpen}
+            setIsInventoryModalOpen={setIsInventoryModalOpen}
+            idSpaces={idSpaces}
+          />
         </div>
         <div className="py-0 px-2 flex justify-center items-center">
           <Pagination
@@ -277,7 +297,7 @@ export default function App() {
         </div>
       </>
     );
-  }, [page, pages]);
+  }, [page, pages, isInventoryModalOpen, idSpaces]);
 
   return (
     <>

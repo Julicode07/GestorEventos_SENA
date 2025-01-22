@@ -1,8 +1,9 @@
 import { Button, Select, SelectItem, Textarea } from "@nextui-org/react";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { PlusIcon } from "@modules/Admin/components/PlusIcon";
 import useRegister from "../../../hooks/useRegister";
 import dayjs from "dayjs";
+import PropTypes from "prop-types";
 
 const SubEventosModal = ({
   isSubEventosModalOpen,
@@ -123,7 +124,7 @@ const SubEventosModal = ({
               <div className="relative bg-white rounded-lg shadow">
                 <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
                   <h3 className="text-2xl font-semibold text-gray-900">
-                    Crear SubEvento para "{globalEventname}"
+                    Crear SubEvento para `{globalEventname}`
                   </h3>
                   <button
                     type="button"
@@ -321,6 +322,13 @@ const SubEventosModal = ({
       )}
     </>
   );
+};
+
+SubEventosModal.propTypes = {
+  isSubEventosModalOpen: PropTypes.bool,
+  setIsSubEventosModalOpen: PropTypes.func,
+  idEvent: PropTypes.number,
+  globalEventname: PropTypes.string,
 };
 
 export default SubEventosModal;

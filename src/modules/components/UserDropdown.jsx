@@ -8,6 +8,7 @@ import {
 import { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { SessionContext } from "../../context/SessionContext";
+import PropTypes from "prop-types";
 
 const UserDropdown = ({
   role,
@@ -40,7 +41,7 @@ const UserDropdown = ({
         <User
           as="button"
           avatarProps={{
-            src: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
+            src: "https://img.freepik.com/vector-premium/icono-usuario-avatar-perfil-usuario-icono-persona-imagen-perfil-silueta-neutral-genero-adecuado_697711-1132.jpg?w=740",
           }}
           className={`transition-transform ${textColor}`}
           name={
@@ -71,7 +72,7 @@ const UserDropdown = ({
           <User
             as="button"
             avatarProps={{
-              src: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
+              src: "https://img.freepik.com/vector-premium/icono-usuario-avatar-perfil-usuario-icono-persona-imagen-perfil-silueta-neutral-genero-adecuado_697711-1132.jpg?w=740",
             }}
             className="transition-transform text-xl"
             description={role}
@@ -115,6 +116,13 @@ const UserDropdown = ({
       </DropdownMenu>
     </Dropdown>
   );
+};
+UserDropdown.propTypes = {
+  role: PropTypes.string,
+  profileLink: PropTypes.string,
+  logoutLink: PropTypes.string,
+  textColor: PropTypes.string,
+  textRole: PropTypes.string,
 };
 
 export default UserDropdown;

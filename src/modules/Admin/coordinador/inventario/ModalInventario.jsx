@@ -1,12 +1,15 @@
 import { Input, Button, Select, SelectItem } from "@nextui-org/react";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useEffect } from "react";
 import useRegister from "../../../hooks/useRegister";
 import { PlusIcon } from "@modules/Admin/components/PlusIcon";
+import PropTypes from "prop-types";
 
-const ModalInventario = () => {
+const ModalInventario = ({
+  isInventoryModalOpen,
+  setIsInventoryModalOpen,
+  idSpaces,
+}) => {
   const { register } = useRegister();
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [formData, setFormData] = useState([
     { id_space: "" },
@@ -18,22 +21,24 @@ const ModalInventario = () => {
     },
   ]);
 
-  const [spaceInfo, setSpaceInfo] = useState([]);
-
-  const getAllSpaces = useCallback(async () => {
-    const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/spaces/all`
-    );
-    const data = await response.json();
-    setSpaceInfo(data);
-  }, []);
-
-  useEffect(() => {
-    getAllSpaces();
-  }, [getAllSpaces]);
-
   const [success, setSuccess] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    if (idSpaces !== 0) {
+      setFormData([
+        {
+          id_space: idSpaces,
+        },
+        {
+          article_name: "",
+          description: "",
+          quantity: "",
+          type: "",
+        },
+      ]);
+    }
+  }, [idSpaces]);
 
   const handleChangeRegisterInventory = (e, index) => {
     const { name, value } = e.target;
@@ -88,29 +93,24 @@ const ModalInventario = () => {
 
   return (
     <>
-      <Button
-        color="secondary"
-        onClick={() => setIsModalOpen(true)}
-        endContent={<PlusIcon />}
-      >
-        Añadir Inventario
-      </Button>
-      {isModalOpen && (
+      {isInventoryModalOpen && (
         <form action="" onSubmit={handleSubmitRegisterInventory}>
           <div
             className="fixed inset-0 bg-black bg-opacity-30 flex justify-center items-center z-50 h-screen"
-            onClick={() => setIsModalOpen(false)}
+            onClick={() => setIsInventoryModalOpen(false)}
           >
             <div
               className={`bg-white border border-gray-300 shadow-2xl p-8 rounded-2xl w-4/5 max-w-2xl flex flex-col items-center relative transition-transform transform ${
-                isModalOpen ? "scale-100 opacity-100" : "scale-95 opacity-0"
+                isInventoryModalOpen
+                  ? "scale-100 opacity-100"
+                  : "scale-95 opacity-0"
               } transition-all duration-300 ease-out`}
               onClick={(e) => e.stopPropagation()}
               style={{ maxHeight: "90vh" }}
             >
               <button
                 className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
-                onClick={() => setIsModalOpen(false)}
+                onClick={() => setIsInventoryModalOpen(false)}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -126,28 +126,9 @@ const ModalInventario = () => {
                 Añadir objeto al inventario
               </h2>
               <div className="w-full overflow-y-auto max-h-[50vh] px-2">
-                <div className="w-full">
-                  <label className="pl-1" htmlFor="space">
-                    Ingrese al espacio al que quiere asignar
-                  </label>
-                  <Select
-                    id="space"
-                    label="Espacio"
-                    size="sm"
-                    name="id_space"
-                    value={formData[0].id_space}
-                    data-testid="space"
-                    onChange={(e) => handleChangeRegisterInventory(e, 0)}
-                  >
-                    {spaceInfo.map((space) => (
-                      <SelectItem key={space.id_space}>{space.name}</SelectItem>
-                    ))}
-                  </Select>
-                </div>
-
                 {formData.slice(1).map((data, index) => (
                   <div key={index + 1}>
-                    <h2 className="font-bold text-xl text-center mt-5">
+                    <h2 className="font-bold text-xl text-center">
                       Item {index + 1}
                     </h2>
                     <div className="w-full">
@@ -254,6 +235,12 @@ const ModalInventario = () => {
       )}
     </>
   );
+};
+
+ModalInventario.propTypes = {
+  isInventoryModalOpen: PropTypes.bool,
+  setIsInventoryModalOpen: PropTypes.bool,
+  idSpaces: PropTypes.number,
 };
 
 export default ModalInventario;

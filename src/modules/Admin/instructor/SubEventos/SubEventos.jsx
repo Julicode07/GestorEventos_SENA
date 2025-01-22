@@ -20,7 +20,9 @@ import { VerticalDotsIcon } from "@modules/Admin/components/VerticalDotsIcon";
 import { SearchIcon } from "@modules/Admin/components/SearchIcon";
 import { ChevronDownIcon } from "@modules/Admin/components/ChevronDownIcon";
 import { useParams } from "react-router-dom";
-import dayjs from "dayjs";
+const ModalSubEventosActualizar = React.lazy(() =>
+  import("./../eventos/ModalSubEventosActualizar")
+);
 
 export const columns = [
   { name: "ID", uid: "id_sub_event", sortable: true },
@@ -61,6 +63,11 @@ export default function SubEventos() {
   });
   const [page, setPage] = React.useState(1);
 
+  //update subevents
+  const [isModalUpdateSubEventsOpen, setIsModalUpdateSubEventsOpen] =
+    useState(false);
+  const [idSubEvents, setIdSubEvents] = useState("");
+  //
   //get subevents
   const [subEvents, setSubEvents] = useState([]);
 
@@ -156,7 +163,7 @@ export default function SubEventos() {
         return (
           <div className="flex flex-col">
             <p className="text-bold text-small capitalize">
-              {dayjs(subEvent.start_date).format("YYYY-MM-DD HH:mm:ss")}
+              {subEvent.start_date}
             </p>
           </div>
         );
@@ -164,7 +171,7 @@ export default function SubEventos() {
         return (
           <div className="flex flex-col">
             <p className="text-bold text-small capitalize">
-              {dayjs(subEvent.end_date).format("YYYY-MM-DD HH:mm:ss")}
+              {subEvent.end_date}
             </p>
           </div>
         );
@@ -186,7 +193,15 @@ export default function SubEventos() {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem key="view">View</DropdownItem>
+                <DropdownItem
+                  textValue="Actualizar"
+                  onClick={() => {
+                    setIdSubEvents(subEvent.id_sub_event);
+                    setIsModalUpdateSubEventsOpen(true);
+                  }}
+                >
+                  Actualizar
+                </DropdownItem>
                 <DropdownItem key="edit">Edit</DropdownItem>
                 <DropdownItem key="delete">Delete</DropdownItem>
               </DropdownMenu>
@@ -255,6 +270,11 @@ export default function SubEventos() {
                 ))}
               </DropdownMenu>
             </Dropdown>
+            <ModalSubEventosActualizar
+              idSubEvents={Number(idSubEvents)}
+              isModalUpdateSubEventsOpen={isModalUpdateSubEventsOpen}
+              setIsModalUpdateSubEventsOpen={setIsModalUpdateSubEventsOpen}
+            />
           </div>
         </div>
         <div className="flex justify-between items-center">
@@ -284,6 +304,8 @@ export default function SubEventos() {
     rowsPerPage,
     visibleColumns,
     subEvents.length,
+    isModalUpdateSubEventsOpen,
+    idSubEvents,
   ]);
 
   const bottomContent = React.useMemo(() => {
