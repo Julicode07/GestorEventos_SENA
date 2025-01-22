@@ -3,6 +3,7 @@ import {
   createSpace,
   getSpaces,
   updateSpaceById,
+  getSpaceById,
 } from "../repositories/spaces/repository";
 import { bigIntReplacer } from "../helpers/json.helper";
 
@@ -57,6 +58,18 @@ export async function updateSpaceByIdController(req: Request, res: Response) {
       : res
           .status(400)
           .end(JSON.stringify({ message: `No se actualizo el espacio ${id}` }));
+  } catch (err) {
+    return res
+      .status(500)
+      .end(JSON.stringify({ message: "Error interno del servidor :(" }));
+  }
+}
+
+export async function GetSpaceByIdController(req: Request, res: Response) {
+  try {
+    const { id_space } = req.params;
+    const spaces = await getSpaceById(Number(id_space));
+    return res.status(200).send(JSON.stringify(spaces, bigIntReplacer));
   } catch (err) {
     return res
       .status(500)

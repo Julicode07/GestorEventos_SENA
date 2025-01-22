@@ -3,6 +3,7 @@ import { databaseRegex } from "../helpers/regex.helper";
 import { isInstructor } from "../middlewares/auth";
 import {
   CreateSpaceController,
+  GetSpaceByIdController,
   GetSpacesController,
   updateSpaceByIdController,
 } from "../controllers/spaces";
@@ -45,6 +46,14 @@ SpacesRouter.patch("/update/:id", async (req: Request, res: Response) => {
     return res
       .status(500)
       .end(JSON.stringify({ message: "Error interno del servidor :(" }));
+  }
+});
+
+SpacesRouter.get("/:id_space", async (req: Request, res: Response) => {
+  try {
+    return GetSpaceByIdController(req, res);
+  } catch (err) {
+    return res.status(500).json({ message: "Error interno del servidor :(" });
   }
 });
 

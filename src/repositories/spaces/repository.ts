@@ -48,6 +48,23 @@ export async function getSpaces(): Promise<number> {
   }
 }
 
+export async function getSpaceById(id_space: number): Promise<number> {
+  const connection: PoolConnection = await getConnection(pool);
+  try {
+    const result = await connection.query(
+      `
+      SELECT * FROM spaces WHERE id_space = ?`,
+      [id_space]
+    );
+    return result.length == 0 ? [] : result;
+  } catch (err) {
+    console.error(`[space repository]: ERROR GETTING SPACE ${err}`);
+    return -1;
+  } finally {
+    connection.release();
+  }
+}
+
 export async function updateSpaceById(
   id_space: number,
   spaceData: ISpace
