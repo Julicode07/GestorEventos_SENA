@@ -49,7 +49,7 @@ export async function getSubEventsByGlobalEventId(
       se.headquarters,
       se.start_date,
       se.end_date,
-      se.description
+      se.description,
       se.subeventConfirmation
     FROM
       sub_events se
