@@ -57,7 +57,7 @@ export async function getSubEventsByGlobalEventId(
       INNER JOIN global_events ge
       ON se.id_global_event = ge.id_global_event 
     WHERE 
-      ge.id_global_event = ?
+      se.id_sub_event = ?
   `,
       [id_global_event]
     );
