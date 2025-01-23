@@ -8,7 +8,7 @@ export async function createSubEvent(subEventData: ISubEvent): Promise<number> {
     const result = await connection.query(
       `
         INSERT INTO
-            sub_events (id_global_event, name, headquarters, start_date, end_date, description) VALUES (?,?,?,?,?,?)`,
+            sub_events (id_global_event, name, headquarters, start_date, end_date, description, subeventConfirmation) VALUES (?,?,?,?,?,?,?)`,
       [
         subEventData.id_global_event,
         subEventData.name,
@@ -16,6 +16,7 @@ export async function createSubEvent(subEventData: ISubEvent): Promise<number> {
         subEventData.start_date,
         subEventData.end_date,
         subEventData.description,
+        subEventData.subeventConfirmation,
       ]
     );
     switch (result.affectedRows) {
@@ -49,6 +50,7 @@ export async function getSubEventsByGlobalEventId(
       se.start_date,
       se.end_date,
       se.description
+      se.subeventConfirmation
     FROM
       sub_events se
       INNER JOIN global_events ge
@@ -84,7 +86,8 @@ export async function updateSubEventsById(
         headquarters = IFNULL(?, headquarters),
         start_date = IFNULL(?, start_date),
         end_date = IFNULL(?, end_date),
-        description = IFNULL(?, description)
+        description = IFNULL(?, description),
+        subeventConfirmation = IFNULL(?, subeventConfirmation)
       WHERE id_sub_event = ?`,
       [
         subEventsdata.id_global_event,
@@ -93,6 +96,7 @@ export async function updateSubEventsById(
         subEventsdata.start_date,
         subEventsdata.end_date,
         subEventsdata.description,
+        subEventsdata.subeventConfirmation,
         id_sub_event,
       ]
     );

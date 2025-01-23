@@ -28,6 +28,7 @@ SubEventsRouter.post("/create", async (req: Request, res: Response) => {
           start_date?: string;
           end_date?: string;
           description?: string;
+          subeventConfirmation?: string;
         }
       | undefined = subEvent[0];
     if (
@@ -36,7 +37,8 @@ SubEventsRouter.post("/create", async (req: Request, res: Response) => {
       !firstItem.headquarters &&
       !firstItem.start_date &&
       !firstItem.end_date &&
-      !firstItem.description
+      !firstItem.description &&
+      !firstItem.subeventConfirmation
     ) {
       if (
         !databaseRegex.subEvents.id_global_event.test(firstItem.id_global_event)
@@ -72,6 +74,12 @@ SubEventsRouter.post("/create", async (req: Request, res: Response) => {
         {
           field: "description",
           valid: databaseRegex.subEvents.description.test(item.description),
+        },
+        {
+          field: "subeventConfirmation",
+          valid: databaseRegex.subEvents.subeventConfirmation.test(
+            item.subeventConfirmation
+          ),
         },
       ];
 

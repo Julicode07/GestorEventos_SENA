@@ -110,7 +110,8 @@ export async function getGlobalEventById(id_event: number): Promise<number> {
           users.name,
           users.last_names,
           global_events.name AS event_name,
-          global_events.details
+          global_events.details,
+          global_events.status AS global_event_status
           FROM
               global_events
               INNER JOIN users

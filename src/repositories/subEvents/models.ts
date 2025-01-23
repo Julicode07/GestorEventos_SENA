@@ -9,6 +9,7 @@ export interface ISubEvent {
   start_date: string;
   end_date: string;
   description: string;
+  subeventConfirmation: string;
 }
 
 export async function createSubeventSchema(): Promise<Number> {
@@ -21,7 +22,8 @@ export async function createSubeventSchema(): Promise<Number> {
     headquarters VARCHAR(80) NOT NULL,
     start_date DATETIME NOT NULL,
     end_date DATETIME NOT NULL,
-    description VARCHAR(255)
+    description VARCHAR(255),
+    subeventConfirmation  VARCHAR(65) NOT NULL
 )`);
     console.log(`[subevents repository - models]: CREATED subevents SCHEMA.`);
     return 1;
