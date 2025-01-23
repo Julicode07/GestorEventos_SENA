@@ -46,6 +46,7 @@ export async function getSubEventsByGlobalEventId(
       se.id_sub_event,
       ge.name as global_event_name,
       se.name,
+      ge.id_global_event,
       se.headquarters,
       se.start_date,
       se.end_date,
