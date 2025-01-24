@@ -2,6 +2,7 @@ import {
   CreateSubeventsController,
   GetSubEventsByIdController,
   UpdateSubEventsByIdController,
+  GetSubEventsByGlobalEventIdController,
 } from "../controllers/subEvents";
 import express, { Express, Request, Response } from "express";
 import { databaseRegex } from "../helpers/regex.helper";
@@ -108,11 +109,19 @@ SubEventsRouter.post("/create", async (req: Request, res: Response) => {
   }
 });
 
+SubEventsRouter.get("/:id_sub_event", async (req: Request, res: Response) => {
+  try {
+    return GetSubEventsByIdController(req, res);
+  } catch (err) {
+    return res.status(500).json({ message: "Error interno del servidor :(" });
+  }
+});
+
 SubEventsRouter.get(
-  "/:id_global_event",
+  "globalEvent/:id_global_event",
   async (req: Request, res: Response) => {
     try {
-      return GetSubEventsByIdController(req, res);
+      return GetSubEventsByGlobalEventIdController(req, res);
     } catch (err) {
       return res.status(500).json({ message: "Error interno del servidor :(" });
     }

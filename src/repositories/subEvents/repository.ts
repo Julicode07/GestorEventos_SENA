@@ -36,7 +36,7 @@ export async function createSubEvent(subEventData: ISubEvent): Promise<number> {
 }
 
 export async function getSubEventsByGlobalEventId(
-  id_global_event: number
+  id_sub_event: number
 ): Promise<number> {
   const connection: PoolConnection = await getConnection(pool);
   try {
@@ -59,9 +59,43 @@ export async function getSubEventsByGlobalEventId(
     WHERE 
       se.id_sub_event = ?
   `,
-      [id_global_event]
+      [id_sub_event]
     );
 
+    return result.length == 0 ? [] : result;
+  } catch (err) {
+    console.log(`[subevents repository]: ERROR GETTING subEvents ${err}`);
+    return -1;
+  } finally {
+    connection.release();
+  }
+}
+
+export async function getSubEventsByIdGlobalEvent(
+  id_global_event: number
+): Promise<number> {
+  const connection: PoolConnection = await getConnection(pool);
+  try {
+    const result = await connection.query(
+      `
+      SELECT
+      se.id_sub_event,
+      ge.name as global_event_name,
+      se.name,
+      ge.id_global_event,
+      se.headquarters,
+      se.start_date,
+      se.end_date,
+      se.description,
+      se.subeventConfirmation
+    FROM
+      sub_events se
+      INNER JOIN global_events ge
+      ON se.id_global_event = ge.id_global_event 
+    WHERE 
+      ge.id_global_event = ?`,
+      [id_global_event]
+    );
     return result.length == 0 ? [] : result;
   } catch (err) {
     console.log(`[subevents repository]: ERROR GETTING subEvents ${err}`);
