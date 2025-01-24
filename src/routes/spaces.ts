@@ -21,7 +21,12 @@ SpacesRouter.post("/new", async (req: Request, res: Response) => {
       databaseRegex.spaces.details.test(req.body.details)
     ) {
       CreateSpaceController(req, res);
-    }
+    } else
+      return res.status(400).end(
+        JSON.stringify({
+          message: "Los parámetros enviados al servidor son incorrectos :(",
+        })
+      );
   } catch (err) {
     return res
       .status(500)
