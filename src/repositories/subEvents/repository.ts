@@ -87,7 +87,8 @@ export async function getSubEventsByIdGlobalEvent(
       se.start_date,
       se.end_date,
       se.description,
-      se.subeventConfirmation
+      se.subeventConfirmation,
+      ge.status AS global_event_status
     FROM
       sub_events se
       INNER JOIN global_events ge
