@@ -1,4 +1,7 @@
-import { createOrganizers } from "../repositories/organizers/repository";
+import {
+  createOrganizers,
+  getOrganizers,
+} from "../repositories/organizers/repository";
 import { Request, Response } from "express";
 import { IOrganizers } from "../repositories/organizers/models";
 import { bigIntReplacer } from "../helpers/json.helper";
@@ -24,5 +27,16 @@ export async function CreateOrganizersController(req: Request, res: Response) {
     return res
       .status(500)
       .end(JSON.stringify({ message: "Error interno del servidor :(" }));
+  }
+}
+
+export async function GetOrganizersController(_req: Request, res: Response) {
+  try {
+    const organizers = await getOrganizers();
+    return res.status(200).send(JSON.stringify(organizers, bigIntReplacer));
+  } catch (err) {
+    return res
+      .status(500)
+      .send(JSON.stringify({ message: "Error interno del servidor :(" }));
   }
 }

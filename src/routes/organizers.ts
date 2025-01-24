@@ -1,6 +1,9 @@
 import express, { Express, Request, Response } from "express";
 import { databaseRegex } from "../helpers/regex.helper";
-import { CreateOrganizersController } from "../controllers/organizers";
+import {
+  CreateOrganizersController,
+  GetOrganizersController,
+} from "../controllers/organizers";
 
 const OrganizersRouter: Express = express();
 
@@ -27,4 +30,13 @@ OrganizersRouter.post("/new", async (req: Request, res: Response) => {
   }
 });
 
+OrganizersRouter.get("/all", async (req: Request, res: Response) => {
+  try {
+    return await GetOrganizersController(req, res);
+  } catch (err) {
+    return res
+      .status(500)
+      .send(JSON.stringify({ message: "Error interno del servidor :(" }));
+  }
+});
 export default OrganizersRouter;

@@ -35,3 +35,26 @@ export async function createOrganizers(
     connection.release();
   }
 }
+
+export async function getOrganizers(): Promise<number> {
+  const connection: PoolConnection = await getConnection(pool);
+  try {
+    const result = await connection.query(`SELECT 
+        org.id_organizers,
+        org.name,
+        su.name,
+        org.rol,
+        org.email,
+        org.address
+      FROM 
+        organizers org
+        INNER JOIN sub_events su
+        ON org.id_sub_event = su.id_sub_event`);
+    return result.length == 0 ? [] : result;
+  } catch (err) {
+    console.error(`[organizers repository]: ERROR GETTING organizers: ${err}`);
+    return -1;
+  } finally {
+    connection.release();
+  }
+}
