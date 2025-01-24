@@ -118,7 +118,7 @@ SubEventsRouter.get("/:id_sub_event", async (req: Request, res: Response) => {
 });
 
 SubEventsRouter.get(
-  "globalEvent/:id_global_event",
+  "/globalEvent/:id_global_event",
   async (req: Request, res: Response) => {
     try {
       return GetSubEventsByGlobalEventIdController(req, res);
