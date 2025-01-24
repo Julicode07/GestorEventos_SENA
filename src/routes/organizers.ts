@@ -13,7 +13,7 @@ OrganizersRouter.post("/new", async (req: Request, res: Response) => {
       databaseRegex.organizers.email.test(req.body.email) &&
       databaseRegex.organizers.address.test(req.body.address)
     ) {
-      CreateOrganizersController(req, res);
+      await CreateOrganizersController(req, res);
     }
   } catch (err) {
     return res
