@@ -36,7 +36,7 @@ SpacesRouter.post("/new", async (req: Request, res: Response) => {
 
 SpacesRouter.get("/all", async (req: Request, res: Response) => {
   try {
-    return await GetSpacesController(req, res);
+    return GetSpacesController(req, res);
   } catch (err) {
     return res
       .status(500)
@@ -46,7 +46,7 @@ SpacesRouter.get("/all", async (req: Request, res: Response) => {
 
 SpacesRouter.patch("/update/:id", async (req: Request, res: Response) => {
   try {
-    return await updateSpaceByIdController(req, res);
+    return updateSpaceByIdController(req, res);
   } catch (err) {
     return res
       .status(500)
@@ -56,7 +56,7 @@ SpacesRouter.patch("/update/:id", async (req: Request, res: Response) => {
 
 SpacesRouter.get("/:id_space", async (req: Request, res: Response) => {
   try {
-    return await GetSpaceByIdController(req, res);
+    return GetSpaceByIdController(req, res);
   } catch (err) {
     return res.status(500).json({ message: "Error interno del servidor :(" });
   }

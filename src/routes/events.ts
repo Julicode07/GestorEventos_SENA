@@ -39,7 +39,7 @@ EventsRouter.post(
 
 EventsRouter.get("/global/all", async (req: Request, res: Response) => {
   try {
-    GetGlobalEventsController(req, res);
+    return GetGlobalEventsController(req, res);
   } catch (err) {
     res
       .status(500)

@@ -50,6 +50,7 @@ export async function getOrganizers(): Promise<number> {
         organizers org
         INNER JOIN sub_events su
         ON org.id_sub_event = su.id_sub_event`);
+    console.log(result);
     return result.length == 0 ? [] : result;
   } catch (err) {
     console.error(`[organizers repository]: ERROR GETTING organizers: ${err}`);

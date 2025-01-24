@@ -16,7 +16,7 @@ UsersRouter.post("/", async (req: Request, res: Response) => {
       databaseRegex.users.password.test(req.body.password) &&
       databaseRegex.users.role.test(req.body.role)
     ) {
-      await CreateUserController(req, res);
+       CreateUserController(req, res);
     } else
       return res.status(400).end(
         JSON.stringify({

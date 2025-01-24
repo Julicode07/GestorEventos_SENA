@@ -32,7 +32,7 @@ OrganizersRouter.post("/new", async (req: Request, res: Response) => {
 
 OrganizersRouter.get("/all", async (req: Request, res: Response) => {
   try {
-    return await GetOrganizersController(req, res);
+    return GetOrganizersController(req, res);
   } catch (err) {
     return res
       .status(500)
