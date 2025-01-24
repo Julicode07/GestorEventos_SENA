@@ -91,6 +91,15 @@ const ModalInventario = ({
     ]);
   };
 
+  const handleRemoveItem = (index) => {
+    setFormData((prevData) => {
+      if (index === 0) return prevData;
+
+      const newData = [...prevData];
+      newData.splice(index, 1);
+      return newData;
+    });
+  };
   return (
     <>
       {isInventoryModalOpen && (
@@ -128,6 +137,15 @@ const ModalInventario = ({
               <div className="w-full overflow-y-auto max-h-[50vh] px-2">
                 {formData.slice(1).map((data, index) => (
                   <div key={index + 1}>
+                    {index !== 0 && (
+                      <button
+                        className="flex items-end justify-end w-full"
+                        type="button"
+                        onClick={() => handleRemoveItem(index + 1)}
+                      >
+                        <i className="ri-close-line text-2xl"></i>
+                      </button>
+                    )}
                     <h2 className="font-bold text-xl text-center">
                       Item {index + 1}
                     </h2>

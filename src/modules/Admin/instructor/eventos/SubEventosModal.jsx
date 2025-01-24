@@ -20,6 +20,7 @@ const SubEventosModal = ({
       start_date: "",
       end_date: "",
       description: "",
+      subeventConfirmation: "",
     },
   ]);
 
@@ -35,6 +36,7 @@ const SubEventosModal = ({
           start_date: "",
           end_date: "",
           description: "",
+          subeventConfirmation: "",
         },
       ]);
     }
@@ -85,6 +87,7 @@ const SubEventosModal = ({
           start_date: "",
           end_date: "",
           description: "",
+          subeventConfirmation: "",
         },
       ]);
       window.location.reload();
@@ -104,9 +107,22 @@ const SubEventosModal = ({
         start_date: "",
         end_date: "",
         description: "",
+        subeventConfirmation: "",
       },
     ]);
   };
+
+  const handleRemoveSubEvent = (index) => {
+    setRegisterSubEvents((prevData) => {
+      if (index === 0) {
+        return prevData;
+      }
+      const newData = [...prevData];
+      newData.splice(index, 1);
+      return newData;
+    });
+  };
+
   return (
     <>
       {/* Modal to create event */}
@@ -155,6 +171,15 @@ const SubEventosModal = ({
                     <div className="overflow-y-auto max-h-[57vh] space-y-4">
                       {registerSubEvents.slice(1).map((data, index) => (
                         <div key={index + 1} className="px-4">
+                          {index !== 0 && (
+                            <button
+                              className="flex items-end justify-end w-full"
+                              type="button"
+                              onClick={() => handleRemoveSubEvent(index + 1)}
+                            >
+                              <i className="ri-close-line text-2xl"></i>
+                            </button>
+                          )}
                           <h2 className="font-bold text-xl text-center">
                             SubEvento {index + 1}
                           </h2>
@@ -248,23 +273,62 @@ const SubEventosModal = ({
                               />
                             </div>
                           </div>
-                          <div className="flex flex-col">
-                            <label
-                              className="block mb-2 text-center text-base font-bold text-gray-900"
-                              htmlFor="descripcion"
-                            >
-                              Descripción
-                            </label>
-                            <Textarea
-                              id="descripcion"
-                              placeholder="Observaciones"
-                              className="mb-4"
-                              name="description"
-                              onChange={(e) =>
-                                handleChangeSubEvent(e, index + 1)
-                              }
-                              value={data.description}
-                            />
+                          <div className="grid grid-cols-2 gap-4 items-center">
+                            <div className="flex flex-col">
+                              <label
+                                className="block mb-2 text-center text-base font-bold text-gray-900"
+                                htmlFor="subeventConfirmation"
+                              >
+                                Estado del subevento actualmente
+                              </label>
+                              <Select
+                                id="subeventConfirmation"
+                                label="Ecoge el estado"
+                                name="subeventConfirmation"
+                                data-testid="subeventConfirmation"
+                                onChange={(e) =>
+                                  handleChangeSubEvent(e, index + 1)
+                                }
+                                value={data.subeventConfirmation}
+                              >
+                                <SelectItem key="">
+                                  Seleccione el estado
+                                </SelectItem>
+                                <SelectItem key="Programado">
+                                  Programado
+                                </SelectItem>
+                                <SelectItem key="Confirmado">
+                                  Confirmado
+                                </SelectItem>
+                                <SelectItem key="Cancelado">
+                                  Cancelado
+                                </SelectItem>
+                                <SelectItem key="Pospuesto">
+                                  Pospuesto
+                                </SelectItem>
+                                <SelectItem key="Completado">
+                                  Completado
+                                </SelectItem>
+                              </Select>
+                            </div>
+                            <div className="flex flex-col">
+                              <label
+                                className="block mb-2 text-center text-base font-bold text-gray-900"
+                                htmlFor="descripcion"
+                              >
+                                Descripción
+                              </label>
+                              <Textarea
+                                id="descripcion"
+                                placeholder="Observaciones"
+                                className="mb-4"
+                                name="description"
+                                onChange={(e) =>
+                                  handleChangeSubEvent(e, index + 1)
+                                }
+                                value={data.description}
+                              />
+                            </div>
                           </div>
                           <hr className="border-2 my-3" />
                         </div>

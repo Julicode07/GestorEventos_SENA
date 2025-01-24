@@ -29,7 +29,7 @@ export default function Usuarios() {
   const [filterValue, setFilterValue] = React.useState("");
   const [visibleColumns] = React.useState(new Set(INITIAL_VISIBLE_COLUMNS));
   const [showUsers, setShowUsers] = useState([]);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(15);
   const [sortDescriptor, setSortDescriptor] = React.useState({
     column: "status",
     direction: "ascending",
@@ -106,13 +106,6 @@ export default function Usuarios() {
   const renderCell = React.useCallback((user, columnKey) => {
     const cellValue = user[columnKey];
     switch (columnKey) {
-      case "id_user":
-      case "document":
-      case "name":
-      case "last_names":
-      case "email":
-      case "phone":
-        return <div className="text-small">{cellValue}</div>;
       case "actions":
         return (
           <div className="relative flex justify-center items-center gap-2">
