@@ -41,8 +41,8 @@ export async function getOrganizers(): Promise<number> {
   try {
     const result = await connection.query(`SELECT 
         org.id_organizers,
-        org.name,
-        su.name,
+        org.name AS organizer_name,
+        su.name AS sub_event_name,
         org.rol,
         org.email,
         org.address
