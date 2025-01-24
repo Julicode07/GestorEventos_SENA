@@ -103,7 +103,7 @@ InventoryRouter.post("/create", async (req: Request, res: Response) => {
 
 InventoryRouter.get("/space/:id_space", async (req: Request, res: Response) => {
   try {
-    return GetSpaceInventoryByIdController(req, res);
+    return await GetSpaceInventoryByIdController(req, res);
   } catch (err) {
     return res
       .status(500)
@@ -115,7 +115,7 @@ InventoryRouter.patch(
   "/update/space/:id",
   async (req: Request, res: Response) => {
     try {
-      return updateSpaceInventoryByIdController(req, res);
+      return await updateSpaceInventoryByIdController(req, res);
     } catch (err) {
       return res
         .status(500)

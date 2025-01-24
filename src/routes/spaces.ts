@@ -20,7 +20,7 @@ SpacesRouter.post("/new", async (req: Request, res: Response) => {
       databaseRegex.spaces.status.test(req.body.status) &&
       databaseRegex.spaces.details.test(req.body.details)
     ) {
-      CreateSpaceController(req, res);
+      await CreateSpaceController(req, res);
     } else
       return res.status(400).end(
         JSON.stringify({
@@ -36,7 +36,7 @@ SpacesRouter.post("/new", async (req: Request, res: Response) => {
 
 SpacesRouter.get("/all", async (req: Request, res: Response) => {
   try {
-    return GetSpacesController(req, res);
+    return await GetSpacesController(req, res);
   } catch (err) {
     return res
       .status(500)
@@ -46,7 +46,7 @@ SpacesRouter.get("/all", async (req: Request, res: Response) => {
 
 SpacesRouter.patch("/update/:id", async (req: Request, res: Response) => {
   try {
-    return updateSpaceByIdController(req, res);
+    return await updateSpaceByIdController(req, res);
   } catch (err) {
     return res
       .status(500)
@@ -56,7 +56,7 @@ SpacesRouter.patch("/update/:id", async (req: Request, res: Response) => {
 
 SpacesRouter.get("/:id_space", async (req: Request, res: Response) => {
   try {
-    return GetSpaceByIdController(req, res);
+    return await GetSpaceByIdController(req, res);
   } catch (err) {
     return res.status(500).json({ message: "Error interno del servidor :(" });
   }

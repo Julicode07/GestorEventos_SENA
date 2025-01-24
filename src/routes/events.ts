@@ -22,7 +22,7 @@ EventsRouter.post(
         databaseRegex.global_events.details.test(req.body.details) &&
         databaseRegex.global_events.status.test(req.body.status)
       ) {
-        CreateGlobalEventController(req, res);
+        await CreateGlobalEventController(req, res);
       } else
         return res.status(400).end(
           JSON.stringify({

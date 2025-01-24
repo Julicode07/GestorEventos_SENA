@@ -111,7 +111,7 @@ SubEventsRouter.post("/create", async (req: Request, res: Response) => {
 
 SubEventsRouter.get("/:id_sub_event", async (req: Request, res: Response) => {
   try {
-    return GetSubEventsByIdController(req, res);
+    return await GetSubEventsByIdController(req, res);
   } catch (err) {
     return res.status(500).json({ message: "Error interno del servidor :(" });
   }
@@ -121,7 +121,7 @@ SubEventsRouter.get(
   "/globalEvent/:id_global_event",
   async (req: Request, res: Response) => {
     try {
-      return GetSubEventsByGlobalEventIdController(req, res);
+      return await GetSubEventsByGlobalEventIdController(req, res);
     } catch (err) {
       return res.status(500).json({ message: "Error interno del servidor :(" });
     }
@@ -132,7 +132,7 @@ SubEventsRouter.patch(
   "/update/:id_sub_event",
   async (req: Request, res: Response) => {
     try {
-      return UpdateSubEventsByIdController(req, res);
+      return await UpdateSubEventsByIdController(req, res);
     } catch (err) {
       return res
         .status(500)
