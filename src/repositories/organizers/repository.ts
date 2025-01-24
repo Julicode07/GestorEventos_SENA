@@ -36,22 +36,23 @@ export async function createOrganizers(
   }
 }
 
-export async function getOrganizers(): Promise<number> {
+export async function getOrganizers(): Promise<any[] | number> {
   const connection: PoolConnection = await getConnection(pool);
   try {
-    const result = await connection.query(`SELECT 
+    const [rows] = await connection.query(`
+      SELECT 
         org.id_organizers,
-        org.name,
-        su.name,
+        org.name AS organizer_name, 
+        su.name AS sub_event_name,
         org.rol,
         org.email,
         org.address
-      FROM 
-        organizers org
-        INNER JOIN sub_events su
-        ON org.id_sub_event = su.id_sub_event`);
-    console.log(result);
-    return result.length == 0 ? [] : result;
+      FROM organizers org
+      INNER JOIN sub_events su
+      ON org.id_sub_event = su.id_sub_event
+    `);
+    console.log("Organizers fetched:", rows);
+    return rows.length === 0 ? [] : rows;
   } catch (err) {
     console.error(`[organizers repository]: ERROR GETTING organizers: ${err}`);
     return -1;
