@@ -20,7 +20,7 @@ export async function createOrganizersSchema(): Promise<number> {
     rol VARCHAR(50) NOT NULL,
     email VARCHAR(255),
     address VARCHAR(150),
-    CONSTRAINT fk_sub_event_has_space 
+    CONSTRAINT fk_organizers_has_sub_events 
         FOREIGN KEY (id_sub_event) 
         REFERENCES sub_events(id_sub_event)
 )`);
