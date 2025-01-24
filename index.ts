@@ -15,6 +15,7 @@ import EventsRouter from "./src/routes/events";
 import SpacesRouter from "./src/routes/spaces";
 import InventoryRouter from "./src/routes/inventory";
 import SubEventsRouter from "./src/routes/subEvents";
+import OrganizersRouter from "./src/routes/organizers";
 
 dotenv.config();
 
@@ -73,6 +74,7 @@ app.use("/api/events/", EventsRouter);
 app.use("/api/spaces/", SpacesRouter);
 app.use("/api/inventory/", InventoryRouter);
 app.use("/api/subEvents/", SubEventsRouter);
+app.use("/api/organizers/", OrganizersRouter);
 
 app.get("/404.html", (req: Request, res: Response) => {
   const viewFile = path.join(__dirname, "public_views", "404.html");

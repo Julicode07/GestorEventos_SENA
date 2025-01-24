@@ -50,4 +50,13 @@ export const databaseRegex = {
     subeventConfirmation:
       /^(Programado|Confirmado|Cancelado|Pospuesto|Completado)$/,
   },
+
+  organizers: {
+    id_organizer: /^[0-9]{1,9}$/,
+    id_sub_event: /^[0-9]{1,9}$/,
+    name: /^[A-Za-zñ.Ñ:-á-|éí,óúÁÉÍ&%$ÓÚäëïöüÄËÏÖÜ0-9\s]{1,64}$/,
+    rol: /^(figura externa|estudiante|docente|personal de comercio)$/,
+    email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+    address: /^[A-Za-zñ.Ñ:-á|éí,'ó#úÁÉÍ&%$ÓÚäëïöüÄËÏÖÜ0-9\s-_]{1,64}$/,
+  },
 };
