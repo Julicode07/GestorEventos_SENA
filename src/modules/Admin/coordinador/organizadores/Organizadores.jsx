@@ -71,13 +71,13 @@ export default function App() {
     if (hasSearchFilter) {
       filteredOrganizers = filteredOrganizers.filter(
         (organizer) =>
-          organizer.event_name
+          organizer.sub_event_name
             .toLowerCase()
             .includes(filterValue.toLowerCase()) ||
           organizer.organizer_name
             .toLowerCase()
             .includes(filterValue.toLowerCase()) ||
-          organizer.role.toLowerCase().includes(filterValue.toLowerCase()) ||
+          organizer.rol.toLowerCase().includes(filterValue.toLowerCase()) ||
           organizer.email.toLowerCase().includes(filterValue.toLowerCase()) ||
           organizer.address.toLowerCase().includes(filterValue.toLowerCase())
       );
