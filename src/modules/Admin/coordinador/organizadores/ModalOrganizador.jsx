@@ -1,7 +1,8 @@
-import { Input, Button, Textarea, Select, SelectItem } from "@nextui-org/react";
+import { Input, Button, Select, SelectItem } from "@nextui-org/react";
 import { useState } from "react";
 import useRegister from "../../../hooks/useRegister";
 import { PlusIcon } from "@modules/Admin/components/PlusIcon";
+import SearchableSelect from "./SearchableSelect";
 
 const ModalOrganizador = () => {
   const { register } = useRegister();
@@ -56,6 +57,18 @@ const ModalOrganizador = () => {
       setSuccess("");
     }
   };
+
+  const [selectedOption, setSelectedOption] = useState("");
+  const options = [
+    "Aula",
+    "Piso",
+    "Edificio",
+    "Oficina 1",
+    "Oficina 2",
+    "Oficina 3",
+    "Oficina 4",
+
+  ];
   return (
     <>
       <Button
@@ -95,88 +108,68 @@ const ModalOrganizador = () => {
                 Añadir un nuevo organizador
               </h2>
               <div className="w-full overflow-y-auto max-h-[50vh] px-2">
-                <div className="w-full mb-4">
-                  <label className="pl-1" htmlFor="event_name">
-                    Seleccione el evento
-                  </label>
-
-                  <Select
-                    id="event_name"
-                    label="Nombre del evento"
-                    name="event"
-                    value={formData.type}
-                    data-testid="tipo-espacios"
-                    onChange={handleChangeRegisterSpaces}
-                  >
-                    <SelectItem key="">Seleccione evento</SelectItem>
-                    <SelectItem key="aula">Aula</SelectItem>
-                    <SelectItem key="piso">Piso</SelectItem>
-                    <SelectItem key="edificio">Edificio</SelectItem>
-                    <SelectItem key="oficina">Oficina</SelectItem>
-                  </Select>
+                <div>
+                  <SearchableSelect
+                    options={options}
+                    value={selectedOption}
+                    onChange={setSelectedOption}
+                    label="Seleccione el evento"
+                  />
                 </div>
                 <div className="w-full">
-                  <label className="pl-1" htmlFor="capacidad">
-                    Ingrese la capacidad
+                  <label className="pl-1" htmlFor="organizer">
+                    Ingrese el nombre del organizador
                   </label>
                   <Input
-                    id="capacidad"
+                    id="organizer"
                     className="w-full mb-4"
-                    placeholder="Capacidad"
-                    type="number"
-                    name="capacity"
-                    value={formData.capacity}
+                    placeholder="Nombre del organizador"
+                    type="text"
+                    name="organizer"
                     onChange={handleChangeRegisterSpaces}
                   />
                 </div>
                 <div className="w-full mb-4">
-                  <label className="pl-1" htmlFor="tipo-espacio">
-                    Seleccione el tipo de espacio
+                  <label className="pl-1" htmlFor="role">
+                    Seleccione el rol
                   </label>
 
                   <Select
-                    id="tipo-espacio"
-                    label="Tipo de espacio"
-                    className=""
-                    name="type"
-                    value={formData.type}
-                    data-testid="tipo-espacios"
+                    id="role"
+                    size="sm"
+                    label="Rol"
+                    name="role"
                     onChange={handleChangeRegisterSpaces}
                   >
-                    <SelectItem key="">Seleccione el tipo</SelectItem>
-                    <SelectItem key="aula">Aula</SelectItem>
-                    <SelectItem key="piso">Piso</SelectItem>
-                    <SelectItem key="edificio">Edificio</SelectItem>
-                    <SelectItem key="oficina">Oficina</SelectItem>
-                  </Select>
-                </div>
-                <div className="w-full mb-4">
-                  <label className="pl-1" htmlFor="estado-espacio">
-                    Seleccione el estado del espacio
-                  </label>
-                  <Select
-                    id="estado-espacio"
-                    label="Estado del espacio"
-                    className=""
-                    name="status"
-                    value={formData.status}
-                    data-testid="estado-espacio"
-                    onChange={handleChangeRegisterSpaces}
-                  >
-                    <SelectItem key="activo">Activo</SelectItem>
-                    <SelectItem key="inactivo">Inactivo</SelectItem>
+                    <SelectItem key="aprendiz">Aprendiz</SelectItem>
+                    <SelectItem key="docente">Docente</SelectItem>
+                    <SelectItem key="coordinador">Coordinador</SelectItem>
+                    <SelectItem key="personal">Personal</SelectItem>
+                    <SelectItem key="persona-externa">Persona externa</SelectItem>
                   </Select>
                 </div>
                 <div className="w-full">
-                  <label className="pl-1" htmlFor="observaciones">
-                    Ingrese las observaciones
+                  <label className="pl-1" htmlFor="email">
+                    Ingrese el correo
                   </label>
-                  <Textarea
-                    id="observaciones"
-                    placeholder="Observaciones"
-                    className="mb-4"
-                    name="details"
-                    value={formData.details}
+                  <Input
+                    id="email"
+                    className="w-full mb-4"
+                    placeholder="Correo"
+                    type="email"
+                    name="email"
+                    onChange={handleChangeRegisterSpaces}
+                  />
+                </div><div className="w-full">
+                  <label className="pl-1" htmlFor="address">
+                    Ingrese la direccion
+                  </label>
+                  <Input
+                    id="address"
+                    className="w-full mb-4"
+                    placeholder="Direccion"
+                    type="text"
+                    name="addres"
                     onChange={handleChangeRegisterSpaces}
                   />
                 </div>
@@ -195,7 +188,7 @@ const ModalOrganizador = () => {
                 )}
               </div>
               <Button color="primary" type="submit">
-                Crear espacio
+                Crear organizador
               </Button>
             </div>
           </div>
