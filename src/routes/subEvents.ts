@@ -144,7 +144,7 @@ SubEventsRouter.patch(
 
 SubEventsRouter.get("/all", async (req: Request, res: Response) => {
   try {
-    return GetAllSubEventsController(req, res);
+    return await GetAllSubEventsController(req, res);
   } catch (err) {
     return res
       .status(500)

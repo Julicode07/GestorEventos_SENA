@@ -149,17 +149,7 @@ export async function updateSubEventsById(
 export async function findAllSubEvents(): Promise<number> {
   const connection: PoolConnection = await getConnection(pool);
   try {
-    const result = await connection.query(`SELECT
-      sub.id_sub_event,
-      gle.name AS globalEventName,
-      sub.name AS subEventName,
-      sub.headquarters,
-      sub.start_date,
-      sub.end_date,
-      sub.description,
-      sub.subeventConfirmation FROM sub_events sub
-      INNER JOIN global_events gle ON sub.id_global_event = gle.id_global_event 
-      `);
+    const result = await connection.query(`SELECT * FROM sub_events`);
     return result.length == 0 ? [] : result;
   } catch (err) {
     console.error(`[subevents repository]: ERROR GETTING subevents: ${err}`);
