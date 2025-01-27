@@ -142,7 +142,7 @@ SubEventsRouter.patch(
   }
 );
 
-SubEventsRouter.get("/all", async (req: Request, res: Response) => {
+SubEventsRouter.get("/get/all", async (req: Request, res: Response) => {
   try {
     return await GetAllSubEventsController(req, res);
   } catch (err) {
