@@ -3,6 +3,7 @@ import {
   getSubEventsByGlobalEventId,
   updateSubEventsById,
   getSubEventsByIdGlobalEvent,
+  findAllSubEvents,
 } from "../repositories/subEvents/repository";
 import { Request, Response } from "express";
 import { ISubEvent } from "../repositories/subEvents/models";
@@ -96,5 +97,23 @@ export async function UpdateSubEventsByIdController(
     return res
       .status(500)
       .end(JSON.stringify({ message: "Error interno del servidor" }));
+  }
+}
+
+export async function GetAllSubEventsController(_req: Request, res: Response) {
+  try {
+    const subEvents = await findAllSubEvents();
+    if (subEvents === -1) {
+      return res
+        .status(500)
+        .send(
+          JSON.stringify({ message: "Error al obtener los organizadores." })
+        );
+    }
+    return res.status(200).send(JSON.stringify(subEvents, bigIntReplacer));
+  } catch (err) {
+    return res
+      .status(500)
+      .send(JSON.stringify({ message: "Error interno del servidor :(" }));
   }
 }

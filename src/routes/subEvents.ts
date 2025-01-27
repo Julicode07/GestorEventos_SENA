@@ -3,6 +3,7 @@ import {
   GetSubEventsByIdController,
   UpdateSubEventsByIdController,
   GetSubEventsByGlobalEventIdController,
+  GetAllSubEventsController,
 } from "../controllers/subEvents";
 import express, { Express, Request, Response } from "express";
 import { databaseRegex } from "../helpers/regex.helper";
@@ -140,4 +141,14 @@ SubEventsRouter.patch(
     }
   }
 );
+
+SubEventsRouter.get("/all", async (req: Request, res: Response) => {
+  try {
+    return GetAllSubEventsController(req, res);
+  } catch (err) {
+    return res
+      .status(500)
+      .send(JSON.stringify({ message: "Error interno del servidor :(" }));
+  }
+});
 export default SubEventsRouter;
