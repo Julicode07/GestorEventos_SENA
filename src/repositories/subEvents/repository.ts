@@ -157,7 +157,9 @@ export async function findAllSubEvents(): Promise<number> {
       sub.start_date,
       sub.end_date,
       sub.description,
-      sub.subeventConfirmation`);
+      sub.subeventConfirmation FROM sub_events sub
+      INNER JOIN global_events gle ON sub.id_global_event = gle.id_global_event 
+      `);
     return result.length == 0 ? [] : result;
   } catch (err) {
     console.error(`[subevents repository]: ERROR GETTING subevents: ${err}`);
