@@ -1,4 +1,7 @@
-export const ChevronDownIcon = ({ strokeWidth = 1.5, ...otherProps }) => (
+import PropTypes from "prop-types";
+import { memo } from "react";
+
+export const ChevronDownIcon = memo(({ strokeWidth = 1.5, ...otherProps }) => (
   <svg
     aria-hidden="true"
     fill="none"
@@ -18,4 +21,10 @@ export const ChevronDownIcon = ({ strokeWidth = 1.5, ...otherProps }) => (
       strokeWidth={strokeWidth}
     />
   </svg>
-);
+));
+
+ChevronDownIcon.displayName = "ChevronDownIcon";
+
+ChevronDownIcon.propTypes = {
+  strokeWidth: PropTypes.number,
+};

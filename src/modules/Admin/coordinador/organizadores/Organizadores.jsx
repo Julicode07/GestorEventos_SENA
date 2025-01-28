@@ -46,7 +46,7 @@ export default function App() {
         `${import.meta.env.VITE_API_URL}/api/organizers/all`
       );
       const data = await response.json();
-      setOrganizers(data);
+      setOrganizers(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error("No se pudo traer la data", err);
     }

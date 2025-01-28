@@ -213,7 +213,7 @@ const ModalEspaciosActualizar = ({ isOpen, setIsOpen, idSpaces }) => {
 };
 ModalEspaciosActualizar.propTypes = {
   isOpen: PropTypes.bool,
-  setIsOpen: PropTypes.bool,
+  setIsOpen: PropTypes.func,
   idSpaces: PropTypes.number,
 };
 

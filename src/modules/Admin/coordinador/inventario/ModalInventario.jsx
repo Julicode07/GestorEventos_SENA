@@ -257,8 +257,8 @@ const ModalInventario = ({
 
 ModalInventario.propTypes = {
   isInventoryModalOpen: PropTypes.bool,
-  setIsInventoryModalOpen: PropTypes.bool,
-  idSpaces: PropTypes.number,
+  setIsInventoryModalOpen: PropTypes.func,
+  idSpaces: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 export default ModalInventario;

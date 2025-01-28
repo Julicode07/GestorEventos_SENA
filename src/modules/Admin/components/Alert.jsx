@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
+import { memo } from "react";
 
-const Alert = ({ message }) => {
+const Alert = memo(({ message }) => {
   return (
     <div className="fixed bottom-4 left-4 bg-red-300 text-red-700 font-semibold px-6 py-3 rounded-lg shadow-red-700 flex items-center space-x-3 z-50 mr-4">
       <svg
@@ -18,7 +19,9 @@ const Alert = ({ message }) => {
       <span>{message}</span>
     </div>
   );
-};
+});
+
+Alert.displayName = "Alert";
 
 Alert.propTypes = {
   message: PropTypes.string,

@@ -1,24 +1,48 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image" href="/logo-negro.webp" media="(prefers-color-scheme: light)" />
-    <link rel="icon" type="image" href="/logo-blanco.webp" media="(prefers-color-scheme: dark)" />
+    <link
+      rel="icon"
+      href="/logo-negro.webp"
+      type="image"
+      media="(prefers-color-scheme: light)"
+      rel="preload"
+    />
+    <link
+      rel="icon"
+      href="/logo-blanco.webp"
+      type="image"
+      media="(prefers-color-scheme: dark)"
+      rel="preload"
+    />
+    <noscript>
+      <link rel="icon" href="/logo-negro.webp" type="image" />
+    </noscript>
     <meta
       property="og:description"
       name="description"
-      content="Sede Rionegro - Centro de la Innovacion, la Agroindustria y la Aviacion SENA">
+      content="Sede Rionegro - Centro de la Innovacion, la Agroindustria y la Aviacion SENA"
+    />
     <meta property="og:image:alt" content="Logo Gestor de eventos SENA" />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="/logo" />
     <title>Gestor de eventos</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" as="style">
-    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link
+      rel="preload"
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"
+      defer
+    ></script>
   </body>
 </html>

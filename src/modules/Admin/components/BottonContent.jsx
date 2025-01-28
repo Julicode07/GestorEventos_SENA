@@ -1,7 +1,8 @@
 import { Pagination } from "@nextui-org/react";
 import PropTypes from "prop-types";
+import { memo } from "react";
 
-const BottomContent = ({ page, pages, setPage }) => {
+const BottomContent = memo(({ page, pages, setPage }) => {
   return (
     <div className="py-0 px-2 flex justify-center items-center">
       <Pagination
@@ -14,7 +15,9 @@ const BottomContent = ({ page, pages, setPage }) => {
       />
     </div>
   );
-};
+});
+
+BottomContent.displayName = "BottomContent";
 
 BottomContent.propTypes = {
   page: PropTypes.number,

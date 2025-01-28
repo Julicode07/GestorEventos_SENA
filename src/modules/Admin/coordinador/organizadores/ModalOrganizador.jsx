@@ -1,5 +1,5 @@
-import { Input, Button, Select, SelectItem } from "@nextui-org/react";
-import { useState } from "react";
+import { Input, Button, Select, SelectItem, Textarea } from "@nextui-org/react";
+import { useCallback, useEffect, useState } from "react";
 import useRegister from "../../../hooks/useRegister";
 import { PlusIcon } from "@modules/Admin/components/PlusIcon";
 import SearchableSelect from "./SearchableSelect";
@@ -10,16 +10,33 @@ const ModalOrganizador = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [formData, setFormData] = useState({
+    id_sub_event: "",
     name: "",
-    capacity: "",
-    type: "",
-    status: "",
-    details: "",
+    rol: "",
+    email: "",
+    address: "",
   });
   const [success, setSuccess] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [subEvents, setSubEvents] = useState([]);
 
-  const handleChangeRegisterSpaces = (e) => {
+  const getSubEvents = useCallback(async () => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/subEvents/get/all`
+      );
+      const data = await response.json();
+      setSubEvents(data);
+    } catch (err) {
+      console.error("Ocurrio un error al traer la data", err);
+    }
+  }, []);
+
+  useEffect(() => {
+    getSubEvents();
+  }, [getSubEvents]);
+
+  const handleChangeSubEvents = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => {
       const newDataRegister = {
@@ -30,45 +47,35 @@ const ModalOrganizador = () => {
     });
   };
 
-  const handleSubmitRegisterSpaces = async (e) => {
+  const handleSubmitSubEvents = async (e) => {
     e.preventDefault();
     try {
-      const { capacity, ...data } = formData;
-      const newDataToSend = {
+      const { id_sub_event, ...data } = formData;
+      const newData = {
+        id_sub_event: Number(id_sub_event),
         ...data,
-        capacity: Number(capacity),
       };
-      console.log(newDataToSend);
-      const result = await register(newDataToSend, "/api/spaces/new");
-      setSuccess("Espacio registrado con exito!");
+      console.log(newData);
+      const result = await register(newData, "/api/organizers/new");
+      setSuccess("Organizador registrado con exito!");
       setErrorMessage("");
-      console.log("Espacio registrado:", result);
+      console.log("Organizador registrado:", result);
       setFormData({
+        id_sub_event: "",
         name: "",
-        capacity: "",
-        type: "",
-        status: "",
-        details: "",
+        rol: "",
+        email: "",
+        address: "",
       });
-      window.location.reload();
+      // window.location.reload();
     } catch (error) {
-      setErrorMessage("Error al registrar el espacio");
-      console.error("Error registering user:", error);
+      setErrorMessage(error.message);
+      console.error("Error registering organizer:", error);
       setSuccess("");
     }
   };
 
-  const [selectedOption, setSelectedOption] = useState("");
-  const options = [
-    "Aula",
-    "Piso",
-    "Edificio",
-    "Oficina 1",
-    "Oficina 2",
-    "Oficina 3",
-    "Oficina 4",
-
-  ];
+  // const [selectedOption, setSelectedOption] = useState("");
   return (
     <>
       <Button
@@ -79,19 +86,21 @@ const ModalOrganizador = () => {
         Nuevo Organizador
       </Button>
       {isModalOpen && (
-        <form action="" onSubmit={handleSubmitRegisterSpaces}>
+        <form action="" onSubmit={handleSubmitSubEvents}>
           <div
             className="fixed inset-0 bg-black bg-opacity-30 flex justify-center items-center z-50 h-screen"
             onClick={() => setIsModalOpen(false)}
           >
             <div
-              className={`bg-white border border-gray-300 shadow-2xl p-8 rounded-2xl w-4/5 max-w-2xl flex flex-col items-center relative transition-transform transform ${isModalOpen ? "scale-100 opacity-100" : "scale-95 opacity-0"
-                } transition-all duration-300 ease-out`}
+              className={`bg-white border border-gray-300 shadow-2xl p-8 rounded-2xl w-4/5 max-w-2xl flex flex-col items-center relative transition-transform transform ${
+                isModalOpen ? "scale-100 opacity-100" : "scale-95 opacity-0"
+              } transition-all duration-300 ease-out`}
               onClick={(e) => e.stopPropagation()}
               style={{ maxHeight: "90vh" }}
             >
               <button
                 className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+                type="button"
                 onClick={() => setIsModalOpen(false)}
               >
                 <svg
@@ -110,10 +119,11 @@ const ModalOrganizador = () => {
               <div className="w-full overflow-y-auto max-h-[50vh] px-2">
                 <div>
                   <SearchableSelect
-                    options={options}
-                    value={selectedOption}
-                    onChange={setSelectedOption}
+                    options={subEvents}
+                    value={formData.id_sub_event}
+                    onChange={handleChangeSubEvents}
                     label="Seleccione el evento"
+                    name="id_sub_event"
                   />
                 </div>
                 <div className="w-full">
@@ -125,8 +135,9 @@ const ModalOrganizador = () => {
                     className="w-full mb-4"
                     placeholder="Nombre del organizador"
                     type="text"
-                    name="organizer"
-                    onChange={handleChangeRegisterSpaces}
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChangeSubEvents}
                   />
                 </div>
                 <div className="w-full mb-4">
@@ -138,14 +149,17 @@ const ModalOrganizador = () => {
                     id="role"
                     size="sm"
                     label="Rol"
-                    name="role"
-                    onChange={handleChangeRegisterSpaces}
+                    name="rol"
+                    value={formData.rol}
+                    onChange={handleChangeSubEvents}
                   >
-                    <SelectItem key="aprendiz">Aprendiz</SelectItem>
-                    <SelectItem key="docente">Docente</SelectItem>
-                    <SelectItem key="coordinador">Coordinador</SelectItem>
-                    <SelectItem key="personal">Personal</SelectItem>
-                    <SelectItem key="persona-externa">Persona externa</SelectItem>
+                    <SelectItem key="Aprendiz">Aprendiz</SelectItem>
+                    <SelectItem key="Docente">Docente</SelectItem>
+                    <SelectItem key="Coordinador">Coordinador</SelectItem>
+                    <SelectItem key="Personal">Personal</SelectItem>
+                    <SelectItem key="Persona externa">
+                      Persona externa
+                    </SelectItem>
                   </Select>
                 </div>
                 <div className="w-full">
@@ -158,19 +172,22 @@ const ModalOrganizador = () => {
                     placeholder="Correo"
                     type="email"
                     name="email"
-                    onChange={handleChangeRegisterSpaces}
+                    value={formData.email}
+                    onChange={handleChangeSubEvents}
                   />
-                </div><div className="w-full">
+                </div>
+                <div className="w-full">
                   <label className="pl-1" htmlFor="address">
                     Ingrese la direccion
                   </label>
-                  <Input
+                  <Textarea
                     id="address"
                     className="w-full mb-4"
                     placeholder="Direccion"
                     type="text"
-                    name="addres"
-                    onChange={handleChangeRegisterSpaces}
+                    name="address"
+                    value={formData.address}
+                    onChange={handleChangeSubEvents}
                   />
                 </div>
               </div>

@@ -1,4 +1,7 @@
-export const PlusIcon = ({ size = 24, width, height, ...props }) => (
+import PropTypes from "prop-types";
+import { memo } from "react";
+
+export const PlusIcon = memo(({ size = 24, width, height, ...props }) => (
   <svg
     aria-hidden="true"
     fill="none"
@@ -20,4 +23,12 @@ export const PlusIcon = ({ size = 24, width, height, ...props }) => (
       <path d="M12 18V6" />
     </g>
   </svg>
-);
+));
+
+PlusIcon.displayName = "PlusIcon";
+
+PlusIcon.propTypes = {
+  size: PropTypes.number,
+  width: PropTypes.number,
+  height: PropTypes.number,
+};

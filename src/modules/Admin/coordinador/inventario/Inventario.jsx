@@ -6,44 +6,21 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  Input,
   Button,
   DropdownTrigger,
   Dropdown,
   DropdownMenu,
   DropdownItem,
-  Pagination,
   Breadcrumbs,
   BreadcrumbItem,
 } from "@nextui-org/react";
 import { VerticalDotsIcon } from "@modules/Admin/components/VerticalDotsIcon";
-import { SearchIcon } from "@modules/Admin/components/SearchIcon";
-import { ChevronDownIcon } from "@modules/Admin/components/ChevronDownIcon";
 import { useParams } from "react-router-dom";
-
-export const columns = [
-  { name: "ID", uid: "id_inventory", sortable: true },
-  { name: "ESPACIO", uid: "name", sortable: true },
-  { name: "NOMBRE", uid: "article_name" },
-  { name: "DESCRIPCIÓN", uid: "description", sortable: true },
-  { name: "CANTIDAD", uid: "quantity", sortable: true },
-  { name: "TIPO", uid: "type", sortable: true },
-  { name: "ACTIONS", uid: "actions" },
-];
-
-export function capitalize(s) {
-  return s ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : "";
-}
-
-const INITIAL_VISIBLE_COLUMNS = [
-  "id_inventory",
-  "name",
-  "article_name",
-  "description",
-  "quantity",
-  "type",
-  "actions",
-];
+import { columns, INITIAL_VISIBLE_COLUMNS, capitalize } from "./utils/utils";
+const BottomContent = React.lazy(() =>
+  import("./../../components/BottonContent")
+);
+const TopContent = React.lazy(() => import("./../../components/TopContent"));
 
 export default function App() {
   const { id } = useParams();
@@ -105,6 +82,27 @@ export default function App() {
     return filteredItems.slice(start, end);
   }, [page, filteredItems, rowsPerPage]);
 
+  //Top content
+  const onRowsPerPageChange = React.useCallback((e) => {
+    setRowsPerPage(Number(e.target.value));
+    setPage(1);
+  }, []);
+
+  const onSearchChange = React.useCallback((value) => {
+    if (value) {
+      setFilterValue(value);
+      setPage(1);
+    } else {
+      setFilterValue("");
+    }
+  }, []);
+
+  const onClear = React.useCallback(() => {
+    setFilterValue("");
+    setPage(1);
+  }, []);
+  //
+
   const sortedItems = React.useMemo(() => {
     return [...items].sort((a, b) => {
       const first = a[sortDescriptor.column];
@@ -141,109 +139,6 @@ export default function App() {
     }
   }, []);
 
-  const onRowsPerPageChange = React.useCallback((e) => {
-    setRowsPerPage(Number(e.target.value));
-    setPage(1);
-  }, []);
-
-  const onSearchChange = React.useCallback((value) => {
-    if (value) {
-      setFilterValue(value);
-      setPage(1);
-    } else {
-      setFilterValue("");
-    }
-  }, []);
-
-  const onClear = React.useCallback(() => {
-    setFilterValue("");
-    setPage(1);
-  }, []);
-
-  const topContent = React.useMemo(() => {
-    return (
-      <div className="flex flex-col gap-4">
-        <div className="flex justify-between gap-3 items-end">
-          <Input
-            isClearable
-            className="w-full sm:max-w-[44%]"
-            placeholder="Buscar..."
-            startContent={<SearchIcon />}
-            value={filterValue}
-            onClear={() => onClear()}
-            onValueChange={onSearchChange}
-          />
-          <div className="flex gap-3">
-            <Dropdown>
-              <DropdownTrigger className="hidden sm:flex">
-                <Button
-                  endContent={<ChevronDownIcon className="text-small" />}
-                  variant="flat"
-                >
-                  Columnas
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                disallowEmptySelection
-                aria-label="Table Columns"
-                closeOnSelect={false}
-                selectedKeys={visibleColumns}
-                selectionMode="multiple"
-                onSelectionChange={setVisibleColumns}
-              >
-                {columns.map((column) => (
-                  <DropdownItem key={column.uid} className="capitalize">
-                    {capitalize(column.name)}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
-          </div>
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="text-default-400 text-small">
-            Total {inventory.length} resultados
-          </span>
-          <label className="flex items-center text-default-400 text-small">
-            Filas por página:
-            <select
-              className="max-w-full rounded-lg bg-default-100 text-default-900 text-small font-bold"
-              onChange={onRowsPerPageChange}
-              value={rowsPerPage}
-            >
-              <option value={5}>5</option>
-              <option value={10}>10</option>
-              <option value={15}>15</option>
-            </select>
-          </label>
-        </div>
-      </div>
-    );
-  }, [
-    filterValue,
-    onClear,
-    onRowsPerPageChange,
-    onSearchChange,
-    rowsPerPage,
-    visibleColumns,
-    inventory.length,
-  ]);
-
-  const bottomContent = React.useMemo(() => {
-    return (
-      <div className="py-0 px-2 flex justify-center items-center">
-        <Pagination
-          showControls
-          isCompact
-          showShadow
-          page={page}
-          total={pages}
-          onChange={(page) => setPage(page)}
-        />
-      </div>
-    );
-  }, [page, pages]);
-
   return (
     <main className="flex flex-col gap-2">
       <div>
@@ -260,13 +155,28 @@ export default function App() {
         <Table
           isHeaderSticky
           aria-label="Example table with custom cells, pagination and sorting"
-          bottomContent={bottomContent}
+          bottomContent={
+            <BottomContent page={page} pages={pages} setPage={setPage} />
+          }
           bottomContentPlacement="outside"
           classNames={{
             wrapper: "max-h-[382px]",
           }}
           sortDescriptor={sortDescriptor}
-          topContent={topContent}
+          topContent={
+            <TopContent
+              filterValue={filterValue}
+              onClear={onClear}
+              onRowsPerPageChange={onRowsPerPageChange}
+              onSearchChange={onSearchChange}
+              rowsPerPage={rowsPerPage}
+              visibleColumns={visibleColumns}
+              module={inventory}
+              setVisibleColumns={setVisibleColumns}
+              columns={columns}
+              capitalize={capitalize}
+            />
+          }
           topContentPlacement="outside"
           onSortChange={setSortDescriptor}
         >

@@ -13,16 +13,24 @@ import {
 import { VerticalDotsIcon } from "../../components/VerticalDotsIcon";
 import { SearchIcon } from "../../components/SearchIcon";
 import { ChevronDownIcon } from "../../components/ChevronDownIcon";
-import { columns, INITIAL_VISIBLE_COLUMNS, statusOptions } from "./utils";
+import { PlusIcon } from "@modules/Admin/components/PlusIcon";
+import {
+  columns,
+  INITIAL_VISIBLE_COLUMNS,
+  statusOptions,
+} from "./utils/utils.js";
 import { capitalize } from "../../utils/utils";
-import ModalInventario from "../inventario/ModalInventario.jsx";
+const ModalInventario = React.lazy(() =>
+  import("../inventario/ModalInventario.jsx")
+);
 import { Link } from "react-router-dom";
-import ModalEspaciosActualizar from "./ModalEspaciosActualizar.jsx";
+const ModalEspaciosActualizar = React.lazy(() =>
+  import("./ModalEspaciosActualizar.jsx")
+);
 const ModalEspacios = React.lazy(() => import("./ModalEspacios.jsx"));
 const TableShowData = React.lazy(() =>
   import("./../../components/TableShowData.jsx")
 );
-import { PlusIcon } from "@modules/Admin/components/PlusIcon";
 
 export default function App() {
   const [showSpaces, setShowSpaces] = useState([]);
@@ -123,10 +131,11 @@ export default function App() {
         case "status":
           return (
             <div
-              className={`${cellValue === "activo"
-                ? "text-green-700 bg-green-200"
-                : "text-red-700 bg-red-200"
-                } capitalize text-center px-2 py-0.5 text-xs rounded-lg w-fit`}
+              className={`${
+                cellValue === "activo"
+                  ? "text-green-700 bg-green-200"
+                  : "text-red-700 bg-red-200"
+              } capitalize text-center px-2 py-0.5 text-xs rounded-lg w-fit`}
             >
               {cellValue}
             </div>
@@ -239,7 +248,7 @@ export default function App() {
             <ModalEspaciosActualizar
               isOpen={updateModalSpace}
               setIsOpen={setUpdateModalSpace}
-              idSpaces={idSpaces}
+              idSpaces={Number(idSpaces)}
             />
           </div>
         </div>
