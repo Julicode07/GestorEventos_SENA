@@ -10,7 +10,7 @@ const Espacios = React.lazy(() =>
 );
 const Eventos = React.lazy(() => import("@/modules/Admin/instructor/eventos/Eventos.jsx"));
 const SubEventos = React.lazy(() =>
-  import("@/modules/Admin/instructor/Subeventos/SubEventos")
+  import("@/modules/Admin/instructor/SubEventos/SubEventos")
 );
 const Insumos = React.lazy(() => import("@/modules/Admin/instructor/insumos/Insumos"));
 const InfoEvento = React.lazy(() =>
