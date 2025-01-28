@@ -6,13 +6,13 @@ const Panel = React.lazy(() =>
   import("@/modules/Admin/instructor/panel/Panel")
 );
 const Espacios = React.lazy(() =>
-  import("@/modules/Admin/instructor/espacios")
+  import("@/modules/Admin/instructor/espacios/Espacios.jsx")
 );
-const Eventos = React.lazy(() => import("@/modules/Admin/instructor/eventos"));
+const Eventos = React.lazy(() => import("@/modules/Admin/instructor/eventos/eventos.jsx"));
 const SubEventos = React.lazy(() =>
-  import("@/modules/Admin/instructor/SubEventos")
+  import("@/modules/Admin/instructor/subeventos/SubEventos")
 );
-const Insumos = React.lazy(() => import("@/modules/Admin/instructor/insumos"));
+const Insumos = React.lazy(() => import("@/modules/Admin/instructor/insumos/insumos"));
 const InfoEvento = React.lazy(() =>
   import("@/modules/Admin/instructor/eventos/InfoEvento")
 );
