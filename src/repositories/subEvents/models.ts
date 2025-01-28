@@ -24,7 +24,7 @@ export async function createSubeventSchema(): Promise<Number> {
     end_date DATETIME NOT NULL,
     description VARCHAR(255),
     subeventConfirmation VARCHAR(65) NOT NULL,
-    CONTRAINT fk_sub_events_has_global_events FOREIGN KEY(id_global_event) REFERENCES global_events(id_global_event)
+    CONSTRAINT fk_sub_events_has_global_events FOREIGN KEY(id_global_event) REFERENCES global_events(id_global_event)
 )`);
     console.log(`[subevents repository - models]: CREATED subevents SCHEMA.`);
     return 1;
