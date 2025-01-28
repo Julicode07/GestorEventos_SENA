@@ -1,18 +1,36 @@
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import NavSideBar from "./NavSideBar";
-import NotFoundAdmin from "../NotFoundAdmin.jsx";
-import Panel from "@/modules/Admin/coordinador/panel/Panel";
-import Espacios from "@/modules/Admin/coordinador/espacios/Espacios";
-import Solicitudes from "@/modules/Admin/coordinador/solicitudes/Solicitudes";
-import Eventos from "@/modules/Admin/coordinador/eventos/Eventos";
-import Inventario from "@/modules/Admin/coordinador/inventario/Inventario";
-import Insumos from "@/modules/Admin/coordinador/insumos/Insumos";
-import Organizadores from "@/modules/Admin/coordinador/organizadores/Organizadores";
-import InfoEvento from "../../../modules/Admin/coordinador/eventos/InfoEvento.jsx";
-import Usuarios from "../../../modules/Admin/coordinador/usuarios/Usuarios.jsx";
+const NavSideBar = React.lazy(() => import("./NavSideBar.jsx"));
+const NotFoundAdmin = React.lazy(() => import("../NotFoundAdmin.jsx"));
+const Panel = React.lazy(() =>
+  import("@/modules/Admin/coordinador/panel/Panel.jsx")
+);
+const Espacios = React.lazy(() =>
+  import("@/modules/Admin/coordinador/espacios/Espacios")
+);
+const Solicitudes = React.lazy(() =>
+  import("@/modules/Admin/coordinador/solicitudes/Solicitudes")
+);
+const Eventos = React.lazy(() =>
+  import("@/modules/Admin/coordinador/eventos/Eventos")
+);
+const Inventario = React.lazy(() =>
+  import("@/modules/Admin/coordinador/inventario/Inventario")
+);
+const Insumos = React.lazy(() =>
+  import("@/modules/Admin/coordinador/insumos/Insumos")
+);
+const Organizadores = React.lazy(() =>
+  import("@/modules/Admin/coordinador/organizadores/Organizadores")
+);
+const InfoEvento = React.lazy(() =>
+  import("@/modules/Admin/coordinador/eventos/InfoEvento")
+);
+const Usuarios = React.lazy(() =>
+  import("@/modules/Admin/coordinador/usuarios/Usuarios")
+);
+const Loader = React.lazy(() => import("@/Loader/Loader.jsx"));
 import { SessionContext } from "../../../context/SessionContext.jsx";
-import Loader from "../../../Loader/Loader.jsx";
 function Coordinador() {
   const { updateSession, userSession } = useContext(SessionContext);
   const [loading, setLoading] = useState(true);

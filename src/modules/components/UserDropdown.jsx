@@ -40,6 +40,7 @@ const UserDropdown = ({
       <DropdownTrigger>
         <User
           as="button"
+          loading="lazy"
           avatarProps={{
             src: "https://img.freepik.com/vector-premium/icono-usuario-avatar-perfil-usuario-icono-persona-imagen-perfil-silueta-neutral-genero-adecuado_697711-1132.jpg?w=740",
           }}

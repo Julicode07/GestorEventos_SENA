@@ -79,6 +79,7 @@ const ModalEspacios = () => {
               style={{ maxHeight: "90vh" }}
             >
               <button
+                type="button"
                 className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
                 onClick={() => setIsModalOpen(false)}
               >

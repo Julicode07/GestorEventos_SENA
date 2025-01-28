@@ -1,35 +1,31 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
-  Input,
   Button,
   DropdownTrigger,
   Dropdown,
   DropdownMenu,
   DropdownItem,
-  Pagination,
   Breadcrumbs,
   BreadcrumbItem,
 } from "@nextui-org/react";
 import { VerticalDotsIcon } from "../../components/VerticalDotsIcon";
-import { SearchIcon } from "../../components/SearchIcon";
-import { ChevronDownIcon } from "../../components/ChevronDownIcon";
 import { PlusIcon } from "@modules/Admin/components/PlusIcon";
-import {
-  columns,
-  INITIAL_VISIBLE_COLUMNS,
-  statusOptions,
-} from "./utils/utils.js";
+import { columns, INITIAL_VISIBLE_COLUMNS } from "./utils/utils.js";
 import { capitalize } from "../../utils/utils";
 const ModalInventario = React.lazy(() =>
   import("../inventario/ModalInventario.jsx")
 );
 import { Link } from "react-router-dom";
+import TopContent from "../../components/TopContent.jsx";
 const ModalEspaciosActualizar = React.lazy(() =>
   import("./ModalEspaciosActualizar.jsx")
 );
 const ModalEspacios = React.lazy(() => import("./ModalEspacios.jsx"));
 const TableShowData = React.lazy(() =>
   import("./../../components/TableShowData.jsx")
+);
+const BottomContent = React.lazy(() =>
+  import("./../../components/BottonContent.jsx")
 );
 
 export default function App() {
@@ -56,8 +52,9 @@ export default function App() {
   const [updateModalSpace, setUpdateModalSpace] = useState(false);
   const [filterValue, setFilterValue] = useState("");
   const [selectedKeys, setSelectedKeys] = useState(new Set([]));
-  const [visibleColumns] = useState(new Set(INITIAL_VISIBLE_COLUMNS));
-  const [statusFilter, setStatusFilter] = useState("all");
+  const [visibleColumns, setVisibleColumns] = useState(
+    new Set(INITIAL_VISIBLE_COLUMNS)
+  );
   const [rowsPerPage, setRowsPerPage] = useState(15);
   const [sortDescriptor, setSortDescriptor] = useState({
     column: "age",
@@ -85,19 +82,9 @@ export default function App() {
         space.name.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
-    if (statusFilter !== "all") {
-      filterSpaces = filterSpaces.filter(
-        (space) => space.status.toLowerCase() === statusFilter.toLowerCase()
-      );
-    }
 
     return filterSpaces;
-  }, [filterValue, statusFilter, showSpaces, hasSearchFilter]);
-
-  const handleStatusSelectionChange = (keys) => {
-    const selected = Array.from(keys)[0];
-    setStatusFilter(selected || "all");
-  };
+  }, [filterValue, showSpaces, hasSearchFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -203,113 +190,19 @@ export default function App() {
     setPage(1);
   }, []);
 
-  const topContent = useMemo(() => {
-    return (
-      <div className="flex flex-col gap-4">
-        <div className="flex justify-between gap-3 items-end">
-          <Input
-            isClearable
-            className="w-full sm:max-w-[44%]"
-            placeholder="Buscar espacios"
-            startContent={<SearchIcon />}
-            value={filterValue}
-            onClear={() => onClear()}
-            onValueChange={onSearchChange}
-          />
-          <div className="flex gap-3">
-            <Dropdown>
-              <DropdownTrigger className="hidden sm:flex">
-                <Button
-                  endContent={<ChevronDownIcon className="text-small" />}
-                  variant="flat"
-                >
-                  Estado
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                disallowEmptySelection
-                aria-label="Table Columns"
-                closeOnSelect={true}
-                selectedKeys={new Set([statusFilter])}
-                selectionMode="single"
-                onSelectionChange={handleStatusSelectionChange}
-              >
-                <DropdownItem key="all" className="capitalize">
-                  All
-                </DropdownItem>
-                {statusOptions.map((status) => (
-                  <DropdownItem key={status.uid} className="capitalize">
-                    {capitalize(status.name)}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
-            <ModalEspacios />
-            <ModalEspaciosActualizar
-              isOpen={updateModalSpace}
-              setIsOpen={setUpdateModalSpace}
-              idSpaces={Number(idSpaces)}
-            />
-          </div>
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="text-default-400 text-small">
-            Total {showSpaces.length} espacios
-          </span>
-          <label className="flex items-center text-default-400 text-small">
-            Filas por página:
-            <select
-              className="max-w-full rounded-lg bg-default-100 text-default-900 text-small font-bold"
-              onChange={onRowsPerPageChange}
-              value={rowsPerPage}
-            >
-              <option value={5}>5</option>
-              <option value={10}>10</option>
-              <option value={15}>15</option>
-            </select>
-          </label>
-        </div>
-      </div>
-    );
-  }, [
-    filterValue,
-    onClear,
-    onRowsPerPageChange,
-    onSearchChange,
-    rowsPerPage,
-    showSpaces.length,
-    statusFilter,
-    updateModalSpace,
-    idSpaces,
-  ]);
-
-  const bottomContent = useMemo(() => {
-    return (
-      <>
-        <div className="block">
-          <ModalInventario
-            isInventoryModalOpen={isInventoryModalOpen}
-            setIsInventoryModalOpen={setIsInventoryModalOpen}
-            idSpaces={idSpaces}
-          />
-        </div>
-        <div className="py-0 px-2 flex justify-center items-center">
-          <Pagination
-            showControls
-            isCompact
-            showShadow
-            page={page}
-            total={pages}
-            onChange={(page) => setPage(page)}
-          />
-        </div>
-      </>
-    );
-  }, [page, pages, isInventoryModalOpen, idSpaces]);
-
   return (
     <>
       <main className="flex flex-col gap-2">
+        <ModalInventario
+          isInventoryModalOpen={isInventoryModalOpen}
+          setIsInventoryModalOpen={setIsInventoryModalOpen}
+          idSpaces={idSpaces}
+        />
+        <ModalEspaciosActualizar
+          isOpen={updateModalSpace}
+          setIsOpen={setUpdateModalSpace}
+          idSpaces={Number(idSpaces)}
+        />
         <div>
           <Breadcrumbs>
             <BreadcrumbItem href=""> </BreadcrumbItem>
@@ -322,11 +215,27 @@ export default function App() {
           <TableShowData
             sortDescriptor={sortDescriptor}
             onSortChange={setSortDescriptor}
-            topContent={topContent}
+            topContent={
+              <TopContent
+                filterValue={filterValue}
+                onClear={onClear}
+                onRowsPerPageChange={onRowsPerPageChange}
+                onSearchChange={onSearchChange}
+                rowsPerPage={rowsPerPage}
+                visibleColumns={visibleColumns}
+                module={showSpaces}
+                setVisibleColumns={setVisibleColumns}
+                columns={columns}
+                capitalize={capitalize}
+                ModuleModal={ModalEspacios}
+              />
+            }
             selectedKeys={selectedKeys}
             topContentPlacement="outside"
             onSelectionChange={setSelectedKeys}
-            bottomContent={bottomContent}
+            bottomContent={
+              <BottomContent page={page} pages={pages} setPage={setPage} />
+            }
             bottomContentPlacement="outside"
             columns={headerColumns}
             items={sortedItems}

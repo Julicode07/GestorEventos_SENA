@@ -1,14 +1,22 @@
-import { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
-import NavSideBar from "./NavSideBar";
-import NotFoundAdmin from "../NotFoundAdmin";
-import Panel from "@/modules/Admin/instructor/panel/Panel";
-import Espacios from "@/modules/Admin/instructor/espacios/Espacios";
-import Eventos from "@/modules/Admin/instructor/eventos/Eventos";
-import SubEventos from "@/modules/Admin/instructor/SubEventos/SubEventos";
-import Insumos from "@/modules/Admin/instructor/insumos/Insumos";
-import InfoEvento from "../../../modules/Admin/instructor/eventos/InfoEvento";
-import Loader from "../../../Loader/Loader";
+const NavSideBar = React.lazy(() => import("./NavSideBar"));
+const NotFoundAdmin = React.lazy(() => import("../NotFoundAdmin"));
+const Panel = React.lazy(() =>
+  import("@/modules/Admin/instructor/panel/Panel")
+);
+const Espacios = React.lazy(() =>
+  import("@/modules/Admin/instructor/espacios")
+);
+const Eventos = React.lazy(() => import("@/modules/Admin/instructor/eventos"));
+const SubEventos = React.lazy(() =>
+  import("@/modules/Admin/instructor/SubEventos")
+);
+const Insumos = React.lazy(() => import("@/modules/Admin/instructor/insumos"));
+const InfoEvento = React.lazy(() =>
+  import("@/modules/Admin/instructor/eventos/InfoEvento")
+);
+const Loader = React.lazy(() => import("../../../Loader/Loader"));
 import { SessionContext } from "../../../context/SessionContext";
 function Coordinador() {
   const { updateSession, userSession } = useContext(SessionContext);

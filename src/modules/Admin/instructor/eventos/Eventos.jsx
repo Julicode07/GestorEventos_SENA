@@ -8,7 +8,7 @@ import {
   BreadcrumbItem,
   Breadcrumbs,
 } from "@nextui-org/react";
-import { columns, INITIAL_VISIBLE_COLUMNS } from "./utils.js";
+import { columns, INITIAL_VISIBLE_COLUMNS } from "./utils/utils.js";
 import { capitalize } from "../../utils/utils";
 import { VerticalDotsIcon } from "../../components/VerticalDotsIcon";
 import ModalEventos from "./ModalEventos";

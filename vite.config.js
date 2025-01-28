@@ -1,9 +1,10 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
+import viteCompression from "vite-plugin-compression";
 
 export default defineConfig(({ mode }) => ({
-  plugins: [react()],
+  plugins: [react(), viteCompression({ algorithm: "brotli" })],
   test: {
     globals: true,
     environment: "jsdom",

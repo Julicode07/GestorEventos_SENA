@@ -1,33 +1,28 @@
 import React, { useEffect, useState, useCallback } from "react";
 import {
-  Input,
   Button,
   Tooltip,
-  Pagination,
   Breadcrumbs,
   BreadcrumbItem,
 } from "@nextui-org/react";
-import { SearchIcon } from "@/modules/Admin/components/SearchIcon";
 import { columns } from "@modules/Admin/utils/data";
 import { EyeIcon } from "@/modules/Admin/components/EyeIcon";
+import { INITIAL_VISIBLE_COLUMNS, capitalize } from "./utils/utils";
 const TableShowData = React.lazy(() =>
   import("./../../components/TableShowData.jsx")
 );
-
-const INITIAL_VISIBLE_COLUMNS = [
-  "id_user",
-  "document",
-  "name",
-  "last_names",
-  "email",
-  "phone",
-  "role",
-  "actions",
-];
+const TopContent = React.lazy(() =>
+  import("./../../components/TopContent.jsx")
+);
+const BottomContent = React.lazy(() =>
+  import("./../../components/BottonContent.jsx")
+);
 
 export default function Usuarios() {
   const [filterValue, setFilterValue] = React.useState("");
-  const [visibleColumns] = React.useState(new Set(INITIAL_VISIBLE_COLUMNS));
+  const [visibleColumns, setVisibleColumns] = React.useState(
+    new Set(INITIAL_VISIBLE_COLUMNS)
+  );
   const [showUsers, setShowUsers] = useState([]);
   const [rowsPerPage, setRowsPerPage] = React.useState(15);
   const [sortDescriptor, setSortDescriptor] = React.useState({
@@ -118,6 +113,7 @@ export default function Usuarios() {
                 as="a"
                 isIconOnly
                 className="bg-green-700 hover:bg-green-800"
+                aria-label="View event details"
               >
                 <EyeIcon className="w-6 h-6 text-white " />
               </Button>
@@ -148,63 +144,6 @@ export default function Usuarios() {
     setPage(1);
   }, []);
 
-  const topContent = React.useMemo(() => {
-    return (
-      <div className="flex flex-col gap-4">
-        <div className="flex justify-between items-center gap-3">
-          <Input
-            isClearable
-            className="w-full sm:max-w-[44%]"
-            placeholder="Buscar usuario"
-            startContent={<SearchIcon />}
-            value={filterValue}
-            onClear={() => onClear()}
-            onValueChange={onSearchChange}
-          />
-        </div>
-        <div className="flex justify-between items-center gap-2">
-          <span className="text-default-400 text-small">
-            Total {showUsers.length} usuarios
-          </span>
-          <label className="flex items-center text-default-400 text-small">
-            Filas por página:
-            <select
-              className="max-w-full rounded-lg bg-default-100 text-default-900 text-small font-bold"
-              onChange={onRowsPerPageChange}
-              value={rowsPerPage}
-            >
-              <option value={5}>5</option>
-              <option value={10}>10</option>
-              <option value={15}>15</option>
-            </select>
-          </label>
-        </div>
-      </div>
-    );
-  }, [
-    filterValue,
-    onClear,
-    onRowsPerPageChange,
-    onSearchChange,
-    rowsPerPage,
-    showUsers.length,
-  ]);
-
-  const bottomContent = React.useMemo(() => {
-    return (
-      <div className="py-0 px-2 flex justify-center items-center">
-        <Pagination
-          showControls
-          isCompact
-          showShadow
-          page={page}
-          total={pages}
-          onChange={(page) => setPage(page)}
-        />
-      </div>
-    );
-  }, [page, pages]);
-
   return (
     <main className="flex flex-col gap-2">
       <div>
@@ -219,9 +158,24 @@ export default function Usuarios() {
         <TableShowData
           sortDescriptor={sortDescriptor}
           onSortChange={setSortDescriptor}
-          topContent={topContent}
+          topContent={
+            <TopContent
+              filterValue={filterValue}
+              onClear={onClear}
+              onRowsPerPageChange={onRowsPerPageChange}
+              onSearchChange={onSearchChange}
+              rowsPerPage={rowsPerPage}
+              visibleColumns={visibleColumns}
+              module={showUsers}
+              setVisibleColumns={setVisibleColumns}
+              columns={columns}
+              capitalize={capitalize}
+            />
+          }
           topContentPlacement="outside"
-          bottomContent={bottomContent}
+          bottomContent={
+            <BottomContent page={page} pages={pages} setPage={setPage} />
+          }
           bottomContentPlacement="outside"
           columns={headerColumns}
           items={sortedItems}

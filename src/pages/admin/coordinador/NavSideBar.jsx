@@ -1,10 +1,12 @@
-import { useState, useEffect, useRef, useContext } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { useLocation } from "react-router-dom";
 import { SessionContext } from "@/context/SessionContext.jsx";
 import Images from "@/assets/img/images.js";
-import ItemsList from "../components/ItemsList.jsx";
+const ItemsList = React.lazy(() => import("../components/ItemsList.jsx"));
 // import { events } from "@modules/Admin/utils/data";
-import UserDropdown from "@/modules/components/UserDropdown.jsx";
+const UserDropdown = React.lazy(() =>
+  import("@/modules/components/UserDropdown.jsx")
+);
 
 const NavSideBar = () => {
   const { userSession } = useContext(SessionContext);
@@ -63,8 +65,9 @@ const NavSideBar = () => {
             <div className="flex items-center justify-start rtl:justify-end">
               <button
                 onClick={toggleSidebar}
-                aria-controls="sidebar"
+                aria-controls="logo-sidebar"
                 type="button"
+                id="logo sidebar"
                 className="inline-flex items-center p-2 text-gray-800 rounded-lg sm:hidden hover:bg-gray-100"
               >
                 <span className="sr-only">Abrir menú</span>
