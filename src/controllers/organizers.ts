@@ -1,7 +1,4 @@
-import {
-  createOrganizers,
-  getOrganizers,
-} from "../repositories/organizers/repository";
+import { createOrganizers, getOrganizers, getOrganizerById, updateOrganizerById } from "../repositories/organizers/repository";
 import { Request, Response } from "express";
 import { IOrganizers } from "../repositories/organizers/models";
 import { bigIntReplacer } from "../helpers/json.helper";
@@ -41,6 +38,21 @@ export async function GetOrganizersController(_req: Request, res: Response) {
         );
     }
     return res.status(200).send(JSON.stringify(organizers, bigIntReplacer));
+  } catch (err) {
+    return res
+      .status(500)
+      .send(JSON.stringify({ message: "Error interno del servidor :(" }));
+  }
+}
+
+export async function UpdateOrganizerController(req: Request, res: Response) {
+  try {
+    const organizer = await getOrganizerById(req.body.id_organizer);
+    if (organizer != undefined) {
+      return res.status(500).send(JSON.stringify({ message: "El organizador no existe." }));
+    }
+    await updateOrganizerById(parseInt(req.body.id_organizer), req.body);
+    return res.status(200).send(JSON.stringify(organizer, bigIntReplacer));
   } catch (err) {
     return res
       .status(500)

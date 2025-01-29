@@ -59,3 +59,96 @@ export async function getOrganizers(): Promise<number> {
     connection.release();
   }
 }
+
+export async function getOrganizerById(id_organizers: number): Promise<IOrganizers | null> {
+  const connection: PoolConnection = await getConnection(pool);
+  try {
+    const result = await connection.query(
+      `
+      SELECT 
+        org.id_organizers,
+        org.id_sub_event,
+        org.name,
+        org.rol,
+        org.email,
+        org.address,
+        su.name AS sub_event_name
+      FROM 
+        organizers org
+        INNER JOIN sub_events su
+        ON org.id_sub_event = su.id_sub_event
+      WHERE org.id_organizers = ?
+      `,
+      [id_organizers]
+    );
+
+    if (result.length === 1) {
+      console.log(`[organizers repository]: Organizer FOUND.`);
+      return result[0];
+    } else {
+      console.error(`[organizers repository]: Organizer NOT FOUND.`);
+      return null;
+    }
+  } catch (err) {
+    console.error(`[organizers repository]: ERROR GETTING organizer: ${err}`);
+    return null;
+  } finally {
+    connection.release();
+  }
+}
+
+
+export async function updateOrganizerById(id_organizer: number, organizersData: Partial<IOrganizers>): Promise<number> {
+  const connection: PoolConnection = await getConnection(pool);
+  try {
+    // Build the query dynamically to include only the fields being updated
+    const fieldsToUpdate = [];
+    const values: (string | number)[] = [];
+
+    if (organizersData.id_sub_event !== undefined) {
+      fieldsToUpdate.push("id_sub_event = ?");
+      values.push(organizersData.id_sub_event);
+    }
+    if (organizersData.name) {
+      fieldsToUpdate.push("name = ?");
+      values.push(organizersData.name);
+    }
+    if (organizersData.rol) {
+      fieldsToUpdate.push("rol = ?");
+      values.push(organizersData.rol);
+    }
+    if (organizersData.email) {
+      fieldsToUpdate.push("email = ?");
+      values.push(organizersData.email);
+    }
+    if (organizersData.address) {
+      fieldsToUpdate.push("address = ?");
+      values.push(organizersData.address);
+    }
+
+    // Ensure there is something to update
+    if (fieldsToUpdate.length === 0) {
+      console.error("[organizers repository]: No fields to update.");
+      return -1;
+    }
+
+    // Add the id_organizers to the values array
+    values.push(id_organizer);
+    const query = `UPDATE organizers SET ${fieldsToUpdate.join(", ")} WHERE id_organizers = ?`;
+    const result = await connection.query(query, values);
+
+    if (result.affectedRows === 1) {
+      console.log(`[organizers repository]: Organizer UPDATED SUCCESSFULLY.`);
+      return 1;
+    } else {
+      console.error(`[organizers repository]: ERROR UPDATING organizer.`);
+      return -1;
+    }
+  } catch (err) {
+    console.error(`[organizers repository]: ERROR UPDATING organizer: ${err}`);
+    return -1;
+  } finally {
+    connection.release();
+  }
+}
+

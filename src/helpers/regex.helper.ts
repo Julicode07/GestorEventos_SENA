@@ -51,7 +51,7 @@ export const databaseRegex = {
       /^(Programado|Confirmado|Cancelado|Pospuesto|Completado)$/,
   },
 
-  organizers: {
+  organizers: {                                                                             
     id_organizer: /^[0-9]{1,9}$/,
     id_sub_event: /^[0-9]{1,9}$/,
     name: /^[A-Za-zñ.Ñ:-á-|éí,óúÁÉÍ&%$ÓÚäëïöüÄËÏÖÜ0-9\s]{1,64}$/,

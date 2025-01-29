@@ -3,6 +3,7 @@ import { databaseRegex } from "../helpers/regex.helper";
 import {
   CreateOrganizersController,
   GetOrganizersController,
+  UpdateOrganizerController,
 } from "../controllers/organizers";
 
 const OrganizersRouter: Express = express();
@@ -37,6 +38,14 @@ OrganizersRouter.get("/all", async (req: Request, res: Response) => {
     return res
       .status(500)
       .send(JSON.stringify({ message: "Error interno del servidor :(" }));
+  }
+});
+
+OrganizersRouter.patch("/update", async (req: Request, res: Response) => {
+  try {
+    return UpdateOrganizerController(req, res);
+  } catch (err) {
+    return res.status(500).send(JSON.stringify({ message: "Error interno del servidor :(" }));
   }
 });
 export default OrganizersRouter;
