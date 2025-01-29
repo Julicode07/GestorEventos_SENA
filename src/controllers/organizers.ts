@@ -59,7 +59,7 @@ export async function GetOrganizerByIdController(req: Request, res: Response) {
 
 export async function GetOrganizersBySubEventIdController(req: Request, res: Response) {
   try {
-    const organizers = await getOrganizersBySubEventId(parseInt(req.params.id_organizers));
+    const organizers = await getOrganizersBySubEventId(parseInt(req.params.id_sub_event));
     if (organizers == undefined) {
       return res.status(500).send(JSON.stringify({ message: "El organizador no existe." }));
     }
