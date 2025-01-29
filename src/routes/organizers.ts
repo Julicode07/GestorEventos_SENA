@@ -5,6 +5,7 @@ import {
   GetOrganizerByIdController,
   GetOrganizersController,
   UpdateOrganizerController,
+  GetOrganizersBySubEventIdController
 } from "../controllers/organizers";
 
 const OrganizersRouter: Express = express();
@@ -42,12 +43,23 @@ OrganizersRouter.get("/all", async (req: Request, res: Response) => {
   }
 });
 
-OrganizersRouter.get("/get/:id_organizers", async (req: Request, res: Response<) => {
+OrganizersRouter.get("/get/:id_organizers", async (req: Request, res: Response) => {
   try {
     if (req.params.id_organizers != undefined) return GetOrganizerByIdController(req, res);
     return res.status(400).send(JSON.stringify({ message: "No se envió un ID de organizador." }))
-  } 
-})
+  } catch (err) {
+    return res.status(500).send(JSON.stringify({ message: "Error interno del servidor :(" }));
+  }
+});
+
+OrganizersRouter.get("/sub-events/:id_sub_event", async (req: Request, res: Response) => {
+  try {
+    if (req.params.id_sub_event != undefined) return GetOrganizersBySubEventIdController(req, res);
+    return res.status(400).send(JSON.stringify({ message: "No se envió un ID de organizador." }))
+  } catch (err) {
+    return res.status(500).send(JSON.stringify({ message: "Error interno del servidor :(" }));
+  }
+});
 
 OrganizersRouter.patch("/update", async (req: Request, res: Response) => {
   try {

@@ -97,6 +97,43 @@ export async function getOrganizerById(id_organizers: number): Promise<IOrganize
   }
 }
 
+export async function getOrganizersBySubEventId(id_sub_event: number): Promise<IOrganizers | null> {
+  const connection: PoolConnection = await getConnection(pool);
+  try {
+    const result = await connection.query(
+      `
+      SELECT 
+        org.id_organizers,
+        org.id_sub_event,
+        org.name,
+        org.rol,
+        org.email,
+        org.address,
+        su.name AS sub_event_name
+      FROM 
+        organizers org
+        INNER JOIN sub_events su
+        ON org.id_sub_event = su.id_sub_event
+      WHERE org.id_sub_event = ?
+      `,
+      [id_sub_event]
+    );
+
+    if (result.length === 1) {
+      console.log(`[organizers repository]: Organizer FOUND.`);
+      return result[0];
+    } else {
+      console.error(`[organizers repository]: Organizer NOT FOUND.`);
+      return null;
+    }
+  } catch (err) {
+    console.error(`[organizers repository]: ERROR GETTING organizer: ${err}`);
+    return null;
+  } finally {
+    connection.release();
+  }
+}
+
 
 export async function updateOrganizerById(id_organizer: number, organizersData: Partial<IOrganizers>): Promise<number> {
   const connection: PoolConnection = await getConnection(pool);
