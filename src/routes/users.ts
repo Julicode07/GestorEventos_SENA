@@ -30,7 +30,6 @@ UsersRouter.post("/", async (req: Request, res: Response) => {
   }
 });
 
-
 UsersRouter.get("/me", async (req: Request, res: Response) => {
   try {
     await GetSelfUserController(req, res);

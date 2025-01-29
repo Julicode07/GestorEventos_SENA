@@ -119,9 +119,9 @@ export async function getOrganizersBySubEventId(id_sub_event: number): Promise<I
       [id_sub_event]
     );
 
-    if (result.length === 1) {
+    if (result.length > 0) {
       console.log(`[organizers repository]: Organizer FOUND.`);
-      return result[0];
+      return result;
     } else {
       console.error(`[organizers repository]: Organizer NOT FOUND.`);
       return null;
