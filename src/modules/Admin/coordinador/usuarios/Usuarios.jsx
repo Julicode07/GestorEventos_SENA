@@ -1,12 +1,9 @@
 import React, { useEffect, useState, useCallback } from "react";
 import {
-  Button,
-  Tooltip,
   Breadcrumbs,
   BreadcrumbItem,
 } from "@nextui-org/react";
 import { columns } from "@modules/Admin/utils/data";
-import { EyeIcon } from "@/modules/Admin/components/EyeIcon";
 import { INITIAL_VISIBLE_COLUMNS, capitalize } from "./utils/utils";
 const TableShowData = React.lazy(() =>
   import("./../../components/TableShowData.jsx")
@@ -101,24 +98,11 @@ export default function Usuarios() {
   const renderCell = React.useCallback((user, columnKey) => {
     const cellValue = user[columnKey];
     switch (columnKey) {
-      case "actions":
+      case "document":
         return (
-          <div className="relative flex justify-center items-center gap-2">
-            <Tooltip
-              content="Ver información"
-              className="bg-secondary text-white"
-            >
-              <Button
-                href={`/admin/coordinador/eventos/${user.id}`}
-                as="a"
-                isIconOnly
-                className="bg-green-700 hover:bg-green-800"
-                aria-label="View event details"
-              >
-                <EyeIcon className="w-6 h-6 text-white " />
-              </Button>
-            </Tooltip>
-          </div>
+          <p className="py-2">
+            {cellValue}
+          </p>
         );
       default:
         return cellValue;

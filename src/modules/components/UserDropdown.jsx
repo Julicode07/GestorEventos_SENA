@@ -91,6 +91,15 @@ const UserDropdown = ({
         </DropdownItem>
         <DropdownItem
           as={Link}
+          to="/admin/coordinador/profile"
+          key="profile"
+          showDivider
+          className="text-lg"
+        >
+          <span className="text-base font-medium">Perfil</span>
+        </DropdownItem>
+        <DropdownItem
+          as={Link}
           to={logoutLink}
           key="logout"
           color="danger"
