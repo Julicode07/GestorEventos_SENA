@@ -1,7 +1,6 @@
 import { createOrganizers, getOrganizers, getOrganizerById, updateOrganizerById, getOrganizersBySubEventId } from "../repositories/organizers/repository";
-import { Request, Response } from "express";
-import { IOrganizers } from "../repositories/organizers/models";
 import { bigIntReplacer } from "../helpers/json.helper";
+import { Request, Response } from "express";
 
 export async function CreateOrganizersController(req: Request, res: Response) {
   try {
@@ -69,11 +68,11 @@ export async function GetOrganizersBySubEventIdController(req: Request, res: Res
 
 export async function UpdateOrganizerController(req: Request, res: Response) {
   try {
-    const organizer = await getOrganizerById(req.body.id_organizer);
+    const organizer = await getOrganizerById(parseInt(req.params.id_organizer));
     if (organizer == undefined) {
       return res.status(500).send(JSON.stringify({ message: "El organizador no existe." }));
     }
-    await updateOrganizerById(parseInt(req.body.id_organizer), req.body);
+    await updateOrganizerById(parseInt(req.params.id_organizer), req.body);
     return res.status(200).send(JSON.stringify({ message: "Organizador actualizado correctamente." }, bigIntReplacer));
   } catch (err) {
     return res

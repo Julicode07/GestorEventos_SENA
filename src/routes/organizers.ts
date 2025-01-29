@@ -61,7 +61,7 @@ OrganizersRouter.get("/sub-events/:id_sub_event", async (req: Request, res: Resp
   }
 });
 
-OrganizersRouter.patch("/update", async (req: Request, res: Response) => {
+OrganizersRouter.patch("/update/:id_organizer", async (req: Request, res: Response) => {
   try {
     return UpdateOrganizerController(req, res);
   } catch (err) {
