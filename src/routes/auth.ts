@@ -44,9 +44,7 @@ AuthRouter.get("/logout", async (req: Request, res: Response) => {
     await LogOutController(req, res);
   } catch (err) {
     console.error(err);
-    return res
-      .status(500)
-      .end(JSON.stringify({ message: "Error interno del servidor :(" }));
+    return res.status(500).end(JSON.stringify({ message: "Error interno del servidor :(" }));
   }
 });
 

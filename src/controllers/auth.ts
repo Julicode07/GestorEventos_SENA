@@ -1,6 +1,8 @@
 import { findUserByDocument } from "../repositories/users/repository";
 import { Request, Response } from "express";
 import { hasActiveSession } from "../helpers/session.checker";
+import { bigIntReplacer } from "../helpers/json.helper";
+import { findUserById } from "../repositories/users/repository";
 import bcrypt from "bcrypt";
 
 export async function LogInController(req: Request, res: Response) {

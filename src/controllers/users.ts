@@ -1,5 +1,5 @@
 import { bigIntReplacer } from '../helpers/json.helper';
-import { createUser, findAllUsers, findUserByDocument, findUserByEmail } from '../repositories/users/repository';
+import { createUser, findAllUsers, findUserByDocument, findUserByEmail, findUserById } from '../repositories/users/repository';
 import { Request, Response } from 'express';
 
 export async function CreateUserController(req: Request, res: Response) {
@@ -22,7 +22,14 @@ export async function CreateUserController(req: Request, res: Response) {
     }
 }
 
+
+export async function GetSelfUserController (req:Request, res:Response) {
+  const users = await findUserById(req.session.user!.id_user as number);
+  return res.status(200).send(JSON.stringify(users, bigIntReplacer)); 
+}
+
 export async function GetUsersController (req:Request, res:Response) {
     const users = await findAllUsers();
     return res.status(200).send(JSON.stringify(users, bigIntReplacer)); 
 }
+

@@ -68,3 +68,16 @@ export async function findUserByEmail(email: string): Promise<IUser[]> {
         connection.release();
     }
 }
+
+export async function findUserById(id_user: number): Promise<IUser[]> {
+    const connection:PoolConnection = await getConnection(pool);
+    try {
+        const results = await connection.query(`SELECT * FROM users WHERE id_user = ?`, [id_user]);
+        return (results.length === 0) ? [] : results[0];
+    } catch (err) {
+        console.error(`[user repository]: ${err}`);
+        return [];
+    } finally {
+        connection.release();
+    }
+}

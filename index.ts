@@ -1,5 +1,4 @@
 import express, { Express, Request, Response } from "express";
-import { UserRole } from "./src/repositories/users/models";
 import AuthRouter from "./src/routes/auth";
 import { createSchemas } from "./src/db/schema.handler";
 import session from "express-session";
@@ -45,7 +44,7 @@ app.use(
     secret: process.env.SESSION_SECRET as string,
     store: sessionStore,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie: {
       maxAge: 1000 * 60 * 60 * 24 * 3,
     },
