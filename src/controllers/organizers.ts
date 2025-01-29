@@ -45,6 +45,18 @@ export async function GetOrganizersController(_req: Request, res: Response) {
   }
 }
 
+export async function GetOrganizerByIdController(req: Request, res: Response) {
+  try {
+    const organizer = await getOrganizerById(parseInt(req.params.id_organizers));
+    if (organizer != undefined) {
+      return res.status(500).send(JSON.stringify({ message: "El organizador no existe." }));
+    }
+    return res.status(200).send(JSON.stringify(organizer, bigIntReplacer));
+  } catch (err) {
+    return res.status(500).send(JSON.stringify({ message: "Error interno del servidor :(" }));
+  }
+}
+
 export async function UpdateOrganizerController(req: Request, res: Response) {
   try {
     const organizer = await getOrganizerById(req.body.id_organizer);
@@ -52,7 +64,7 @@ export async function UpdateOrganizerController(req: Request, res: Response) {
       return res.status(500).send(JSON.stringify({ message: "El organizador no existe." }));
     }
     await updateOrganizerById(parseInt(req.body.id_organizer), req.body);
-    return res.status(200).send(JSON.stringify(organizer, bigIntReplacer));
+    return res.status(200).send(JSON.stringify({ message: "Organizador actualizado correctamente." }, bigIntReplacer));
   } catch (err) {
     return res
       .status(500)

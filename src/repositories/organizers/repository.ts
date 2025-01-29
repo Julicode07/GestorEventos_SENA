@@ -151,4 +151,3 @@ export async function updateOrganizerById(id_organizer: number, organizersData: 
     connection.release();
   }
 }
-

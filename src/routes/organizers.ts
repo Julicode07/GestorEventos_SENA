@@ -2,6 +2,7 @@ import express, { Express, Request, Response } from "express";
 import { databaseRegex } from "../helpers/regex.helper";
 import {
   CreateOrganizersController,
+  GetOrganizerByIdController,
   GetOrganizersController,
   UpdateOrganizerController,
 } from "../controllers/organizers";
@@ -40,6 +41,13 @@ OrganizersRouter.get("/all", async (req: Request, res: Response) => {
       .send(JSON.stringify({ message: "Error interno del servidor :(" }));
   }
 });
+
+OrganizersRouter.get("/get/:id_organizers", async (req: Request, res: Response<) => {
+  try {
+    if (req.params.id_organizers != undefined) return GetOrganizerByIdController(req, res);
+    return res.status(400).send(JSON.stringify({ message: "No se envió un ID de organizador." }))
+  } 
+})
 
 OrganizersRouter.patch("/update", async (req: Request, res: Response) => {
   try {
