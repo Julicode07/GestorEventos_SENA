@@ -1,5 +1,5 @@
 import { bigIntReplacer } from '../helpers/json.helper';
-import { createUser, findAllUsers, findUserByDocument, findUserByEmail, findUserById } from '../repositories/users/repository';
+import { createUser, findAllUsers, findUserByDocument, findUserByEmail, findUserById, updateUser } from '../repositories/users/repository';
 import { Request, Response } from 'express';
 
 export async function CreateUserController(req: Request, res: Response) {
@@ -20,6 +20,21 @@ export async function CreateUserController(req: Request, res: Response) {
         });
         return (result == 1) ? res.status(200).end(JSON.stringify({ message: "Perfil creado correctamente" })) : res.status(500).end(JSON.stringify({ message: "Error interno del servidor al crear el perfil" }));
     }
+}
+
+export async function UpdateUserController(req: Request, res: Response) {
+  try {
+    const user = await findUserById(parseInt(req.params.id_user));
+    if (user == undefined) {
+      return res.status(404).send(JSON.stringify({ message: "El usuario no existe." }));
+    }
+    await updateUser(parseInt(req.params.id_user), req.body);
+    return res.status(200).send(JSON.stringify({ message: "Usuario actualizado correctamente." }, bigIntReplacer));
+  } catch (err) {
+    return res
+      .status(500)
+      .send(JSON.stringify({ message: "Error interno del servidor :(" }));
+  }
 }
 
 

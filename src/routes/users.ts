@@ -1,5 +1,5 @@
 import express, { Express, Request, Response } from "express";
-import { CreateUserController, GetSelfUserController, GetUsersController } from "../controllers/users";
+import { CreateUserController, GetSelfUserController, GetUsersController, UpdateUserController } from "../controllers/users";
 import { databaseRegex } from "../helpers/regex.helper";
 
 const UsersRouter: Express = express();
@@ -33,6 +33,15 @@ UsersRouter.post("/", async (req: Request, res: Response) => {
 UsersRouter.get("/me", async (req: Request, res: Response) => {
   try {
     await GetSelfUserController(req, res);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).end(JSON.stringify({ message: "Error interno del servidor :(" }));
+  }
+});
+
+UsersRouter.put("/update/:id_user", async (req: Request, res: Response) => {
+  try {
+    await UpdateUserController(req, res);
   } catch (err) {
     console.error(err);
     return res.status(500).end(JSON.stringify({ message: "Error interno del servidor :(" }));
