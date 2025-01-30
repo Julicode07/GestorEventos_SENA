@@ -41,7 +41,7 @@ function Profile() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setUserById((prevData) => ({
+    setUserUpdated((prevData) => ({
       ...prevData,
       [name]: value,
     }));
@@ -110,7 +110,7 @@ function Profile() {
                 <input
                   type="text"
                   name="name"
-                  value={userById[0]?.name || ""}
+                  value={userById[0]?.name}
                   onChange={handleChange}
                   className="bg-gray-100 border-2 border-gray-300 rounded-lg p-2 w-full mt-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all ease-in-out duration-300"
                 />
@@ -129,7 +129,7 @@ function Profile() {
                 <input
                   type="text"
                   name="last_name"
-                  value={userById[0]?.last_names || ""}
+                  value={userById[0]?.last_names}
                   onChange={handleChange}
                   className="bg-gray-100 border-2 border-gray-300 rounded-lg p-2 w-full mt-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all ease-in-out duration-300"
                 />
@@ -148,7 +148,7 @@ function Profile() {
                 <input
                   type="number"
                   name="document"
-                  value={userById[0]?.document || ""}
+                  value={userById[0]?.document}
                   onChange={handleChange}
                   className="bg-gray-100 border-2 border-gray-300 rounded-lg p-2 w-full mt-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all ease-in-out duration-300"
                 />
@@ -167,7 +167,7 @@ function Profile() {
                 <input
                   type="email"
                   name="email"
-                  value={userById[0]?.email || ""}
+                  value={userById[0]?.email}
                   onChange={handleChange}
                   className="bg-gray-100 border-2 border-gray-300 rounded-lg p-2 w-full mt-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all ease-in-out duration-300"
                 />
@@ -186,7 +186,7 @@ function Profile() {
                 <input
                   type="number"
                   name="phone"
-                  value={userById[0]?.phone || ""}
+                  value={userById[0]?.phone}
                   onChange={handleChange}
                   className="bg-gray-100 border-2 border-gray-300 rounded-lg p-2 w-full mt-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all ease-in-out duration-300"
                 />
