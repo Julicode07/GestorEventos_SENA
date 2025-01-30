@@ -44,7 +44,7 @@ function Profile() {
       setUserUpdated({
         document: userById[0].document,
         name: userById[0].name,
-        last_name: userById[0].last_names,
+        last_names: userById[0].last_names,
         email: userById[0].email,
         phone: userById[0].phone,
         role: userById[0].role,
@@ -75,7 +75,7 @@ function Profile() {
       console.log(newData);
       const result = await update(
         newData,
-        `/api/users/update/${userById.id_user}`
+        `/api/users/update/${userById[0].id_user}`
       );
       setSuccessMessage("Usuario registrado correctamente!");
       setErrorMessage("");
