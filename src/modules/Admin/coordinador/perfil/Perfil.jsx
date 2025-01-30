@@ -39,12 +39,29 @@ function Profile() {
     console.log("data ", userById);
   }, [userById]);
 
+  useEffect(() => {
+    if (userById.length > 0) {
+      setUserUpdated({
+        document: userById[0].document,
+        name: userById[0].name,
+        last_name: userById[0].last_names,
+        email: userById[0].email,
+        phone: userById[0].phone,
+        role: userById[0].role,
+      });
+    }
+  }, [userById]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUserUpdated((prevData) => ({
       ...prevData,
       [name]: value,
     }));
+  };
+
+  const handleEdit = () => {
+    setIsEditing(!isEditing);
   };
 
   const handleSubmit = async (e) => {
@@ -70,16 +87,13 @@ function Profile() {
         phone: "",
         role: "",
       });
+      handleEdit();
       console.log(result);
     } catch (err) {
       setSuccessMessage("");
       setErrorMessage(err.message);
       console.error("No se pudo actualizar la data", err);
     }
-  };
-
-  const handleEdit = () => {
-    setIsEditing(!isEditing);
   };
 
   const fullName = `${userById.length > 0 ? userById[0]?.name : "Sin Nombre"} ${
@@ -99,7 +113,7 @@ function Profile() {
         </p>
 
         <form
-          action=""
+          id="userUpdateForm"
           className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4 w-full max-w-4xl px-4"
           onSubmit={handleSubmit}
         >
@@ -110,7 +124,7 @@ function Profile() {
                 <input
                   type="text"
                   name="name"
-                  value={userById[0]?.name}
+                  value={userUpdated.name}
                   onChange={handleChange}
                   className="bg-gray-100 border-2 border-gray-300 rounded-lg p-2 w-full mt-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all ease-in-out duration-300"
                 />
@@ -129,7 +143,7 @@ function Profile() {
                 <input
                   type="text"
                   name="last_name"
-                  value={userById[0]?.last_names}
+                  value={userUpdated.last_names}
                   onChange={handleChange}
                   className="bg-gray-100 border-2 border-gray-300 rounded-lg p-2 w-full mt-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all ease-in-out duration-300"
                 />
@@ -148,7 +162,7 @@ function Profile() {
                 <input
                   type="number"
                   name="document"
-                  value={userById[0]?.document}
+                  value={userUpdated.document}
                   onChange={handleChange}
                   className="bg-gray-100 border-2 border-gray-300 rounded-lg p-2 w-full mt-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all ease-in-out duration-300"
                 />
@@ -167,7 +181,7 @@ function Profile() {
                 <input
                   type="email"
                   name="email"
-                  value={userById[0]?.email}
+                  value={userUpdated.email}
                   onChange={handleChange}
                   className="bg-gray-100 border-2 border-gray-300 rounded-lg p-2 w-full mt-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all ease-in-out duration-300"
                 />
@@ -186,7 +200,7 @@ function Profile() {
                 <input
                   type="number"
                   name="phone"
-                  value={userById[0]?.phone}
+                  value={userUpdated.phone}
                   onChange={handleChange}
                   className="bg-gray-100 border-2 border-gray-300 rounded-lg p-2 w-full mt-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all ease-in-out duration-300"
                 />
@@ -207,7 +221,7 @@ function Profile() {
                   size="sm"
                   label="Rol"
                   name="role"
-                  value={userById[0]?.role || ""}
+                  value={userUpdated.role}
                   onChange={handleChange}
                 >
                   <SelectItem key="Aprendiz">Aprendiz</SelectItem>
@@ -225,12 +239,7 @@ function Profile() {
           </div>
         </form>
         <button
-          onClick={() => {
-            if (isEditing) {
-              handleSubmit();
-            }
-            handleEdit();
-          }}
+          form="userUpdateForm"
           className="grid place-items-center bg-primary/90 text-white py-2 px-6 rounded-lg mt-4 transition-colors hover:bg-primary ease-in-out duration-300"
         >
           {isEditing ? "Guardar cambios" : "Editar"}
