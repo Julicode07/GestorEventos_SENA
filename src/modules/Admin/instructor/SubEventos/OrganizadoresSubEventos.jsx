@@ -11,6 +11,7 @@ const OrganizadoresSubEventos = ({
 
   const getOrganizersByIdSubEvents = useCallback(async () => {
     try {
+      setOrganizersByIdSubEvents([]);
       const response = await fetch(
         `${
           import.meta.env.VITE_API_URL
@@ -24,18 +25,12 @@ const OrganizadoresSubEventos = ({
   }, [idSubEvents]);
 
   useEffect(() => {
-    console.log(
-      `${import.meta.env.VITE_API_URL}/api/organizers/sub-events/${idSubEvents}`
-    );
-
-    if (idSubEvents) {
-      getOrganizersByIdSubEvents();
+    if (!idSubEvents) {
+      setOrganizersByIdSubEvents([]);
+      return;
     }
-  }, [getOrganizersByIdSubEvents, idSubEvents]);
-
-  useEffect(() => {
-    console.log("data ", organizersByIdSubEvents);
-  }, [organizersByIdSubEvents]);
+    getOrganizersByIdSubEvents();
+  }, [idSubEvents, getOrganizersByIdSubEvents]);
 
   return (
     <>
@@ -55,13 +50,20 @@ const OrganizadoresSubEventos = ({
               <div className="relative bg-white rounded-lg shadow">
                 <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t ">
                   <h1 className="font-bold text-2xl">
-                    Organizadores del evento de `
-                    {organizersByIdSubEvents.sub_event_name || "Subevento"}`
+                    Organizadores del evento de{" ''"}
+                    {organizersByIdSubEvents.length > 0 &&
+                    organizersByIdSubEvents[0].sub_event_name
+                      ? organizersByIdSubEvents[0].sub_event_name
+                      : "No hay organizadores"}
+                    {" ''"}
                   </h1>
+
                   <button
                     type="button"
                     className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center "
-                    onClick={() => setIsOrganizersModal(false)}
+                    onClick={() => {
+                      setIsOrganizersModal(false);
+                    }}
                   >
                     <svg
                       className="w-3 h-3"
@@ -86,13 +88,11 @@ const OrganizadoresSubEventos = ({
                     {organizersByIdSubEvents.map((organizer, index) => (
                       <li
                         className="text-black list-disc m-2"
-                        key={
-                          organizer.id_sub_event
-                            ? organizer.id_sub_event
-                            : index
-                        }
+                        key={`${organizer.id_sub_event || "no-id"}-${index}`}
                       >
-                        {organizer.name ? organizer.name : "No hay organizadores"}
+                        {organizer.name
+                          ? organizer.name
+                          : "No hay organizadores"}
                       </li>
                     ))}
                   </ul>

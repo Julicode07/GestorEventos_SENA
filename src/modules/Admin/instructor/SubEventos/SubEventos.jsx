@@ -56,7 +56,6 @@ export default function SubEventos() {
       `${import.meta.env.VITE_API_URL}/api/subEvents/globalEvent/${id}`
     );
     const data = await response.json();
-    console.log(data);
     setSubEvents(Array.isArray(data) ? data : []);
   }, [id]);
 
@@ -64,9 +63,6 @@ export default function SubEventos() {
     getSubEvents();
   }, [getSubEvents]);
 
-  useEffect(() => {
-    console.log("data", subEvents);
-  }, [subEvents]);
   //
 
   const hasSearchFilter = Boolean(filterValue);
