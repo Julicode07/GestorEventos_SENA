@@ -1,7 +1,6 @@
 import { Select, SelectItem } from "@nextui-org/react";
 import { useCallback, useEffect, useState } from "react";
 import useUpdate from "../../../hooks/useUpdate";
-import { u } from "framer-motion/client";
 
 function Profile() {
   const { update } = useUpdate();
@@ -83,8 +82,8 @@ function Profile() {
     setIsEditing(!isEditing);
   };
 
-  const fullName = `${userById.length > 1 ? userById[0].name : "Sin Nombre"} ${
-    userById.length > 1 ? userById[0].last_name : "Sin Apellido"
+  const fullName = `${userById.length > 1 ? userById[0]?.name : "Sin Nombre"} ${
+    userById.length > 1 ? userById[0]?.last_names : "Sin Apellido"
   }`;
 
   return (
@@ -96,7 +95,7 @@ function Profile() {
 
         <h1 className="text-3xl font-semibold text-gray-800">{fullName}</h1>
         <p className="text-gray-600 text-lg italic">
-          {userById.length > 1 ? userById[0].role : "Sin rol"}
+          {userById.length > 1 ? userById[0]?.role : "Sin rol"}
         </p>
 
         <form
@@ -111,13 +110,13 @@ function Profile() {
                 <input
                   type="text"
                   name="name"
-                  value={userById.name || ""}
+                  value={userById[0]?.name || ""}
                   onChange={handleChange}
                   className="bg-gray-100 border-2 border-gray-300 rounded-lg p-2 w-full mt-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all ease-in-out duration-300"
                 />
               ) : (
                 <p className="text-gray-700 font-semibold">
-                  {userById.name || "Sin Nombre"}
+                  {userById[0]?.name || "Sin Nombre"}
                 </p>
               )}
             </div>
@@ -130,13 +129,13 @@ function Profile() {
                 <input
                   type="text"
                   name="last_name"
-                  value={userById.last_name || ""}
+                  value={userById[0]?.last_name || ""}
                   onChange={handleChange}
                   className="bg-gray-100 border-2 border-gray-300 rounded-lg p-2 w-full mt-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all ease-in-out duration-300"
                 />
               ) : (
                 <p className="text-gray-700 font-semibold">
-                  {userById.last_name || "Sin Apellido"}
+                  {userById[0]?.last_name || "Sin Apellido"}
                 </p>
               )}
             </div>
@@ -149,13 +148,13 @@ function Profile() {
                 <input
                   type="number"
                   name="document"
-                  value={userById.document || ""}
+                  value={userById[0]?.document || ""}
                   onChange={handleChange}
                   className="bg-gray-100 border-2 border-gray-300 rounded-lg p-2 w-full mt-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all ease-in-out duration-300"
                 />
               ) : (
                 <p className="text-gray-700 font-semibold">
-                  {userById.document || "Sin documento"}
+                  {userById[0]?.document || "Sin documento"}
                 </p>
               )}
             </div>
@@ -168,13 +167,13 @@ function Profile() {
                 <input
                   type="email"
                   name="email"
-                  value={userById.email || ""}
+                  value={userById[0]?.email || ""}
                   onChange={handleChange}
                   className="bg-gray-100 border-2 border-gray-300 rounded-lg p-2 w-full mt-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all ease-in-out duration-300"
                 />
               ) : (
                 <p className="text-gray-700 font-semibold">
-                  {userById.email || "Sin email"}
+                  {userById[0]?.email || "Sin email"}
                 </p>
               )}
             </div>
@@ -187,13 +186,13 @@ function Profile() {
                 <input
                   type="number"
                   name="phone"
-                  value={userById.phone || ""}
+                  value={userById[0]?.phone || ""}
                   onChange={handleChange}
                   className="bg-gray-100 border-2 border-gray-300 rounded-lg p-2 w-full mt-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all ease-in-out duration-300"
                 />
               ) : (
                 <p className="text-gray-700 font-semibold">
-                  {userById.phone || "Sin teléfono"}
+                  {userById[0]?.phone || "Sin teléfono"}
                 </p>
               )}
             </div>
@@ -208,7 +207,7 @@ function Profile() {
                   size="sm"
                   label="Rol"
                   name="role"
-                  value={userById.role || ""}
+                  value={userById[0]?.role || ""}
                   onChange={handleChange}
                 >
                   <SelectItem key="Aprendiz">Aprendiz</SelectItem>
@@ -219,7 +218,7 @@ function Profile() {
                 </Select>
               ) : (
                 <p className="text-gray-700 font-semibold">
-                  {userById.role || "Sin rol"}
+                  {userById[0]?.role || "Sin rol"}
                 </p>
               )}
             </div>
