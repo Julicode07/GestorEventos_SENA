@@ -5,8 +5,8 @@ export const EyeIcon = memo(
   ({ fill = "currentColor", size, height, width, ...props }) => {
     return (
       <svg
-        width={size || width || 24}
-        height={size || height || 24}
+        width={size || width || 44}
+        height={size || height || 44}
         viewBox="0 0 24 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

@@ -9,15 +9,19 @@ import {
   BreadcrumbItem,
 } from "@nextui-org/react";
 import { VerticalDotsIcon } from "@modules/Admin/components/VerticalDotsIcon";
+import { EyeIcon } from "../../components/EyeIcon";
 
 import { useParams } from "react-router-dom";
-import { capitalize, INITIAL_VISIBLE_COLUMNS, columns } from "./utils";
+import { capitalize, INITIAL_VISIBLE_COLUMNS, columns } from "./utils/utils";
 import BottomContent from "../../components/BottonContent";
 import TopContent from "./../../components/TopContent";
 import ModalSubEventosActualizar from "../eventos/ModalSubEventosActualizar";
 import Alert from "../../components/Alert";
 const TableShowData = React.lazy(() =>
   import("./../../components/TableShowData")
+);
+const OrganizadoresSubEventos = React.lazy(() =>
+  import("./OrganizadoresSubEventos")
 );
 
 export default function SubEventos() {
@@ -39,6 +43,8 @@ export default function SubEventos() {
     useState(false);
   const [idSubEvents, setIdSubEvents] = useState("");
   //
+
+  const [isOrganizersModal, setIsOrganizersModal] = useState(false);
   const [alert, setAlert] = useState(false);
   const [statusAlert, setStatusAlert] = useState("");
 
@@ -50,12 +56,17 @@ export default function SubEventos() {
       `${import.meta.env.VITE_API_URL}/api/subEvents/globalEvent/${id}`
     );
     const data = await response.json();
+    console.log(data);
     setSubEvents(Array.isArray(data) ? data : []);
   }, [id]);
 
   useEffect(() => {
     getSubEvents();
   }, [getSubEvents]);
+
+  useEffect(() => {
+    console.log("data", subEvents);
+  }, [subEvents]);
   //
 
   const hasSearchFilter = Boolean(filterValue);
@@ -130,20 +141,26 @@ export default function SubEventos() {
           <div className="flex flex-col">
             <p
               className={`text-bold text-small text-center rounded-lg ${
-                subEvent.subeventConfirmation === "Programado"
-                  ? "bg-warning-200 text-warning-700"
-                  : subEvent.subeventConfirmation === "Confirmado"
-                  ? "bg-blue-300 text-blue-800"
+                subEvent.subeventConfirmation === "Confirmado"
+                  ? "bg-green-300 text-green-800"
                   : subEvent.subeventConfirmation === "Cancelado"
                   ? "bg-red-300 text-red-800"
-                  : subEvent.subeventConfirmation === "Pospuesto"
-                  ? "bg-orange-300 text-orange-800"
-                  : "bg-success-100 text-success"
+                  : "bg-orange-300 text-orange-800"
               }`}
             >
               {subEvent.subeventConfirmation}
             </p>
           </div>
+        );
+      case "organizers":
+        return (
+          <EyeIcon
+            className="block m-auto text-green-600 hover:bg-gray-300 hover:rounded-lg hover:cursor-pointer"
+            onClick={() => {
+              setIdSubEvents(subEvent.id_sub_event);
+              setIsOrganizersModal(true);
+            }}
+          />
         );
       case "actions":
         return (
@@ -210,6 +227,11 @@ export default function SubEventos() {
         idSubEvents={Number(idSubEvents)}
         isModalUpdateSubEventsOpen={isModalUpdateSubEventsOpen}
         setIsModalUpdateSubEventsOpen={setIsModalUpdateSubEventsOpen}
+      />
+      <OrganizadoresSubEventos
+        idSubEvents={Number(idSubEvents)}
+        isOrganizersModal={isOrganizersModal}
+        setIsOrganizersModal={setIsOrganizersModal}
       />
       <section>
         <TableShowData

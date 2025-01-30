@@ -21,6 +21,9 @@ const TopContent = React.lazy(() => import("./../../components/TopContent"));
 const BottomContent = React.lazy(() =>
   import("./../../components/BottonContent")
 );
+const ModalOrganizadoresActualizar = React.lazy(() =>
+  import("./ModalOrganizadoresActualizar")
+);
 import { columns, INITIAL_VISIBLE_COLUMNS, capitalize } from "./utils/utils";
 
 export default function App() {
@@ -34,6 +37,9 @@ export default function App() {
     direction: "ascending",
   });
   const [page, setPage] = React.useState(1);
+  const [idOrganizer, setIdOrganizer] = useState("");
+  const [isOrganizersUpdateModalOpen, setIsOrganizersUpdateModalOpen] =
+    useState(false);
 
   const hasSearchFilter = Boolean(filterValue);
 
@@ -126,8 +132,8 @@ export default function App() {
     });
   }, [sortDescriptor, items]);
 
-  const renderCell = React.useCallback((user, columnKey) => {
-    const cellValue = user[columnKey];
+  const renderCell = React.useCallback((organizers, columnKey) => {
+    const cellValue = organizers[columnKey];
 
     switch (columnKey) {
       case "actions":
@@ -140,9 +146,15 @@ export default function App() {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem key="view">View</DropdownItem>
-                <DropdownItem key="edit">Edit</DropdownItem>
-                <DropdownItem key="delete">Delete</DropdownItem>
+                <DropdownItem
+                  key="view"
+                  onClick={() => {
+                    setIdOrganizer(organizers.id_organizers);
+                    setIsOrganizersUpdateModalOpen(true);
+                  }}
+                >
+                  Actualizar
+                </DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </div>
@@ -154,6 +166,11 @@ export default function App() {
 
   return (
     <main className="flex flex-col gap-2">
+      <ModalOrganizadoresActualizar
+        idOrganizer={Number(idOrganizer)}
+        isOrganizersUpdateModalOpen={isOrganizersUpdateModalOpen}
+        setIsOrganizersUpdateModalOpen={setIsOrganizersUpdateModalOpen}
+      />
       <div>
         <Breadcrumbs>
           <BreadcrumbItem href=""> </BreadcrumbItem>
