@@ -1,4 +1,4 @@
-import { Select, SelectItem } from "@nextui-org/react";
+import { Select, SelectItem, user } from "@nextui-org/react";
 import { useCallback, useEffect, useState } from "react";
 import useUpdate from "../../../hooks/useUpdate";
 
@@ -73,11 +73,25 @@ function Profile() {
         document: Number(document),
       };
       console.log(newData);
-      const result = await update(
-        newData,
-        `/api/users/update/${userById[0].id_user}`
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/users/update/${
+          userById[0]?.id_user
+        }`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newData),
+        }
       );
-      setSuccessMessage("Usuario registrado correctamente!");
+      if (!response.ok) {
+        const result = await response.json();
+        throw new Error(result.message);
+      }
+      const result = await response.json();
+      console.log(userById[0]?.id_user);
+      setSuccessMessage("Usuario actualizado correctamente!");
       setErrorMessage("");
       setUserUpdated({
         document: "",
