@@ -1,6 +1,7 @@
 import { Select, SelectItem } from "@nextui-org/react";
 import { useCallback, useEffect, useState } from "react";
 import useUpdate from "../../../hooks/useUpdate";
+import { u } from "framer-motion/client";
 
 function Profile() {
   const { update } = useUpdate();
@@ -34,6 +35,10 @@ function Profile() {
   useEffect(() => {
     getUserById();
   }, [getUserById]);
+
+  useEffect(() => {
+    console.log("data ", userById);
+  }, [userById]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -105,6 +110,7 @@ function Profile() {
               {isEditing ? (
                 <input
                   type="text"
+                  name="name"
                   value={userById.name || ""}
                   onChange={handleChange}
                   className="bg-gray-100 border-2 border-gray-300 rounded-lg p-2 w-full mt-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all ease-in-out duration-300"
@@ -123,6 +129,7 @@ function Profile() {
               {isEditing ? (
                 <input
                   type="text"
+                  name="last_name"
                   value={userById.last_name || ""}
                   onChange={handleChange}
                   className="bg-gray-100 border-2 border-gray-300 rounded-lg p-2 w-full mt-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all ease-in-out duration-300"
@@ -141,6 +148,7 @@ function Profile() {
               {isEditing ? (
                 <input
                   type="number"
+                  name="document"
                   value={userById.document || ""}
                   onChange={handleChange}
                   className="bg-gray-100 border-2 border-gray-300 rounded-lg p-2 w-full mt-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all ease-in-out duration-300"
@@ -158,7 +166,8 @@ function Profile() {
             <div className="transition-all">
               {isEditing ? (
                 <input
-                  type="text"
+                  type="email"
+                  name="email"
                   value={userById.email || ""}
                   onChange={handleChange}
                   className="bg-gray-100 border-2 border-gray-300 rounded-lg p-2 w-full mt-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all ease-in-out duration-300"
@@ -176,7 +185,8 @@ function Profile() {
             <div className="transition-all">
               {isEditing ? (
                 <input
-                  type="text"
+                  type="number"
+                  name="phone"
                   value={userById.phone || ""}
                   onChange={handleChange}
                   className="bg-gray-100 border-2 border-gray-300 rounded-lg p-2 w-full mt-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all ease-in-out duration-300"
@@ -197,7 +207,7 @@ function Profile() {
                   id="role"
                   size="sm"
                   label="Rol"
-                  name="rol"
+                  name="role"
                   value={userById.role || ""}
                   onChange={handleChange}
                 >
