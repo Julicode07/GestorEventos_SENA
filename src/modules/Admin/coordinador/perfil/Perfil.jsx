@@ -8,7 +8,7 @@ function Profile() {
   const [userUpdated, setUserUpdated] = useState({
     document: "",
     name: "",
-    last_name: "",
+    last_names: "",
     email: "",
     phone: "",
     role: "",
@@ -67,7 +67,7 @@ function Profile() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const [document, ...data] = userUpdated;
+      const { document, ...data } = userUpdated;
       const newData = {
         ...data,
         document: Number(document),
@@ -91,7 +91,7 @@ function Profile() {
       console.log(result);
     } catch (err) {
       setSuccessMessage("");
-      setErrorMessage(err.message);
+      setErrorMessage("No se pudo actualizar tu info!");
       console.error("No se pudo actualizar la data", err);
     }
   };
@@ -238,12 +238,22 @@ function Profile() {
             </div>
           </div>
         </form>
-        <button
-          form="userUpdateForm"
-          className="grid place-items-center bg-primary/90 text-white py-2 px-6 rounded-lg mt-4 transition-colors hover:bg-primary ease-in-out duration-300"
-        >
-          {isEditing ? "Guardar cambios" : "Editar"}
-        </button>
+        <div className="flex space-x-2">
+          <button
+            type="button"
+            onClick={handleEdit}
+            className="grid place-items-center bg-primary/90 text-white py-2 px-6 rounded-lg mt-4 transition-colors hover:bg-primary ease-in-out duration-300"
+          >
+            Editar
+          </button>
+          <button
+            type="submit"
+            form="userUpdateForm"
+            className="grid place-items-center bg-primary/90 text-white py-2 px-6 rounded-lg mt-4 transition-colors hover:bg-primary ease-in-out duration-300"
+          >
+            Actualizar
+          </button>
+        </div>
         <div>
           {successMessage && (
             <div
