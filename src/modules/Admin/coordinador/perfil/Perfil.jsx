@@ -82,8 +82,8 @@ function Profile() {
     setIsEditing(!isEditing);
   };
 
-  const fullName = `${userById.length > 1 ? userById[0]?.name : "Sin Nombre"} ${
-    userById.length > 1 ? userById[0]?.last_names : "Sin Apellido"
+  const fullName = `${userById.length > 0 ? userById[0]?.name : "Sin Nombre"} ${
+    userById.length > 0 ? userById[0]?.last_names : "Sin Apellido"
   }`;
 
   return (
@@ -95,7 +95,7 @@ function Profile() {
 
         <h1 className="text-3xl font-semibold text-gray-800">{fullName}</h1>
         <p className="text-gray-600 text-lg italic">
-          {userById.length > 1 ? userById[0]?.role : "Sin rol"}
+          {userById.length > 0 ? userById[0]?.role : "Sin rol"}
         </p>
 
         <form
@@ -129,13 +129,13 @@ function Profile() {
                 <input
                   type="text"
                   name="last_name"
-                  value={userById[0]?.last_name || ""}
+                  value={userById[0]?.last_names || ""}
                   onChange={handleChange}
                   className="bg-gray-100 border-2 border-gray-300 rounded-lg p-2 w-full mt-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all ease-in-out duration-300"
                 />
               ) : (
                 <p className="text-gray-700 font-semibold">
-                  {userById[0]?.last_name || "Sin Apellido"}
+                  {userById[0]?.last_names || "Sin Apellido"}
                 </p>
               )}
             </div>
