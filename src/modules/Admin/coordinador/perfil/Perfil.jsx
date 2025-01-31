@@ -101,7 +101,7 @@ function Profile() {
         phone: "",
         role: "",
       });
-      handleEdit();
+      setIsEditing(false);
       console.log(result);
     } catch (err) {
       setSuccessMessage("");
