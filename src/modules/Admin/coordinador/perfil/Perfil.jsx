@@ -1,9 +1,15 @@
-import { Select, SelectItem, user } from "@nextui-org/react";
-import { useCallback, useEffect, useState } from "react";
+import { Select, SelectItem } from "@nextui-org/react";
+import { useCallback, useEffect, useState, useContext } from "react";
 import useUpdate from "../../../hooks/useUpdate";
+import { SessionContext } from "@/context/SessionContext.jsx";
 
 function Profile() {
+  const { updateSession, userSession } = useContext(SessionContext);
   const { update } = useUpdate();
+
+  useEffect(() => {
+    updateSession();
+  }, [updateSession]);
 
   const [userUpdated, setUserUpdated] = useState({
     document: "",
@@ -12,12 +18,15 @@ function Profile() {
     email: "",
     phone: "",
     role: "",
+    password: "",
   });
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   const [isEditing, setIsEditing] = useState(false);
   const [userById, setUserById] = useState([]);
+
+  const [showPassword, setShowPassword] = useState(false);
 
   const getUserById = useCallback(async () => {
     try {
@@ -48,6 +57,7 @@ function Profile() {
         email: userById[0].email,
         phone: userById[0].phone,
         role: userById[0].role,
+        password: userById[0].password,
       });
     }
   }, [userById]);
@@ -85,6 +95,7 @@ function Profile() {
         email: "",
         phone: "",
         role: "",
+        password: "",
       });
       setIsEditing(false);
       console.log(result);
@@ -237,23 +248,78 @@ function Profile() {
               )}
             </div>
           </div>
+          {userSession.role === "Coordinador" && (
+            <div className="w-full bg-white p-4 rounded-lg shadow-lg transition-all hover:shadow-2xl">
+              <p className="text-gray-500 text-sm">Contraseña</p>
+              <div className="transition-all">
+                {isEditing ? (
+                  <div className="flex justify-between items-center bg-gray-100 border-2 border-gray-300 rounded-lg p-2 w-full mt-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all ease-in-out duration-300 space-x-2">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      name="password"
+                      value={userUpdated.password}
+                      onChange={handleChange}
+                      className="bg-gray-100 focus:outline-none w-full"
+                    />
+                    <i
+                      className={`${
+                        showPassword ? "ri-eye-off-line" : "ri-eye-line"
+                      }`}
+                      onClick={() => setShowPassword(!showPassword)}
+                    ></i>
+                  </div>
+                ) : (
+                  <p className="text-gray-700 font-semibold">***************</p>
+                )}
+              </div>
+            </div>
+          )}
+          {userSession.role === "Coordinador" && (
+            <div className="flex justify-center space-x-3 mt-3 items-center">
+              <button
+                type="button"
+                onClick={handleEdit}
+                className="bg-primary/90 text-white px-4 py-2 text-sm rounded-lg transition-colors hover:bg-primary ease-in-out duration-300 h-10 w-28"
+              >
+                Editar
+              </button>
+              <button
+                disabled={!isEditing}
+                type="submit"
+                className={`text-white px-4 py-2 text-sm rounded-lg transition-colors ease-in-out duration-300 h-10 w-28 ${
+                  !isEditing
+                    ? "bg-gray-400 cursor-not-allowed opacity-65"
+                    : "bg-primary hover:bg-primary/90"
+                }`}
+              >
+                Actualizar
+              </button>
+            </div>
+          )}
         </form>
-        <div className="flex space-x-2">
-          <button
-            type="button"
-            onClick={handleEdit}
-            className="grid place-items-center bg-primary/90 text-white py-2 px-6 rounded-lg mt-4 transition-colors hover:bg-primary ease-in-out duration-300"
-          >
-            Editar
-          </button>
-          <button
-            type="submit"
-            form="userUpdateForm"
-            className="grid place-items-center bg-primary/90 text-white py-2 px-6 rounded-lg mt-4 transition-colors hover:bg-primary ease-in-out duration-300"
-          >
-            Actualizar
-          </button>
-        </div>
+        {userSession.role === "Instructor" && (
+          <div className="flex justify-center space-x-3 mt-3 items-center">
+            <button
+              type="button"
+              onClick={handleEdit}
+              className="bg-primary/90 text-white px-4 py-2 text-sm rounded-lg transition-colors hover:bg-primary ease-in-out duration-300 h-10 w-28"
+            >
+              Editar
+            </button>
+            <button
+              disabled={!isEditing}
+              type="submit"
+              form="userUpdateForm"
+              className={`text-white px-4 py-2 text-sm rounded-lg transition-colors ease-in-out duration-300 h-10 w-28 ${
+                !isEditing
+                  ? "bg-gray-400 cursor-not-allowed opacity-65"
+                  : "bg-primary hover:bg-primary/90"
+              }`}
+            >
+              Actualizar
+            </button>
+          </div>
+        )}
         <div>
           {successMessage && (
             <div
