@@ -51,6 +51,7 @@ export async function UpdateUserController(req: Request, res: Response) {
   try {
     const { id_user } = req.params;
     const user = await findUserById(parseInt(req.params.id_user));
+    console.log("user to update:", req.params.id_user);
     if (user == undefined) {
       return res
         .status(404)
@@ -64,13 +65,11 @@ export async function UpdateUserController(req: Request, res: Response) {
             data: users,
           })
         )
-      : res
-          .status(400)
-          .send(
-            JSON.stringify({
-              message: `No se actualizo el usuario ${id_user}.`,
-            })
-          );
+      : res.status(400).send(
+          JSON.stringify({
+            message: `No se actualizo el usuario ${id_user}.`,
+          })
+        );
   } catch (err) {
     return res
       .status(500)
