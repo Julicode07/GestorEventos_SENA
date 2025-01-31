@@ -20,7 +20,7 @@ function Coordinador() {
         <div className="mt-12 p-4 h-full">
           <Routes>
             <Route path="/*" element={<NotFoundAdmin />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/perfil" element={<Profile />} />
             <Route path="/" element={<Panel />} />
             <Route path="/usuarios" element={<Usuarios />} />
             <Route path="/espacios" element={<Espacios />} />

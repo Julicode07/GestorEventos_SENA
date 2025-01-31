@@ -8,15 +8,23 @@ const Panel = React.lazy(() =>
 const Espacios = React.lazy(() =>
   import("@/modules/Admin/instructor/espacios/Espacios.jsx")
 );
-const Eventos = React.lazy(() => import("@/modules/Admin/instructor/eventos/Eventos.jsx"));
+const Eventos = React.lazy(() =>
+  import("@/modules/Admin/instructor/eventos/Eventos.jsx")
+);
 const SubEventos = React.lazy(() =>
   import("@/modules/Admin/instructor/SubEventos/SubEventos")
 );
-const Insumos = React.lazy(() => import("@/modules/Admin/instructor/insumos/Insumos"));
+const Insumos = React.lazy(() =>
+  import("@/modules/Admin/instructor/insumos/Insumos")
+);
 const InfoEvento = React.lazy(() =>
   import("@/modules/Admin/instructor/eventos/InfoEvento")
 );
 const Loader = React.lazy(() => import("../../../Loader/Loader"));
+const Profile = React.lazy(() =>
+  import("@/modules/Admin/coordinador/perfil/Perfil")
+);
+
 import { SessionContext } from "../../../context/SessionContext";
 function Coordinador() {
   const { updateSession, userSession } = useContext(SessionContext);
@@ -48,6 +56,7 @@ function Coordinador() {
             <Routes>
               <Route path="/*" element={<NotFoundAdmin />} />
               <Route path="/" element={<Panel />} />
+              <Route path="/perfil" element={<Profile />} />
               <Route path="/espacios" element={<Espacios />} />
               <Route path="/eventos" element={<Eventos />} />
               <Route path="/eventos/:id" element={<InfoEvento />} />

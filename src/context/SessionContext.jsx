@@ -33,7 +33,7 @@ export const SessionContextProvider = ({ children }) => {
       } else {
         setUserSession({
           document: null,
-          role: "Instructor",
+          role: null,
         });
         setNames({
           name: null,

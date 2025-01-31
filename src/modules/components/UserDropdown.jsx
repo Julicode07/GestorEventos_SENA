@@ -17,7 +17,7 @@ const UserDropdown = ({
   textColor,
   textRole,
 }) => {
-  const { names, updateSession } = useContext(SessionContext);
+  const { names, updateSession, userSession } = useContext(SessionContext);
 
   useEffect(() => {
     updateSession();
@@ -91,7 +91,11 @@ const UserDropdown = ({
         </DropdownItem>
         <DropdownItem
           as={Link}
-          to="/admin/coordinador/profile"
+          to={`${
+            userSession.role === "Coordinador"
+              ? "/admin/coordinador/perfil"
+              : "/admin/instructor/perfil"
+          } `}
           key="profile"
           showDivider
           className="text-lg"
@@ -100,7 +104,7 @@ const UserDropdown = ({
         </DropdownItem>
         <DropdownItem
           as={Link}
-          to={"/admin/coordinador/profile"}
+          to={"/admin/coordinador/perfil"}
           key="logout"
           color="danger"
           className="flex bg-red-100 mt-2"

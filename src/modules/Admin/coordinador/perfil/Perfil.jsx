@@ -235,11 +235,8 @@ function Profile() {
                   value={userUpdated.role}
                   onChange={handleChange}
                 >
-                  <SelectItem key="Aprendiz">Aprendiz</SelectItem>
-                  <SelectItem key="Docente">Docente</SelectItem>
                   <SelectItem key="Coordinador">Coordinador</SelectItem>
-                  <SelectItem key="Personal">Personal</SelectItem>
-                  <SelectItem key="Persona externa">Persona externa</SelectItem>
+                  <SelectItem key="Instructor">Instructor</SelectItem>
                 </Select>
               ) : (
                 <p className="text-gray-700 font-semibold">
