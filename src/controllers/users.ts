@@ -25,9 +25,11 @@ export async function CreateUserController(req: Request, res: Response) {
 export async function UpdateUserController(req: Request, res: Response) {
   try {
     const user = await findUserById(parseInt(req.params.id_user));
+    console.log("user to update:", req.params.id_user);
     if (user == undefined) {
       return res.status(404).send(JSON.stringify({ message: "El usuario no existe." }));
     }
+    console.log(req.body)
     await updateUser(parseInt(req.params.id_user), req.body);
     return res.status(200).send(JSON.stringify({ message: "Usuario actualizado correctamente." }, bigIntReplacer));
   } catch (err) {
