@@ -1,4 +1,3 @@
-import { Select, SelectItem, user } from "@nextui-org/react";
 import { useCallback, useEffect, useState, useContext } from "react";
 import useUpdate from "../../../hooks/useUpdate";
 import { SessionContext } from "@/context/SessionContext.jsx";
@@ -217,55 +216,6 @@ function Profile() {
               )}
             </div>
           </div>
-
-          {userSession.role === "Coordinador" && (
-            <div className="bg-white p-4 rounded-lg shadow-lg transition-all hover:shadow-2xl">
-              <p className="text-gray-500 text-sm">Rol</p>
-              <div className="transition-all">
-                {isEditing ? (
-                  <Select
-                    id="role"
-                    size="sm"
-                    label="Rol"
-                    name="role"
-                    value={userUpdated.role}
-                    onChange={handleChange}
-                  >
-                    <SelectItem key="Coordinador">Coordinador</SelectItem>
-                    <SelectItem key="Instructor">Instructor</SelectItem>
-                  </Select>
-                ) : (
-                  <p className="text-gray-700 font-semibold">
-                    {userById[0]?.role || "Sin rol"}
-                  </p>
-                )}
-              </div>
-            </div>
-          )}
-          {userSession.role === "Instructor" && (
-            <div className="flex justify-center space-x-3 mt-3 items-center">
-              <button
-                type="button"
-                onClick={handleEdit}
-                className="bg-primary/90 text-white px-4 py-2 text-sm rounded-lg transition-colors hover:bg-primary ease-in-out duration-300 h-10 w-28"
-              >
-                Editar
-              </button>
-              <button
-                disabled={!isEditing}
-                type="submit"
-                className={`text-white px-4 py-2 text-sm rounded-lg transition-colors ease-in-out duration-300 h-10 w-28 ${
-                  !isEditing
-                    ? "bg-gray-400 cursor-not-allowed opacity-65"
-                    : "bg-primary hover:bg-primary/90"
-                }`}
-              >
-                Actualizar
-              </button>
-            </div>
-          )}
-        </form>
-        {userSession.role === "Coordinador" && (
           <div className="flex justify-center space-x-3 mt-3 items-center">
             <button
               type="button"
@@ -277,7 +227,6 @@ function Profile() {
             <button
               disabled={!isEditing}
               type="submit"
-              form="userUpdateForm"
               className={`text-white px-4 py-2 text-sm rounded-lg transition-colors ease-in-out duration-300 h-10 w-28 ${
                 !isEditing
                   ? "bg-gray-400 cursor-not-allowed opacity-65"
@@ -287,7 +236,7 @@ function Profile() {
               Actualizar
             </button>
           </div>
-        )}
+        </form>
         <div>
           {successMessage && (
             <div

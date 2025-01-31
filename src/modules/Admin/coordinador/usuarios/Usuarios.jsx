@@ -2,9 +2,15 @@ import React, { useEffect, useState, useCallback } from "react";
 import {
   Breadcrumbs,
   BreadcrumbItem,
+  Dropdown,
+  DropdownTrigger,
+  Button,
+  DropdownMenu,
+  DropdownItem,
 } from "@nextui-org/react";
 import { columns } from "@modules/Admin/utils/data";
 import { INITIAL_VISIBLE_COLUMNS, capitalize } from "./utils/utils";
+import { VerticalDotsIcon } from "../../components/VerticalDotsIcon.jsx";
 const TableShowData = React.lazy(() =>
   import("./../../components/TableShowData.jsx")
 );
@@ -13,6 +19,9 @@ const TopContent = React.lazy(() =>
 );
 const BottomContent = React.lazy(() =>
   import("./../../components/BottonContent.jsx")
+);
+const ModalActualizarUsuarios = React.lazy(() =>
+  import("./ModalActualizarUsuarios.jsx")
 );
 
 export default function Usuarios() {
@@ -27,6 +36,9 @@ export default function Usuarios() {
     direction: "ascending",
   });
   const [page, setPage] = React.useState(1);
+  const [isModalActualizarUsariosOpen, setIsModalActualizarUsariosOpen] =
+    useState(false);
+  const [idUsers, setIdUsers] = useState("");
 
   const getAllUsers = useCallback(async () => {
     const response = await fetch(
@@ -99,10 +111,29 @@ export default function Usuarios() {
     const cellValue = user[columnKey];
     switch (columnKey) {
       case "document":
+        return <p className="py-2">{cellValue}</p>;
+      case "actions":
         return (
-          <p className="py-2">
-            {cellValue}
-          </p>
+          <div className="relative flex justify-end items-center gap-2">
+            <Dropdown>
+              <DropdownTrigger>
+                <Button isIconOnly size="sm" variant="light">
+                  <VerticalDotsIcon className="text-default-300" />
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu>
+                <DropdownItem
+                  textValue="Actualizar usuario"
+                  onClick={() => {
+                    setIdUsers(user.id_user);
+                    setIsModalActualizarUsariosOpen(true);
+                  }}
+                >
+                  Actualizar Usuario
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          </div>
         );
       default:
         return cellValue;
@@ -130,6 +161,11 @@ export default function Usuarios() {
 
   return (
     <main className="flex flex-col gap-2">
+      <ModalActualizarUsuarios
+        idUsers={Number(idUsers)}
+        isModalActualizarUsariosOpen={isModalActualizarUsariosOpen}
+        setIsModalActualizarUsariosOpen={setIsModalActualizarUsariosOpen}
+      />
       <div>
         <Breadcrumbs>
           <BreadcrumbItem href=""> </BreadcrumbItem>

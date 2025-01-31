@@ -5,7 +5,8 @@ const INITIAL_VISIBLE_COLUMNS = [
   "last_names",
   "email",
   "phone",
-  "role"
+  "role",
+  "actions"
 ];
 
 function capitalize(s) {
