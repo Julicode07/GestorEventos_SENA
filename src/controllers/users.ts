@@ -6,6 +6,7 @@ import {
   findUserByEmail,
   findUserById,
   updateUser,
+  getUserById,
 } from "../repositories/users/repository";
 import { Request, Response } from "express";
 
@@ -85,4 +86,16 @@ export async function GetSelfUserController(req: Request, res: Response) {
 export async function GetUsersController(req: Request, res: Response) {
   const users = await findAllUsers();
   return res.status(200).send(JSON.stringify(users, bigIntReplacer));
+}
+
+export async function getUserByIdController(req: Request, res: Response) {
+  try {
+    const { id_user } = req.params;
+    const user = await getUserById(parseInt(id_user));
+    return res.status(200).send(JSON.stringify(user, bigIntReplacer));
+  } catch (err) {
+    return res
+      .status(500)
+      .send(JSON.stringify({ message: "Error interno del servidor :(" }));
+  }
 }

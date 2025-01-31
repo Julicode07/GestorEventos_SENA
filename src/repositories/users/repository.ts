@@ -148,3 +148,19 @@ export async function findUserById(id_user: number): Promise<IUser[]> {
     connection.release();
   }
 }
+
+export async function getUserById(id_user: number): Promise<number> {
+  const connection: PoolConnection = await getConnection(pool);
+  try {
+    const result = await connection.query(
+      `SELECT * FROM users WHERE id_user = ?`,
+      [id_user]
+    );
+    return result.length === 0 ? [] : result[0];
+  } catch (err) {
+    console.error(`[user repository]: ${err}`);
+    return -1;
+  } finally {
+    connection.release();
+  }
+}

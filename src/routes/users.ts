@@ -4,6 +4,7 @@ import {
   GetSelfUserController,
   GetUsersController,
   UpdateUserController,
+  getUserByIdController,
 } from "../controllers/users";
 import { databaseRegex } from "../helpers/regex.helper";
 
@@ -60,6 +61,14 @@ UsersRouter.patch("/update/:id_user", async (req: Request, res: Response) => {
 UsersRouter.get("/all", async (req: Request, res: Response) => {
   try {
     return GetUsersController(req, res);
+  } catch (err) {
+    return res.status(500).json({ message: "Error interno del servidor :(" });
+  }
+});
+
+UsersRouter.get("/:id_user", async (req: Request, res: Response) => {
+  try {
+    return await getUserByIdController(req, res);
   } catch (err) {
     return res.status(500).json({ message: "Error interno del servidor :(" });
   }
