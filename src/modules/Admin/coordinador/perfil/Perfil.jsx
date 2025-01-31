@@ -72,24 +72,23 @@ function Profile() {
         ...data,
         document: Number(document),
       };
-      console.log(newData);
       const result = await update(
         newData,
         `/api/users/update/${userById[0]?.id_user}`
       );
-      console.log(userById[0]?.id_user);
       setSuccessMessage("Usuario actualizado correctamente!");
       setErrorMessage("");
       setUserUpdated({
         document: "",
         name: "",
-        last_name: "",
+        last_names: "",
         email: "",
         phone: "",
         role: "",
       });
       setIsEditing(false);
       console.log(result);
+      window.location.reload();
     } catch (err) {
       setSuccessMessage("");
       setErrorMessage("No se pudo actualizar tu info!");
@@ -143,7 +142,7 @@ function Profile() {
               {isEditing ? (
                 <input
                   type="text"
-                  name="last_name"
+                  name="last_names"
                   value={userUpdated.last_names}
                   onChange={handleChange}
                   className="bg-gray-100 border-2 border-gray-300 rounded-lg p-2 w-full mt-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all ease-in-out duration-300"
