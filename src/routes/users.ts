@@ -1,5 +1,10 @@
 import express, { Express, Request, Response } from "express";
-import { CreateUserController, GetSelfUserController, GetUsersController, UpdateUserController } from "../controllers/users";
+import {
+  CreateUserController,
+  GetSelfUserController,
+  GetUsersController,
+  UpdateUserController,
+} from "../controllers/users";
 import { databaseRegex } from "../helpers/regex.helper";
 
 const UsersRouter: Express = express();
@@ -16,7 +21,7 @@ UsersRouter.post("/", async (req: Request, res: Response) => {
       databaseRegex.users.password.test(req.body.password) &&
       databaseRegex.users.role.test(req.body.role)
     ) {
-       CreateUserController(req, res);
+      CreateUserController(req, res);
     } else
       return res.status(400).end(
         JSON.stringify({
@@ -35,16 +40,20 @@ UsersRouter.get("/me", async (req: Request, res: Response) => {
     await GetSelfUserController(req, res);
   } catch (err) {
     console.error(err);
-    return res.status(500).end(JSON.stringify({ message: "Error interno del servidor :(" }));
+    return res
+      .status(500)
+      .end(JSON.stringify({ message: "Error interno del servidor :(" }));
   }
 });
 
-UsersRouter.put("/update/:id_user", async (req: Request, res: Response) => {
+UsersRouter.patch("/update/:id_user", async (req: Request, res: Response) => {
   try {
-    await UpdateUserController(req, res);
+    return await UpdateUserController(req, res);
   } catch (err) {
     console.error(err);
-    return res.status(500).end(JSON.stringify({ message: "Error interno del servidor :(" }));
+    return res
+      .status(500)
+      .end(JSON.stringify({ message: "Error interno del servidor :(" }));
   }
 });
 
