@@ -1,4 +1,4 @@
-import { Select, SelectItem } from "@nextui-org/react";
+import { Select, SelectItem, user } from "@nextui-org/react";
 import { useCallback, useEffect, useState, useContext } from "react";
 import useUpdate from "../../../hooks/useUpdate";
 import { SessionContext } from "@/context/SessionContext.jsx";
@@ -18,15 +18,12 @@ function Profile() {
     email: "",
     phone: "",
     role: "",
-    password: "",
   });
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   const [isEditing, setIsEditing] = useState(false);
   const [userById, setUserById] = useState([]);
-
-  const [showPassword, setShowPassword] = useState(false);
 
   const getUserById = useCallback(async () => {
     try {
@@ -57,7 +54,6 @@ function Profile() {
         email: userById[0].email,
         phone: userById[0].phone,
         role: userById[0].role,
-        password: userById[0].password,
       });
     }
   }, [userById]);
@@ -95,7 +91,6 @@ function Profile() {
         email: "",
         phone: "",
         role: "",
-        password: "",
       });
       setIsEditing(false);
       console.log(result);
@@ -223,55 +218,31 @@ function Profile() {
             </div>
           </div>
 
-          <div className="bg-white p-4 rounded-lg shadow-lg transition-all hover:shadow-2xl">
-            <p className="text-gray-500 text-sm">Rol</p>
-            <div className="transition-all">
-              {isEditing ? (
-                <Select
-                  id="role"
-                  size="sm"
-                  label="Rol"
-                  name="role"
-                  value={userUpdated.role}
-                  onChange={handleChange}
-                >
-                  <SelectItem key="Coordinador">Coordinador</SelectItem>
-                  <SelectItem key="Instructor">Instructor</SelectItem>
-                </Select>
-              ) : (
-                <p className="text-gray-700 font-semibold">
-                  {userById[0]?.role || "Sin rol"}
-                </p>
-              )}
-            </div>
-          </div>
           {userSession.role === "Coordinador" && (
-            <div className="w-full bg-white p-4 rounded-lg shadow-lg transition-all hover:shadow-2xl">
-              <p className="text-gray-500 text-sm">Contraseña</p>
+            <div className="bg-white p-4 rounded-lg shadow-lg transition-all hover:shadow-2xl">
+              <p className="text-gray-500 text-sm">Rol</p>
               <div className="transition-all">
                 {isEditing ? (
-                  <div className="flex justify-between items-center bg-gray-100 border-2 border-gray-300 rounded-lg p-2 w-full mt-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all ease-in-out duration-300 space-x-2">
-                    <input
-                      type={showPassword ? "text" : "password"}
-                      name="password"
-                      value={userUpdated.password}
-                      onChange={handleChange}
-                      className="bg-gray-100 focus:outline-none w-full"
-                    />
-                    <i
-                      className={`${
-                        showPassword ? "ri-eye-off-line" : "ri-eye-line"
-                      }`}
-                      onClick={() => setShowPassword(!showPassword)}
-                    ></i>
-                  </div>
+                  <Select
+                    id="role"
+                    size="sm"
+                    label="Rol"
+                    name="role"
+                    value={userUpdated.role}
+                    onChange={handleChange}
+                  >
+                    <SelectItem key="Coordinador">Coordinador</SelectItem>
+                    <SelectItem key="Instructor">Instructor</SelectItem>
+                  </Select>
                 ) : (
-                  <p className="text-gray-700 font-semibold">***************</p>
+                  <p className="text-gray-700 font-semibold">
+                    {userById[0]?.role || "Sin rol"}
+                  </p>
                 )}
               </div>
             </div>
           )}
-          {userSession.role === "Coordinador" && (
+          {userSession.role === "Instructor" && (
             <div className="flex justify-center space-x-3 mt-3 items-center">
               <button
                 type="button"
@@ -294,7 +265,7 @@ function Profile() {
             </div>
           )}
         </form>
-        {userSession.role === "Instructor" && (
+        {userSession.role === "Coordinador" && (
           <div className="flex justify-center space-x-3 mt-3 items-center">
             <button
               type="button"
