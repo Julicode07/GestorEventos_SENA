@@ -24,6 +24,9 @@ const Loader = React.lazy(() => import("../../../Loader/Loader"));
 const Profile = React.lazy(() =>
   import("@/modules/Admin/coordinador/perfil/Perfil")
 );
+const Inventario = React.lazy(() =>
+  import("@/modules/Admin/instructor/inventario/Inventario")
+);
 
 import { SessionContext } from "../../../context/SessionContext";
 function Coordinador() {
@@ -55,6 +58,7 @@ function Coordinador() {
           <div className="mt-12 p-4 h-full">
             <Routes>
               <Route path="/*" element={<NotFoundAdmin />} />
+              <Route path="/inventario/espacio/:id" element={<Inventario />} />
               <Route path="/" element={<Panel />} />
               <Route path="/perfil" element={<Profile />} />
               <Route path="/espacios" element={<Espacios />} />
