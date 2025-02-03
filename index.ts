@@ -15,12 +15,14 @@ import SpacesRouter from "./src/routes/spaces";
 import InventoryRouter from "./src/routes/inventory";
 import SubEventsRouter from "./src/routes/subEvents";
 import OrganizersRouter from "./src/routes/organizers";
+import compression from "compression";
 
 dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT || 3000;
 
+app.use(compression());
 app.use(cors({ origin: ["http://localhost:5173"] }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public_views")));

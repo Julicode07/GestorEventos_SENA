@@ -1,7 +1,8 @@
 import {
   CreateSpaceInventoryController,
-  GetSpaceInventoryByIdController,
+  GetSpaceInventoryByIdSpaceController,
   updateSpaceInventoryByIdController,
+  GetSpaceInventoryByIdController,
 } from "../controllers/inventory";
 import express, { Express, Request, Response } from "express";
 import { databaseRegex } from "../helpers/regex.helper";
@@ -103,7 +104,7 @@ InventoryRouter.post("/create", async (req: Request, res: Response) => {
 
 InventoryRouter.get("/space/:id_space", async (req: Request, res: Response) => {
   try {
-    return await GetSpaceInventoryByIdController(req, res);
+    return await GetSpaceInventoryByIdSpaceController(req, res);
   } catch (err) {
     return res
       .status(500)
@@ -120,6 +121,19 @@ InventoryRouter.patch(
       return res
         .status(500)
         .end(JSON.stringify({ message: "Error interno del servidor :(" }));
+    }
+  }
+);
+
+InventoryRouter.get(
+  "/get/:id_inventory",
+  async (req: Request, res: Response) => {
+    try {
+      return await GetSpaceInventoryByIdController(req, res);
+    } catch (err) {
+      return res
+        .status(500)
+        .end(JSON.stringify({ message: "Error interno del servidor : (" }));
     }
   }
 );
