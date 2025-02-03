@@ -26,12 +26,12 @@ SubEventsRouter.post("/create/:id_global_event", async (req: Request, res: Respo
     const firstItem: ISubEvent = subEvent[0];
     if (
       firstItem &&
-      !firstItem.name &&
-      !firstItem.headquarters &&
-      !firstItem.start_date &&
-      !firstItem.end_date &&
-      !firstItem.description &&
-      !firstItem.subeventConfirmation
+      firstItem.name &&
+      firstItem.headquarters &&
+      firstItem.start_date &&
+      firstItem.end_date &&
+      firstItem.description &&
+      firstItem.subeventConfirmation
     ) {
       if (!databaseRegex.subEvents.id_global_event.test(req.params.id_global_event!.toString())) {
         return res.status(400).json({
