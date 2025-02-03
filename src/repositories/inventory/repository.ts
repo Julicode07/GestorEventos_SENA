@@ -39,9 +39,7 @@ export async function createSpaceInventory(
   }
 }
 
-export async function getSpaceInventoryByIdSpace(
-  id_space: number
-): Promise<number> {
+export async function getSpaceInventoryByIdSpace(id_space: number): Promise<number> {
   const connection: PoolConnection = await getConnection(pool);
   try {
     const result = await connection.query(

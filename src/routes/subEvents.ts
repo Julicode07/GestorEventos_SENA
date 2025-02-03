@@ -4,7 +4,6 @@ import {
   UpdateSubEventsByIdController,
   GetSubEventsByGlobalEventIdController,
   GetAllSubEventsController,
-  CreateSubEventsHasSpacesController,
 } from "../controllers/subEvents";
 import express, { Express, Request, Response } from "express";
 import { databaseRegex } from "../helpers/regex.helper";
@@ -141,29 +140,3 @@ SubEventsRouter.get("/get/all", async (req: Request, res: Response) => {
   }
 });
 export default SubEventsRouter;
-
-SubEventsRouter.post(
-  "/createHasSpaces",
-  async (req: Request, res: Response) => {
-    try {
-      if (
-        databaseRegex.subEvents_has_spaces.id_sub_event.test(
-          req.body.id_sub_event
-        ) &&
-        databaseRegex.subEvents_has_spaces.id_space.test(req.body.id_space)
-      ) {
-        await CreateSubEventsHasSpacesController(req, res);
-      } else {
-        return res.status(400).end(
-          JSON.stringify({
-            message: "Los parámetros enviados al servidor son incorrectos :(",
-          })
-        );
-      }
-    } catch (err) {
-      return res
-        .status(500)
-        .end(JSON.stringify({ message: "Error interno del servidor :(" }));
-    }
-  }
-);

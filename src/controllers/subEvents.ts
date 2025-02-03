@@ -26,16 +26,12 @@ export async function CreateSubeventsController(req: Request, res: Response) {
       }));
 
     // Insert all sub events
-    const result = await Promise.all(
-      subEventsData.map((item: ISubEvent) => createSubEvent(item))
-    );
-
-    const successCount = result.filter((result) => result === 1).length;
-    subEventsData.forEach((subEvent) => {
-      subEvent.spaces!.forEach((space) => createSubEventHasSpace(subEvent.id_sub_event as number, space))
+    subEventsData.forEach(async (subEvent) => {
+      const subEventInsertId = await createSubEvent(subEvent)
+      subEvent.spaces!.forEach(async (space) => await createSubEventHasSpace(subEventInsertId as number, space))
     })
-    return successCount === subEventsData.length ? res.status(200).end(JSON.stringify({ message: "Subevento creado correctamente" }))
-      : res.status(500).end(JSON.stringify({ message: "Error interno del servidor al crear el subevento" }));
+    
+    return res.status(200).end(JSON.stringify({ message: "Subeventos creados correctamente" }))
   } catch (err) {
     return res
       .status(500)
@@ -114,14 +110,4 @@ export async function GetAllSubEventsController(_req: Request, res: Response) {
       .status(500)
       .send(JSON.stringify({ message: "Error interno del servidor :(" }));
   }
-}
-
-export async function CreateSubEventsHasSpacesController(
-  req: Request,
-  res: Response
-) {
-  try {
-    const subEventHasSpace: ISubEventHasSpace[] = req.body;
-    
-  } catch (err) {}
 }

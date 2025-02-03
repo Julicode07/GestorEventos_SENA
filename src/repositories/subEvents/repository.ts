@@ -21,8 +21,8 @@ export async function createSubEvent(subEventData: ISubEvent): Promise<number> {
     );
     switch (result.affectedRows) {
       case 1:
-        console.log(`[subevents repository]: subevents INSERTED SUCCESSFULLY.`);
-        return 1;
+        console.log(`[subevents repository]: subevent INSERTED SUCCESSFULLY.`);
+        return result.insertId;
       default:
         console.error(`[subevents repository]: ERROR CREATING subevents`);
         return -1;
@@ -176,7 +176,7 @@ export async function createSubEventHasSpace(id_sub_event: number, id_space: num
       `INSERT INTO sub_events_has_spaces (id_sub_event, id_space) VALUES (?,?)`,
       [id_sub_event, id_space]
     );
-    return results.affectedRows === 1;
+    return results.affectedRows === true;
   } catch (err) {
     console.error(`[subevents_has_spaces repository]: ${err}`);
     return false;
