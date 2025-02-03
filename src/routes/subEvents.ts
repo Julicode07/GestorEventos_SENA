@@ -13,9 +13,9 @@ import { ISubEvent } from "../repositories/subEvents/models";
 const SubEventsRouter: Express = express();
 
 // create a new subevent
-SubEventsRouter.post("/create", async (req: Request, res: Response) => {
+SubEventsRouter.post("/create/:id_global_event", async (req: Request, res: Response) => {
   try {
-    const subEvent: ISubEvent = req.body;
+    const subEvent: ISubEvent[] = req.body;
 
     if (!Array.isArray(subEvent)) {
       return res.status(400).json({
@@ -23,17 +23,7 @@ SubEventsRouter.post("/create", async (req: Request, res: Response) => {
       });
     }
 
-    const firstItem:
-      | {
-          id_global_event: string;
-          name?: string;
-          headquarters?: string;
-          start_date?: string;
-          end_date?: string;
-          description?: string;
-          subeventConfirmation?: string;
-        }
-      | undefined = subEvent[0];
+    const firstItem: ISubEvent = subEvent[0];
     if (
       firstItem &&
       !firstItem.name &&
@@ -43,11 +33,9 @@ SubEventsRouter.post("/create", async (req: Request, res: Response) => {
       !firstItem.description &&
       !firstItem.subeventConfirmation
     ) {
-      if (
-        !databaseRegex.subEvents.id_global_event.test(firstItem.id_global_event)
-      ) {
+      if (!databaseRegex.subEvents.id_global_event.test(firstItem.id_global_event!.toString())) {
         return res.status(400).json({
-          message: "El campo 'id_global_event' del primer objeto no es válido.",
+          message: "El campo id_global_event no es válido.",
         });
       }
     } else {
@@ -56,7 +44,7 @@ SubEventsRouter.post("/create", async (req: Request, res: Response) => {
       });
     }
 
-    const validateData = subEvent.slice(1).every((item, index) => {
+    const validateData = subEvent.every((item, index) => {
       const validations = [
         {
           field: "name",

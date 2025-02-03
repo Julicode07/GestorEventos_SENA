@@ -12,33 +12,30 @@ import { bigIntReplacer } from "../helpers/json.helper";
 
 export async function CreateSubeventsController(req: Request, res: Response) {
   try {
-    const subEvent: ISubEvent[] = req.body;
-    const idGlobalEvent: number | undefined = subEvent[0].id_global_event;
+    const subEvents: ISubEvent[] = req.body;
+    //const idGlobalEvent: number | undefined = subEvent[0].id_global_event;
 
-    if (idGlobalEvent === undefined) {
-      return res.status(400).json({ message: "Falta el id_global_event" });
+    if (req.params.id_global_event === undefined) {
+      return res.status(400).json({ message: "Falta el ID de evento global :(" });
     }
 
-    const subEventData: ISubEvent[] = subEvent
-      .slice(1)
-      .map((item: ISubEvent) => ({
+    // Add global event id to each subevent
+    const subEventsData: ISubEvent[] = subEvents.map((item: ISubEvent) => ({
         ...item,
-        id_global_event: idGlobalEvent,
+        id_global_event: Number(req.params.id_global_event),
       }));
 
+    // Insert all sub events
     const result = await Promise.all(
-      subEventData.map((item: ISubEvent) => createSubEvent(item))
+      subEventsData.map((item: ISubEvent) => createSubEvent(item))
     );
+
     const successCount = result.filter((result) => result === 1).length;
-    return successCount === subEventData.length
-      ? res
-          .status(200)
-          .end(JSON.stringify({ message: "Subevento creado correctamente" }))
-      : res.status(500).end(
-          JSON.stringify({
-            message: "Error interno del servidor al crear el subevento",
-          })
-        );
+    subEventsData.forEach((subEvent) => {
+      subEvent.spaces!.forEach((space) => createSubEventHasSpace(subEvent.id_sub_event as number, space))
+    })
+    return successCount === subEventsData.length ? res.status(200).end(JSON.stringify({ message: "Subevento creado correctamente" }))
+      : res.status(500).end(JSON.stringify({ message: "Error interno del servidor al crear el subevento" }));
   } catch (err) {
     return res
       .status(500)

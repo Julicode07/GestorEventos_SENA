@@ -169,19 +169,17 @@ export async function findAllSubEvents(): Promise<number> {
   }
 }
 
-export async function createSubEventHasSpace(
-  subEventHasSpace: ISubEventHasSpace
-): Promise<ISubEventHasSpace[]> {
+export async function createSubEventHasSpace(id_sub_event: number, id_space: number): Promise<Boolean> {
   const connection: PoolConnection = await getConnection(pool);
   try {
     const results = await connection.query(
       `INSERT INTO sub_events_has_spaces (id_sub_event, id_space) VALUES (?,?)`,
-      [subEventHasSpace.id_sub_event, subEventHasSpace.id_space]
+      [id_sub_event, id_space]
     );
-    return results.affectedRows === 1 ? [subEventHasSpace] : [];
+    return results.affectedRows === 1;
   } catch (err) {
     console.error(`[subevents_has_spaces repository]: ${err}`);
-    return [];
+    return false;
   } finally {
     connection.release();
   }

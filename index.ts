@@ -15,7 +15,7 @@ import SpacesRouter from "./src/routes/spaces";
 import InventoryRouter from "./src/routes/inventory";
 import SubEventsRouter from "./src/routes/subEvents";
 import OrganizersRouter from "./src/routes/organizers";
-import SubEventsHasSpacesRouter from "./src/routes/subEvents_has_spaces";
+//import SubEventsHasSpacesRouter from "./src/routes/subEvents_has_spaces";
 import compression from "compression";
 
 dotenv.config();
@@ -77,7 +77,7 @@ app.use("/api/spaces/", SpacesRouter);
 app.use("/api/inventory/", InventoryRouter);
 app.use("/api/subEvents/", SubEventsRouter);
 app.use("/api/organizers/", OrganizersRouter);
-app.use("/api/subEvents_has_spaces/", SubEventsHasSpacesRouter);
+//app.use("/api/subEvents_has_spaces/", SubEventsHasSpacesRouter);
 
 app.get("/404.html", (req: Request, res: Response) => {
   const viewFile = path.join(__dirname, "public_views", "404.html");
