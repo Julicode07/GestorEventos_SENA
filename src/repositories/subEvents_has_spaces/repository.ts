@@ -11,18 +11,7 @@ export async function createSubEventHasSpace(
       `INSERT INTO sub_events_has_spaces (id_sub_event, id_space) VALUES (?,?)`,
       [subEventHasSpace.id_sub_event, subEventHasSpace.id_space]
     );
-    switch (results.affectedRows) {
-      case 1:
-        console.log(
-          `[subevents_has_spaces repository]: INSERTED SUCCESSFULLY.`
-        );
-        return results;
-      default:
-        console.error(
-          `[subevents_has_spaces repository]: ERROR CREATING subevents_has_spaces`
-        );
-        return [];
-    }
+    return results.affectedRows === 1 ? [subEventHasSpace] : [];
   } catch (err) {
     console.error(`[subevents_has_spaces repository]: ${err}`);
     return [];
