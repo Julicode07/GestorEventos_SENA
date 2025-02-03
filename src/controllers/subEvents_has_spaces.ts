@@ -9,7 +9,7 @@ export async function CreateSubEventsHasSpacesController(
 ) {
   try {
     const result = await createSubEventHasSpace(req.body);
-    return result.length === 1
+    return result.length == 1
       ? res
           .status(200)
           .send(JSON.stringify({ message: "Creado correctamente" }))
