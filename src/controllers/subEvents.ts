@@ -4,9 +4,10 @@ import {
   updateSubEventsById,
   getSubEventsByIdGlobalEvent,
   findAllSubEvents,
+  createSubEventHasSpace,
 } from "../repositories/subEvents/repository";
 import { Request, Response } from "express";
-import { ISubEvent } from "../repositories/subEvents/models";
+import { ISubEvent, ISubEventHasSpace } from "../repositories/subEvents/models";
 import { bigIntReplacer } from "../helpers/json.helper";
 
 export async function CreateSubeventsController(req: Request, res: Response) {
@@ -116,4 +117,14 @@ export async function GetAllSubEventsController(_req: Request, res: Response) {
       .status(500)
       .send(JSON.stringify({ message: "Error interno del servidor :(" }));
   }
+}
+
+export async function CreateSubEventsHasSpacesController(
+  req: Request,
+  res: Response
+) {
+  try {
+    const subEventHasSpace: ISubEventHasSpace[] = req.body;
+    
+  } catch (err) {}
 }

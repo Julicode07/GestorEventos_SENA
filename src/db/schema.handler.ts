@@ -10,7 +10,7 @@ import { createSpaceInventory } from "../repositories/inventory/repository";
 import { createSpaceInventorySchema } from "../repositories/inventory/models";
 import { createSubeventSchema } from "../repositories/subEvents/models";
 import { createOrganizersSchema } from "../repositories/organizers/models";
-import { createSubEventHasSpaceSchema } from "../repositories/subEvents_has_spaces/models";
+import { createSubEventHasSpaceSchema } from "../repositories/subEvents/models";
 
 dotenv.config();
 
