@@ -33,7 +33,7 @@ SubEventsRouter.post("/create/:id_global_event", async (req: Request, res: Respo
       !firstItem.description &&
       !firstItem.subeventConfirmation
     ) {
-      if (!databaseRegex.subEvents.id_global_event.test(firstItem.id_global_event!.toString())) {
+      if (!databaseRegex.subEvents.id_global_event.test(req.params.id_global_event!.toString())) {
         return res.status(400).json({
           message: "El campo id_global_event no es válido.",
         });
