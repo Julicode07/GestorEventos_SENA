@@ -39,6 +39,7 @@ export default function App() {
 
   //get inventory
   const [inventory, setInventory] = useState([]);
+  const [idInventory, setIdInventory] = useState("");
 
   const getInventory = useCallback(async () => {
     const response = await fetch(
@@ -129,11 +130,15 @@ export default function App() {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem key="view">View</DropdownItem>
-                <DropdownItem key="edit" onClick={() => {
-                  setUpdateModalInventory(true);
-                }}>Edit</DropdownItem>
-                <DropdownItem key="delete">Delete</DropdownItem>
+                <DropdownItem
+                  key="edit"
+                  onClick={() => {
+                    setIdInventory(user.id_inventory);
+                    setUpdateModalInventory(true);
+                  }}
+                >
+                  Actualizar
+                </DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </div>
@@ -148,6 +153,7 @@ export default function App() {
       <ModalInventarioActualizar
         isOpen={updateModalInventory}
         setIsOpen={setUpdateModalInventory}
+        idInventory={Number(idInventory)}
       />
       <div>
         <Breadcrumbs>
