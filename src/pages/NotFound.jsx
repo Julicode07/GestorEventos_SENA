@@ -3,7 +3,7 @@ const NotFound = () => {
   return (
     <div className="flex flex-col justify-center min-h-screen bg-secondary">
       <div className="container mx-auto p-4 md:p-6 lg:px-8 text-center flex flex-col items-center">
-        <div className="w-full max-w-md md:max-w-lg mb-6">
+        <div className="w-full max-w-md mb-6">
           <img
             src={Images.NotFound}
             alt="404 Illustration"

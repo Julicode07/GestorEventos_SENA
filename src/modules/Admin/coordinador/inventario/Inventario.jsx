@@ -17,12 +17,14 @@ import {
 import { VerticalDotsIcon } from "@modules/Admin/components/VerticalDotsIcon";
 import { useParams } from "react-router-dom";
 import { columns, INITIAL_VISIBLE_COLUMNS, capitalize } from "./utils/utils";
+import ModalInventarioActualizar from "./ModalInventarioActualizar";
 const BottomContent = React.lazy(() =>
   import("./../../components/BottonContent")
 );
 const TopContent = React.lazy(() => import("./../../components/TopContent"));
 
 export default function App() {
+  const [updateModalInventory, setUpdateModalInventory] = useState(false);
   const { id } = useParams();
   const [filterValue, setFilterValue] = React.useState("");
   const [visibleColumns, setVisibleColumns] = React.useState(
@@ -128,7 +130,9 @@ export default function App() {
               </DropdownTrigger>
               <DropdownMenu>
                 <DropdownItem key="view">View</DropdownItem>
-                <DropdownItem key="edit">Edit</DropdownItem>
+                <DropdownItem key="edit" onClick={() => {
+                  setUpdateModalInventory(true);
+                }}>Edit</DropdownItem>
                 <DropdownItem key="delete">Delete</DropdownItem>
               </DropdownMenu>
             </Dropdown>
@@ -141,6 +145,10 @@ export default function App() {
 
   return (
     <main className="flex flex-col gap-2">
+      <ModalInventarioActualizar
+        isOpen={updateModalInventory}
+        setIsOpen={setUpdateModalInventory}
+      />
       <div>
         <Breadcrumbs>
           <BreadcrumbItem href="/admin/coordinador/espacios">

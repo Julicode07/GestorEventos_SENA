@@ -3,8 +3,8 @@ import Images from "@/assets/img/images.js";
 const NotFoundAdmin = () => {
   return (
     <div className="flex flex-col justify-center">
-      <div className="container mx-auto py-6 md:py-0 text-center flex flex-col items-center">
-        <div className="w-full max-w-md md:max-w-base mb-4">
+      <div className="container mx-auto py-3 md:py-0 text-center flex flex-col items-center">
+        <div className="w-full max-w-sm mb-2">
           <img
             src={Images.NotFound}
             alt="404 Illustration"
@@ -12,10 +12,10 @@ const NotFoundAdmin = () => {
           />
         </div>
         <div className="w-full max-w-2xl text-center">
-          <h1 className="mb-4 text-3xl font-bold leading-tight text-black sm:text-4xl lg:text-5xl">
+          <h1 className="mb-4 text-2xl font-bold leading-tight text-black sm:text-4xl lg:text-5xl">
             Página no encontrada
           </h1>
-          <p className="mb-6 text-base font-normal text-gray-600 md:text-lg">
+          <p className="mb-4 text-base font-normal text-gray-600 md:text-lg">
             No pudimos encontrar la página que estabas buscando.
           </p>
           <a
