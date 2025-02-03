@@ -47,16 +47,21 @@ export const databaseRegex = {
     end_date:
       /^(?:[1-9]\d{3})-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]) (?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d$/,
     description: /^[A-Za-zñ.Ñ:-á-|éí,.'óúÁÉÍ&%$ÓÚäëïöüÄËÏÖÜ0-9\s]{1,255}$/,
-    subeventConfirmation:
-      /^(Confirmado|Cancelado|Pospuesto)$/,
+    subeventConfirmation: /^(Confirmado|Cancelado|Pospuesto)$/,
   },
 
-  organizers: {                                                                             
+  organizers: {
     id_organizer: /^[0-9]{1,9}$/,
     id_sub_event: /^[0-9]{1,9}$/,
     name: /^[A-Za-zñ.Ñ:-á-|éí,óúÁÉÍ&%$ÓÚäëïöüÄËÏÖÜ0-9\s]{1,64}$/,
     rol: /^(Persona externa|Aprendiz|Docente|Coordinador)$/,
     email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
     address: /^[A-Za-zñ.Ñ:-á|éí,'ó#úÁÉÍ&%$ÓÚäëïöüÄËÏÖÜ0-9\s-_]{1,64}$/,
+  },
+
+  subEvents_has_spaces: {
+    id_sub_event_has_space: /^[0-9]{1,9}$/,
+    id_sub_event: /^[0-9]{1,9}$/,
+    id_space: /^[0-9]{1,9}$/,
   },
 };
