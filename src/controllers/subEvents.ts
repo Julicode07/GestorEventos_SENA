@@ -29,16 +29,22 @@ export async function CreateSubeventsController(req: Request, res: Response) {
     }));
 
     // Insert all sub events
-    subEventsData.forEach(async (subEvent) => {
-      const subEventInsertId = await createSubEvent(subEvent);
-      subEvent.spaces!.forEach(
-        async (space) =>
-          await createSubEventHasSpace(subEventInsertId as number, space)
-      );
-      subEvent.insumes!.forEach(
-        async (insume) => await createInsumes(subEventInsertId, insume)
-      );
-    });
+    await Promise.all(
+      subEventsData.map(async (subEvent) => {
+        const subEventInsertId = await createSubEvent(subEvent);
+        await Promise.all(
+          subEvent.spaces!.map(
+            async (space) =>
+              await createSubEventHasSpace(subEventInsertId as number, space)
+          )
+        );
+        await Promise.all(
+          subEvent.insumes!.map(
+            async (insume) => await createInsumes(subEventInsertId, insume)
+          )
+        );
+      })
+    );
 
     return res
       .status(200)
