@@ -33,15 +33,15 @@ export async function CreateSubeventsController(req: Request, res: Response) {
       subEventsData.map(async (subEvent) => {
         const subEventInsertId = await createSubEvent(subEvent);
         await Promise.all(
-          subEvent.spaces!.map(
+          subEvent.spaces?.map(
             async (space) =>
               await createSubEventHasSpace(subEventInsertId as number, space)
-          )
+          ) ?? []
         );
         await Promise.all(
-          subEvent.insumes!.map(
+          subEvent.insumes?.map(
             async (insume) => await createInsumes(subEventInsertId, insume)
-          )
+          ) ?? []
         );
       })
     );

@@ -10,8 +10,8 @@ export interface ISubEvent {
   end_date: string;
   description: string;
   subeventConfirmation: string;
-  spaces: Array<any> | undefined;
-  insumes: Array<any> | undefined;
+  spaces?: Array<any> | undefined;
+  insumes?: Array<any> | undefined;
 }
 
 export interface ISubEventHasSpace {
