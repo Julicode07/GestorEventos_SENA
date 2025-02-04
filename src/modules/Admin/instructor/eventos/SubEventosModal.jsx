@@ -125,8 +125,6 @@ const SubEventosModal = ({
 
   return (
     <>
-      {/* Modal to create event */}
-
       {isSubEventosModalOpen && (
         <>
           <div
@@ -134,7 +132,7 @@ const SubEventosModal = ({
             onClick={() => setIsSubEventosModalOpen(false)}
           >
             <div
-              className="relative p-4 w-full max-w-2xl z-50"
+              className="relative p-4 w-full z-50"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="relative bg-white rounded-lg shadow">
@@ -168,151 +166,157 @@ const SubEventosModal = ({
 
                 <div className="p-4 md:p-5">
                   <form className="min-h-full" onSubmit={handleSubmitSubEvent}>
-                    <div className="overflow-y-auto max-h-[57vh] space-y-4">
-                      {registerSubEvents.slice(1).map((data, index) => (
-                        <div key={index + 1} className="px-4">
-                          {index !== 0 && (
-                            <button
-                              className="flex items-end justify-end w-full"
-                              type="button"
-                              onClick={() => handleRemoveSubEvent(index + 1)}
-                            >
-                              <i className="ri-close-line text-2xl"></i>
-                            </button>
-                          )}
-                          <h2 className="font-bold text-xl text-center">
-                            SubEvento {index + 1}
-                          </h2>
-                          <div className="grid grid-cols-2 gap-4 items-center">
-                            <div className="flex flex-col">
-                              <label
-                                className="mb-2 text-base font-bold text-gray-900"
-                                htmlFor="subeventName"
-                              >
-                                Nombre del SubEvento
-                              </label>
-                              <input
-                                type="text"
-                                name="name"
-                                id="subeventName"
-                                className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg block w-full p-2.5 outline-none"
-                                placeholder="Semana del instructor"
-                                onChange={(e) =>
-                                  handleChangeSubEvent(e, index + 1)
-                                }
-                                value={data.name}
-                              />
-                            </div>
-                            <div className="flex flex-col">
-                              <label
-                                className="block mb-2 text-base font-bold text-gray-900"
-                                htmlFor="sede"
-                              >
-                                Sede
-                              </label>
-                              <Select
-                                id="sede"
-                                label="Ecoge la sede"
-                                name="headquarters"
-                                data-testid="tipo-espacios"
-                                onChange={(e) =>
-                                  handleChangeSubEvent(e, index + 1)
-                                }
-                                value={data.headquarters}
-                              >
-                                <SelectItem key="">
-                                  Seleccione el tipo
-                                </SelectItem>
-                                <SelectItem key="San Francisco">
-                                  San Francisco
-                                </SelectItem>
-                                <SelectItem key="Uniremington">
-                                  Uniremington
-                                </SelectItem>
-                                <SelectItem key="La Ceja">La Ceja</SelectItem>
-                              </Select>
-                            </div>
-                          </div>
-                          <div className="grid grid-cols-2 gap-4 items-center">
-                            <div className="flex flex-col">
-                              <label
-                                className="block mb-2 text-base font-bold text-gray-900"
-                                htmlFor="fechaInicio"
-                              >
-                                Fecha de Inicio
-                              </label>
-                              <input
-                                type="datetime-local"
-                                className="bg-gray-100 text-gray-900 text-base rounded-lg block w-full p-2.5 outline-none"
-                                label={"Fecha Inicio"}
-                                id="fechaInicio"
-                                onChange={(e) =>
-                                  handleChangeSubEvent(e, index + 1)
-                                }
-                                name="start_date"
-                                value={data.start_date}
-                              />
-                            </div>
-                            <div className="flex flex-col">
-                              <label
-                                className="block mb-2 text-base font-bold text-gray-900"
-                                htmlFor="fechaFin"
-                              >
-                                Fecha de Fin
-                              </label>
-                              <input
-                                type="datetime-local"
-                                className="bg-gray-100 text-gray-900 text-base rounded-lg block w-full p-2.5 outline-none"
-                                label={"Fecha Fin"}
-                                id="fechaFin"
-                                onChange={(e) =>
-                                  handleChangeSubEvent(e, index + 1)
-                                }
-                                name="end_date"
-                                value={data.end_date}
-                              />
-                            </div>
-                          </div>
+                    <div className="grid grid-cols-3 gap-4">
+                      <div>
+                        <div className="overflow-y-auto max-h-[57vh] space-y-4">
+                          {registerSubEvents.slice(1).map((data, index) => (
+                            <div key={index + 1} className="px-4">
+                              {index !== 0 && (
+                                <button
+                                  className="flex items-end justify-end w-full"
+                                  type="button"
+                                  onClick={() => handleRemoveSubEvent(index + 1)}
+                                >
+                                  <i className="ri-close-line text-2xl"></i>
+                                </button>
+                              )}
+                              <h2 className="font-bold text-xl text-center">
+                                SubEvento {index + 1}
+                              </h2>
+                              <div className="grid grid-cols-2 gap-4 items-center">
+                                <div className="flex flex-col">
+                                  <label
+                                    className="mb-2 text-base font-bold text-gray-900"
+                                    htmlFor="subeventName"
+                                  >
+                                    Nombre del SubEvento
+                                  </label>
+                                  <input
+                                    type="text"
+                                    name="name"
+                                    id="subeventName"
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg block w-full p-2.5 outline-none"
+                                    placeholder="Semana del instructor"
+                                    onChange={(e) =>
+                                      handleChangeSubEvent(e, index + 1)
+                                    }
+                                    value={data.name}
+                                  />
+                                </div>
+                                <div className="flex flex-col">
+                                  <label
+                                    className="block mb-2 text-base font-bold text-gray-900"
+                                    htmlFor="sede"
+                                  >
+                                    Sede
+                                  </label>
+                                  <Select
+                                    id="sede"
+                                    label="Ecoge la sede"
+                                    name="headquarters"
+                                    data-testid="tipo-espacios"
+                                    onChange={(e) =>
+                                      handleChangeSubEvent(e, index + 1)
+                                    }
+                                    value={data.headquarters}
+                                  >
+                                    <SelectItem key="">
+                                      Seleccione el tipo
+                                    </SelectItem>
+                                    <SelectItem key="San Francisco">
+                                      San Francisco
+                                    </SelectItem>
+                                    <SelectItem key="Uniremington">
+                                      Uniremington
+                                    </SelectItem>
+                                    <SelectItem key="La Ceja">La Ceja</SelectItem>
+                                  </Select>
+                                </div>
+                              </div>
+                              <div className="grid grid-cols-2 gap-4 items-center">
+                                <div className="flex flex-col">
+                                  <label
+                                    className="block mb-2 text-base font-bold text-gray-900"
+                                    htmlFor="fechaInicio"
+                                  >
+                                    Fecha de Inicio
+                                  </label>
+                                  <input
+                                    type="datetime-local"
+                                    className="bg-gray-100 text-gray-900 text-base rounded-lg block w-full p-2.5 outline-none"
+                                    label={"Fecha Inicio"}
+                                    id="fechaInicio"
+                                    onChange={(e) =>
+                                      handleChangeSubEvent(e, index + 1)
+                                    }
+                                    name="start_date"
+                                    value={data.start_date}
+                                  />
+                                </div>
+                                <div className="flex flex-col">
+                                  <label
+                                    className="block mb-2 text-base font-bold text-gray-900"
+                                    htmlFor="fechaFin"
+                                  >
+                                    Fecha de Fin
+                                  </label>
+                                  <input
+                                    type="datetime-local"
+                                    className="bg-gray-100 text-gray-900 text-base rounded-lg block w-full p-2.5 outline-none"
+                                    label={"Fecha Fin"}
+                                    id="fechaFin"
+                                    onChange={(e) =>
+                                      handleChangeSubEvent(e, index + 1)
+                                    }
+                                    name="end_date"
+                                    value={data.end_date}
+                                  />
+                                </div>
+                              </div>
 
-                          <div className="flex flex-col">
-                            <label
-                              className="block mb-2 text-center text-base font-bold text-gray-900"
-                              htmlFor="descripcion"
-                            >
-                              Descripción
-                            </label>
-                            <Textarea
-                              id="descripcion"
-                              placeholder="Observaciones"
-                              className="mb-4"
-                              name="description"
-                              onChange={(e) =>
-                                handleChangeSubEvent(e, index + 1)
-                              }
-                              value={data.description}
-                            />
-                          </div>
+                              <div className="flex flex-col">
+                                <label
+                                  className="block mb-2 text-center text-base font-bold text-gray-900"
+                                  htmlFor="descripcion"
+                                >
+                                  Descripción
+                                </label>
+                                <Textarea
+                                  id="descripcion"
+                                  placeholder="Observaciones"
+                                  className="mb-4"
+                                  name="description"
+                                  onChange={(e) =>
+                                    handleChangeSubEvent(e, index + 1)
+                                  }
+                                  value={data.description}
+                                />
+                              </div>
+                              <hr className="border-2 my-3" />
+                            </div>
+                          ))}
+
+                        </div>
+                        <div className="max-h-[57vh]">
                           <Button
                             color="secondary"
+                            className="my-2"
+                            onClick={handleAddSubEvent}
                             endContent={<PlusIcon />}
                           >
-                            Asignar un espacio
+                            Crear nuevo subevento {registerSubEvents.slice(1).length}
                           </Button>
-                          <hr className="border-2 my-3" />
                         </div>
-                      ))}
-
-                    </div>
-                    <div className="max-h-[57vh]">
-
-                      <Button
-                        color="secondary"
-                        className="my-2"
-                        onClick={handleAddSubEvent}
-                        endContent={<PlusIcon />}
-                      >
-                        Crear nuevo subevento {registerSubEvents.slice(1).length}
-                      </Button>
+                      </div>
+                      <div className="Espacios">
+                        <Button
+                          color="secondary"
+                          endContent={<PlusIcon />}
+                        >
+                          Asignar un espacio
+                        </Button>
+                      </div>
+                      <div className="Insumos">Insumos</div>
                     </div>
 
                     <div className="flex items-center justify-center p-4 md:p-5 space-x-3 rtl:space-x-reverse border-t border-gray-200 rounded-b">
