@@ -292,19 +292,28 @@ const SubEventosModal = ({
                               value={data.description}
                             />
                           </div>
+                          <Button
+                            color="secondary"
+                            endContent={<PlusIcon />}
+                          >
+                            Asignar un espacio
+                          </Button>
                           <hr className="border-2 my-3" />
                         </div>
                       ))}
-                    </div>
 
-                    <Button
-                      color="secondary"
-                      className="self-start mt-4"
-                      onClick={handleAddSubEvent}
-                      endContent={<PlusIcon />}
-                    >
-                      Crear nuevo subevento {registerSubEvents.slice(1).length}
-                    </Button>
+                    </div>
+                    <div className="max-h-[57vh]">
+
+                      <Button
+                        color="secondary"
+                        className="my-2"
+                        onClick={handleAddSubEvent}
+                        endContent={<PlusIcon />}
+                      >
+                        Crear nuevo subevento {registerSubEvents.slice(1).length}
+                      </Button>
+                    </div>
 
                     <div className="flex items-center justify-center p-4 md:p-5 space-x-3 rtl:space-x-reverse border-t border-gray-200 rounded-b">
                       <button

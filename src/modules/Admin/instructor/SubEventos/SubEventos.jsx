@@ -136,13 +136,12 @@ export default function SubEventos() {
         return (
           <div className="flex flex-col">
             <p
-              className={`text-bold text-small text-center rounded-lg ${
-                subEvent.subeventConfirmation === "Confirmado"
-                  ? "bg-green-300 text-green-800"
-                  : subEvent.subeventConfirmation === "Cancelado"
+              className={`text-bold text-small text-center rounded-lg ${subEvent.subeventConfirmation === "Confirmado"
+                ? "bg-green-300 text-green-800"
+                : subEvent.subeventConfirmation === "Cancelado"
                   ? "bg-red-300 text-red-800"
                   : "bg-orange-300 text-orange-800"
-              }`}
+                }`}
             >
               {subEvent.subeventConfirmation}
             </p>
@@ -168,6 +167,7 @@ export default function SubEventos() {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
+                <DropdownItem key="assign">Asignar un espacio</DropdownItem>
                 <DropdownItem
                   disabled={
                     subEvent.global_event_status === "Rechazado" ||

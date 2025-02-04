@@ -66,135 +66,137 @@ const ModalEspacios = () => {
         Nuevo Espacio
       </Button>
       {isModalOpen && (
-        <form action="" onSubmit={handleSubmitRegisterSpaces}>
-          <div
-            className="fixed inset-0 bg-black bg-opacity-30 flex justify-center items-center z-50 h-screen"
-            onClick={() => setIsModalOpen(false)}
-          >
-            <div
-              className={`bg-white border border-gray-300 shadow-2xl p-8 rounded-2xl w-4/5 max-w-2xl flex flex-col items-center relative transition-transform transform ${
-                isModalOpen ? "scale-100 opacity-100" : "scale-95 opacity-0"
-              } transition-all duration-300 ease-out`}
-              onClick={(e) => e.stopPropagation()}
-              style={{ maxHeight: "90vh" }}
-            >
-              <button
-                type="button"
-                className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
-                onClick={() => setIsModalOpen(false)}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  className="w-6 h-6"
+        <div
+          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-40"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setIsModalOpen(false);
+            }
+          }}
+        >
+          <div className="relative p-4 w-full h-auto sm:h-auto max-w-2xl z-50 flex flex-col">
+            <div className="relative bg-white rounded-lg shadow h-full overflow-hidden flex flex-col my-8">
+              <div className="flex items-center justify-between py-4 px-8 border-b rounded-t">
+                <h3 className="text-3xl text-start font-semibold text-gray-900">Añadir un nuevo espacio</h3>
+                <button
+                  type="button"
+                  className="text-gray-400 hover:text-gray-600 transition-colors"
+                  onClick={() => setIsModalOpen(false)}
                 >
-                  <path d="M10.5859 12L2.79297 4.20706L4.20718 2.79285L12.0001 10.5857L19.793 2.79285L21.2072 4.20706L13.4143 12L21.2072 19.7928L19.793 21.2071L12.0001 13.4142L4.20718 21.2071L2.79297 19.7928L10.5859 12Z"></path>
-                </svg>
-              </button>
-
-              <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
-                Añadir un nuevo espacio
-              </h2>
-              <div className="w-full overflow-y-auto max-h-[50vh] px-2">
-                <div className="w-full">
-                  <label className="pl-1" htmlFor="nombre-espacio">
-                    Ingrese el nombre del espacio
-                  </label>
-                  <Input
-                    id="nombre-espacio"
-                    className="w-full mb-4"
-                    placeholder="Nombre"
-                    name="name"
-                    onChange={handleChangeRegisterSpaces}
-                    value={formData.name}
-                  />
-                </div>
-                <div className="w-full">
-                  <label className="pl-1" htmlFor="capacidad">
-                    Ingrese la capacidad
-                  </label>
-                  <Input
-                    id="capacidad"
-                    className="w-full mb-4"
-                    placeholder="Capacidad"
-                    type="number"
-                    name="capacity"
-                    value={formData.capacity}
-                    onChange={handleChangeRegisterSpaces}
-                  />
-                </div>
-                <div className="w-full mb-4">
-                  <label className="pl-1" htmlFor="tipo-espacio">
-                    Seleccione el tipo de espacio
-                  </label>
-
-                  <Select
-                    id="tipo-espacio"
-                    label="Tipo de espacio"
-                    className=""
-                    name="type"
-                    value={formData.type}
-                    data-testid="tipo-espacios"
-                    onChange={handleChangeRegisterSpaces}
+                  <svg
+                    className="w-3 h-3"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 14 14"
                   >
-                    <SelectItem key="">Seleccione el tipo</SelectItem>
-                    <SelectItem key="aula">Aula</SelectItem>
-                    <SelectItem key="piso">Piso</SelectItem>
-                    <SelectItem key="edificio">Edificio</SelectItem>
-                    <SelectItem key="oficina">Oficina</SelectItem>
-                  </Select>
-                </div>
-                <div className="w-full mb-4">
-                  <label className="pl-1" htmlFor="estado-espacio">
-                    Seleccione el estado del espacio
-                  </label>
-                  <Select
-                    id="estado-espacio"
-                    label="Estado del espacio"
-                    className=""
-                    name="status"
-                    value={formData.status}
-                    data-testid="estado-espacio"
-                    onChange={handleChangeRegisterSpaces}
-                  >
-                    <SelectItem key="activo">Activo</SelectItem>
-                    <SelectItem key="inactivo">Inactivo</SelectItem>
-                  </Select>
-                </div>
-                <div className="w-full">
-                  <label className="pl-1" htmlFor="observaciones">
-                    Ingrese las observaciones
-                  </label>
-                  <Textarea
-                    id="observaciones"
-                    placeholder="Observaciones"
-                    className="mb-4"
-                    name="details"
-                    value={formData.details}
-                    onChange={handleChangeRegisterSpaces}
-                  />
-                </div>
+                    <path
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="m1 1 6 6m0 0 6-6M7 7l6 6m-6-6-6 6"
+                    />
+                  </svg>
+                </button>
               </div>
 
-              <div className="my-2">
-                {success && (
-                  <div className="text-center text-sm text-green-600 font-bold">
-                    {success}
+              <div className="px-5 pt-5 pb-3 overflow-y-auto flex-grow" style={{ maxHeight: "calc(100vh - 180px)" }}>
+                <form
+                  className=""
+                  onSubmit={handleSubmitRegisterSpaces}
+                >
+                  <div className="flex flex-col md:grid md:grid-cols-2 gap-4 max-w-xl mx-auto">
+                    {[
+                      { label: "Nombre del espacio", type: "text", name: "name", placeholder: "Nombre" },
+                      { label: "Capacidad", type: "number", name: "capacity", placeholder: "Capacidad" },
+                    ].map(({ label, type, name, placeholder }) => (
+                      <div key={name}>
+                        <label className="block mb-2 text-lg font-bold text-gray-900" htmlFor={name}>
+                          {label}
+                        </label>
+                        <Input
+                          type={type}
+                          name={name}
+                          id={name}
+                          value={formData[name] || ""}
+                          placeholder={placeholder}
+                          onChange={handleChangeRegisterSpaces}
+                        />
+                      </div>
+                    ))}
+                    <div>
+                      <label className="block mb-2 text-lg font-bold text-gray-900">Tipo de espacio</label>
+                      <Select
+                        id="tipo-espacio"
+                        label="Tipo de espacio"
+                        name="type"
+                        value={formData.type}
+                        onChange={handleChangeRegisterSpaces}
+                      >
+                        <SelectItem key="">Seleccione el tipo</SelectItem>
+                        <SelectItem key="aula">Aula</SelectItem>
+                        <SelectItem key="piso">Piso</SelectItem>
+                        <SelectItem key="edificio">Edificio</SelectItem>
+                        <SelectItem key="oficina">Oficina</SelectItem>
+                      </Select>
+                    </div>
+                    <div>
+                      <label className="block mb-2 text-lg font-bold text-gray-900">Estado del espacio</label>
+                      <Select
+                        id="estado-espacio"
+                        label="Estado del espacio"
+                        name="status"
+                        value={formData.status}
+                        onChange={handleChangeRegisterSpaces}
+                      >
+                        <SelectItem key="">Seleccione el estado</SelectItem>
+                        <SelectItem key="activo">Activo</SelectItem>
+                        <SelectItem key="inactivo">Inactivo</SelectItem>
+                      </Select>
+                    </div>
+                    <div className="col-span-2">
+                      <label className="block mb-2 text-lg font-bold text-gray-900">Detalles</label>
+                      <Textarea
+                        id="observaciones"
+                        name="details"
+                        placeholder="Detalles adicionales"
+                        value={formData.details}
+                        onChange={handleChangeRegisterSpaces}
+                      />
+                    </div>
+
+                    {/* Mensajes de éxito y error */}
                   </div>
-                )}
-                {errorMessage && (
-                  <div className="text-center text-sm text-red-600 font-bold">
-                    {errorMessage}
+                  {/* Los botones dentro del formulario */}
+                  <div className="w-full h-full sticky -bottom-2 z-50 p-2 bg-white border-t border-gray-200 mt-3">
+                    {(success || errorMessage) && (
+                      <div className="col-span-2 text-center mt-2">
+                        {success && <p className="text-green-600">{success}</p>}
+                        {errorMessage && <p className="text-red-600">{errorMessage}</p>}
+                      </div>
+                    )}
+                    <div className="flex items-center justify-center space-x-4 my-3 md:my-0">
+                      <button
+                        type="submit"
+                        className="font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-primary/80 text-white cursor-pointer hover:bg-primary/100"
+                      >
+                        Registrar Espacio
+                      </button>
+                      <button
+                        type="button"
+                        className="py-2.5 px-5 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-red-700"
+                        onClick={() => setIsModalOpen(false)}
+                      >
+                        Cancelar
+                      </button>
+                    </div>
                   </div>
-                )}
+                </form>
               </div>
-              <Button color="primary" type="submit">
-                Crear espacio
-              </Button>
             </div>
           </div>
-        </form>
+        </div>
+
       )}
     </>
   );

@@ -40,8 +40,8 @@ const SearchableSelect = memo(({ options, value, onChange, label, name }) => {
   );
 
   return (
-    <div className="relative w-full pb-3" ref={selectRef}>
-      <label className="pl-1">{label}</label>
+    <div className="relative w-full" ref={selectRef}>
+      <label className="block mb-2 text-lg font-bold text-gray-900">{label}</label>
       <div
         className="w-full rounded-xl px-2 py-2 flex items-center justify-between cursor-pointer bg-gray-100 hover:bg-gray-200"
         onClick={() => setIsOpen((prev) => !prev)}
