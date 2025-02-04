@@ -11,6 +11,7 @@ import { createSpaceInventorySchema } from "../repositories/inventory/models";
 import { createSubeventSchema } from "../repositories/subEvents/models";
 import { createOrganizersSchema } from "../repositories/organizers/models";
 import { createSubEventHasSpaceSchema } from "../repositories/subEvents/models";
+import { createInsumesSchema } from "../repositories/subEvents/models";
 
 dotenv.config();
 
@@ -42,6 +43,8 @@ export default async function createSchemas(): Promise<Number> {
       throw new Error("Couldn't create sub events schema.");
     else if ((await createSubEventHasSpaceSchema()) == -1)
       throw new Error("Couldn't create subEvents_has_spaces schema.");
+    else if ((await createInsumesSchema()) == -1)
+      throw new Error("Couldn't create insumes schema.");
     else if ((await createOrganizersSchema()) == -1)
       throw new Error("Couldn't create organizers schema.");
     return 1;

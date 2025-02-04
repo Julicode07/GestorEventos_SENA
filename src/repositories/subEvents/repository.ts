@@ -1,6 +1,6 @@
 import { PoolConnection } from "mariadb";
 import { getConnection, pool } from "../../db/connection";
-import { ISubEvent, ISubEventHasSpace } from "./models";
+import { ISubEvent, Iinsumes } from "./models";
 
 export async function createSubEvent(subEventData: ISubEvent): Promise<number> {
   const connection: PoolConnection = await getConnection(pool);
@@ -169,7 +169,10 @@ export async function findAllSubEvents(): Promise<number> {
   }
 }
 
-export async function createSubEventHasSpace(id_sub_event: number, id_space: number): Promise<Boolean> {
+export async function createSubEventHasSpace(
+  id_sub_event: number,
+  id_space: number
+): Promise<Boolean> {
   const connection: PoolConnection = await getConnection(pool);
   try {
     const results = await connection.query(
@@ -179,6 +182,25 @@ export async function createSubEventHasSpace(id_sub_event: number, id_space: num
     return results.affectedRows === true;
   } catch (err) {
     console.error(`[subevents_has_spaces repository]: ${err}`);
+    return false;
+  } finally {
+    connection.release();
+  }
+}
+
+export async function createInsumes(
+  id_sub_event: number,
+  insumesData: Iinsumes
+): Promise<Boolean> {
+  const connection: PoolConnection = await getConnection(pool);
+  try {
+    const results = await connection.query(
+      `INSERT INTO insumes (id_sub_event, name, quantity) VALUES (?,?,?)`,
+      [id_sub_event, insumesData.name, insumesData.quantity]
+    );
+    return results.affectedRows === true;
+  } catch (err) {
+    console.error(`[insumes repository]: ${err}`);
     return false;
   } finally {
     connection.release();

@@ -11,6 +11,7 @@ export interface ISubEvent {
   description: string;
   subeventConfirmation: string;
   spaces: Array<any> | undefined;
+  insumes: Array<any> | undefined;
 }
 
 export interface ISubEventHasSpace {
@@ -19,7 +20,12 @@ export interface ISubEventHasSpace {
   id_space: number | undefined;
 }
 
-
+export interface Iinsumes {
+  id_insumes: number | undefined;
+  id_sub_event: number | undefined;
+  name: string;
+  quantity: number;
+}
 
 export async function createSubeventSchema(): Promise<Number> {
   const connection: PoolConnection = await getConnection(pool);
@@ -66,6 +72,27 @@ export async function createSubEventHasSpaceSchema(): Promise<Number> {
     console.error(
       `[subevents_has_spaces repository - models]: ERROR CREATING subevents_has_spaces SCHEMA: ` +
         err
+    );
+    return -1;
+  } finally {
+    connection.release();
+  }
+}
+
+export async function createInsumesSchema(): Promise<Number> {
+  const connection: PoolConnection = await getConnection(pool);
+  try {
+    await connection.query(`CREATE TABLE IF NOT EXISTS insumes (
+    id_insumes INT AUTO_INCREMENT PRIMARY KEY,
+    id_sub_event INT NULL,
+    name VARCHAR(45) NULL,
+    quantity INT NULL,
+    CONSTRAINT fk_insumes_has_sub_events FOREIGN KEY (id_sub_event) REFERENCES sub_events(id_sub_event))`);
+    console.log(`[insumes repository - models]: CREATED insumes SCHEMA.`);
+    return 1;
+  } catch (err) {
+    console.log(
+      `[insumes repository - models]: ERROR CREATING insumes SCHEMA: ${err}`
     );
     return -1;
   } finally {

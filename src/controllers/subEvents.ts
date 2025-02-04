@@ -5,6 +5,7 @@ import {
   getSubEventsByIdGlobalEvent,
   findAllSubEvents,
   createSubEventHasSpace,
+  createInsumes,
 } from "../repositories/subEvents/repository";
 import { Request, Response } from "express";
 import { ISubEvent, ISubEventHasSpace } from "../repositories/subEvents/models";
@@ -16,22 +17,32 @@ export async function CreateSubeventsController(req: Request, res: Response) {
     //const idGlobalEvent: number | undefined = subEvent[0].id_global_event;
 
     if (req.params.id_global_event === undefined) {
-      return res.status(400).json({ message: "Falta el ID de evento global :(" });
+      return res
+        .status(400)
+        .json({ message: "Falta el ID de evento global :(" });
     }
 
     // Add global event id to each subevent
     const subEventsData: ISubEvent[] = subEvents.map((item: ISubEvent) => ({
-        ...item,
-        id_global_event: Number(req.params.id_global_event),
-      }));
+      ...item,
+      id_global_event: Number(req.params.id_global_event),
+    }));
 
     // Insert all sub events
     subEventsData.forEach(async (subEvent) => {
-      const subEventInsertId = await createSubEvent(subEvent)
-      subEvent.spaces!.forEach(async (space) => await createSubEventHasSpace(subEventInsertId as number, space))
-    })
-    
-    return res.status(200).end(JSON.stringify({ message: "Subeventos creados correctamente" }))
+      const subEventInsertId = await createSubEvent(subEvent);
+      subEvent.spaces!.forEach(
+        async (space) =>
+          await createSubEventHasSpace(subEventInsertId as number, space)
+      );
+      subEvent.insumes!.forEach(
+        async (insume) => await createInsumes(subEventInsertId, insume)
+      );
+    });
+
+    return res
+      .status(200)
+      .end(JSON.stringify({ message: "Subeventos creados correctamente" }));
   } catch (err) {
     return res
       .status(500)
