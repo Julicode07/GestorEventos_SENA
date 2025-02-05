@@ -1,9 +1,11 @@
 import { Button, Select, SelectItem, Textarea } from "@nextui-org/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { PlusIcon } from "@modules/Admin/components/PlusIcon";
 import useRegister from "../../../hooks/useRegister";
 import dayjs from "dayjs";
 import PropTypes from "prop-types";
+import SubEventsHasSpaces from "./SubEventsHasSpaces";
+import InsumesModal from "./InsumesModal";
 
 const SubEventosModal = ({
   isSubEventosModalOpen,
@@ -13,7 +15,6 @@ const SubEventosModal = ({
 }) => {
   const { register } = useRegister();
   const [registerSubEvents, setRegisterSubEvents] = useState([
-    { id_global_event: "" },
     {
       name: "",
       headquarters: "",
@@ -21,6 +22,8 @@ const SubEventosModal = ({
       end_date: "",
       description: "",
       subeventConfirmation: "Confirmado",
+      spaces: [],
+      insumes: [],
     },
   ]);
 
@@ -28,15 +31,14 @@ const SubEventosModal = ({
     if (idEvent !== 0) {
       setRegisterSubEvents([
         {
-          id_global_event: idEvent,
-        },
-        {
           name: "",
           headquarters: "",
           start_date: "",
           end_date: "",
           description: "",
           subeventConfirmation: "Confirmado",
+          spaces: [],
+          insumes: [],
         },
       ]);
     }
@@ -44,6 +46,24 @@ const SubEventosModal = ({
 
   const [succesMessage, setSuccesMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+
+  //get Spaces
+  const [spaces, setSpaces] = useState([]);
+  const getSpaces = useCallback(async () => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/spaces/all`
+      );
+      const data = await response.json();
+      setSpaces(Array.isArray(data) ? data : [data]);
+    } catch (err) {
+      console.error("Ocurrio un error al traer la data", err);
+    }
+  }, []);
+
+  useEffect(() => {
+    getSpaces();
+  }, [getSpaces]);
 
   const handleChangeSubEvent = (e, index) => {
     const { name, value } = e.target;
@@ -58,29 +78,56 @@ const SubEventosModal = ({
     });
   };
 
+  const handleChangeSpaces = (e, subEventIndex, spaceIndex) => {
+    const { name, value } = e.target;
+
+    setRegisterSubEvents((prevDataEvent) => {
+      const newEvents = [...prevDataEvent];
+      const newSpaces = [...newEvents[subEventIndex].spaces];
+      newSpaces[spaceIndex] = { ...newSpaces[spaceIndex], [name]: value };
+      newEvents[subEventIndex] = {
+        ...newEvents[subEventIndex],
+        spaces: newSpaces,
+      };
+      return newEvents;
+    });
+  };
+
+  const handleChangeInsumes = (e, subEventIndex, insumeIndex) => {
+    const { name, value } = e.target;
+
+    setRegisterSubEvents((prevDataEvent) => {
+      const newEvents = [...prevDataEvent];
+      const newInsumes = [...newEvents[subEventIndex].insumes];
+      newInsumes[insumeIndex] = { ...newInsumes[insumeIndex], [name]: value };
+      newEvents[subEventIndex] = {
+        ...newEvents[subEventIndex],
+        insumes: newInsumes,
+      };
+      return newEvents;
+    });
+  };
   const handleSubmitSubEvent = async (e) => {
     e.preventDefault();
     console.log(registerSubEvents);
     try {
-      const idGlobalEvent = registerSubEvents[0].id_global_event;
-      const newDataToSend = registerSubEvents.slice(1).map((item) => ({
+      const newDataToSend = registerSubEvents.map((item) => ({
         ...item,
         start_date: dayjs(item.start_date).format("YYYY-MM-DD HH:mm:ss"),
         end_date: dayjs(item.end_date).format("YYYY-MM-DD HH:mm:ss"),
+        spaces: item.spaces.map((space) => Number(space.id_space)),
+        subeventConfirmation: "Confirmado",
       }));
-      const dataToSend = [
-        { id_global_event: Number(idGlobalEvent) },
-        ...newDataToSend,
-      ];
+      const dataToSend = [...newDataToSend];
       console.log(dataToSend);
-      const result = await register(dataToSend, "/api/subEvents/create");
+      const result = await register(
+        dataToSend,
+        `/api/subEvents/create/${idEvent}`
+      );
       setSuccesMessage("SubEvento creado correctamente");
       setErrorMessage("");
       console.log("Subevento registrado:", result);
       setRegisterSubEvents([
-        {
-          id_global_event: "",
-        },
         {
           name: "",
           headquarters: "",
@@ -88,6 +135,8 @@ const SubEventosModal = ({
           end_date: "",
           description: "",
           subeventConfirmation: "Confirmado",
+          spaces: [],
+          insumes: [],
         },
       ]);
       window.location.reload();
@@ -108,8 +157,32 @@ const SubEventosModal = ({
         end_date: "",
         description: "",
         subeventConfirmation: "",
+        spaces: [],
+        insumes: [],
       },
     ]);
+  };
+
+  const handleAddSpaces = async (subEventIndex, newSpace) => {
+    setRegisterSubEvents((prevData) => {
+      const updateSubEvents = [...prevData];
+      updateSubEvents[subEventIndex] = {
+        ...updateSubEvents[subEventIndex],
+        spaces: [...updateSubEvents[subEventIndex].spaces, newSpace],
+      };
+      return updateSubEvents;
+    });
+  };
+
+  const handleAddInsumes = async (subEventIndex, newInsume) => {
+    setRegisterSubEvents((prevData) => {
+      const updateSubEvents = [...prevData];
+      updateSubEvents[subEventIndex] = {
+        ...updateSubEvents[subEventIndex],
+        insumes: [...updateSubEvents[subEventIndex].insumes, newInsume],
+      };
+      return updateSubEvents;
+    });
   };
 
   const handleRemoveSubEvent = (index) => {
@@ -120,6 +193,32 @@ const SubEventosModal = ({
       const newData = [...prevData];
       newData.splice(index, 1);
       return newData;
+    });
+  };
+
+  const handleRemoveSpaces = (subEventIndex, spaceIndex) => {
+    setRegisterSubEvents((prevData) => {
+      const updateSubEvents = [...prevData];
+      updateSubEvents[subEventIndex] = {
+        ...updateSubEvents[subEventIndex],
+        spaces: updateSubEvents[subEventIndex].spaces.filter(
+          (_, index) => index !== spaceIndex
+        ),
+      };
+      return updateSubEvents;
+    });
+  };
+
+  const handleRemoveInsumes = (subEventIndex, insumeIndex) => {
+    setRegisterSubEvents((prevData) => {
+      const updateSubEvents = [...prevData];
+      updateSubEvents[subEventIndex] = {
+        ...updateSubEvents[subEventIndex],
+        insumes: updateSubEvents[subEventIndex].insumes.filter(
+          (_, index) => index !== insumeIndex
+        ),
+      };
+      return updateSubEvents;
     });
   };
 
@@ -166,136 +265,158 @@ const SubEventosModal = ({
 
                 <div className="p-4 md:p-5">
                   <form className="min-h-full" onSubmit={handleSubmitSubEvent}>
-                    <div className="grid grid-cols-3 gap-4">
+                    <div className="flex flex-col">
                       <div>
                         <div className="overflow-y-auto max-h-[57vh] space-y-4">
-                          {registerSubEvents.slice(1).map((data, index) => (
-                            <div key={index + 1} className="px-4">
-                              {index !== 0 && (
-                                <button
-                                  className="flex items-end justify-end w-full"
-                                  type="button"
-                                  onClick={() => handleRemoveSubEvent(index + 1)}
-                                >
-                                  <i className="ri-close-line text-2xl"></i>
-                                </button>
-                              )}
-                              <h2 className="font-bold text-xl text-center">
-                                SubEvento {index + 1}
-                              </h2>
-                              <div className="grid grid-cols-2 gap-4 items-center">
-                                <div className="flex flex-col">
-                                  <label
-                                    className="mb-2 text-base font-bold text-gray-900"
-                                    htmlFor="subeventName"
-                                  >
-                                    Nombre del SubEvento
-                                  </label>
-                                  <input
-                                    type="text"
-                                    name="name"
-                                    id="subeventName"
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg block w-full p-2.5 outline-none"
-                                    placeholder="Semana del instructor"
-                                    onChange={(e) =>
-                                      handleChangeSubEvent(e, index + 1)
+                          {registerSubEvents &&
+                            Array.isArray(registerSubEvents) &&
+                            registerSubEvents.map((data, SubEventIndex) => (
+                              <div key={SubEventIndex} className="px-4">
+                                {SubEventIndex !== 0 && (
+                                  <button
+                                    className="flex items-end justify-end w-full"
+                                    type="button"
+                                    onClick={() =>
+                                      handleRemoveSubEvent(SubEventIndex)
                                     }
-                                    value={data.name}
-                                  />
-                                </div>
-                                <div className="flex flex-col">
-                                  <label
-                                    className="block mb-2 text-base font-bold text-gray-900"
-                                    htmlFor="sede"
                                   >
-                                    Sede
-                                  </label>
-                                  <Select
-                                    id="sede"
-                                    label="Ecoge la sede"
-                                    name="headquarters"
-                                    data-testid="tipo-espacios"
-                                    onChange={(e) =>
-                                      handleChangeSubEvent(e, index + 1)
-                                    }
-                                    value={data.headquarters}
-                                  >
-                                    <SelectItem key="">
-                                      Seleccione el tipo
-                                    </SelectItem>
-                                    <SelectItem key="San Francisco">
-                                      San Francisco
-                                    </SelectItem>
-                                    <SelectItem key="Uniremington">
-                                      Uniremington
-                                    </SelectItem>
-                                    <SelectItem key="La Ceja">La Ceja</SelectItem>
-                                  </Select>
+                                    <i className="ri-close-line text-2xl"></i>
+                                  </button>
+                                )}
+                                <h2 className="font-bold text-3xl text-center">
+                                  SubEvento {SubEventIndex + 1}
+                                </h2>
+                                <div className="grid grid-cols-2 gap-4 items-center">
+                                  <div className="flex flex-col">
+                                    <label
+                                      className="mb-2 text-base font-bold text-gray-900"
+                                      htmlFor="subeventName"
+                                    >
+                                      Nombre del SubEvento
+                                    </label>
+                                    <input
+                                      type="text"
+                                      name="name"
+                                      id="subeventName"
+                                      className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg block w-full p-2.5 outline-none"
+                                      placeholder="Semana del instructor"
+                                      onChange={(e) =>
+                                        handleChangeSubEvent(e, SubEventIndex)
+                                      }
+                                      value={data.name}
+                                    />
+                                  </div>
+                                  <div className="flex flex-col">
+                                    <label
+                                      className="block mb-2 text-base font-bold text-gray-900"
+                                      htmlFor="sede"
+                                    >
+                                      Sede
+                                    </label>
+                                    <Select
+                                      id="sede"
+                                      label="Ecoge la sede"
+                                      name="headquarters"
+                                      data-testid="tipo-espacios"
+                                      onChange={(e) =>
+                                        handleChangeSubEvent(e, SubEventIndex)
+                                      }
+                                      value={data.headquarters}
+                                    >
+                                      <SelectItem key="">
+                                        Seleccione el tipo
+                                      </SelectItem>
+                                      <SelectItem key="San Francisco">
+                                        San Francisco
+                                      </SelectItem>
+                                      <SelectItem key="Uniremington">
+                                        Uniremington
+                                      </SelectItem>
+                                      <SelectItem key="La Ceja">
+                                        La Ceja
+                                      </SelectItem>
+                                    </Select>
+                                  </div>
                                 </div>
-                              </div>
-                              <div className="grid grid-cols-2 gap-4 items-center">
-                                <div className="flex flex-col">
-                                  <label
-                                    className="block mb-2 text-base font-bold text-gray-900"
-                                    htmlFor="fechaInicio"
-                                  >
-                                    Fecha de Inicio
-                                  </label>
-                                  <input
-                                    type="datetime-local"
-                                    className="bg-gray-100 text-gray-900 text-base rounded-lg block w-full p-2.5 outline-none"
-                                    label={"Fecha Inicio"}
-                                    id="fechaInicio"
-                                    onChange={(e) =>
-                                      handleChangeSubEvent(e, index + 1)
-                                    }
-                                    name="start_date"
-                                    value={data.start_date}
-                                  />
+                                <div className="grid grid-cols-2 gap-4 items-center">
+                                  <div className="flex flex-col">
+                                    <label
+                                      className="block mb-2 text-base font-bold text-gray-900"
+                                      htmlFor="fechaInicio"
+                                    >
+                                      Fecha de Inicio
+                                    </label>
+                                    <input
+                                      type="datetime-local"
+                                      className="bg-gray-100 text-gray-900 text-base rounded-lg block w-full p-2.5 outline-none"
+                                      label={"Fecha Inicio"}
+                                      id="fechaInicio"
+                                      onChange={(e) =>
+                                        handleChangeSubEvent(e, SubEventIndex)
+                                      }
+                                      name="start_date"
+                                      value={data.start_date}
+                                    />
+                                  </div>
+                                  <div className="flex flex-col">
+                                    <label
+                                      className="block mb-2 text-base font-bold text-gray-900"
+                                      htmlFor="fechaFin"
+                                    >
+                                      Fecha de Fin
+                                    </label>
+                                    <input
+                                      type="datetime-local"
+                                      className="bg-gray-100 text-gray-900 text-base rounded-lg block w-full p-2.5 outline-none"
+                                      label={"Fecha Fin"}
+                                      id="fechaFin"
+                                      onChange={(e) =>
+                                        handleChangeSubEvent(e, SubEventIndex)
+                                      }
+                                      name="end_date"
+                                      value={data.end_date}
+                                    />
+                                  </div>
                                 </div>
-                                <div className="flex flex-col">
-                                  <label
-                                    className="block mb-2 text-base font-bold text-gray-900"
-                                    htmlFor="fechaFin"
-                                  >
-                                    Fecha de Fin
-                                  </label>
-                                  <input
-                                    type="datetime-local"
-                                    className="bg-gray-100 text-gray-900 text-base rounded-lg block w-full p-2.5 outline-none"
-                                    label={"Fecha Fin"}
-                                    id="fechaFin"
-                                    onChange={(e) =>
-                                      handleChangeSubEvent(e, index + 1)
-                                    }
-                                    name="end_date"
-                                    value={data.end_date}
-                                  />
-                                </div>
-                              </div>
 
-                              <div className="flex flex-col">
-                                <label
-                                  className="block mb-2 text-center text-base font-bold text-gray-900"
-                                  htmlFor="descripcion"
-                                >
-                                  Descripción
-                                </label>
-                                <Textarea
-                                  id="descripcion"
-                                  placeholder="Observaciones"
-                                  className="mb-4"
-                                  name="description"
-                                  onChange={(e) =>
-                                    handleChangeSubEvent(e, index + 1)
-                                  }
-                                  value={data.description}
-                                />
+                                <div className="flex flex-col">
+                                  <label
+                                    className="block mb-2 text-center text-base font-bold text-gray-900"
+                                    htmlFor="descripcion"
+                                  >
+                                    Descripción
+                                  </label>
+                                  <Textarea
+                                    id="descripcion"
+                                    placeholder="Observaciones"
+                                    className="mb-4"
+                                    name="description"
+                                    onChange={(e) =>
+                                      handleChangeSubEvent(e, SubEventIndex)
+                                    }
+                                    value={data.description}
+                                  />
+                                </div>
+                                <hr className="border-2 my-3" />
+                                <div className="flex justify-around divide-x">
+                                  <SubEventsHasSpaces
+                                    spaces={spaces}
+                                    subEventSpaces={data.spaces}
+                                    SubEventIndex={SubEventIndex}
+                                    onAddSpace={handleAddSpaces}
+                                    onRemoveSpace={handleRemoveSpaces}
+                                    onChangeSpace={handleChangeSpaces}
+                                  />
+                                  <InsumesModal
+                                    insumes={data.insumes}
+                                    SubEventIndex={SubEventIndex}
+                                    onAddInsume={handleAddInsumes}
+                                    onRemoveInsume={handleRemoveInsumes}
+                                    onChangeInsume={handleChangeInsumes}
+                                  />
+                                </div>
                               </div>
-                              <hr className="border-2 my-3" />
-                            </div>
-                          ))}
-
+                            ))}
                         </div>
                         <div className="max-h-[57vh]">
                           <Button
@@ -304,19 +425,10 @@ const SubEventosModal = ({
                             onClick={handleAddSubEvent}
                             endContent={<PlusIcon />}
                           >
-                            Crear nuevo subevento {registerSubEvents.slice(1).length}
+                            Crear nuevo subevento {registerSubEvents.length}
                           </Button>
                         </div>
                       </div>
-                      <div className="Espacios">
-                        <Button
-                          color="secondary"
-                          endContent={<PlusIcon />}
-                        >
-                          Asignar un espacio
-                        </Button>
-                      </div>
-                      <div className="Insumos">Insumos</div>
                     </div>
 
                     <div className="flex items-center justify-center p-4 md:p-5 space-x-3 rtl:space-x-reverse border-t border-gray-200 rounded-b">
