@@ -23,6 +23,9 @@ const TableShowData = React.lazy(() =>
 const OrganizadoresSubEventos = React.lazy(() =>
   import("./OrganizadoresSubEventos")
 );
+const SubEventConfirmationModal = React.lazy(() =>
+  import("./SubEventConfirmationModal")
+);
 
 export default function SubEventos() {
   const { id } = useParams();
@@ -40,6 +43,8 @@ export default function SubEventos() {
 
   //update subevents
   const [isModalUpdateSubEventsOpen, setIsModalUpdateSubEventsOpen] =
+    useState(false);
+  const [isSubEventConfirmationModalOpen, setIsSubEventConfirmationModalOpen] =
     useState(false);
   const [idSubEvents, setIdSubEvents] = useState("");
   //
@@ -136,12 +141,13 @@ export default function SubEventos() {
         return (
           <div className="flex flex-col">
             <p
-              className={`text-bold text-small text-center rounded-lg ${subEvent.subeventConfirmation === "Confirmado"
-                ? "bg-green-300 text-green-800"
-                : subEvent.subeventConfirmation === "Cancelado"
+              className={`text-bold text-small text-center rounded-lg ${
+                subEvent.subeventConfirmation === "Confirmado"
+                  ? "bg-green-300 text-green-800"
+                  : subEvent.subeventConfirmation === "Rechazado"
                   ? "bg-red-300 text-red-800"
                   : "bg-orange-300 text-orange-800"
-                }`}
+              }`}
             >
               {subEvent.subeventConfirmation}
             </p>
@@ -167,7 +173,6 @@ export default function SubEventos() {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem key="assign">Asignar un espacio</DropdownItem>
                 <DropdownItem
                   disabled={
                     subEvent.global_event_status === "Rechazado" ||
@@ -190,9 +195,18 @@ export default function SubEventos() {
                     setIsModalUpdateSubEventsOpen(true);
                   }}
                 >
-                  Actualizar
+                  Actualizar SubEvento{" "}
+                  <b className="capitalize">{subEvent.name}</b>
                 </DropdownItem>
-                <DropdownItem key="delete">Delete</DropdownItem>
+                <DropdownItem
+                  textValue="Cambiar estado del subevento"
+                  onClick={() => {
+                    setIdSubEvents(subEvent.id_sub_event);
+                    setIsSubEventConfirmationModalOpen(true);
+                  }}
+                >
+                  Cambiar estado SubEvento
+                </DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </div>
@@ -228,6 +242,11 @@ export default function SubEventos() {
         idSubEvents={Number(idSubEvents)}
         isOrganizersModal={isOrganizersModal}
         setIsOrganizersModal={setIsOrganizersModal}
+      />
+      <SubEventConfirmationModal
+        idSubEvents={Number(idSubEvents)}
+        isSubEventConfirmationModalOpen={isSubEventConfirmationModalOpen}
+        setIsSubEventConfirmationModalOpen={setIsSubEventConfirmationModalOpen}
       />
       <section>
         <TableShowData

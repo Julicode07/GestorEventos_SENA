@@ -1,7 +1,15 @@
-import { Button, Select, SelectItem } from "@nextui-org/react";
+import {
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableColumn,
+  TableHeader,
+  TableRow,
+} from "@nextui-org/react";
 import { PlusIcon } from "@modules/Admin/components/PlusIcon";
 import PropTypes from "prop-types";
-import { memo } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 
 const SubEventsHasSpaces = memo(
   ({
@@ -12,6 +20,37 @@ const SubEventsHasSpaces = memo(
     onRemoveSpace,
     onChangeSpace,
   }) => {
+    const [selectedSpaces, setSelectedSpaces] = useState({});
+    const [inventorySpace, setInventorySpace] = useState({});
+    const getInventorySpace = useCallback(async (spaceId, index) => {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/inventory/space/${spaceId}`
+      );
+      const data = await response.json();
+      setInventorySpace((prevState) => ({
+        ...prevState,
+        [index]: Array.isArray(data) ? data : [data],
+      }));
+    }, []);
+
+    useEffect(() => {
+      if (subEventSpaces.length > 0) {
+        getInventorySpace(
+          subEventSpaces[SubEventIndex]?.id_space,
+          SubEventIndex
+        );
+      }
+    }, [SubEventIndex, subEventSpaces, getInventorySpace]);
+
+    const handleChange = (e, index) => {
+      const { value } = e.target;
+      setSelectedSpaces((prevState) => ({
+        ...prevState,
+        [index]: value,
+      }));
+      getInventorySpace(value, index);
+    };
+
     return (
       <div className="pr-4 w-full">
         <Button
@@ -34,23 +73,58 @@ const SubEventsHasSpaces = memo(
             </button>
             <h1 className="font-bold text-xl">Espacio # {spacesIndex + 1}</h1>
             <label
-              className="block mb-2 text-base font-bold text-gray-900"
+              className="flex space-x-3 mb-2 text-base font-bold text-gray-900"
               htmlFor={`space-${spacesIndex}`}
             >
-              Selecciona el Espacio
+              <h1>Selecciona el Espacio:</h1>{" "}
+              <p>
+                {selectedSpaces[spacesIndex] && selectedSpaces[spacesIndex]
+                  ? `Espacio # ${selectedSpaces[spacesIndex]}`
+                  : "No seleccionado"}
+              </p>
             </label>
-            <Select
+            {inventorySpace[spacesIndex] &&
+              inventorySpace[spacesIndex].length > 0 && (
+                <div className="my-2">
+                  <Table aria-label="Example static collection table">
+                    <TableHeader>
+                      <TableColumn>NOMBRE</TableColumn>
+                      <TableColumn>DESCRIPCIÓN</TableColumn>
+                      <TableColumn>CANTIDAD</TableColumn>
+                      <TableColumn>TIPO</TableColumn>
+                    </TableHeader>
+                    <TableBody>
+                      {inventorySpace[spacesIndex]?.map((inventory) => (
+                        <TableRow key={inventory.id_inventory}>
+                          <TableCell>{inventory.article_name}</TableCell>
+                          <TableCell>{inventory.description}</TableCell>
+                          <TableCell>{inventory.quantity}</TableCell>
+                          <TableCell>{inventory.type}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              )}
+            <select
               id={`space-${spacesIndex}`}
               label="Elige el espacio"
               name="id_space"
+              className="bg-gray-100 text-gray-900 text-base rounded-lg block w-full p-2.5 outline-none"
               data-testid={`space-${spacesIndex}`}
-              onChange={(e) => onChangeSpace(e, SubEventIndex, spacesIndex)}
-              value={space.id_space}
+              onChange={(e) => {
+                onChangeSpace(e, SubEventIndex, spacesIndex);
+                handleChange(e, spacesIndex);
+              }}
+              value={selectedSpaces[spacesIndex] || space.id_space || ""}
             >
-              {spaces.map((space) => (
-                <SelectItem key={space.id_space}>{space.name}</SelectItem>
+              <option value="">Selecciona un espacio</option>
+              {spaces.map((spaceOption) => (
+                <option key={spaceOption.id_space} value={spaceOption.id_space}>
+                  {spaceOption.name}
+                </option>
               ))}
-            </Select>
+            </select>
           </div>
         ))}
       </div>

@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Listbox, ListboxItem } from "@nextui-org/react";
 
 const OrganizadoresSubEventos = ({
   isOrganizersModal,
@@ -104,6 +103,12 @@ const OrganizadoresSubEventos = ({
       )}
     </>
   );
+};
+
+OrganizadoresSubEventos.propTypes = {
+  isOrganizersModal: PropTypes.bool,
+  setIsOrganizersModal: PropTypes.func,
+  idSubEvents: PropTypes.number,
 };
 
 export default OrganizadoresSubEventos;
