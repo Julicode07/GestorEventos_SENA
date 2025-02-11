@@ -12,6 +12,7 @@ export interface ISubEvent {
   subeventConfirmation: string;
   spaces?: Array<any> | undefined;
   insumes?: Array<any> | undefined;
+  organizers: Array<any> | undefined;
 }
 
 export interface ISubEventHasSpace {

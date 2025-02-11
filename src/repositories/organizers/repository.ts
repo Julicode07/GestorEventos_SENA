@@ -3,6 +3,7 @@ import { getConnection, pool } from "../../db/connection";
 import { IOrganizers } from "./models";
 
 export async function createOrganizers(
+  idSubEvent: number,
   organizersData: IOrganizers
 ): Promise<number> {
   const connection: PoolConnection = await getConnection(pool);
@@ -11,7 +12,7 @@ export async function createOrganizers(
       `
        INSERT INTO organizers (id_sub_event, name, rol, email, address) VALUES (?,?,?,?,?)`,
       [
-        organizersData.id_sub_event,
+        idSubEvent,
         organizersData.name,
         organizersData.rol,
         organizersData.email,
@@ -60,7 +61,9 @@ export async function getOrganizers(): Promise<number> {
   }
 }
 
-export async function getOrganizerById(id_organizers: number): Promise<IOrganizers | null> {
+export async function getOrganizerById(
+  id_organizers: number
+): Promise<IOrganizers | null> {
   const connection: PoolConnection = await getConnection(pool);
   try {
     const result = await connection.query(
@@ -97,7 +100,9 @@ export async function getOrganizerById(id_organizers: number): Promise<IOrganize
   }
 }
 
-export async function getOrganizersBySubEventId(id_sub_event: number): Promise<IOrganizers | null> {
+export async function getOrganizersBySubEventId(
+  id_sub_event: number
+): Promise<IOrganizers | null> {
   const connection: PoolConnection = await getConnection(pool);
   try {
     const result = await connection.query(
@@ -134,8 +139,10 @@ export async function getOrganizersBySubEventId(id_sub_event: number): Promise<I
   }
 }
 
-
-export async function updateOrganizerById(id_organizer: number, organizersData: Partial<IOrganizers>): Promise<number> {
+export async function updateOrganizerById(
+  id_organizer: number,
+  organizersData: Partial<IOrganizers>
+): Promise<number> {
   const connection: PoolConnection = await getConnection(pool);
   try {
     // Build the query dynamically to include only the fields being updated
@@ -171,7 +178,9 @@ export async function updateOrganizerById(id_organizer: number, organizersData: 
 
     // Add the id_organizers to the values array
     values.push(id_organizer);
-    const query = `UPDATE organizers SET ${fieldsToUpdate.join(", ")} WHERE id_organizers = ?`;
+    const query = `UPDATE organizers SET ${fieldsToUpdate.join(
+      ", "
+    )} WHERE id_organizers = ?`;
     const result = await connection.query(query, values);
 
     if (result.affectedRows === 1) {

@@ -10,6 +10,7 @@ import {
 import { Request, Response } from "express";
 import { ISubEvent, ISubEventHasSpace } from "../repositories/subEvents/models";
 import { bigIntReplacer } from "../helpers/json.helper";
+import { createOrganizers } from "../repositories/organizers/repository";
 
 export async function CreateSubeventsController(req: Request, res: Response) {
   try {
@@ -41,6 +42,12 @@ export async function CreateSubeventsController(req: Request, res: Response) {
         await Promise.all(
           subEvent.insumes?.map(
             async (insume) => await createInsumes(subEventInsertId, insume)
+          ) ?? []
+        );
+        await Promise.all(
+          subEvent.organizers?.map(
+            async (organizer) =>
+              await createOrganizers(subEventInsertId, organizer)
           ) ?? []
         );
       })
