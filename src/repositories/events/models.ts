@@ -9,6 +9,61 @@ export interface IGlobalEvent {
   status: string;
 }
 
+ type SubEvent = {
+  id_sub_event: number;
+  sub_event_name: string;
+  headquarters: string;
+  start_date: string; // Usa el tipo adecuado si es un tipo de fecha
+  end_date: string; // Usa el tipo adecuado si es un tipo de fecha
+  sub_event_description: string;
+  sub_event_status: string;
+};
+
+ type Insume = {
+  id_insumes: number;
+  insume_name: string;
+  insume_quantity: number;
+};
+
+ type Organizer = {
+  id_organizers: number;
+  organizer_name: string;
+  organizer_rol: string;
+  organizer_email: string;
+  organizer_address: string;
+};
+
+ type Space = {
+  id_space: number;
+  space_name: string;
+  space_capacity: number;
+  type: string;
+  space_status: string;
+  space_details: string;
+};
+
+ type Inventory = {
+  id_inventory: number;
+  article_name: string;
+  inventory_description: string;
+  inventory_quantity: number;
+  inventory_type: string;
+};
+
+// Tipo para el evento global completo
+export type GlobalEventInfo = {
+  id_global_event: number;
+  global_event_name: string;
+  global_event_observations: string;
+  global_event_status: string;
+  sub_events: SubEvent[];
+  insumos: Insume[];
+  organizadores: Organizer[];
+  espacios: Space[];
+  inventario: Inventory[];
+};
+
+
 export async function createGlobalEventsSchema(): Promise<Number> {
   const connection: PoolConnection = await getConnection(pool);
   try {
