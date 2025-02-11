@@ -57,10 +57,10 @@ export type GlobalEventInfo = {
   global_event_observations: string;
   global_event_status: string;
   sub_events: SubEvent[];
-  insumos: Insume[];
-  organizadores: Organizer[];
-  espacios: Space[];
-  inventario: Inventory[];
+  insumes: Insume[];
+  organizers: Organizer[];
+  spaces: Space[];
+  inventory: Inventory[];
 };
 
 

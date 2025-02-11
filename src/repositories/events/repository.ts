@@ -185,19 +185,18 @@ export async function getAllInfoGLobalEventsById(
       [idGlobalEvent]
     );
 
-    if (result.length === 0) return null; // Si no hay resultados, retornar null
+    if (result.length === 0) return null; 
 
-    // Inicializar el objeto globalEvent con el tipo GlobalEventInfo
     const globalEvent: GlobalEventInfo = {
       id_global_event: result[0].id_global_event,
       global_event_name: result[0].global_event_name,
       global_event_observations: result[0].global_event_observations,
       global_event_status: result[0].global_event_status,
       sub_events: [],
-      insumos: [],
-      organizadores: [],
-      espacios: [],
-      inventario: [],
+      insumes: [],
+      organizers: [],
+      spaces: [],
+      inventory: [],
     };
 
     // Agrupar la información
@@ -222,11 +221,11 @@ export async function getAllInfoGLobalEventsById(
 
       // Agrupar insumos
       if (row.id_insumes) {
-        const insumo = globalEvent.insumos.find(
+        const insumo = globalEvent.insumes.find(
           (ins) => ins.id_insumes === row.id_insumes
         );
         if (!insumo) {
-          globalEvent.insumos.push({
+          globalEvent.insumes.push({
             id_insumes: row.id_insumes,
             insume_name: row.insume_name,
             insume_quantity: row.insume_quantity,
@@ -236,11 +235,11 @@ export async function getAllInfoGLobalEventsById(
 
       // Agrupar organizadores
       if (row.id_organizers) {
-        const organizer = globalEvent.organizadores.find(
+        const organizer = globalEvent.organizers.find(
           (org) => org.id_organizers === row.id_organizers
         );
         if (!organizer) {
-          globalEvent.organizadores.push({
+          globalEvent.organizers.push({
             id_organizers: row.id_organizers,
             organizer_name: row.organizer_name,
             organizer_rol: row.organizer_rol,
@@ -252,11 +251,11 @@ export async function getAllInfoGLobalEventsById(
 
       // Agrupar espacios
       if (row.id_space) {
-        const space = globalEvent.espacios.find(
+        const space = globalEvent.spaces.find(
           (sp) => sp.id_space === row.id_space
         );
         if (!space) {
-          globalEvent.espacios.push({
+          globalEvent.spaces.push({
             id_space: row.id_space,
             space_name: row.space_name,
             space_capacity: row.space_capacity,
@@ -269,11 +268,11 @@ export async function getAllInfoGLobalEventsById(
 
       // Agrupar inventario
       if (row.id_inventory) {
-        const inventoryItem = globalEvent.inventario.find(
+        const inventoryItem = globalEvent.inventory.find(
           (si) => si.id_inventory === row.id_inventory
         );
         if (!inventoryItem) {
-          globalEvent.inventario.push({
+          globalEvent.inventory.push({
             id_inventory: row.id_inventory,
             article_name: row.article_name,
             inventory_description: row.inventory_description,
