@@ -5,6 +5,7 @@ import {
   getGlobalEventById,
   updateGlobalEventById,
   getAllInfoGLobalEventsById,
+  updateStateGlobalEventById,
 } from "../repositories/events/repository";
 import { findUserByDocument } from "../repositories/users/repository";
 import { Request, Response } from "express";
@@ -111,5 +112,35 @@ export async function getAllInfoGlobalEventByIdController(
     return res
       .status(500)
       .end(JSON.stringify({ message: "Error interno del servidor :(" }));
+  }
+}
+
+export async function updateStateGlobalEventByIdController(
+  req: Request,
+  res: Response
+) {
+  try {
+    const { id_global_event } = req.params;
+    const statusData = req.body;
+    const subEvents = await updateStateGlobalEventById(
+      Number(id_global_event),
+      statusData
+    );
+    return subEvents == 1
+      ? res.status(200).send(
+          JSON.stringify({
+            message: `Se actualizo el sub evento ${id_global_event}`,
+            data: subEvents,
+          })
+        )
+      : res.status(400).end(
+          JSON.stringify({
+            message: `No se actulizo el sub evento ${id_global_event}`,
+          })
+        );
+  } catch (err) {
+    return res
+      .status(500)
+      .end(JSON.stringify({ message: "Error interno del servidor" }));
   }
 }

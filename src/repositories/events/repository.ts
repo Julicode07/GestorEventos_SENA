@@ -291,3 +291,28 @@ export async function getAllInfoGLobalEventsById(
     connection.release();
   }
 }
+
+export async function updateStateGlobalEventById(
+  idEvent: number,
+  statusData: string
+): Promise<Number> {
+  const connection: PoolConnection = await getConnection(pool);
+  try {
+    const result = await connection.query(
+      `
+        UPDATE
+            global_events
+        SET
+            status = IFNULL(?, status)
+        WHERE id_global_event = ?`,
+      [statusData, idEvent]
+    );
+    if (result.affectedRows > 0) return 1;
+    else throw new Error(`Could not update global event ${idEvent}`);
+  } catch (err) {
+    console.error(`[global events repository]: ${err}`);
+    return -1;
+  } finally {
+    connection.release();
+  }
+}

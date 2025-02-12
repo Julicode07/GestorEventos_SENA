@@ -4,6 +4,7 @@ import {
   GetGlobalEventsController,
   updateGlobalEventsByIdController,
   getAllInfoGlobalEventByIdController,
+  updateStateGlobalEventByIdController,
 } from "../controllers/events";
 import express, { Express, Request, Response } from "express";
 import { databaseRegex } from "../helpers/regex.helper";
@@ -83,4 +84,18 @@ EventsRouter.get(
     }
   }
 );
+
+EventsRouter.patch(
+  "/update/state/:id_global_event",
+  async (req: Request, res: Response) => {
+    try {
+      return updateStateGlobalEventByIdController(req, res);
+    } catch (err) {
+      return res
+        .status(500)
+        .end(JSON.stringify({ message: "Error interno del servidor :(" }));
+    }
+  }
+);
+
 export default EventsRouter;
