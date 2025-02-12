@@ -5,7 +5,7 @@ import {
   updateGlobalEventsByIdController,
   getAllInfoGlobalEventByIdController,
   updateStateGlobalEventByIdController,
-  getAllGlobalEventsByUserId
+  getAllGlobalEventsByUserIdController
 } from "../controllers/events";
 import express, { Express, Request, Response } from "express";
 import { databaseRegex } from "../helpers/regex.helper";
@@ -90,7 +90,7 @@ EventsRouter.get(
   "/global/self/all",
   async (req: Request, res: Response) => {
     try {
-      return getAllGlobalEventsByUserId(req, res);
+      return getAllGlobalEventsByUserIdController(req, res);
     } catch (err) {
       return res
         .status(500)
