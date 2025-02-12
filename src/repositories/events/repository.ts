@@ -294,7 +294,7 @@ export async function getAllInfoGLobalEventsById(
 
 export async function updateStateGlobalEventById(
   idEvent: number,
-  statusData: string
+  statusData: { status: string }
 ): Promise<Number> {
   const connection: PoolConnection = await getConnection(pool);
   try {
@@ -305,7 +305,7 @@ export async function updateStateGlobalEventById(
         SET
             status = IFNULL(?, status)
         WHERE id_global_event = ?`,
-      [statusData, idEvent]
+      [statusData.status, idEvent]
     );
     if (result.affectedRows > 0) return 1;
     else throw new Error(`Could not update global event ${idEvent}`);
