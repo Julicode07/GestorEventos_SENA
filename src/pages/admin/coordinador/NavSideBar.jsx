@@ -65,7 +65,7 @@ const NavSideBar = () => {
             <div className="flex items-center justify-start rtl:justify-end">
               <button
                 onClick={toggleSidebar}
-                aria-controls="logo-sidebar"
+                aria-controls="sidebar"
                 type="button"
                 id="logo sidebar"
                 className="inline-flex items-center p-2 text-gray-800 rounded-lg sm:hidden hover:bg-gray-100"

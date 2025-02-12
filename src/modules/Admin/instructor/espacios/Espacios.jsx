@@ -1,14 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import {
-  Button,
-  DropdownTrigger,
-  Dropdown,
-  DropdownMenu,
-  DropdownItem,
-  Breadcrumbs,
-  BreadcrumbItem,
-} from "@nextui-org/react";
-import { VerticalDotsIcon } from "../../components/VerticalDotsIcon";
+import { Breadcrumbs, BreadcrumbItem } from "@nextui-org/react";
 import { columns, INITIAL_VISIBLE_COLUMNS } from "./utils/utils.js";
 import { capitalize } from "../../utils/utils";
 
@@ -121,7 +112,10 @@ export default function App() {
       case "actions":
         return (
           <div className="relative flex justify-end items-center gap-2">
-            <Link to={`/admin/instructor/inventario/espacio/${space.id_space}`} className="block m-auto bg-primary text-white p-2 rounded-lg">
+            <Link
+              to={`/admin/instructor/inventario/espacio/${space.id_space}`}
+              className="block m-auto bg-green-300 text-green-900 p-2 rounded-lg"
+            >
               Inventario <i className="ri-list-check"></i>
             </Link>
           </div>

@@ -262,7 +262,7 @@ export default function Eventos() {
             onSearchChange={onSearchChange}
             rowsPerPage={rowsPerPage}
             visibleColumns={visibleColumns}
-            module={getGlobalEvents}
+            module={showGlobalEvent}
             setVisibleColumns={setVisibleColumns}
             columns={columns}
             capitalize={capitalize}

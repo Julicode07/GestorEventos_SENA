@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 import PropTypes from "prop-types";
 import SubEventsHasSpaces from "./SubEventsHasSpaces";
 import InsumesModal from "./InsumesModal";
+import OrganizersModal from "./OrganizersModal";
 
 const SubEventosModal = ({
   isSubEventosModalOpen,
@@ -24,6 +25,7 @@ const SubEventosModal = ({
       subeventConfirmation: "Confirmado",
       spaces: [],
       insumes: [],
+      organizers: [],
     },
   ]);
 
@@ -39,6 +41,7 @@ const SubEventosModal = ({
           subeventConfirmation: "Confirmado",
           spaces: [],
           insumes: [],
+          organizers: [],
         },
       ]);
     }
@@ -107,6 +110,24 @@ const SubEventosModal = ({
       return newEvents;
     });
   };
+
+  const handleChangeOrganizers = (e, subEventIndex, organizerIndex) => {
+    const { name, value } = e.target;
+    setRegisterSubEvents((prevDataEvent) => {
+      const newEvents = [...prevDataEvent];
+      const newOrganizers = [...newEvents[subEventIndex].organizers];
+      newOrganizers[organizerIndex] = {
+        ...newOrganizers[organizerIndex],
+        [name]: value,
+      };
+      newEvents[subEventIndex] = {
+        ...newEvents[subEventIndex],
+        organizers: newOrganizers,
+      };
+      return newEvents;
+    });
+  };
+
   const handleSubmitSubEvent = async (e) => {
     e.preventDefault();
     console.log(registerSubEvents);
@@ -137,6 +158,7 @@ const SubEventosModal = ({
           subeventConfirmation: "Confirmado",
           spaces: [],
           insumes: [],
+          organizers: [],
         },
       ]);
       window.location.reload();
@@ -159,6 +181,7 @@ const SubEventosModal = ({
         subeventConfirmation: "",
         spaces: [],
         insumes: [],
+        organizers: [],
       },
     ]);
   };
@@ -180,6 +203,20 @@ const SubEventosModal = ({
       updateSubEvents[subEventIndex] = {
         ...updateSubEvents[subEventIndex],
         insumes: [...updateSubEvents[subEventIndex].insumes, newInsume],
+      };
+      return updateSubEvents;
+    });
+  };
+
+  const handleAddOrganizers = async (subEventIndex, newOrganizer) => {
+    setRegisterSubEvents((prevData) => {
+      const updateSubEvents = [...prevData];
+      updateSubEvents[subEventIndex] = {
+        ...updateSubEvents[subEventIndex],
+        organizers: [
+          ...updateSubEvents[subEventIndex].organizers,
+          newOrganizer,
+        ],
       };
       return updateSubEvents;
     });
@@ -216,6 +253,19 @@ const SubEventosModal = ({
         ...updateSubEvents[subEventIndex],
         insumes: updateSubEvents[subEventIndex].insumes.filter(
           (_, index) => index !== insumeIndex
+        ),
+      };
+      return updateSubEvents;
+    });
+  };
+
+  const handleRemoveOrganizers = (subEventIndex, organizerIndex) => {
+    setRegisterSubEvents((prevData) => {
+      const updateSubEvents = [...prevData];
+      updateSubEvents[subEventIndex] = {
+        ...updateSubEvents[subEventIndex],
+        organizers: updateSubEvents[subEventIndex].organizers.filter(
+          (_, index) => index !== organizerIndex
         ),
       };
       return updateSubEvents;
@@ -413,6 +463,13 @@ const SubEventosModal = ({
                                     onAddInsume={handleAddInsumes}
                                     onRemoveInsume={handleRemoveInsumes}
                                     onChangeInsume={handleChangeInsumes}
+                                  />
+                                  <OrganizersModal
+                                    organizers={data.organizers}
+                                    subEventIndex={SubEventIndex}
+                                    onAddOrganizer={handleAddOrganizers}
+                                    onRemoveOrganizer={handleRemoveOrganizers}
+                                    onChangeOrganizer={handleChangeOrganizers}
                                   />
                                 </div>
                               </div>

@@ -1,49 +1,45 @@
-import React from "react";
-import {
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-  Input,
-  Button,
-  Chip,
-  User,
-  Link,
-  Pagination,
-  Breadcrumbs,
-  BreadcrumbItem,
-} from "@nextui-org/react";
-import { EyeIcon } from "@/modules/Admin/components/EyeIcon";
-import { SearchIcon } from "@/modules/Admin/components/SearchIcon";
-import { columns, events } from "@/modules/Admin/utils/data";
-
-const statusColorMap = {
-  Pendiente: "warning",
-};
-
-const INITIAL_VISIBLE_COLUMNS = [
-  "name",
-  "event",
-  "space",
-  "startDate",
-  "endDate",
-  "status",
-  "actions",
-];
+import React, { useCallback, useEffect, useState } from "react";
+import { BreadcrumbItem, Breadcrumbs } from "@nextui-org/react";
+import { columns, INITIAL_VISIBLE_COLUMNS, capitalize } from "./utils/utils.js";
+import TopContent from "../../components/TopContent.jsx";
+import BottomContent from "../../components/BottonContent.jsx";
+import { EyeIcon } from "../../components/EyeIcon";
+import { Link } from "react-router-dom";
+const TableShowData = React.lazy(() =>
+  import("./../../components/TableShowData.jsx")
+);
 
 export default function App() {
-  const [filterValue, setFilterValue] = React.useState("");
-  const [visibleColumns] = React.useState(new Set(INITIAL_VISIBLE_COLUMNS));
-  const [statusFilter] = React.useState(new Set(["Pendiente"]));
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [sortDescriptor, setSortDescriptor] = React.useState({
+  const [filterValue, setFilterValue] = useState("");
+  const [visibleColumns, setVisibleColumns] = useState(
+    new Set(INITIAL_VISIBLE_COLUMNS)
+  );
+  const [selectedKeys, setSelectedKeys] = useState(new Set([]));
+
+  const [rowsPerPage, setRowsPerPage] = useState(15);
+  const [sortDescriptor, setSortDescriptor] = useState({
     column: "status",
+    direction: "ascending",
   });
-  const [page, setPage] = React.useState(1);
+  const [page, setPage] = useState(1);
 
   const hasSearchFilter = Boolean(filterValue);
+
+  // Show global event
+  const [showGlobalEvent, setShowGlobalEvent] = useState([]);
+
+  const getGlobalEvents = useCallback(async () => {
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/events/global/all`
+    );
+    const data = await response.json();
+    setShowGlobalEvent(data);
+  }, []);
+
+  useEffect(() => {
+    getGlobalEvents();
+  }, [getGlobalEvents]);
+  //
 
   const headerColumns = React.useMemo(() => {
     if (visibleColumns === "all") return columns;
@@ -54,21 +50,20 @@ export default function App() {
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
-    let filteredEvents = [...events];
+    let filteredEvents = [...showGlobalEvent];
 
     if (hasSearchFilter) {
       filteredEvents = filteredEvents.filter(
         (event) =>
           event.user.name.toLowerCase().includes(filterValue.toLowerCase()) ||
-          event.name.toLowerCase().includes(filterValue.toLowerCase())
+          event.name.toLowerCase().includes(filterValue.toLowerCase()) ||
+          (event.space &&
+            event.space.toLowerCase().includes(filterValue.toLowerCase()))
       );
     }
-    filteredEvents = filteredEvents.filter((event) =>
-      Array.from(statusFilter).includes(event.status)
-    );
 
     return filteredEvents;
-  }, [filterValue, statusFilter, hasSearchFilter]);
+  }, [filterValue, hasSearchFilter, showGlobalEvent]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -89,52 +84,7 @@ export default function App() {
     });
   }, [sortDescriptor, items]);
 
-  const renderCell = React.useCallback((event, columnKey) => {
-    const cellValue = event[columnKey];
-    switch (columnKey) {
-      case "name":
-        return (
-          <User
-            avatarProps={{ radius: "lg", src: event.user.avatar }}
-            name={event.user.name}
-            description={event.user.email}
-          ></User>
-        );
-      case "event":
-        return (
-          <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">{event.name}</p>
-          </div>
-        );
-      case "status":
-        return (
-          <Chip
-            className="capitalize"
-            color={statusColorMap[event.status]}
-            size="sm"
-            variant="flat"
-          >
-            {cellValue}
-          </Chip>
-        );
-      case "actions":
-        return (
-          <div className="relative flex justify-center items-center gap-2">
-            <Button
-              href={`/admin/coordinador/solicitudes/${event.id}`}
-              as={Link}
-              isIconOnly
-              size="sm"
-              color="primary"
-              endContent={<EyeIcon />}
-            />
-          </div>
-        );
-
-      default:
-        return cellValue;
-    }
-  }, []);
+  //Top Content
 
   const onRowsPerPageChange = React.useCallback((e) => {
     setRowsPerPage(Number(e.target.value));
@@ -155,107 +105,83 @@ export default function App() {
     setPage(1);
   }, []);
 
-  const topContent = React.useMemo(() => {
-    return (
-      <div className="flex flex-col gap-4">
-        <div className="flex justify-between gap-3 items-end">
-          <Input
-            isClearable
-            className="w-full sm:max-w-[44%]"
-            placeholder="Buscar por nombre..."
-            startContent={<SearchIcon />}
-            value={filterValue}
-            onClear={() => onClear()}
-            onValueChange={onSearchChange}
-          />
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="text-default-400 text-small">
-            Total {filteredItems.length} resultados
-          </span>
-          <label className="flex items-center text-default-400 text-small">
-            Filas por página:
-            <select
-              className="max-w-full rounded-lg bg-default-100 text-default-900 text-small font-bold"
-              onChange={onRowsPerPageChange}
-            >
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="15">15</option>
-            </select>
-          </label>
-        </div>
-      </div>
-    );
-  }, [
-    filterValue,
-    filteredItems.length,
-    onClear,
-    onRowsPerPageChange,
-    onSearchChange,
-  ]);
+  const renderCell = React.useCallback((event, columnKey) => {
+    const cellValue = event[columnKey];
 
-  const bottomContent = React.useMemo(() => {
-    return (
-      <div className="py-2 px-2 flex justify-center items-center">
-        <Pagination
-          isCompact
-          showControls
-          showShadow
-          color="primary"
-          page={page}
-          total={pages}
-          onChange={setPage}
-        />
-      </div>
-    );
-  }, [page, pages]);
+    switch (columnKey) {
+      case "status":
+        return (
+          <div className="flex flex-col">
+            <p
+              className={`text-bold text-small text-center rounded-lg ${
+                event.status === "Pendiente"
+                  ? "bg-warning-100 text-warning"
+                  : event.status === "Rechazado"
+                  ? "bg-danger-100 text-danger"
+                  : "bg-success-100 text-success"
+              }`}
+            >
+              {event.status}
+            </p>
+          </div>
+        );
+      case "actions":
+        return (
+          <div className="relative flex justify-end items-center gap-2">
+            <Link
+              to={`/admin/coordinador/solicitudes/ver/${event.id_global_event}`}
+            >
+              <EyeIcon className="block m-auto text-green-600 hover:bg-gray-300 hover:rounded-lg hover:cursor-pointer" />
+            </Link>
+          </div>
+        );
+      default:
+        return cellValue;
+    }
+  }, []);
 
   return (
     <main className="flex flex-col gap-2">
       <div>
         <Breadcrumbs>
           <BreadcrumbItem href=""> </BreadcrumbItem>
-          <BreadcrumbItem href="/admin/coordinador/solicitudes">
-            Solicitudes
+          <BreadcrumbItem href="/admin/instructor/espacios">
+            Eventos
           </BreadcrumbItem>
         </Breadcrumbs>
       </div>
-      <section>
-        <Table
-          aria-label="Example table with custom cells, pagination and sorting"
-          sortDescriptor={sortDescriptor}
-          topContent={topContent}
-          bottomContentPlacement="outside"
-          bottomContent={bottomContent}
-          topContentPlacement="outside"
-          onSortChange={setSortDescriptor}
-        >
-          <TableHeader columns={headerColumns}>
-            {(column) => (
-              <TableColumn
-                key={column.uid}
-                align={column.uid === "actions" ? "center" : "start"}
-                allowsSorting={column.sortable}
-              >
-                {column.name}
-              </TableColumn>
-            )}
-          </TableHeader>
-          <TableBody
-            emptyContent={"No se encontraron eventos pendientes"}
-            items={sortedItems}
-          >
-            {(item) => (
-              <TableRow key={item.id}>
-                {(columnKey) => (
-                  <TableCell>{renderCell(item, columnKey)}</TableCell>
-                )}
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </section>
+
+      {/* table */}
+      <TableShowData
+        sortDescriptor={sortDescriptor}
+        onSortChange={setSortDescriptor}
+        topContent={
+          <TopContent
+            filterValue={filterValue}
+            onClear={onClear}
+            onRowsPerPageChange={onRowsPerPageChange}
+            onSearchChange={onSearchChange}
+            rowsPerPage={rowsPerPage}
+            visibleColumns={visibleColumns}
+            module={showGlobalEvent}
+            setVisibleColumns={setVisibleColumns}
+            columns={columns}
+            capitalize={capitalize}
+          />
+        }
+        selectedKeys={selectedKeys}
+        topContentPlacement="outside"
+        onSelectionChange={setSelectedKeys}
+        bottomContent={
+          <BottomContent page={page} pages={pages} setPage={setPage} />
+        }
+        bottomContentPlacement="outside"
+        columns={headerColumns}
+        items={sortedItems}
+        renderCell={renderCell}
+        id="id_global_event"
+        aria="Table to show the data of global events"
+      />
     </main>
   );
 }
