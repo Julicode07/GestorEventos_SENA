@@ -292,6 +292,169 @@ export async function getAllInfoGLobalEventsById(
   }
 }
 
+
+export async function getAllGlobalEventsByUserId(id_user: number): Promise<GlobalEventInfo | null> {
+  // Aquí definimos el tipo de retorno
+  const connection: PoolConnection = await getConnection(pool);
+  try {
+    const result = await connection.query(
+      `SELECT 
+        ge.id_global_event,
+        ge.name AS global_event_name,
+        ge.details AS global_event_observations,
+        ge.status AS global_event_status,
+        ge.id_user
+
+        se.id_sub_event,
+        se.name AS sub_event_name,
+        se.headquarters,
+        se.start_date,
+        se.end_date,
+        se.description AS sub_event_description,
+        se.subeventConfirmation AS sub_event_status,
+        
+        ins.id_insumes,
+        ins.name AS insume_name,
+        ins.quantity AS insume_quantity,
+        
+        org.id_organizers,
+        org.name AS organizer_name,
+        org.rol AS organizer_rol,
+        org.email AS organizer_email,
+        org.address AS organizer_address,
+        
+        sp.id_space,
+        sp.name AS space_name,
+        sp.capacity AS space_capacity,
+        sp.type,
+        sp.status AS space_status,
+        sp.details AS space_details,
+        
+        si.id_inventory,
+        si.article_name,
+        si.description AS inventory_description,
+        si.quantity AS inventory_quantity,
+        si.type AS inventory_type
+      FROM global_events ge
+      LEFT JOIN sub_events se ON ge.id_global_event = se.id_global_event
+      LEFT JOIN users u ON ge.id_user = u.id_user = ?
+      LEFT JOIN insumes ins ON se.id_sub_event = ins.id_sub_event
+      LEFT JOIN organizers org ON se.id_sub_event = org.id_sub_event
+      LEFT JOIN sub_events_has_spaces ses ON se.id_sub_event = ses.id_sub_event
+      LEFT JOIN spaces sp ON ses.id_space = sp.id_space
+      LEFT JOIN space_inventory si ON sp.id_space = si.id_space
+      WHERE ge.id_global_event = ?`,
+      [id_user]
+    );
+
+    if (result.length === 0) return null;
+
+    const globalEvent: GlobalEventInfo = {
+      id_global_event: result[0].id_global_event,
+      global_event_name: result[0].global_event_name,
+      global_event_observations: result[0].global_event_observations,
+      global_event_status: result[0].global_event_status,
+      sub_events: [],
+    };
+
+    // Agrupar la información
+    result.forEach((row: any) => {
+      // Agrupar sub_eventos
+      let subEvent = globalEvent.sub_events?.find(
+        (se) => se.id_sub_event === row.id_sub_event
+      );
+
+      if (!subEvent) {
+        subEvent = {
+          id_sub_event: row.id_sub_event,
+          sub_event_name: row.sub_event_name,
+          headquarters: row.headquarters,
+          start_date: row.start_date,
+          end_date: row.end_date,
+          sub_event_description: row.sub_event_description,
+          sub_event_status: row.sub_event_status,
+          insumes: [],
+          organizers: [],
+          spaces: [],
+        };
+        globalEvent.sub_events?.push(subEvent);
+      }
+      // Agrupar insumos
+      if (
+        row.id_insumes &&
+        !subEvent.insumes?.some(
+          (insume) => insume.id_insumes === row.id_insumes
+        )
+      ) {
+        subEvent.insumes?.push({
+          id_insumes: row.id_insumes,
+          insume_name: row.insume_name,
+          insume_quantity: row.insume_quantity,
+        });
+      }
+
+      // Agrupar organizadores
+      if (
+        row.id_organizers &&
+        !subEvent.organizers?.some(
+          (organizer) => organizer.id_organizers === row.id_organizers
+        )
+      ) {
+        subEvent.organizers?.push({
+          id_organizers: row.id_organizers,
+          organizer_name: row.organizer_name,
+          organizer_rol: row.organizer_rol,
+          organizer_email: row.organizer_email,
+          organizer_address: row.organizer_address,
+        });
+      }
+
+      // Agrupar espacios
+      let space = subEvent?.spaces?.find(
+        (space) => space.id_space === row.id_space
+      );
+
+      if (!space && row.id_space) {
+        space = {
+          id_space: row.id_space,
+          space_name: row.space_name,
+          space_capacity: row.space_capacity,
+          type: row.type,
+          space_status: row.space_status,
+          space_details: row.space_details,
+          inventory: [],
+        };
+        if (!subEvent.spaces) subEvent.spaces = [];
+        subEvent.spaces?.push(space);
+      }
+      // Agrupar inventario
+      if (
+        row.id_inventory &&
+        space &&
+        (!space.inventory ||
+          !space.inventory.some((inv) => inv.id_inventory === row.id_inventory))
+      ) {
+        if (!space.inventory) space.inventory = [];
+        space.inventory.push({
+          id_inventory: row.id_inventory,
+          article_name: row.article_name,
+          inventory_description: row.inventory_description,
+          inventory_quantity: row.inventory_quantity,
+          inventory_type: row.inventory_type,
+        });
+      }
+    });
+
+    return globalEvent;
+  } catch (err) {
+    console.error(`[global events repository]: ${err}`);
+    return null;
+  } finally {
+    connection.release();
+  }
+}
+
+
 export async function updateStateGlobalEventById(
   idEvent: number,
   statusData: { status: string }
