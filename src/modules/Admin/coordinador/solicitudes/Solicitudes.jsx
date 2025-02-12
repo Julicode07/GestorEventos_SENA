@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { BreadcrumbItem, Breadcrumbs } from "@nextui-org/react";
+import { BreadcrumbItem, Breadcrumbs, Button } from "@nextui-org/react";
 import { columns, INITIAL_VISIBLE_COLUMNS, capitalize } from "./utils/utils.js";
 import TopContent from "../../components/TopContent.jsx";
 import BottomContent from "../../components/BottonContent.jsx";
@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 const TableShowData = React.lazy(() =>
   import("./../../components/TableShowData.jsx")
 );
+import ModalUpdateGlobalEventState from "./ModalUpdateGlobalEventState.jsx";
 
 export default function App() {
   const [filterValue, setFilterValue] = useState("");
@@ -41,6 +42,16 @@ export default function App() {
   }, [getGlobalEvents]);
   //
 
+  //update status of the global event
+
+  const [
+    isModalUpdateGlobalEventStateOpen,
+    setIsModalUpdateGlobalEventStateOpen,
+  ] = useState(false);
+
+  const [idGlobalEvents, setIdGlobalEvents] = useState("");
+  //
+
   const headerColumns = React.useMemo(() => {
     if (visibleColumns === "all") return columns;
 
@@ -55,10 +66,9 @@ export default function App() {
     if (hasSearchFilter) {
       filteredEvents = filteredEvents.filter(
         (event) =>
-          event.user.name.toLowerCase().includes(filterValue.toLowerCase()) ||
           event.name.toLowerCase().includes(filterValue.toLowerCase()) ||
-          (event.space &&
-            event.space.toLowerCase().includes(filterValue.toLowerCase()))
+          event.details.toLowerCase().includes(filterValue.toLowerCase()) ||
+          event.status.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
 
@@ -135,6 +145,21 @@ export default function App() {
             </Link>
           </div>
         );
+      case "actions2":
+        return (
+          <div>
+            <Button
+              color="success"
+              className="text-white"
+              onClick={() => {
+                setIdGlobalEvents(event.id_global_event);
+                setIsModalUpdateGlobalEventStateOpen(true);
+              }}
+            >
+              Actualizar estado
+            </Button>
+          </div>
+        );
       default:
         return cellValue;
     }
@@ -142,6 +167,13 @@ export default function App() {
 
   return (
     <main className="flex flex-col gap-2">
+      <ModalUpdateGlobalEventState
+        isModalUpdateGlobalEventStateOpen={isModalUpdateGlobalEventStateOpen}
+        setIsModalUpdateGlobalEventStateOpen={
+          setIsModalUpdateGlobalEventStateOpen
+        }
+        idGlobalEvents={Number(idGlobalEvents)}
+      />
       <div>
         <Breadcrumbs>
           <BreadcrumbItem href=""> </BreadcrumbItem>

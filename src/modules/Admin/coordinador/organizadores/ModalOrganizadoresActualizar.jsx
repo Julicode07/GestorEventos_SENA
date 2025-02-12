@@ -199,7 +199,7 @@ const ModalOrganizadoresActualizar = ({
                   </div>
                 )}
               </div>
-              <Button color="primary" type="submit">
+              <Button className="bg-primary/80 text-white" type="submit">
                 Actualizar Organizadores
               </Button>
             </div>

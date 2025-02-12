@@ -10,7 +10,7 @@ const MesEventos = memo(({ eventCount }) => {
         </span>
       </h2>
       <p className="text-3xl font-semibold text-gray-900 text-center">
-        Eventos registrados para este mes
+        Subeventos registrados en total
       </p>
     </div>
   );

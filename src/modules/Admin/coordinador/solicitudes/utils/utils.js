@@ -4,6 +4,7 @@ const columns = [
   { name: "DESCRIPCIÓN", uid: "details", sortable: true },
   { name: "ESTADO", uid: "status", sortable: true },
   { name: "ACTIONS", uid: "actions" },
+  { name: "ACEPTAR O RECHAZAR", uid: "actions2" },
 ];
 
 const INITIAL_VISIBLE_COLUMNS = [
@@ -12,6 +13,7 @@ const INITIAL_VISIBLE_COLUMNS = [
   "details",
   "status",
   "actions",
+  "actions2",
 ];
 
 function capitalize(s) {

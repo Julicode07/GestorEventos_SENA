@@ -1,43 +1,23 @@
 import { Breadcrumbs, BreadcrumbItem } from "@nextui-org/react";
 import Solicitudes from "./Solicitudes";
 import MesEventos from "./MesEventos";
-import { events } from "../../utils/data";
-const getCurrentMonthName = () => {
-  const months = [
-    "Enero",
-    "Febrero",
-    "Marzo",
-    "Abril",
-    "Mayo",
-    "Junio",
-    "Julio",
-    "Agosto",
-    "Septiembre",
-    "Octubre",
-    "Noviembre",
-    "Diciembre",
-  ];
-  const currentMonthIndex = new Date().getMonth();
-  return months[currentMonthIndex];
-};
-
-const countEventsForCurrentMonth = (events) => {
-  const currentMonthIndex = new Date().getMonth();
-  const currentYear = new Date().getFullYear();
-
-  return events.filter((event) => {
-    const startDate = new Date(event.startDate);
-    return (
-      startDate.getFullYear() === currentYear &&
-      startDate.getMonth() === currentMonthIndex
-    );
-  }).length;
-};
-
-const month = getCurrentMonthName();
-const eventCount = countEventsForCurrentMonth(events);
+import { useCallback, useEffect, useState } from "react";
 
 function Panel() {
+  const [subEvents, setSubEvents] = useState([]);
+
+  const getSubEvents = useCallback(async () => {
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/subEvents/get/all`
+    );
+    const data = await response.json();
+    setSubEvents(data);
+  }, []);
+
+  useEffect(() => {
+    getSubEvents();
+  }, [getSubEvents]);
+
   return (
     <main className="flex flex-col gap-2">
       <div>
@@ -48,7 +28,7 @@ function Panel() {
       </div>
       <section>
         <div className="w-full flex flex-col lg:flex-row gap-4 justify-between">
-          <MesEventos month={month} eventCount={eventCount} />
+          <MesEventos eventCount={subEvents.length} />
           <Solicitudes />
         </div>
       </section>

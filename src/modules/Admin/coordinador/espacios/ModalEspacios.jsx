@@ -59,7 +59,7 @@ const ModalEspacios = () => {
   return (
     <>
       <Button
-        color="primary"
+        className="bg-primary/80 text-white"
         onClick={() => setIsModalOpen(true)}
         endContent={<PlusIcon />}
       >
@@ -77,7 +77,9 @@ const ModalEspacios = () => {
           <div className="relative p-4 w-full h-auto sm:h-auto max-w-2xl z-50 flex flex-col">
             <div className="relative bg-white rounded-lg shadow h-full overflow-hidden flex flex-col my-8">
               <div className="flex items-center justify-between py-4 px-8 border-b rounded-t">
-                <h3 className="text-3xl text-start font-semibold text-gray-900">Añadir un nuevo espacio</h3>
+                <h3 className="text-3xl text-start font-semibold text-gray-900">
+                  Añadir un nuevo espacio
+                </h3>
                 <button
                   type="button"
                   className="text-gray-400 hover:text-gray-600 transition-colors"
@@ -100,18 +102,31 @@ const ModalEspacios = () => {
                 </button>
               </div>
 
-              <div className="px-5 pt-5 pb-3 overflow-y-auto flex-grow" style={{ maxHeight: "calc(100vh - 180px)" }}>
-                <form
-                  className=""
-                  onSubmit={handleSubmitRegisterSpaces}
-                >
+              <div
+                className="px-5 pt-5 pb-3 overflow-y-auto flex-grow"
+                style={{ maxHeight: "calc(100vh - 180px)" }}
+              >
+                <form className="" onSubmit={handleSubmitRegisterSpaces}>
                   <div className="flex flex-col md:grid md:grid-cols-2 gap-4 max-w-xl mx-auto">
                     {[
-                      { label: "Nombre del espacio", type: "text", name: "name", placeholder: "Nombre" },
-                      { label: "Capacidad", type: "number", name: "capacity", placeholder: "Capacidad" },
+                      {
+                        label: "Nombre del espacio",
+                        type: "text",
+                        name: "name",
+                        placeholder: "Nombre",
+                      },
+                      {
+                        label: "Capacidad",
+                        type: "number",
+                        name: "capacity",
+                        placeholder: "Capacidad",
+                      },
                     ].map(({ label, type, name, placeholder }) => (
                       <div key={name}>
-                        <label className="block mb-2 text-lg font-bold text-gray-900" htmlFor={name}>
+                        <label
+                          className="block mb-2 text-lg font-bold text-gray-900"
+                          htmlFor={name}
+                        >
                           {label}
                         </label>
                         <Input
@@ -125,7 +140,9 @@ const ModalEspacios = () => {
                       </div>
                     ))}
                     <div>
-                      <label className="block mb-2 text-lg font-bold text-gray-900">Tipo de espacio</label>
+                      <label className="block mb-2 text-lg font-bold text-gray-900">
+                        Tipo de espacio
+                      </label>
                       <Select
                         id="tipo-espacio"
                         label="Tipo de espacio"
@@ -141,7 +158,9 @@ const ModalEspacios = () => {
                       </Select>
                     </div>
                     <div>
-                      <label className="block mb-2 text-lg font-bold text-gray-900">Estado del espacio</label>
+                      <label className="block mb-2 text-lg font-bold text-gray-900">
+                        Estado del espacio
+                      </label>
                       <Select
                         id="estado-espacio"
                         label="Estado del espacio"
@@ -155,7 +174,9 @@ const ModalEspacios = () => {
                       </Select>
                     </div>
                     <div className="col-span-2">
-                      <label className="block mb-2 text-lg font-bold text-gray-900">Detalles</label>
+                      <label className="block mb-2 text-lg font-bold text-gray-900">
+                        Detalles
+                      </label>
                       <Textarea
                         id="observaciones"
                         name="details"
@@ -172,7 +193,9 @@ const ModalEspacios = () => {
                     {(success || errorMessage) && (
                       <div className="col-span-2 text-center mt-2">
                         {success && <p className="text-green-600">{success}</p>}
-                        {errorMessage && <p className="text-red-600">{errorMessage}</p>}
+                        {errorMessage && (
+                          <p className="text-red-600">{errorMessage}</p>
+                        )}
                       </div>
                     )}
                     <div className="flex items-center justify-center space-x-4 my-3 md:my-0">
@@ -196,7 +219,6 @@ const ModalEspacios = () => {
             </div>
           </div>
         </div>
-
       )}
     </>
   );

@@ -3,10 +3,6 @@ import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import GlobalEvent from "./GlobalEvent";
 import SubEvents from "./SubEvents";
-import Insumes from "./Insumes";
-import Organizers from "./Organizers";
-import Spaces from "./Spaces";
-import Inventory from "./Inventory";
 
 const FullView = () => {
   const { id } = useParams();
@@ -24,9 +20,6 @@ const FullView = () => {
     getData();
   }, [getData]);
 
-  useEffect(() => {
-    console.log(getAllInfoGlobalEvent);
-  }, [getAllInfoGlobalEvent]);
   return (
     <>
       <Breadcrumbs>
@@ -46,10 +39,6 @@ const FullView = () => {
               details={globalEvent.global_event_observations}
             />
             <SubEvents subEvents={globalEvent.sub_events} />
-            <Insumes insumes={globalEvent.insumes} />
-            <Organizers organizers={globalEvent.organizers} />
-            <Spaces spaces={globalEvent.spaces} />
-            <Inventory inventories={globalEvent.inventory} />
           </div>
         ))}
       </div>

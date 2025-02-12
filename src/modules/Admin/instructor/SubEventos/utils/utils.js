@@ -1,13 +1,13 @@
 const columns = [
   { name: "ID", uid: "id_sub_event", sortable: true },
-  { name: "ESPACIO GLOBAL", uid: "global_event_name", sortable: true },
+  { name: "EVENTO GLOBAL", uid: "global_event_name", sortable: true },
   { name: "NOMBRE", uid: "name", sortable: true },
   { name: "SEDE", uid: "headquarters", sortable: true },
   { name: "FECHA DE INICIO", uid: "start_date", sortable: true },
   { name: "FECHA DE FIN", uid: "end_date", sortable: true },
   { name: "DESCRIPCIÓN", uid: "description", sortable: true },
   {
-    name: "ESTADO DE CONFIRMACIÓN",
+    name: "ESTADO",
     uid: "subeventConfirmation",
     sortable: true,
   },

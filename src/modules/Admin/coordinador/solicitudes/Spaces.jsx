@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import { memo } from "react";
+import Inventory from "./Inventory";
 
 const Spaces = memo(({ spaces }) => {
   return (
@@ -34,6 +35,7 @@ const Spaces = memo(({ spaces }) => {
               <span className="font-bold">Detalles: </span>{" "}
               <p>{space?.space_details}</p>
             </div>
+            <Inventory inventories={space.inventory} />
           </div>
         ))
       ) : (

@@ -79,7 +79,7 @@ const ModalOrganizador = () => {
   return (
     <>
       <Button
-        color="primary"
+        className="bg-primary/80 text-white"
         onClick={() => setIsModalOpen(true)}
         endContent={<PlusIcon />}
       >
@@ -97,7 +97,10 @@ const ModalOrganizador = () => {
           <div className="relative p-4 w-full h-auto sm:h-auto max-w-2xl z-50 flex flex-col">
             <div className="relative bg-white rounded-lg shadow h-full overflow-hidden flex flex-col my-8">
               <div className="flex items-center justify-between py-4 px-8 border-b rounded-t">
-                <h3 className="text-3xl text-start font-semibold text-gray-900"> Añadir un nuevo organizador</h3>
+                <h3 className="text-3xl text-start font-semibold text-gray-900">
+                  {" "}
+                  Añadir un nuevo organizador
+                </h3>
                 <button
                   type="button"
                   className="text-gray-400 hover:text-gray-600 transition-colors"
@@ -119,11 +122,11 @@ const ModalOrganizador = () => {
                   </svg>
                 </button>
               </div>
-              <div className="px-5 pt-5 pb-3 overflow-y-auto flex-grow" style={{ maxHeight: "calc(100vh - 180px)" }}>
-                <form
-                  className=""
-                  onSubmit={handleSubmitSubEvents}
-                >
+              <div
+                className="px-5 pt-5 pb-3 overflow-y-auto flex-grow"
+                style={{ maxHeight: "calc(100vh - 180px)" }}
+              >
+                <form className="" onSubmit={handleSubmitSubEvents}>
                   <div className="flex flex-col md:grid md:grid-cols-2 gap-4 max-w-xl mx-auto">
                     <div>
                       <SearchableSelect
@@ -147,7 +150,7 @@ const ModalOrganizador = () => {
                         onChange={handleChangeSubEvents}
                       />
                     </div>
-                    <div >
+                    <div>
                       <label className="block mb-2 text-lg font-bold text-gray-900">
                         Seleccione el rol
                       </label>
@@ -202,7 +205,9 @@ const ModalOrganizador = () => {
                     {(success || errorMessage) && (
                       <div className="col-span-2 text-center mt-2">
                         {success && <p className="text-green-600">{success}</p>}
-                        {errorMessage && <p className="text-red-600">{errorMessage}</p>}
+                        {errorMessage && (
+                          <p className="text-red-600">{errorMessage}</p>
+                        )}
                       </div>
                     )}
                     <div className="flex items-center justify-center space-x-4 my-3 md:my-0">

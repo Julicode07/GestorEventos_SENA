@@ -1,5 +1,8 @@
 import PropTypes from "prop-types";
 import { memo } from "react";
+import Insumes from "./Insumes";
+import Organizers from "./Organizers";
+import Spaces from "./Spaces";
 
 const SubEvents = memo(({ subEvents }) => {
   return (
@@ -12,7 +15,7 @@ const SubEvents = memo(({ subEvents }) => {
           key={subEvent.id_sub_event}
           className="flex flex-col border-1 rounded-lg p-3 space-y-2"
         >
-          <h2 className="font-bold text-xl">{subEvent.sub_event_name}</h2>
+          <h2 className="font-bold text-xl">Subevento: {subEvent.sub_event_name}</h2>
           <p>
             <span className="font-bold">Sede: </span>
             {subEvent.headquarters}
@@ -43,6 +46,9 @@ const SubEvents = memo(({ subEvents }) => {
               {subEvent.sub_event_status}
             </p>
           </div>
+          <Insumes insumes={subEvent.insumes} />
+          <Organizers organizers={subEvent.organizers} />
+          <Spaces spaces={subEvent.spaces} />
         </div>
       ))}
     </div>

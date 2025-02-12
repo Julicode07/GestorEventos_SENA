@@ -244,7 +244,7 @@ const ModalInventario = ({
                   </div>
                 )}
               </div>
-              <Button color="primary" type="submit">
+              <Button className="bg-primary/80 text-white" type="submit">
                 Crear Inventario
               </Button>
             </div>
