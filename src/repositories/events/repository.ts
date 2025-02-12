@@ -185,7 +185,7 @@ export async function getAllInfoGLobalEventsById(
       [idGlobalEvent]
     );
 
-    if (result.length === 0) return null; 
+    if (result.length === 0) return null;
 
     const globalEvent: GlobalEventInfo = {
       id_global_event: result[0].id_global_event,
@@ -193,22 +193,17 @@ export async function getAllInfoGLobalEventsById(
       global_event_observations: result[0].global_event_observations,
       global_event_status: result[0].global_event_status,
       sub_events: [],
-      insumes: [],
-      organizers: [],
-      spaces: [],
-      inventory: [],
     };
 
     // Agrupar la información
     result.forEach((row: any) => {
       // Agrupar sub_eventos
-      if (
-        row.id_sub_event &&
-        !globalEvent.sub_events.some(
-          (se) => se.id_sub_event === row.id_sub_event
-        )
-      ) {
-        globalEvent.sub_events.push({
+      let subEvent = globalEvent.sub_events?.find(
+        (se) => se.id_sub_event === row.id_sub_event
+      );
+
+      if (!subEvent) {
+        subEvent = {
           id_sub_event: row.id_sub_event,
           sub_event_name: row.sub_event_name,
           headquarters: row.headquarters,
@@ -216,70 +211,75 @@ export async function getAllInfoGLobalEventsById(
           end_date: row.end_date,
           sub_event_description: row.sub_event_description,
           sub_event_status: row.sub_event_status,
+          insumes: [],
+          organizers: [],
+          spaces: [],
+        };
+        globalEvent.sub_events?.push(subEvent);
+      }
+      // Agrupar insumos
+      if (
+        row.id_insumes &&
+        !subEvent.insumes?.some(
+          (insume) => insume.id_insumes === row.id_insumes
+        )
+      ) {
+        subEvent.insumes?.push({
+          id_insumes: row.id_insumes,
+          insume_name: row.insume_name,
+          insume_quantity: row.insume_quantity,
         });
       }
 
-      // Agrupar insumos
-      if (row.id_insumes) {
-        const insumo = globalEvent.insumes.find(
-          (ins) => ins.id_insumes === row.id_insumes
-        );
-        if (!insumo) {
-          globalEvent.insumes.push({
-            id_insumes: row.id_insumes,
-            insume_name: row.insume_name,
-            insume_quantity: row.insume_quantity,
-          });
-        }
-      }
-
       // Agrupar organizadores
-      if (row.id_organizers) {
-        const organizer = globalEvent.organizers.find(
-          (org) => org.id_organizers === row.id_organizers
-        );
-        if (!organizer) {
-          globalEvent.organizers.push({
-            id_organizers: row.id_organizers,
-            organizer_name: row.organizer_name,
-            organizer_rol: row.organizer_rol,
-            organizer_email: row.organizer_email,
-            organizer_address: row.organizer_address,
-          });
-        }
+      if (
+        row.id_organizers &&
+        !subEvent.organizers?.some(
+          (organizer) => organizer.id_organizers === row.id_organizers
+        )
+      ) {
+        subEvent.organizers?.push({
+          id_organizers: row.id_organizers,
+          organizer_name: row.organizer_name,
+          organizer_rol: row.organizer_rol,
+          organizer_email: row.organizer_email,
+          organizer_address: row.organizer_address,
+        });
       }
 
       // Agrupar espacios
-      if (row.id_space) {
-        const space = globalEvent.spaces.find(
-          (sp) => sp.id_space === row.id_space
-        );
-        if (!space) {
-          globalEvent.spaces.push({
-            id_space: row.id_space,
-            space_name: row.space_name,
-            space_capacity: row.space_capacity,
-            type: row.type,
-            space_status: row.space_status,
-            space_details: row.space_details,
-          });
-        }
-      }
+      let space = subEvent?.spaces?.find(
+        (space) => space.id_space === row.id_space
+      );
 
+      if (!space && row.id_space) {
+        space = {
+          id_space: row.id_space,
+          space_name: row.space_name,
+          space_capacity: row.space_capacity,
+          type: row.type,
+          space_status: row.space_status,
+          space_details: row.space_details,
+          inventory: [],
+        };
+        if (!subEvent.spaces) subEvent.spaces = [];
+        subEvent.spaces?.push(space);
+      }
       // Agrupar inventario
-      if (row.id_inventory) {
-        const inventoryItem = globalEvent.inventory.find(
-          (si) => si.id_inventory === row.id_inventory
-        );
-        if (!inventoryItem) {
-          globalEvent.inventory.push({
-            id_inventory: row.id_inventory,
-            article_name: row.article_name,
-            inventory_description: row.inventory_description,
-            inventory_quantity: row.inventory_quantity,
-            inventory_type: row.inventory_type,
-          });
-        }
+      if (
+        row.id_inventory &&
+        space &&
+        (!space.inventory ||
+          !space.inventory.some((inv) => inv.id_inventory === row.id_inventory))
+      ) {
+        if (!space.inventory) space.inventory = [];
+        space.inventory.push({
+          id_inventory: row.id_inventory,
+          article_name: row.article_name,
+          inventory_description: row.inventory_description,
+          inventory_quantity: row.inventory_quantity,
+          inventory_type: row.inventory_type,
+        });
       }
     });
 

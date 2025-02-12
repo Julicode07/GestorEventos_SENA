@@ -9,7 +9,7 @@ export interface IGlobalEvent {
   status: string;
 }
 
- type SubEvent = {
+type SubEvent = {
   id_sub_event: number;
   sub_event_name: string;
   headquarters: string;
@@ -17,15 +17,18 @@ export interface IGlobalEvent {
   end_date: string; // Usa el tipo adecuado si es un tipo de fecha
   sub_event_description: string;
   sub_event_status: string;
+  insumes?: Insume[];
+  organizers?: Organizer[];
+  spaces?: Space[];
 };
 
- type Insume = {
+type Insume = {
   id_insumes: number;
   insume_name: string;
   insume_quantity: number;
 };
 
- type Organizer = {
+type Organizer = {
   id_organizers: number;
   organizer_name: string;
   organizer_rol: string;
@@ -33,16 +36,17 @@ export interface IGlobalEvent {
   organizer_address: string;
 };
 
- type Space = {
+type Space = {
   id_space: number;
   space_name: string;
   space_capacity: number;
   type: string;
   space_status: string;
   space_details: string;
+  inventory?: Inventory[];
 };
 
- type Inventory = {
+type Inventory = {
   id_inventory: number;
   article_name: string;
   inventory_description: string;
@@ -56,13 +60,8 @@ export type GlobalEventInfo = {
   global_event_name: string;
   global_event_observations: string;
   global_event_status: string;
-  sub_events: SubEvent[];
-  insumes: Insume[];
-  organizers: Organizer[];
-  spaces: Space[];
-  inventory: Inventory[];
+  sub_events?: SubEvent[];
 };
-
 
 export async function createGlobalEventsSchema(): Promise<Number> {
   const connection: PoolConnection = await getConnection(pool);
