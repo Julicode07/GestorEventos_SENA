@@ -6,7 +6,7 @@ import {
   updateGlobalEventById,
   getAllInfoGLobalEventsById,
   updateStateGlobalEventById,
-  getAllGlobalEventsByUserId
+  getAllGlobalEventsByUserId,
 } from "../repositories/events/repository";
 import { findUserByDocument } from "../repositories/users/repository";
 import { Request, Response } from "express";
@@ -105,7 +105,7 @@ export async function getAllInfoGlobalEventByIdController(
 ) {
   try {
     const { id_global_event } = req.params;
-    const globalEvent = await getAllGlobalEventsByUserId(
+    const globalEvent = await getAllInfoGLobalEventsById(
       Number(id_global_event)
     );
     return res.status(200).send(JSON.stringify(globalEvent, bigIntReplacer));
@@ -116,12 +116,13 @@ export async function getAllInfoGlobalEventByIdController(
   }
 }
 
-export async function getAllGlobalEventsByUserIdController(req: Request, res: Response) {
+export async function getAllGlobalEventsByUserIdController(
+  req: Request,
+  res: Response
+) {
   try {
     const id_user = req.session.user?.id_user;
-    const globalEvents = await getAllInfoGLobalEventsById(
-      Number(id_user)
-    );
+    const globalEvents = await getAllGlobalEventsByUserId(Number(id_user));
     return res.status(200).send(JSON.stringify(globalEvents, bigIntReplacer));
   } catch (err) {
     return res
