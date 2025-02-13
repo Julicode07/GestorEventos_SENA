@@ -128,7 +128,7 @@ export default function App() {
         return (
           <div className="relative flex justify-end items-center gap-2">
             <Link
-              to={`/admin/instructor/solicitudes/ver/${event.id_global_event}`}
+              to={`/admin/instructor/solicitudes/ver`}
             >
               <EyeIcon className="block m-auto text-green-600 hover:bg-gray-300 hover:rounded-lg hover:cursor-pointer" />
             </Link>
