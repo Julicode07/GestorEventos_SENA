@@ -48,10 +48,6 @@ export async function updateUser(
 ): Promise<number> {
   const connection: PoolConnection = await getConnection(pool);
   try {
-    const salt_rounds = 10;
-    const hashedPassword = userData.password
-      ? await bcrypt.hash(userData.password, salt_rounds)
-      : undefined;
     const result = await connection.query(
       `
             UPDATE
@@ -63,7 +59,6 @@ export async function updateUser(
                 email = IFNULL (?, email),
                 phone = IFNULL (?, phone),
                 role = IFNULL (?, role),
-                password = IFNULL (?, password)
             WHERE id_user = ?`,
       [
         userData.document,
@@ -72,7 +67,6 @@ export async function updateUser(
         userData.email,
         userData.phone,
         userData.role,
-        hashedPassword,
         id,
       ]
     );

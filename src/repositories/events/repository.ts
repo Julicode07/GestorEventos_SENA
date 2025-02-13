@@ -292,58 +292,60 @@ export async function getAllInfoGLobalEventsById(
   }
 }
 
-
-export async function getAllGlobalEventsByUserId(id_user: number): Promise<GlobalEventInfo | null> {
+export async function getAllGlobalEventsByUserId(
+  id_user: number
+): Promise<GlobalEventInfo | null> {
   // Aquí definimos el tipo de retorno
   const connection: PoolConnection = await getConnection(pool);
   try {
     const result = await connection.query(
       `SELECT 
-        ge.id_global_event,
-        ge.name AS global_event_name,
-        ge.details AS global_event_observations,
-        ge.status AS global_event_status,
-        ge.id_user
+    ge.id_global_event,
+    ge.name AS global_event_name,
+    ge.details AS global_event_observations,
+    ge.status AS global_event_status,
+    ge.id_user,  -- ← Se agregó la coma
 
-        se.id_sub_event,
-        se.name AS sub_event_name,
-        se.headquarters,
-        se.start_date,
-        se.end_date,
-        se.description AS sub_event_description,
-        se.subeventConfirmation AS sub_event_status,
-        
-        ins.id_insumes,
-        ins.name AS insume_name,
-        ins.quantity AS insume_quantity,
-        
-        org.id_organizers,
-        org.name AS organizer_name,
-        org.rol AS organizer_rol,
-        org.email AS organizer_email,
-        org.address AS organizer_address,
-        
-        sp.id_space,
-        sp.name AS space_name,
-        sp.capacity AS space_capacity,
-        sp.type,
-        sp.status AS space_status,
-        sp.details AS space_details,
-        
-        si.id_inventory,
-        si.article_name,
-        si.description AS inventory_description,
-        si.quantity AS inventory_quantity,
-        si.type AS inventory_type
-      FROM global_events ge
-      LEFT JOIN sub_events se ON ge.id_global_event = se.id_global_event
-      LEFT JOIN users u ON ge.id_user = u.id_user = ?
-      LEFT JOIN insumes ins ON se.id_sub_event = ins.id_sub_event
-      LEFT JOIN organizers org ON se.id_sub_event = org.id_sub_event
-      LEFT JOIN sub_events_has_spaces ses ON se.id_sub_event = ses.id_sub_event
-      LEFT JOIN spaces sp ON ses.id_space = sp.id_space
-      LEFT JOIN space_inventory si ON sp.id_space = si.id_space
-      WHERE ge.id_global_event = ?`,
+    se.id_sub_event,
+    se.name AS sub_event_name,
+    se.headquarters,
+    se.start_date,
+    se.end_date,
+    se.description AS sub_event_description,
+    se.subeventConfirmation AS sub_event_status,
+
+    ins.id_insumes,
+    ins.name AS insume_name,
+    ins.quantity AS insume_quantity,
+
+    org.id_organizers,
+    org.name AS organizer_name,
+    org.rol AS organizer_rol,
+    org.email AS organizer_email,
+    org.address AS organizer_address,
+
+    sp.id_space,
+    sp.name AS space_name,
+    sp.capacity AS space_capacity,
+    sp.type,
+    sp.status AS space_status,
+    sp.details AS space_details,
+
+    si.id_inventory,
+    si.article_name,
+    si.description AS inventory_description,
+    si.quantity AS inventory_quantity,
+    si.type AS inventory_type
+    FROM global_events ge
+    LEFT JOIN sub_events se ON ge.id_global_event = se.id_global_event
+    LEFT JOIN users u ON ge.id_user = u.id_user  -- ← Se corrigió la condición del JOIN
+    LEFT JOIN insumes ins ON se.id_sub_event = ins.id_sub_event
+    LEFT JOIN organizers org ON se.id_sub_event = org.id_sub_event
+    LEFT JOIN sub_events_has_spaces ses ON se.id_sub_event = ses.id_sub_event
+    LEFT JOIN spaces sp ON ses.id_space = sp.id_space
+    LEFT JOIN space_inventory si ON sp.id_space = si.id_space
+    WHERE ge.id_global_event = ?;  -- ← Se dejó el parámetro en la cláusula WHERE
+`,
       [id_user]
     );
 
@@ -453,7 +455,6 @@ export async function getAllGlobalEventsByUserId(id_user: number): Promise<Globa
     connection.release();
   }
 }
-
 
 export async function updateStateGlobalEventById(
   idEvent: number,
