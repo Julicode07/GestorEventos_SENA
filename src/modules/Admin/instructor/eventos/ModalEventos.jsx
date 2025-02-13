@@ -21,7 +21,7 @@ const ModalEventos = () => {
     id_user: names.id_user,
     name: "",
     details: "",
-    status: "Aceptado",
+    status: "Pendiente",
   });
 
   const handleChangeEvent = (e) => {
@@ -43,7 +43,7 @@ const ModalEventos = () => {
       setRegisterEvent({
         name: "",
         details: "",
-        status: "",
+        status: "Pendiente",
       });
       window.location.reload();
     } catch (error) {

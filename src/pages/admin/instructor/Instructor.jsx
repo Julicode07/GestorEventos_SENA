@@ -27,6 +27,9 @@ const Profile = React.lazy(() =>
 const Inventario = React.lazy(() =>
   import("@/modules/Admin/instructor/inventario/Inventario")
 );
+const Solicitudes = React.lazy(() =>
+  import("@/modules/Admin/instructor/solicitudes/Solicitudes")
+);
 
 import { SessionContext } from "../../../context/SessionContext";
 function Coordinador() {
@@ -66,6 +69,7 @@ function Coordinador() {
               <Route path="/eventos/:id" element={<InfoEvento />} />
               <Route path="/subeventos/:id" element={<SubEventos />} />
               <Route path="/insumos" element={<Insumos />} />
+              <Route path="/solicitudes" element={<Solicitudes />} />
             </Routes>
           </div>
         </div>
