@@ -58,7 +58,7 @@ export async function updateUser(
                 last_names = IFNULL (?, last_names),
                 email = IFNULL (?, email),
                 phone = IFNULL (?, phone),
-                role = IFNULL (?, role),
+                role = IFNULL (?, role)
             WHERE id_user = ?`,
       [
         userData.document,
