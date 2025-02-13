@@ -344,7 +344,8 @@ export async function getAllGlobalEventsByUserId(
     LEFT JOIN sub_events_has_spaces ses ON se.id_sub_event = ses.id_sub_event
     LEFT JOIN spaces sp ON ses.id_space = sp.id_space
     LEFT JOIN space_inventory si ON sp.id_space = si.id_space
-    WHERE ge.id_user = ?;  
+    WHERE ge.id_user = ?
+    GROUP BY ge.id_global_event;  
 `,
       [id_user]
     );
