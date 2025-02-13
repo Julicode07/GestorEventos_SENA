@@ -39,6 +39,10 @@ export default function App() {
   useEffect(() => {
     getGlobalEvents();
   }, [getGlobalEvents]);
+
+  useEffect(() => {
+    console.log(showGlobalEvent);
+  }, [showGlobalEvent]);
   //
 
   const headerColumns = React.useMemo(() => {
@@ -113,9 +117,9 @@ export default function App() {
           <div className="flex flex-col">
             <p
               className={`text-bold text-small text-center rounded-lg ${
-                event.status === "Pendiente"
+                event.global_event_status === "Pendiente"
                   ? "bg-warning-100 text-warning"
-                  : event.status === "Rechazado"
+                  : event.global_event_status === "Rechazado"
                   ? "bg-danger-100 text-danger"
                   : "bg-success-100 text-success"
               }`}
@@ -127,9 +131,7 @@ export default function App() {
       case "actions":
         return (
           <div className="relative flex justify-end items-center gap-2">
-            <Link
-              to={`/admin/instructor/solicitudes/ver`}
-            >
+            <Link to={`/admin/instructor/solicitudes/ver`}>
               <EyeIcon className="block m-auto text-green-600 hover:bg-gray-300 hover:rounded-lg hover:cursor-pointer" />
             </Link>
           </div>
