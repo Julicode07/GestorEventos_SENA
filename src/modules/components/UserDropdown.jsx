@@ -104,7 +104,6 @@ const UserDropdown = ({
         </DropdownItem>
         <DropdownItem
           as={Link}
-          to={"/admin/coordinador/perfil"}
           key="logout"
           color="danger"
           className="flex bg-red-100 mt-2"

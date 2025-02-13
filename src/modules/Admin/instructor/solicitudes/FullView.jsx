@@ -29,6 +29,7 @@ const FullView = () => {
         <BreadcrumbItem>Solicitud</BreadcrumbItem>
       </Breadcrumbs>
       <div>
+        <h1 className="font-bold text-3xl">Detalles del evento global {id}</h1>
         {getAllInfoGlobalEvent.map((globalEvent) => (
           <div key={globalEvent.id_global_event}>
             <GlobalEvent
