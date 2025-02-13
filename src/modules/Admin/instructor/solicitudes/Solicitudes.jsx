@@ -131,7 +131,9 @@ export default function App() {
       case "actions":
         return (
           <div className="relative flex justify-end items-center gap-2">
-            <Link to={`/admin/instructor/solicitudes/ver`}>
+            <Link
+              to={`/admin/instructor/solicitudes/ver/${event.id_global_event}`}
+            >
               <EyeIcon className="block m-auto text-green-600 hover:bg-gray-300 hover:rounded-lg hover:cursor-pointer" />
             </Link>
           </div>

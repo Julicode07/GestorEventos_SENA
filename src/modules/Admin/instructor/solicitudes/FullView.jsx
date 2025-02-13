@@ -2,17 +2,19 @@ import { BreadcrumbItem, Breadcrumbs } from "@nextui-org/react";
 import { useCallback, useEffect, useState } from "react";
 import GlobalEvent from "./GlobalEvent";
 import SubEvents from "./SubEvents";
+import { useParams } from "react-router-dom";
 
 const FullView = () => {
+  const { id } = useParams();
   const [getAllInfoGlobalEvent, setGetAllInfoGlobalEvent] = useState([]);
 
   const getData = useCallback(async () => {
     const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/events/global/self/all`
+      `${import.meta.env.VITE_API_URL}/api/events/global/info/${id}`
     );
     const data = await response.json();
     setGetAllInfoGlobalEvent(Array.isArray(data) ? data : [data]);
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     getData();

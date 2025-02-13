@@ -73,7 +73,7 @@ function Coordinador() {
               <Route path="/subeventos/:id" element={<SubEventos />} />
               <Route path="/insumos" element={<Insumos />} />
               <Route path="/solicitudes" element={<Solicitudes />} />
-              <Route path="/solicitudes/ver" element={<FullView />} />
+              <Route path="/solicitudes/ver/:id" element={<FullView />} />
             </Routes>
           </div>
         </div>
