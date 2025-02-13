@@ -120,7 +120,7 @@ export default function App() {
                   : "bg-success-100 text-success"
               }`}
             >
-              {event.status}
+              {event.global_event_status}
             </p>
           </div>
         );
