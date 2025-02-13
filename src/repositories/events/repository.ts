@@ -304,7 +304,7 @@ export async function getAllGlobalEventsByUserId(
     ge.name AS global_event_name,
     ge.details AS global_event_observations,
     ge.status AS global_event_status,
-    ge.id_user,  -- ← Se agregó la coma
+    ge.id_user, 
 
     se.id_sub_event,
     se.name AS sub_event_name,
@@ -338,13 +338,13 @@ export async function getAllGlobalEventsByUserId(
     si.type AS inventory_type
     FROM global_events ge
     LEFT JOIN sub_events se ON ge.id_global_event = se.id_global_event
-    LEFT JOIN users u ON ge.id_user = u.id_user  -- ← Se corrigió la condición del JOIN
+    LEFT JOIN users u ON ge.id_user = u.id_user 
     LEFT JOIN insumes ins ON se.id_sub_event = ins.id_sub_event
     LEFT JOIN organizers org ON se.id_sub_event = org.id_sub_event
     LEFT JOIN sub_events_has_spaces ses ON se.id_sub_event = ses.id_sub_event
     LEFT JOIN spaces sp ON ses.id_space = sp.id_space
     LEFT JOIN space_inventory si ON sp.id_space = si.id_space
-    WHERE ge.id_global_event = ?;  -- ← Se dejó el parámetro en la cláusula WHERE
+    WHERE u.id_user = ?;  
 `,
       [id_user]
     );
