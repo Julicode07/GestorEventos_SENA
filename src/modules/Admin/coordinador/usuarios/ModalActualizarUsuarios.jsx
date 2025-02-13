@@ -74,7 +74,8 @@ const ModalActualizarUsuarios = ({
           <div className="relative bg-white rounded-lg shadow">
             <div className="flex items-center justify-between p-5 border-b rounded-t">
               <h3 className="text-3xl font-semibold text-gray-900">
-                Actualizar usuario: {originalUserData.name} {originalUserData.last_names}
+                Actualizar usuario: {originalUserData.name}{" "}
+                {originalUserData.last_names}
               </h3>
               <button
                 type="button"
@@ -93,16 +94,47 @@ const ModalActualizarUsuarios = ({
             </div>
 
             <div className="p-5">
-              <form className="grid grid-cols-2 gap-4 max-w-xl mx-auto" onSubmit={handleSubmit}>
+              <form
+                className="grid grid-cols-2 gap-4 max-w-xl mx-auto"
+                onSubmit={handleSubmit}
+              >
                 {[
-                  { label: "Documento", type: "number", name: "document", placeholder: "Documento" },
-                  { label: "Nombre", type: "text", name: "name", placeholder: "Nombre" },
-                  { label: "Apellidos", type: "text", name: "last_names", placeholder: "Apellidos" },
-                  { label: "Email", type: "email", name: "email", placeholder: "Email" },
-                  { label: "Teléfono", type: "number", name: "phone", placeholder: "Teléfono" },
+                  {
+                    label: "Documento",
+                    type: "number",
+                    name: "document",
+                    placeholder: "Documento",
+                  },
+                  {
+                    label: "Nombre",
+                    type: "text",
+                    name: "name",
+                    placeholder: "Nombre",
+                  },
+                  {
+                    label: "Apellidos",
+                    type: "text",
+                    name: "last_names",
+                    placeholder: "Apellidos",
+                  },
+                  {
+                    label: "Email",
+                    type: "email",
+                    name: "email",
+                    placeholder: "Email",
+                  },
+                  {
+                    label: "Teléfono",
+                    type: "number",
+                    name: "phone",
+                    placeholder: "Teléfono",
+                  },
                 ].map(({ label, type, name, placeholder }) => (
                   <div key={name}>
-                    <label className="block mb-2 text-lg font-bold text-gray-900" htmlFor={name}>
+                    <label
+                      className="block mb-2 text-lg font-bold text-gray-900"
+                      htmlFor={name}
+                    >
                       {label}
                     </label>
                     <Input
@@ -117,20 +149,22 @@ const ModalActualizarUsuarios = ({
                 ))}
 
                 <div>
-                  <label className="block mb-2 text-lg font-bold text-gray-900">Rol Actual</label>
+                  <label className="block mb-2 text-lg text-gray-900">
+                    <span className="font-bold">Rol Actual:</span>{" "}
+                    {userData.role}
+                  </label>
                   <Select
                     id="role"
                     size="sm"
                     label="Rol"
                     name="role"
                     value={userData.role}
-                    onChange={(value) => setUserData((prev) => ({ ...prev, role: value }))}
+                    onChange={handleChange}
                   >
                     <SelectItem key="Coordinador">Coordinador</SelectItem>
                     <SelectItem key="Instructor">Instructor</SelectItem>
                   </Select>
                 </div>
-
 
                 <div className="col-span-2 flex items-center justify-center p-4 space-x-3 border-t border-gray-200">
                   <button
@@ -149,8 +183,12 @@ const ModalActualizarUsuarios = ({
                 </div>
                 {(successMessage || errorMessage) && (
                   <div className="col-span-2 text-center">
-                    {successMessage && <p className="text-green-600">{successMessage}</p>}
-                    {errorMessage && <p className="text-red-600">{errorMessage}</p>}
+                    {successMessage && (
+                      <p className="text-green-600">{successMessage}</p>
+                    )}
+                    {errorMessage && (
+                      <p className="text-red-600">{errorMessage}</p>
+                    )}
                   </div>
                 )}
               </form>
