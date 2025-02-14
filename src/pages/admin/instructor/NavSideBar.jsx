@@ -27,7 +27,7 @@ const NavSideBar = () => {
   const getRequests = useCallback(async () => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/events/global/all`
+        `${import.meta.env.VITE_API_URL}/api/events/global/self/all`
       );
       const data = await response.json();
       setAcceptedRequests(Array.isArray(data) ? data : [data]);
@@ -66,7 +66,7 @@ const NavSideBar = () => {
   }, [location.pathname]);
 
   const acceptedRequestsCount = acceptedRequests.filter(
-    (event) => event.status === "Aceptado"
+    (event) => event.global_event_status === "Aceptado"
   ).length;
 
   return (
