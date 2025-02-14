@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useContext } from "react";
+import { useState, useEffect, useRef, useContext, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import { SessionContext } from "@/context/SessionContext.jsx";
 import Images from "@/assets/img/images.js";
@@ -21,6 +21,24 @@ const NavSideBar = () => {
         return "/";
     }
   };
+
+  const [acceptedRequests, setAcceptedRequests] = useState([]);
+
+  const getRequests = useCallback(async () => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/events/global/all`
+      );
+      const data = await response.json();
+      setAcceptedRequests(Array.isArray(data) ? data : [data]);
+    } catch (err) {
+      console.error("Ocurrio un error al traer la data", err);
+    }
+  }, []);
+
+  useEffect(() => {
+    getRequests();
+  }, [getRequests]);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -46,6 +64,10 @@ const NavSideBar = () => {
   useEffect(() => {
     setSidebarOpen(false);
   }, [location.pathname]);
+
+  const acceptedRequestsCount = acceptedRequests.filter(
+    (event) => event.status === "Pendiente"
+  ).length;
 
   return (
     <div>
@@ -100,8 +122,9 @@ const NavSideBar = () => {
       <aside
         ref={sidebarRef}
         id="logo-sidebar"
-        className={`fixed top-0 left-0 z-30 w-56 h-screen pt-20 transition-transform ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } bg-white shadow-xl sm:translate-x-0`}
+        className={`fixed top-0 left-0 z-30 w-56 h-screen pt-20 transition-transform ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } bg-white shadow-xl sm:translate-x-0`}
         aria-label="Sidebar"
       >
         <div className="h-full px-3 pb-4 overflow-y-auto">
@@ -110,7 +133,11 @@ const NavSideBar = () => {
               to={"/admin/instructor"}
               logo="ri-dashboard-horizontal-fill flex w-5 h-5 text-xl justify-center items-center text-primary transition duration-75 group-hover:text-gray-600"
               title="Panel"
-            />
+            >
+              <span className="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-white bg-primary rounded-full">
+                {acceptedRequestsCount}
+              </span>
+            </ItemsList>
             <ItemsList
               to={"/admin/instructor/espacios"}
               logo="ri-road-map-fill flex w-5 h-5 text-xl justify-center items-center text-primary transition duration-75 group-hover:text-gray-600"

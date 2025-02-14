@@ -35,17 +35,20 @@ const NavSideBar = () => {
   const [pendientRequests, setPendientRequests] = useState([]);
 
   const getRequests = useCallback(async () => {
-    const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/events/global/all`
-    );
-    const data = await response.json();
-    setPendientRequests(Array.isArray(data) ? data : [data]);
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/events/global/all`
+      );
+      const data = await response.json();
+      setPendientRequests(Array.isArray(data) ? data : [data]);
+    } catch (err) {
+      console.error("Ocurrio un error al traer la data", err);
+    }
   }, []);
 
   useEffect(() => {
     getRequests();
   }, [getRequests]);
-
 
   // const filteredEvents = events.filter((event) =>
   //   Array.from(statusFilter).includes(event.status)
