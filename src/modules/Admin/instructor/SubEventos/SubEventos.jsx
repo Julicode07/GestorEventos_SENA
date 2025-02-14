@@ -278,7 +278,7 @@ export default function SubEventos() {
           columns={headerColumns}
           items={sortedItems}
           renderCell={renderCell}
-          emptyContent="No se encontraron Sub Eventos"
+          emptyContent="No hay subeventos para mostrar"
           id="id_sub_event"
           aria="Table to show the data of subEvents events"
         />

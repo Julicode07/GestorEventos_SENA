@@ -179,7 +179,7 @@ export default function App() {
         bottomContentPlacement="outside"
         columns={headerColumns}
         items={sortedItems}
-        emptyContent="No hay solicitudes"
+        emptyContent="No hay solicitudes para mostrar"
         renderCell={renderCell}
         id="id_global_event"
         aria="Table to show the data of global events"

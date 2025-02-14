@@ -129,7 +129,10 @@ export default function Usuarios() {
                     setIsModalActualizarUsariosOpen(true);
                   }}
                 >
-                  <span className="flex justify-between group">Actualizar Usuario <i className=" rtl:rotate-180  transition-transform duration-300 ease-in-out group-hover:rotate-90 group-hover:scale-110 ri-refresh-line"></i></span>
+                  <span className="flex justify-between group">
+                    Actualizar Usuario{" "}
+                    <i className=" rtl:rotate-180  transition-transform duration-300 ease-in-out group-hover:rotate-90 group-hover:scale-110 ri-refresh-line"></i>
+                  </span>
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
@@ -176,6 +179,7 @@ export default function Usuarios() {
       </div>
       <section>
         <TableShowData
+          emptyContent={"No hay usuarios para mostrar"}
           sortDescriptor={sortDescriptor}
           onSortChange={setSortDescriptor}
           topContent={

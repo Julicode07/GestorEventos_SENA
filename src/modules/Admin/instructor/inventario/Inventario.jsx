@@ -174,7 +174,7 @@ export default function App() {
               </TableColumn>
             )}
           </TableHeader>
-          <TableBody emptyContent={"No se encontraron inventarios"} items={sortedItems}>
+          <TableBody emptyContent={"No hay inventario para mostrar"} items={sortedItems}>
             {(item) => (
               <TableRow key={item.id_inventory}>
                 {(columnKey) => (

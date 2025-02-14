@@ -220,7 +220,7 @@ export default function App() {
             )}
           </TableHeader>
           <TableBody
-            emptyContent={"No se encontraron organizadores"}
+            emptyContent={"No hay organizadores para mostrar"}
             items={sortedItems}
           >
             {(item) => (

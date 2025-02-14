@@ -1,5 +1,5 @@
 import { Tooltip } from "@nextui-org/react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
 function Solicitudes() {
@@ -23,8 +23,14 @@ function Solicitudes() {
     getRequests();
   }, [getRequests]);
 
-  const pendient = acceptedRequests.filter(
-    (request) => request.global_event_status === "Aceptado"
+  const pendient = useMemo(
+    () =>
+      acceptedRequests.length > 0
+        ? acceptedRequests
+            .filter((request) => request !== null && request !== undefined)
+            .filter((request) => request.global_event_status === "Aceptado")
+        : [],
+    [acceptedRequests]
   );
 
   useEffect(() => {
@@ -35,7 +41,7 @@ function Solicitudes() {
     return (
       <div className="flex flex-col items-center justify-center w-full px-4 pt-4 pb-2 bg-white border border-gray-200 rounded-lg shadow sm:pt-6">
         <h5 className="text-xl sm:text-4xl font-bold text-gray-900 py-10 sm:py-0">
-          No hay solicitudes pendientes
+          No hay solicitudes aceptadas
         </h5>
       </div>
     );
@@ -45,7 +51,7 @@ function Solicitudes() {
     <div className="relative flex flex-col items-center w-full px-4 pt-4 pb-2 bg-white border border-gray-200 rounded-lg shadow sm:pt-6">
       <div className="w-full flex flex-col md:flex-row md:items-center md:justify-between mb-4">
         <h5 className="text-xl sm:text-2xl text-center md:text-left font-bold text-gray-900">
-          Solicitudes Pendientes
+          Solicitudes Aceptadas
         </h5>
         <a
           href="/admin/instructor/solicitudes"

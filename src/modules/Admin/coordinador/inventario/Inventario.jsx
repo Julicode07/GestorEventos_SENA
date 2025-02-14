@@ -137,7 +137,10 @@ export default function App() {
                     setUpdateModalInventory(true);
                   }}
                 >
-                  <span className="flex justify-between group">Actualizar <i className=" rtl:rotate-180  transition-transform duration-300 ease-in-out group-hover:rotate-90 group-hover:scale-110 ri-refresh-line"></i></span>
+                  <span className="flex justify-between group">
+                    Actualizar{" "}
+                    <i className=" rtl:rotate-180  transition-transform duration-300 ease-in-out group-hover:rotate-90 group-hover:scale-110 ri-refresh-line"></i>
+                  </span>
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
@@ -205,7 +208,10 @@ export default function App() {
               </TableColumn>
             )}
           </TableHeader>
-          <TableBody emptyContent={"No inventory found"} items={sortedItems}>
+          <TableBody
+            emptyContent={"No hay inventario para mostrar"}
+            items={sortedItems}
+          >
             {(item) => (
               <TableRow key={item.id_inventory}>
                 {(columnKey) => (

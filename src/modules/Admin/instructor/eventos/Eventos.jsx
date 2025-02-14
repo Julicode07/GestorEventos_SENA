@@ -287,7 +287,7 @@ export default function Eventos() {
         bottomContentPlacement="outside"
         columns={headerColumns}
         items={sortedItems}
-        emptyContent="No hay eventos registrados"
+        emptyContent="No hay eventos para mostrar"
         renderCell={renderCell}
         id="id_global_event"
         aria="Table to show the data of global events"

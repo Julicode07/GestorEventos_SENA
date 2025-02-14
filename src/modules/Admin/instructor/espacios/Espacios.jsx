@@ -177,7 +177,7 @@ export default function App() {
             bottomContentPlacement="outside"
             columns={headerColumns}
             items={sortedItems}
-            emptyContent="No hay espacios"
+            emptyContent="No hay espacios para mostrar"
             renderCell={renderCell}
             id="id_space"
             aria="Table to show the data of spaces"

@@ -123,12 +123,13 @@ export default function App() {
         return (
           <div className="flex flex-col">
             <p
-              className={`text-bold text-small text-center rounded-lg ${event.status === "Pendiente"
+              className={`text-bold text-small text-center rounded-lg ${
+                event.status === "Pendiente"
                   ? "bg-warning-100 text-warning"
                   : event.status === "Rechazado"
-                    ? "bg-danger-100 text-danger"
-                    : "bg-success-100 text-success"
-                }`}
+                  ? "bg-danger-100 text-danger"
+                  : "bg-success-100 text-success"
+              }`}
             >
               {event.status}
             </p>
@@ -188,6 +189,7 @@ export default function App() {
         onSortChange={setSortDescriptor}
         topContent={
           <TopContent
+            emptyContent={"No hay solicitudes para mostrar"}
             filterValue={filterValue}
             onClear={onClear}
             onRowsPerPageChange={onRowsPerPageChange}

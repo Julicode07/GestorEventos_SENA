@@ -14,9 +14,6 @@ const Eventos = React.lazy(() =>
 const SubEventos = React.lazy(() =>
   import("@/modules/Admin/instructor/SubEventos/SubEventos")
 );
-const Insumos = React.lazy(() =>
-  import("@/modules/Admin/instructor/insumos/Insumos")
-);
 const InfoEvento = React.lazy(() =>
   import("@/modules/Admin/instructor/eventos/InfoEvento")
 );
@@ -74,7 +71,6 @@ function Coordinador() {
               <Route path="/eventos" element={<Eventos />} />
               <Route path="/eventos/:id" element={<InfoEvento />} />
               <Route path="/subeventos/:id" element={<SubEventos />} />
-              <Route path="/insumos" element={<Insumos />} />
               <Route path="/solicitudes" element={<Solicitudes />} />
               <Route path="/solicitudes/ver/:id" element={<FullView />} />
               <Route path="/subeventos/info/:id" element={<InfoSubEvents />} />

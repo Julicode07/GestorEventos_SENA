@@ -7,7 +7,6 @@ import Espacios from "@/modules/Admin/coordinador/espacios/Espacios";
 import Solicitudes from "@/modules/Admin/coordinador/solicitudes/Solicitudes";
 import Eventos from "@/modules/Admin/coordinador/eventos/Eventos";
 import Inventario from "@/modules/Admin/coordinador/inventario/Inventario";
-import Insumos from "@/modules/Admin/coordinador/insumos/Insumos";
 import Organizadores from "@/modules/Admin/coordinador/organizadores/Organizadores";
 import InfoEvento from "@/modules/Admin/coordinador/eventos/InfoEvento.jsx";
 import Profile from "../../../modules/Admin/coordinador/perfil/Perfil.jsx";
@@ -29,7 +28,6 @@ function Coordinador() {
             <Route path="/eventos" element={<Eventos />} />
             <Route path="/eventos/:id" element={<InfoEvento />} />
             <Route path="/inventario/espacio/:id" element={<Inventario />} />
-            <Route path="/insumos" element={<Insumos />} />
             <Route path="/organizadores" element={<Organizadores />} />
             <Route path="/solicitudes/ver/:id" element={<FullView />} />
           </Routes>

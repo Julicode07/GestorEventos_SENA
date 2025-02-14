@@ -119,10 +119,11 @@ export default function App() {
         case "status":
           return (
             <div
-              className={`${cellValue === "activo"
-                ? "text-green-700 bg-green-200"
-                : "text-red-700 bg-red-200"
-                } capitalize text-center px-2 py-0.5 text-xs rounded-lg w-fit`}
+              className={`${
+                cellValue === "activo"
+                  ? "text-green-700 bg-green-200"
+                  : "text-red-700 bg-red-200"
+              } capitalize text-center px-2 py-0.5 text-xs rounded-lg w-fit`}
             >
               {cellValue}
             </div>
@@ -143,7 +144,10 @@ export default function App() {
                     <Link
                       to={`/admin/coordinador/inventario/espacio/${space.id_space}`}
                     >
-                      <span className="flex justify-between group">Inventario <i className="  transition-transform duration-300 ease-in-out group-hover:scale-110  ri-list-check"></i></span>
+                      <span className="flex justify-between group">
+                        Inventario{" "}
+                        <i className="  transition-transform duration-300 ease-in-out group-hover:scale-110  ri-list-check"></i>
+                      </span>
                     </Link>
                   </DropdownItem>
                   <DropdownItem
@@ -153,7 +157,10 @@ export default function App() {
                       setIsModalOpen(true);
                     }}
                   >
-                    <span className="flex justify-between group">Actualizar <i className=" rtl:rotate-180  transition-transform duration-300 ease-in-out group-hover:rotate-90 group-hover:scale-110 ri-refresh-line"></i></span>
+                    <span className="flex justify-between group">
+                      Actualizar{" "}
+                      <i className=" rtl:rotate-180  transition-transform duration-300 ease-in-out group-hover:rotate-90 group-hover:scale-110 ri-refresh-line"></i>
+                    </span>
                   </DropdownItem>
                   <DropdownItem
                     onClick={() => {
@@ -161,7 +168,12 @@ export default function App() {
                       setIsInventoryModalOpen(true);
                     }}
                   >
-                    <span className="flex justify-between group">Añadir Inventario <span className="  transition-transform duration-300 ease-in-out group-hover:scale-110"><PlusIcon /></span></span>
+                    <span className="flex justify-between group">
+                      Añadir Inventario{" "}
+                      <span className="  transition-transform duration-300 ease-in-out group-hover:scale-110">
+                        <PlusIcon />
+                      </span>
+                    </span>
                   </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
@@ -217,6 +229,7 @@ export default function App() {
             setIsModalOpen={setIsModalOpen}
           />
           <TableShowData
+            emptyContent={"No hay espacios para mostrar"}
             sortDescriptor={sortDescriptor}
             onSortChange={setSortDescriptor}
             topContent={
