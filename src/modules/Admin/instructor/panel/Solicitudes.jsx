@@ -69,9 +69,9 @@ function Solicitudes() {
                       <span className="font-bold">Nombre: </span>
                       {event.global_event_name}
                     </p>
-                    <div className="flex text-center text-sm px-2 rounded-full">
+                    <div className="flex text-center text-sm">
                       <span className="font-bold">Estado: </span>
-                      <p className="bg-green-200 text-green-800">
+                      <p className="bg-green-200 text-green-800 px-2 rounded-full">
                         {event.global_event_status}
                       </p>
                     </div>
