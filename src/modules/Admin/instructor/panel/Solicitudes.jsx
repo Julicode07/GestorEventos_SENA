@@ -11,12 +11,12 @@ function Solicitudes() {
     );
     const data = await response.json();
 
-    // Ordenar en orden descendente (más reciente primero)
-    const sortedData = Array.isArray(data)
-      ? data.sort((a, b) => b.id_global_event - a.id_global_event)
-      : [data];
+    // // Ordenar en orden descendente (más reciente primero)
+    // const sortedData = Array.isArray(data)
+    //   ? data.sort((a, b) => b.id_global_event - a.id_global_event)
+    //   : [data];
 
-    setPendientRequests(Array.isArray(sortedData) ? [sortedData] : sortedData);
+    setPendientRequests(Array.isArray(data) ? [data] : []);
   }, []);
 
   useEffect(() => {
