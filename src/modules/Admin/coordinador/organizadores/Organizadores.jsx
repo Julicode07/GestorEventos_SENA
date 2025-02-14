@@ -31,7 +31,7 @@ export default function App() {
   const [visibleColumns, setVisibleColumns] = React.useState(
     new Set(INITIAL_VISIBLE_COLUMNS)
   );
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(15);
   const [sortDescriptor, setSortDescriptor] = React.useState({
     column: "age",
     direction: "ascending",
@@ -153,7 +153,7 @@ export default function App() {
                     setIsOrganizersUpdateModalOpen(true);
                   }}
                 >
-                  Actualizar
+                  <span className="flex justify-between group">Actualizar <i className=" rtl:rotate-180  transition-transform duration-300 ease-in-out group-hover:rotate-90 group-hover:scale-110 ri-refresh-line"></i></span>
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>

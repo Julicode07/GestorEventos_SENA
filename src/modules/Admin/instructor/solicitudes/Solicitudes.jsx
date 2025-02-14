@@ -132,7 +132,7 @@ export default function App() {
             <Link
               to={`/admin/instructor/solicitudes/ver/${event.id_global_event}`}
             >
-              <Button className="bg-primary text-white px-1">Ver Evento</Button>
+              <Button className="bg-primary text-white px-2 ">Ver Evento</Button>
             </Link>
           </div>
         );

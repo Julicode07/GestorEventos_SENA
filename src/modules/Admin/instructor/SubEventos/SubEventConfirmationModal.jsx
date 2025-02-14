@@ -105,21 +105,25 @@ const SubEventConfirmationModal = ({
                     <span className="sr-only">Cerrar modal</span>
                   </button>
                 </div>
-                <form action="" className="p-3 flex flex-col gap-2" onSubmit={handleSubmit}>
-                  <div className="flex flex-col gap-2">
-                    <label className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-                      Estado del subEvento:
-                    </label>
-                    <p
-                      className={`text-center font-semibold px-3 py-1 rounded-lg ${subEventStatus[0]?.subeventConfirmation === "Confirmado"
-                        ? "bg-green-300 text-green-800"
-                        : subEventStatus[0]?.subeventConfirmation === "Rechazado"
-                          ? "bg-red-300 text-red-800"
-                          : "bg-orange-300 text-orange-800"
-                        }`}
+                <form action="" className="p-3" onSubmit={handleSubmit}>
+                  <div className="flex flex-col m-4">
+                    <label
+                      htmlFor="subEventConfirmation"
+                      className="flex items-center space-x-3 text-xl my-3"
                     >
-                      {subEventStatus[0]?.subeventConfirmation}
-                    </p>
+                      <b>Estado del subEvento:</b>{" "}
+                      <p
+                        className={`text-bold text-small text-center rounded-lg p-1 ${subEventStatus[0]?.subeventConfirmation === "Aceptado"
+                          ? "bg-green-300 text-green-800"
+                          : subEventStatus[0]?.subeventConfirmation ===
+                            "Rechazado"
+                            ? "bg-red-300 text-red-800"
+                            : "bg-orange-300 text-orange-800"
+                          }`}
+                      >
+                        {subEventStatus[0]?.subeventConfirmation}
+                      </p>
+                    </label>
                   </div>
                   <p className="text-lg font-semibold">Seleccione el estado:</p>
                   <div className="grid grid-cols-3 gap-4">

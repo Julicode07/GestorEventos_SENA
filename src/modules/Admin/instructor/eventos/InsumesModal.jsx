@@ -7,7 +7,7 @@ import { memo } from "react";
 const InsumesModal = memo(
   ({ insumes, SubEventIndex, onAddInsume, onRemoveInsume, onChangeInsume }) => {
     return (
-      <div className="px-4 w-full">
+      <div className="sm:px-4 w-full">
         <Button
           className="bg-primary text-white mb-4"
           endContent={<PlusIcon />}

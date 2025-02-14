@@ -454,7 +454,7 @@ const SubEventosModal = ({
                                     />
                                   </div>
                                   <hr className="border-2 my-3" />
-                                  <div className="flex justify-around divide-x">
+                                  <div className="flex flex-col sm:flex-row justify-around sm:divide-x pb-6">
                                     <SubEventsHasSpaces
                                       spaces={spaces}
                                       subEventSpaces={data.spaces}

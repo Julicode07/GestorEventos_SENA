@@ -13,7 +13,7 @@ const OrganizersModal = memo(
     onChangeOrganizer,
   }) => {
     return (
-      <div className="pl-4 w-full">
+      <div className="sm:pl-4 w-full">
         <Button
           className="text-white"
           color="warning"

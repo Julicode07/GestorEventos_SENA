@@ -1,4 +1,4 @@
-import { Select, SelectItem, Input } from "@nextui-org/react";
+import { Select, SelectItem, Input, Button } from "@nextui-org/react";
 import { useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import useUpdate from "../../../hooks/useUpdate";
@@ -63,7 +63,7 @@ const ModalActualizarUsuarios = ({
   return (
     isModalActualizarUsariosOpen && (
       <div
-        className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-40"
+        className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-40"
         onClick={(e) => {
           if (e.target === e.currentTarget) {
             setIsModalActualizarUsariosOpen(false);
@@ -100,7 +100,7 @@ const ModalActualizarUsuarios = ({
               </button>
             </div>
 
-            <div className="p-5">
+            <div className="px-4 pt-4 md:px-5 md:pt-5">
               <form
                 className="grid grid-cols-2 gap-4 max-w-xl mx-auto"
                 onSubmit={handleSubmit}
@@ -174,19 +174,18 @@ const ModalActualizarUsuarios = ({
                 </div>
 
                 <div className="col-span-2 flex items-center justify-center p-4 space-x-3 border-t border-gray-200">
-                  <button
+                  <Button
                     type="submit"
-                    className="font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-primary/80 text-white cursor-pointer hover:bg-primary/100"
+                    color="primary"
                   >
                     Actualizar Usuario
-                  </button>
-                  <button
-                    type="button"
-                    className="py-2.5 px-5 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-red-700"
+                  </Button>
+                  <Button
+                    color="danger"
                     onClick={() => setIsModalActualizarUsariosOpen(false)}
                   >
                     Cancelar
-                  </button>
+                  </Button>
                 </div>
                 {(successMessage || errorMessage) && (
                   <div className="col-span-2 text-center">
