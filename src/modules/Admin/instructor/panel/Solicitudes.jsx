@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 function Solicitudes() {
-  const [pendientRequests, setPendientRequests] = useState([]);
+  const [acceptedRequests, setAcceptedRequests] = useState([]);
 
   const getRequests = useCallback(async () => {
     const response = await fetch(
@@ -16,15 +16,15 @@ function Solicitudes() {
     //   ? data.sort((a, b) => b.id_global_event - a.id_global_event)
     //   : [data];
 
-    setPendientRequests(Array.isArray(data) ? data : [data]);
+    setAcceptedRequests(Array.isArray(data) ? data : [data]);
   }, []);
 
   useEffect(() => {
     getRequests();
   }, [getRequests]);
 
-  const pendient = pendientRequests.filter(
-    (request) => request.global_event_status === "Pendiente"
+  const pendient = acceptedRequests.filter(
+    (request) => request.global_event_status === "Aceptado"
   );
 
   useEffect(() => {
@@ -57,18 +57,18 @@ function Solicitudes() {
 
       <div className="w-full max-h-[220px] px-3 overflow-y-auto">
         <ul className="divide-y divide-gray-200">
-          {pendientRequests.map((event) => (
+          {pendient.map((event) => (
             <li key={event.id_global_event} className="py-2 sm:py-3">
               <div className="flex items-center justify-between gap-2">
                 <Tooltip color="" content="Ver la solicitud">
                   <Link
-                    to={`/admin/coordinador/solicitudes/ver/${event.id_global_event}`}
+                    to={`/admin/instructor/solicitudes/ver/${event.id_sub_event}`}
                     className="flex-1 px-2 py-1 rounded-xl hover:bg-gray-100 transition-all duration-300"
                   >
                     <p className="text-sm font-medium text-gray-900 truncate">
                       {event.global_event_name}
                     </p>
-                    <p className="text-sm bg-warning-100 text-warning inline-block px-2 rounded-full">
+                    <p className="text-sm bg-green-200 text-green-800 inline-block px-2 rounded-full">
                       {event.global_event_status}
                     </p>
                   </Link>
