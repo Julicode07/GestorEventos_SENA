@@ -49,7 +49,7 @@ export default function Eventos() {
 
   const getGlobalEvents = useCallback(async () => {
     const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/events/global/all`
+      `${import.meta.env.VITE_API_URL}/api/events/global/self/all`
     );
     const data = await response.json();
     setShowGlobalEvent(data);
@@ -132,18 +132,19 @@ export default function Eventos() {
     const cellValue = event[columnKey];
 
     switch (columnKey) {
-      case "status":
+      case "global_event_status":
         return (
           <div className="flex flex-col">
             <p
-              className={`text-bold text-small text-center rounded-lg ${event.status === "Pendiente"
-                ? "bg-warning-100 text-warning"
-                : event.status === "Rechazado"
+              className={`text-bold text-small text-center rounded-lg ${
+                event.global_event_status === "Pendiente"
+                  ? "bg-warning-100 text-warning"
+                  : event.global_event_status === "Rechazado"
                   ? "bg-danger-100 text-danger"
                   : "bg-success-100 text-success"
-                }`}
+              }`}
             >
-              {event.status}
+              {event.global_event_status}
             </p>
           </div>
         );
@@ -160,13 +161,14 @@ export default function Eventos() {
                 <DropdownItem
                   textValue="Actualizar Evento"
                   disabled={
-                    event.status === "Rechazado" || event.status === "Aceptado"
+                    event.global_event_status === "Rechazado" ||
+                    event.global_event_status === "Aceptado"
                   }
                   onClick={() => {
-                    setStatusAlert(event.status);
+                    setStatusAlert(event.global_event_status);
                     if (
-                      event.status === "Rechazado" ||
-                      event.status === "Aceptado"
+                      event.global_event_status === "Rechazado" ||
+                      event.global_event_status === "Aceptado"
                     ) {
                       setAlert(true);
                       setTimeout(() => {
@@ -179,18 +181,22 @@ export default function Eventos() {
                     setGlobalEventName(event.name);
                   }}
                 >
-                  <span className="flex justify-between group">Actualizar Evento <i className=" rtl:rotate-180  transition-transform duration-300 ease-in-out group-hover:rotate-90 group-hover:scale-110 ri-refresh-line"></i></span>
+                  <span className="flex justify-between group">
+                    Actualizar Evento{" "}
+                    <i className=" rtl:rotate-180  transition-transform duration-300 ease-in-out group-hover:rotate-90 group-hover:scale-110 ri-refresh-line"></i>
+                  </span>
                 </DropdownItem>
                 <DropdownItem
                   textValue="Crear subeventos"
                   disabled={
-                    event.status === "Rechazado" || event.status === "Aceptado"
+                    event.global_event_status === "Rechazado" ||
+                    event.global_event_status === "Aceptado"
                   }
                   onClick={() => {
-                    setStatusAlert(event.status);
+                    setStatusAlert(event.global_event_status);
                     if (
-                      event.status === "Rechazado" ||
-                      event.status === "Aceptado"
+                      event.global_event_status === "Rechazado" ||
+                      event.global_event_status === "Aceptado"
                     ) {
                       setAlert(true);
                       setTimeout(() => {
@@ -203,13 +209,19 @@ export default function Eventos() {
                     setGlobalEventName(event.name);
                   }}
                 >
-                  <span className="flex justify-between group">Crear subeventos <i className="  transition-transform duration-300 ease-in-out group-hover:scale-125 ri-add-line"></i></span>
+                  <span className="flex justify-between group">
+                    Crear subeventos{" "}
+                    <i className="  transition-transform duration-300 ease-in-out group-hover:scale-125 ri-add-line"></i>
+                  </span>
                 </DropdownItem>
                 <DropdownItem textValue="SubEventos">
                   <Link
                     to={`/admin/instructor/subeventos/${event.id_global_event}`}
                   >
-                    <span className="flex justify-between group">SubEventos  <i className="transition-transform duration-300 ease-in-out group-hover:scale-125 ri-calendar-2-line"></i></span>
+                    <span className="flex justify-between group">
+                      SubEventos{" "}
+                      <i className="transition-transform duration-300 ease-in-out group-hover:scale-125 ri-calendar-2-line"></i>
+                    </span>
                   </Link>
                 </DropdownItem>
               </DropdownMenu>
