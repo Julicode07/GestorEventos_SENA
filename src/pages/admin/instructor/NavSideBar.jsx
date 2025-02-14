@@ -73,11 +73,11 @@ const NavSideBar = () => {
   }, [location.pathname]);
 
   const acceptedRequestsCount = useMemo(() => {
-    acceptedRequests.length > 0
-      ? acceptedRequests
-          .filter((request) => request !== null && request !== undefined)
-          .filter((event) => event.global_event_status === "Aceptado").length
-      : [];
+    if (!acceptedRequests || acceptedRequests.length === 0) return 0;
+
+    return acceptedRequests
+      .filter((request) => request !== null && request !== undefined)
+      .filter((event) => event.global_event_status === "Aceptado").length;
   }, [acceptedRequests]);
 
   return (
