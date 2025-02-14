@@ -146,7 +146,7 @@ const NavSideBar = () => {
               title="Panel"
             >
               <span className="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-white bg-primary rounded-full">
-                {acceptedRequestsCount}
+                {acceptedRequestsCount || 0}
               </span>
             </ItemsList>
             <ItemsList
