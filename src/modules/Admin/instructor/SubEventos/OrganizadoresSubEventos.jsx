@@ -28,6 +28,7 @@ const OrganizadoresSubEventos = ({
       setOrganizersByIdSubEvents([]);
       return;
     }
+    console.log(idSubEvents);
     getOrganizersByIdSubEvents();
   }, [idSubEvents, getOrganizersByIdSubEvents]);
 

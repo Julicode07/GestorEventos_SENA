@@ -11,7 +11,7 @@ import {
 import { VerticalDotsIcon } from "@modules/Admin/components/VerticalDotsIcon";
 import { EyeIcon } from "../../components/EyeIcon";
 
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { capitalize, INITIAL_VISIBLE_COLUMNS, columns } from "./utils/utils";
 import BottomContent from "../../components/BottonContent";
 import TopContent from "./../../components/TopContent";
@@ -141,7 +141,7 @@ export default function SubEventos() {
         return (
           <div className="flex flex-col">
             <p
-              className={`text-bold text-small text-center rounded-lg ${
+              className={`text-bold text-small text-center p-1 rounded-lg ${
                 subEvent.subeventConfirmation === "Confirmado"
                   ? "bg-green-300 text-green-800"
                   : subEvent.subeventConfirmation === "Rechazado"
@@ -153,15 +153,17 @@ export default function SubEventos() {
             </p>
           </div>
         );
-      case "organizers":
+      case "info":
         return (
-          <EyeIcon
-            className="block m-auto text-green-600 hover:bg-gray-300 hover:rounded-lg hover:cursor-pointer"
-            onClick={() => {
-              setIdSubEvents(subEvent.id_sub_event);
-              setIsOrganizersModal(true);
-            }}
-          />
+          <Link to={`/admin/instructor/subeventos/info/${subEvent.id_sub_event}`}>
+            <EyeIcon
+              className="block m-auto text-green-600 hover:bg-gray-300 hover:rounded-lg hover:cursor-pointer"
+              // onClick={() => {
+              //   setIdSubEvents(subEvent.id_sub_event);
+              //   setIsOrganizersModal(true);
+              // }}
+            />
+          </Link>
         );
       case "actions":
         return (

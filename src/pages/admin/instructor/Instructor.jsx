@@ -33,6 +33,9 @@ const Solicitudes = React.lazy(() =>
 const FullView = React.lazy(() =>
   import("@/modules/Admin/instructor/solicitudes/FullView")
 );
+const InfoSubEvents = React.lazy(() =>
+  import("@/modules/Admin/instructor/SubEventos/Info")
+);
 
 import { SessionContext } from "../../../context/SessionContext";
 function Coordinador() {
@@ -74,6 +77,7 @@ function Coordinador() {
               <Route path="/insumos" element={<Insumos />} />
               <Route path="/solicitudes" element={<Solicitudes />} />
               <Route path="/solicitudes/ver/:id" element={<FullView />} />
+              <Route path="/subeventos/info/:id" element={<InfoSubEvents />} />
             </Routes>
           </div>
         </div>

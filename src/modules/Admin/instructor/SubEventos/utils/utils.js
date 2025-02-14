@@ -11,7 +11,7 @@ const columns = [
     uid: "subeventConfirmation",
     sortable: true,
   },
-  { name: "ORGANIZADORES", uid: "organizers", sortable: true },
+  { name: "INFO", uid: "info", sortable: true },
   { name: "ACTIONS", uid: "actions" },
 ];
 
@@ -28,7 +28,7 @@ const INITIAL_VISIBLE_COLUMNS = [
   "end_date",
   "description",
   "subeventConfirmation",
-  "organizers",
+  "info",
   "actions",
 ];
 

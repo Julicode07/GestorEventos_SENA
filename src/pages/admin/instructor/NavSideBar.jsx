@@ -117,7 +117,7 @@ const NavSideBar = () => {
               title="Espacios"
             />
             <ItemsList
-              to={"/admin/instructor/eventos/"}
+              to={"/admin/instructor/eventos"}
               logo="ri-inbox-2-fill flex w-5 h-5 text-xl justify-center items-center text-primary transition duration-75 group-hover:text-gray-600"
               title="Eventos"
             />
