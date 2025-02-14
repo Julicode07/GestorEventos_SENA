@@ -62,13 +62,15 @@ function Solicitudes() {
               <div className="flex items-center justify-between gap-2">
                 <Tooltip color="" content="Ver la solicitud">
                   <Link
-                    to={`/admin/instructor/solicitudes/ver/${event.id_sub_event}`}
+                    to={`/admin/instructor/solicitudes/ver/${event.id_global_event}`}
                     className="flex-1 px-2 py-1 rounded-xl hover:bg-gray-100 transition-all duration-300"
                   >
                     <p className="text-sm font-medium text-gray-900 truncate">
+                      <span className="font-bold">Nombre: </span>
                       {event.global_event_name}
                     </p>
                     <p className="text-sm bg-green-200 text-green-800 inline-block px-2 rounded-full">
+                      <span className="font-bold">Estado: </span>
                       {event.global_event_status}
                     </p>
                   </Link>
