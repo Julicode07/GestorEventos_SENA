@@ -210,7 +210,7 @@ export default function Eventos() {
                     }
                     setIsSubEventosModalOpen(true);
                     setIdEvent(event.id_global_event);
-                    setGlobalEventName(event.name);
+                    setGlobalEventName(event.global_event_name);
                   }}
                 >
                   <span className="flex justify-between group">

@@ -139,7 +139,7 @@ export default function App() {
             <Link
               to={`/admin/instructor/solicitudes/ver/${event.id_global_event}`}
             >
-              <Button className="bg-primary/80 text-white px-2 ">
+              <Button className="flex items-center bg-primary/80 text-white px-2 ">
                 <i className="ri-eye-line"></i> Ver Evento
               </Button>
             </Link>
