@@ -16,7 +16,7 @@ function Solicitudes() {
     //   ? data.sort((a, b) => b.id_global_event - a.id_global_event)
     //   : [data];
 
-    setPendientRequests(Array.isArray(data) ? [data] : []);
+    setPendientRequests(Array.isArray(data) ? data : [data]);
   }, []);
 
   useEffect(() => {
@@ -57,7 +57,7 @@ function Solicitudes() {
 
       <div className="w-full max-h-[220px] px-3 overflow-y-auto">
         <ul className="divide-y divide-gray-200">
-          {pendient.map((event) => (
+          {pendientRequests.map((event) => (
             <li key={event.id_global_event} className="py-2 sm:py-3">
               <div className="flex items-center justify-between gap-2">
                 <Tooltip color="" content="Ver la solicitud">
