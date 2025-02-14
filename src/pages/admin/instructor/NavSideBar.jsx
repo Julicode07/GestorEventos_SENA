@@ -66,7 +66,7 @@ const NavSideBar = () => {
   }, [location.pathname]);
 
   const acceptedRequestsCount = acceptedRequests.filter(
-    (event) => event.status === "Pendiente"
+    (event) => event.status === "Aceptado"
   ).length;
 
   return (
