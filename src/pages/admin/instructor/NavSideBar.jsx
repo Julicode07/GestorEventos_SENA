@@ -1,4 +1,11 @@
-import { useState, useEffect, useRef, useContext, useCallback } from "react";
+import {
+  useState,
+  useEffect,
+  useRef,
+  useContext,
+  useCallback,
+  useMemo,
+} from "react";
 import { useLocation } from "react-router-dom";
 import { SessionContext } from "@/context/SessionContext.jsx";
 import Images from "@/assets/img/images.js";
@@ -65,9 +72,13 @@ const NavSideBar = () => {
     setSidebarOpen(false);
   }, [location.pathname]);
 
-  const acceptedRequestsCount = acceptedRequests.filter(
-    (event) => event.global_event_status === "Aceptado"
-  ).length;
+  const acceptedRequestsCount = useMemo(() => {
+    acceptedRequests.length > 0
+      ? acceptedRequests
+          .filter((request) => request !== null && request !== undefined)
+          .filter((event) => event.global_event_status === "Aceptado").length
+      : [];
+  }, [acceptedRequests]);
 
   return (
     <div>

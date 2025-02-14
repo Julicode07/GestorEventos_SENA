@@ -33,10 +33,6 @@ function Solicitudes() {
     [acceptedRequests]
   );
 
-  useEffect(() => {
-    console.log(pendient);
-  }, [pendient]);
-
   if (pendient.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center w-full px-4 pt-4 pb-2 bg-white border border-gray-200 rounded-lg shadow sm:pt-6">
