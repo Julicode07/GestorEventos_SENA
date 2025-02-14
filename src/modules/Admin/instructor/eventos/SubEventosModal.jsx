@@ -320,14 +320,20 @@ const SubEventosModal = ({
                   </div>
 
                   <div className="px-4 pt-4 md:px-5 md:pt-5">
-                    <form className="min-h-full" onSubmit={handleSubmitSubEvent}>
+                    <form
+                      className="min-h-full"
+                      onSubmit={handleSubmitSubEvent}
+                    >
                       <div className="flex flex-col">
                         <div>
                           <div className="overflow-y-auto max-h-[57vh] space-y-4">
                             {registerSubEvents &&
                               Array.isArray(registerSubEvents) &&
                               registerSubEvents.map((data, SubEventIndex) => (
-                                <div key={SubEventIndex} className="bg-gray-100 rounded-xl px-4 flex flex-col gap-2">
+                                <div
+                                  key={SubEventIndex}
+                                  className="rounded-xl px-4 flex flex-col gap-2"
+                                >
                                   {SubEventIndex !== 0 && (
                                     <button
                                       className="flex items-end justify-end w-full"

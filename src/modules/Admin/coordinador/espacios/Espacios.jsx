@@ -50,7 +50,6 @@ export default function App() {
     fetchData();
   }, [getAllSpaces]);
 
-  const [updateModalSpace, setUpdateModalSpace] = useState(false);
   const [filterValue, setFilterValue] = useState("");
   const [selectedKeys, setSelectedKeys] = useState(new Set([]));
   const [visibleColumns, setVisibleColumns] = useState(
@@ -104,87 +103,84 @@ export default function App() {
     });
   }, [sortDescriptor, items]);
 
-  const renderCell = useCallback(
-    (space, columnKey) => {
-      const cellValue = space[columnKey];
-      switch (columnKey) {
-        case "id_space":
-          return <div className="text-small">{cellValue}</div>;
-        case "name":
-          return <div className="text-small">{cellValue}</div>;
-        case "capacity":
-          return <div className="text-small">{cellValue}</div>;
-        case "type":
-          return <div className="text-small">{cellValue}</div>;
-        case "status":
-          return (
-            <div
-              className={`${
-                cellValue === "activo"
-                  ? "text-green-700 bg-green-200"
-                  : "text-red-700 bg-red-200"
-              } capitalize text-center px-2 py-0.5 text-xs rounded-lg w-fit`}
-            >
-              {cellValue}
-            </div>
-          );
-        case "details":
-          return <div className="text-small">{cellValue}</div>;
-        case "actions":
-          return (
-            <div className="relative flex justify-end items-center gap-2">
-              <Dropdown>
-                <DropdownTrigger>
-                  <Button isIconOnly size="sm" variant="light">
-                    <VerticalDotsIcon className="text-default-300" />
-                  </Button>
-                </DropdownTrigger>
-                <DropdownMenu>
-                  <DropdownItem textValue="Inventario">
-                    <Link
-                      to={`/admin/coordinador/inventario/espacio/${space.id_space}`}
-                    >
-                      <span className="flex justify-between group">
-                        Inventario{" "}
-                        <i className="  transition-transform duration-300 ease-in-out group-hover:scale-110  ri-list-check"></i>
-                      </span>
-                    </Link>
-                  </DropdownItem>
-                  <DropdownItem
-                    textValue="Actualizar"
-                    onClick={() => {
-                      setIdSpaces(space.id_space);
-                      setIsModalOpen(true);
-                    }}
+  const renderCell = useCallback((space, columnKey) => {
+    const cellValue = space[columnKey];
+    switch (columnKey) {
+      case "id_space":
+        return <div className="text-small">{cellValue}</div>;
+      case "name":
+        return <div className="text-small">{cellValue}</div>;
+      case "capacity":
+        return <div className="text-small">{cellValue}</div>;
+      case "type":
+        return <div className="text-small">{cellValue}</div>;
+      case "status":
+        return (
+          <div
+            className={`${
+              cellValue === "activo"
+                ? "text-green-700 bg-green-200"
+                : "text-red-700 bg-red-200"
+            } capitalize text-center px-2 py-0.5 text-xs rounded-lg w-fit`}
+          >
+            {cellValue}
+          </div>
+        );
+      case "details":
+        return <div className="text-small">{cellValue}</div>;
+      case "actions":
+        return (
+          <div className="relative flex justify-end items-center gap-2">
+            <Dropdown>
+              <DropdownTrigger>
+                <Button isIconOnly size="sm" variant="light">
+                  <VerticalDotsIcon className="text-default-300" />
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu>
+                <DropdownItem textValue="Inventario">
+                  <Link
+                    to={`/admin/coordinador/inventario/espacio/${space.id_space}`}
                   >
                     <span className="flex justify-between group">
-                      Actualizar{" "}
-                      <i className=" rtl:rotate-180  transition-transform duration-300 ease-in-out group-hover:rotate-90 group-hover:scale-110 ri-refresh-line"></i>
+                      Inventario{" "}
+                      <i className="  transition-transform duration-300 ease-in-out group-hover:scale-110  ri-list-check"></i>
                     </span>
-                  </DropdownItem>
-                  <DropdownItem
-                    onClick={() => {
-                      setIdSpaces(space.id_space);
-                      setIsInventoryModalOpen(true);
-                    }}
-                  >
-                    <span className="flex justify-between group">
-                      Añadir Inventario{" "}
-                      <span className="  transition-transform duration-300 ease-in-out group-hover:scale-110">
-                        <PlusIcon />
-                      </span>
+                  </Link>
+                </DropdownItem>
+                <DropdownItem
+                  textValue="Actualizar"
+                  onClick={() => {
+                    setIdSpaces(space.id_space);
+                    setIsModalOpen(true);
+                  }}
+                >
+                  <span className="flex justify-between group">
+                    Actualizar{" "}
+                    <i className=" rtl:rotate-180  transition-transform duration-300 ease-in-out group-hover:rotate-90 group-hover:scale-110 ri-refresh-line"></i>
+                  </span>
+                </DropdownItem>
+                <DropdownItem
+                  onClick={() => {
+                    setIdSpaces(space.id_space);
+                    setIsInventoryModalOpen(true);
+                  }}
+                >
+                  <span className="flex justify-between group">
+                    Añadir Inventario{" "}
+                    <span className="  transition-transform duration-300 ease-in-out group-hover:scale-110">
+                      <PlusIcon />
                     </span>
-                  </DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
-            </div>
-          );
-        default:
-          return cellValue;
-      }
-    },
-    [updateModalSpace]
-  );
+                  </span>
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          </div>
+        );
+      default:
+        return cellValue;
+    }
+  }, []);
 
   const onRowsPerPageChange = useCallback((e) => {
     setRowsPerPage(Number(e.target.value));
@@ -208,11 +204,6 @@ export default function App() {
           isInventoryModalOpen={isInventoryModalOpen}
           setIsInventoryModalOpen={setIsInventoryModalOpen}
           idSpaces={idSpaces}
-        />
-        <ModalEspaciosActualizar
-          isOpen={updateModalSpace}
-          setIsOpen={setUpdateModalSpace}
-          idSpaces={Number(idSpaces)}
         />
         <div>
           <Breadcrumbs>

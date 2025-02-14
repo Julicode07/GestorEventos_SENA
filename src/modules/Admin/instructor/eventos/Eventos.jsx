@@ -52,7 +52,7 @@ export default function Eventos() {
       `${import.meta.env.VITE_API_URL}/api/events/global/self/all`
     );
     const data = await response.json();
-    setShowGlobalEvent(data);
+    setShowGlobalEvent(Array.isArray(data) ? data : []);
   }, []);
 
   useEffect(() => {
@@ -80,8 +80,12 @@ export default function Eventos() {
     if (hasSearchFilter) {
       filteredEvents = filteredEvents.filter(
         (event) =>
-          event.name.toLowerCase().includes(filterValue.toLowerCase()) ||
-          event.details.toLowerCase().includes(filterValue.toLowerCase())
+          event.global_event_name
+            .toLowerCase()
+            .includes(filterValue.toLowerCase()) ||
+          event.global_event_observations
+            .toLowerCase()
+            .includes(filterValue.toLowerCase())
       );
     }
 

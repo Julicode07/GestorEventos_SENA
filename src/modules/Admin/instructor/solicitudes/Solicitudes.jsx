@@ -58,9 +58,15 @@ export default function App() {
     if (hasSearchFilter) {
       filteredEvents = filteredEvents.filter(
         (event) =>
-          event.name.toLowerCase().includes(filterValue.toLowerCase()) ||
-          event.details.toLowerCase().includes(filterValue.toLowerCase()) ||
-          event.status.toLowerCase().includes(filterValue.toLowerCase())
+          event.global_event_name
+            .toLowerCase()
+            .includes(filterValue.toLowerCase()) ||
+          event.global_event_observations
+            .toLowerCase()
+            .includes(filterValue.toLowerCase()) ||
+          event.global_event_status
+            .toLowerCase()
+            .includes(filterValue.toLowerCase())
       );
     }
 
@@ -115,12 +121,13 @@ export default function App() {
         return (
           <div className="flex flex-col">
             <p
-              className={`text-bold text-small text-center rounded-lg ${event.global_event_status === "Pendiente"
-                ? "bg-warning-100 text-warning"
-                : event.global_event_status === "Rechazado"
+              className={`text-bold text-small text-center rounded-lg ${
+                event.global_event_status === "Pendiente"
+                  ? "bg-warning-100 text-warning"
+                  : event.global_event_status === "Rechazado"
                   ? "bg-danger-100 text-danger"
                   : "bg-success-100 text-success"
-                }`}
+              }`}
             >
               {event.global_event_status}
             </p>
@@ -132,7 +139,9 @@ export default function App() {
             <Link
               to={`/admin/instructor/solicitudes/ver/${event.id_global_event}`}
             >
-              <Button className="bg-primary text-white px-2 ">Ver Evento</Button>
+              <Button className="bg-primary/80 text-white px-2 ">
+                <i className="ri-eye-line"></i> Ver Evento
+              </Button>
             </Link>
           </div>
         );

@@ -178,7 +178,7 @@ export default function App() {
         <Breadcrumbs>
           <BreadcrumbItem href=""> </BreadcrumbItem>
           <BreadcrumbItem href="/admin/instructor/espacios">
-            Eventos
+            Solicitudes
           </BreadcrumbItem>
         </Breadcrumbs>
       </div>
@@ -187,9 +187,9 @@ export default function App() {
       <TableShowData
         sortDescriptor={sortDescriptor}
         onSortChange={setSortDescriptor}
+        emptyContent={"No hay solicitudes para mostrar"}
         topContent={
           <TopContent
-            emptyContent={"No hay solicitudes para mostrar"}
             filterValue={filterValue}
             onClear={onClear}
             onRowsPerPageChange={onRowsPerPageChange}

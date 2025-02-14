@@ -113,7 +113,7 @@ export default function App() {
           <div className="relative flex justify-end items-center gap-2">
             <Link
               to={`/admin/instructor/inventario/espacio/${space.id_space}`}
-              className="block m-auto bg-primary text-white p-2 rounded-lg"
+              className="block m-auto bg-primary/80 text-white p-2 rounded-lg"
             >
               Ver Inventario <i className="ri-list-check"></i>
             </Link>

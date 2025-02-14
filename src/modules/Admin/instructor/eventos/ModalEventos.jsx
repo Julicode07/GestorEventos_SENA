@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button, Input, Textarea } from "@nextui-org/react";
 import useRegister from "../../../hooks/useRegister";
 import { SessionContext } from "@/context/SessionContext.jsx";
+import { PlusIcon } from "@modules/Admin/components/PlusIcon";
 
 const ModalEventos = () => {
   const { register } = useRegister();
@@ -57,8 +58,9 @@ const ModalEventos = () => {
     <>
       {/* Modal to create event */}
       <Button
-        className="bg-primary hover:bg-primary/100 text-white"
+        className="bg-primary/80 hover:bg-primary/100 text-white"
         onClick={() => setIsModalOpen(true)}
+        endContent={<PlusIcon />}
       >
         Crear Evento Global
       </Button>
@@ -66,7 +68,6 @@ const ModalEventos = () => {
       <AnimatePresence>
         {isModalOpen && (
           <>
-
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -181,8 +182,7 @@ const ModalEventos = () => {
               </div>
             </motion.div>
           </>
-        )
-        }
+        )}
       </AnimatePresence>
     </>
   );
