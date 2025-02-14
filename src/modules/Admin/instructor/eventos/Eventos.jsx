@@ -80,10 +80,8 @@ export default function Eventos() {
     if (hasSearchFilter) {
       filteredEvents = filteredEvents.filter(
         (event) =>
-          event.user.name.toLowerCase().includes(filterValue.toLowerCase()) ||
           event.name.toLowerCase().includes(filterValue.toLowerCase()) ||
-          (event.space &&
-            event.space.toLowerCase().includes(filterValue.toLowerCase()))
+          event.details.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
 
@@ -138,13 +136,12 @@ export default function Eventos() {
         return (
           <div className="flex flex-col">
             <p
-              className={`text-bold text-small text-center rounded-lg ${
-                event.status === "Pendiente"
-                  ? "bg-warning-100 text-warning"
-                  : event.status === "Rechazado"
+              className={`text-bold text-small text-center rounded-lg ${event.status === "Pendiente"
+                ? "bg-warning-100 text-warning"
+                : event.status === "Rechazado"
                   ? "bg-danger-100 text-danger"
                   : "bg-success-100 text-success"
-              }`}
+                }`}
             >
               {event.status}
             </p>
