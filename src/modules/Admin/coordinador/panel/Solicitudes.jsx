@@ -69,7 +69,7 @@ function Solicitudes() {
         </h5>
         <a
           href="/admin/coordinador/solicitudes"
-          className="bg-secondary text-white p-2 text-sm sm:text-base font-medium rounded-lg transition-all duration-300 mt-3 md:mt-0"
+          className="bg-secondary text-white p-2 text-sm sm:text-base text-center md:text-left font-medium rounded-lg transition-all duration-300 mt-3 md:mt-0"
         >
           Ver todas{" "}
           <i className="ri-arrow-right-line"></i>

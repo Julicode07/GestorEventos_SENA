@@ -5,19 +5,18 @@ const GlobalEvent = memo(({ globalEventitle, status, id, details }) => {
   return (
     <div className="flex flex-col border-1 rounded-lg p-3 mt-3 space-y-4">
       <h1 className="font-bold text-2xl">{globalEventitle}</h1>
-      <h2
-        className={`text-xs rounded-full p-2 w-fit ${
-          status === "Aceptado"
-            ? "bg-green-300 text-green-900"
-            : status === "Rechazado"
+      <p
+        className="font-bold">Estado: {" "}
+        <span className={`text-sm rounded-full px-1 w-fit ${status === "Aceptado"
+          ? "bg-green-300 text-green-900"
+          : status === "Rechazado"
             ? "bg-red-300 text-red-900"
             : "bg-yellow-300 text-yellow-700"
-        }`}
-      >
-        {status}
-      </h2>
+          }`}>{status}</span>
+      </p>
+
       <p>
-        <span className="font-bold">ID: </span>
+        <span className="font-bold">ID del evento: </span>
         {id}
       </p>
       <p>

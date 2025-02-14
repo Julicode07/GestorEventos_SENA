@@ -1,8 +1,8 @@
 import { BreadcrumbItem, Breadcrumbs } from "@nextui-org/react";
 import { useCallback, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import GlobalEvent from "./GlobalEvent";
 import SubEvents from "./SubEvents";
-import { useParams } from "react-router-dom";
 
 const FullView = () => {
   const { id } = useParams();
@@ -23,10 +23,10 @@ const FullView = () => {
   return (
     <>
       <Breadcrumbs>
-        <BreadcrumbItem href="/admin/instructor/solicitudes">
+        <BreadcrumbItem href="/admin/coordinador/solicitudes">
           Solicitudes
         </BreadcrumbItem>
-        <BreadcrumbItem>Solicitud</BreadcrumbItem>
+        <BreadcrumbItem>Solicitud {id}</BreadcrumbItem>
       </Breadcrumbs>
       <div>
         <h1 className="font-bold text-3xl">Detalles del evento global {id}</h1>
@@ -38,11 +38,12 @@ const FullView = () => {
               id={globalEvent.id_global_event}
               details={globalEvent.global_event_observations}
             />
-            <SubEvents subEvents={globalEvent.sub_events} />
+            <SubEvents subEvents={globalEvent.sub_events ?? []} />
           </div>
         ))}
       </div>
     </>
   );
 };
+
 export default FullView;
