@@ -139,7 +139,7 @@ InventoryRouter.get(
   }
 );
 
-InventoryRouter.get("/get/:id_space", async (req: Request, res: Response) => {
+InventoryRouter.get("/get/space/:id_space", async (req: Request, res: Response) => {
   try {
     return await GetInventoryByIdSpaceController(req, res);
   } catch (err) {
