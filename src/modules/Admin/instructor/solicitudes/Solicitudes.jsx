@@ -1,9 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { BreadcrumbItem, Breadcrumbs } from "@nextui-org/react";
+import { BreadcrumbItem, Breadcrumbs, Button } from "@nextui-org/react";
 import { columns, INITIAL_VISIBLE_COLUMNS, capitalize } from "./utils/utils.js";
 import TopContent from "../../components/TopContent.jsx";
 import BottomContent from "../../components/BottonContent.jsx";
-import { EyeIcon } from "../../components/EyeIcon";
 import { Link } from "react-router-dom";
 const TableShowData = React.lazy(() =>
   import("./../../components/TableShowData.jsx")
@@ -116,13 +115,12 @@ export default function App() {
         return (
           <div className="flex flex-col">
             <p
-              className={`text-bold text-small text-center rounded-lg ${
-                event.global_event_status === "Pendiente"
-                  ? "bg-warning-100 text-warning"
-                  : event.global_event_status === "Rechazado"
+              className={`text-bold text-small text-center rounded-lg ${event.global_event_status === "Pendiente"
+                ? "bg-warning-100 text-warning"
+                : event.global_event_status === "Rechazado"
                   ? "bg-danger-100 text-danger"
                   : "bg-success-100 text-success"
-              }`}
+                }`}
             >
               {event.global_event_status}
             </p>
@@ -134,7 +132,7 @@ export default function App() {
             <Link
               to={`/admin/instructor/solicitudes/ver/${event.id_global_event}`}
             >
-              <EyeIcon className="block m-auto text-green-600 hover:bg-gray-300 hover:rounded-lg hover:cursor-pointer" />
+              <Button className="bg-primary text-white px-1">Ver Evento</Button>
             </Link>
           </div>
         );
@@ -149,7 +147,7 @@ export default function App() {
         <Breadcrumbs>
           <BreadcrumbItem href=""> </BreadcrumbItem>
           <BreadcrumbItem href="/admin/instructor/espacios">
-            Eventos
+            Solicitudes hechas por ti
           </BreadcrumbItem>
         </Breadcrumbs>
       </div>
@@ -181,6 +179,7 @@ export default function App() {
         bottomContentPlacement="outside"
         columns={headerColumns}
         items={sortedItems}
+        emptyContent="No hay solicitudes"
         renderCell={renderCell}
         id="id_global_event"
         aria="Table to show the data of global events"

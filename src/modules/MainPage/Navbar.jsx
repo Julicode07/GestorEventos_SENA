@@ -58,14 +58,14 @@ const Navbar = () => {
 
           {(userSession.role === "Coordinador" ||
             userSession.role === "Instructor") && (
-            <UserDropdown
-              role={userSession.role}
-              profileLink={getPanelLink()}
-              logoutLink="/"
-              textColor="text-white"
-              textRole="text-gray-200"
-            />
-          )}
+              <UserDropdown
+                role={userSession.role}
+                profileLink={getPanelLink()}
+                logoutLink="/"
+                textColor="text-white"
+                textRole="text-gray-200"
+              />
+            )}
         </div>
       </div>
     </nav>

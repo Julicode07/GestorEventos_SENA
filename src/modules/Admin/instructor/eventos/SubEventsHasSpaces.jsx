@@ -1,5 +1,8 @@
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Button,
+  Select,
+  SelectItem,
   Table,
   TableBody,
   TableCell,
@@ -12,16 +15,10 @@ import PropTypes from "prop-types";
 import { memo, useCallback, useEffect, useState } from "react";
 
 const SubEventsHasSpaces = memo(
-  ({
-    spaces,
-    subEventSpaces,
-    SubEventIndex,
-    onAddSpace,
-    onRemoveSpace,
-    onChangeSpace,
-  }) => {
+  ({ spaces, subEventSpaces, SubEventIndex, onAddSpace, onRemoveSpace, onChangeSpace }) => {
     const [selectedSpaces, setSelectedSpaces] = useState({});
     const [inventorySpace, setInventorySpace] = useState({});
+
     const getInventorySpace = useCallback(async (spaceId, index) => {
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/api/inventory/space/${spaceId}`
@@ -35,10 +32,7 @@ const SubEventsHasSpaces = memo(
 
     useEffect(() => {
       if (subEventSpaces.length > 0) {
-        getInventorySpace(
-          subEventSpaces[SubEventIndex]?.id_space,
-          SubEventIndex
-        );
+        getInventorySpace(subEventSpaces[SubEventIndex]?.id_space, SubEventIndex);
       }
     }, [SubEventIndex, subEventSpaces, getInventorySpace]);
 
@@ -62,29 +56,32 @@ const SubEventsHasSpaces = memo(
           Asignar un espacio
         </Button>
 
-        {subEventSpaces.map((space, spacesIndex) => (
-          <div key={spacesIndex} className="flex flex-col mb-4">
-            <button
-              className="flex items-end justify-end w-full"
-              type="button"
-              onClick={() => onRemoveSpace(SubEventIndex, spacesIndex)}
+        <AnimatePresence>
+          {subEventSpaces.map((space, spacesIndex) => (
+            <motion.div
+              key={spacesIndex}
+              initial={{ opacity: 0, scale: 0.9, y: -10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: -10 }}
+              transition={{ duration: 0.3 }}
+              className="transition duration-300 ease-in-out flex flex-col mb-4"
             >
-              <i className="ri-close-line text-2xl"></i>
-            </button>
-            <h1 className="font-bold text-xl">Espacio # {spacesIndex + 1}</h1>
-            <label
-              className="flex space-x-3 mb-2 text-base font-bold text-gray-900"
-              htmlFor={`space-${spacesIndex}`}
-            >
-              <h1>Selecciona el Espacio:</h1>{" "}
-              <p>
-                {selectedSpaces[spacesIndex] && selectedSpaces[spacesIndex]
-                  ? `Espacio # ${selectedSpaces[spacesIndex]}`
-                  : "No seleccionado"}
-              </p>
-            </label>
-            {inventorySpace[spacesIndex] &&
-              inventorySpace[spacesIndex].length > 0 && (
+              <button
+                className="flex items-end justify-end w-full"
+                type="button"
+                onClick={() => onRemoveSpace(SubEventIndex, spacesIndex)}
+              >
+                <i className="ri-close-line text-2xl"></i>
+              </button>
+              <h1 className="font-bold text-xl">Espacio # {spacesIndex + 1}</h1>
+              <label className="flex space-x-3 mb-2 text-base font-bold text-gray-900">
+                <h1>Selecciona el Espacio:</h1>
+                <p>
+                  {selectedSpaces[spacesIndex] ? `Espacio # ${selectedSpaces[spacesIndex]}` : "No seleccionado"}
+                </p>
+              </label>
+
+              {inventorySpace[spacesIndex] && inventorySpace[spacesIndex].length > 0 && (
                 <div className="my-2">
                   <Table aria-label="Example static collection table">
                     <TableHeader>
@@ -106,27 +103,27 @@ const SubEventsHasSpaces = memo(
                   </Table>
                 </div>
               )}
-            <select
-              id={`space-${spacesIndex}`}
-              label="Elige el espacio"
-              name="id_space"
-              className="bg-gray-100 text-gray-900 text-base rounded-lg block w-full p-2.5 outline-none"
-              data-testid={`space-${spacesIndex}`}
-              onChange={(e) => {
-                onChangeSpace(e, SubEventIndex, spacesIndex);
-                handleChange(e, spacesIndex);
-              }}
-              value={selectedSpaces[spacesIndex] || space.id_space || ""}
-            >
-              <option value="">Selecciona un espacio</option>
-              {spaces.map((spaceOption) => (
-                <option key={spaceOption.id_space} value={spaceOption.id_space}>
-                  {spaceOption.name}
-                </option>
-              ))}
-            </select>
-          </div>
-        ))}
+
+              <Select
+                size="sm"
+                id={`space-${spacesIndex}`}
+                label="Elige el espacio"
+                name="id_space"
+                onChange={(e) => {
+                  onChangeSpace(e, SubEventIndex, spacesIndex);
+                  handleChange(e, spacesIndex);
+                }}
+                value={selectedSpaces[spacesIndex] || space.id_space || ""}
+              >
+                {spaces.map((spaceOption) => (
+                  <SelectItem key={spaceOption.id_space} value={spaceOption.id_space}>
+                    {spaceOption.name}
+                  </SelectItem>
+                ))}
+              </Select>
+            </motion.div>
+          ))}
+        </AnimatePresence>
       </div>
     );
   }

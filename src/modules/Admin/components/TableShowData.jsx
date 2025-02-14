@@ -19,6 +19,7 @@ const TableShowData = memo(
     bottomContent,
     columns,
     items,
+    emptyContent,
     setSelectedKeys,
     renderCell,
     id,
@@ -46,14 +47,15 @@ const TableShowData = memo(
             </TableColumn>
           )}
         </TableHeader>
-        <TableBody items={items}>
+        <TableBody items={items} emptyContent={emptyContent}>
           {(item) => (
-            <TableRow key={item[id]}>
+            <TableRow key={item[id]} >
               {(columnKey) => (
                 <TableCell>{renderCell(item, columnKey)}</TableCell>
               )}
             </TableRow>
           )}
+
         </TableBody>
       </Table>
     );
@@ -73,6 +75,7 @@ TableShowData.propTypes = {
   items: PropTypes.array,
   setSelectedKeys: PropTypes.func,
   renderCell: PropTypes.elementType,
+  emptyContent: PropTypes.elementType,
   id: PropTypes.string,
 };
 

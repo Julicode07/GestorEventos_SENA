@@ -49,7 +49,7 @@ const ModalUpdateGlobalEventState = ({
       setSuccesMessage("El evento se actualizo exitosamente");
       setErrorMessage("");
       setUpdateStatus("");
-      setTimeout(() => window.location.reload(), 1500);
+      setTimeout(() => window.location.reload(), 1000);
     } catch (error) {
       setSuccesMessage("");
       setErrorMessage("No se pudo actualizar la data");
@@ -107,21 +107,20 @@ const ModalUpdateGlobalEventState = ({
                   >
                     <b>Estado del subEvento:</b>{" "}
                     <p
-                      className={`text-bold text-small text-center rounded-lg p-1 ${
-                        globalEventStatus[0]?.global_event_status === "Aceptado"
+                      className={`text-bold text-small text-center rounded-lg p-1 ${globalEventStatus[0]?.global_event_status === "Aceptado"
                           ? "bg-green-300 text-green-800"
                           : globalEventStatus[0]?.global_event_status ===
                             "Rechazado"
-                          ? "bg-red-300 text-red-800"
-                          : "bg-orange-300 text-orange-800"
-                      }`}
+                            ? "bg-red-300 text-red-800"
+                            : "bg-orange-300 text-orange-800"
+                        }`}
                     >
                       {globalEventStatus[0]?.global_event_status}
                     </p>
                   </label>
                   <div className="flex justify-between items-center space-x-4">
                     {globalEventStatus[0]?.global_event_status ===
-                    "Pendiente" ? (
+                      "Pendiente" ? (
                       <>
                         <Button
                           type="submit"

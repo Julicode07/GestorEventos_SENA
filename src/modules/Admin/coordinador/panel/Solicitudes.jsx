@@ -102,7 +102,7 @@ function Solicitudes() {
                       <i className="ri-check-line text-xl"></i>
                     </Button>
                   </Tooltip>
-                  <Tooltip color="danger" content="Aceptar solicitud">
+                  <Tooltip color="danger" content="Rechazar solicitud">
                     <Button
                       isIconOnly
                       type="submit"

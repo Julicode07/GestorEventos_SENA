@@ -98,11 +98,10 @@ export default function App() {
       case "status":
         return (
           <div
-            className={`${
-              cellValue === "activo"
-                ? "text-green-700 bg-green-200"
-                : "text-red-700 bg-red-200"
-            } capitalize text-center px-2 py-0.5 text-xs rounded-lg w-fit`}
+            className={`${cellValue === "activo"
+              ? "text-green-700 bg-green-200"
+              : "text-red-700 bg-red-200"
+              } capitalize text-center px-2 py-0.5 text-xs rounded-lg w-fit`}
           >
             {cellValue}
           </div>
@@ -114,9 +113,9 @@ export default function App() {
           <div className="relative flex justify-end items-center gap-2">
             <Link
               to={`/admin/instructor/inventario/espacio/${space.id_space}`}
-              className="block m-auto bg-green-300 text-green-900 p-2 rounded-lg"
+              className="block m-auto bg-primary text-white p-2 rounded-lg"
             >
-              Inventario <i className="ri-list-check"></i>
+              Ver Inventario <i className="ri-list-check"></i>
             </Link>
           </div>
         );
@@ -178,6 +177,7 @@ export default function App() {
             bottomContentPlacement="outside"
             columns={headerColumns}
             items={sortedItems}
+            emptyContent="No hay espacios"
             renderCell={renderCell}
             id="id_space"
             aria="Table to show the data of spaces"

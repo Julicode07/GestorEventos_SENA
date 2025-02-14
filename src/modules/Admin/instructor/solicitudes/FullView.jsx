@@ -23,8 +23,8 @@ const FullView = () => {
   return (
     <>
       <Breadcrumbs>
-        <BreadcrumbItem href="/admin/coordinador/solicitudes">
-          Solicitudes
+        <BreadcrumbItem href="/admin/instructor/solicitudes">
+          Solicitudes hechas por ti
         </BreadcrumbItem>
         <BreadcrumbItem>Solicitud {id}</BreadcrumbItem>
       </Breadcrumbs>
