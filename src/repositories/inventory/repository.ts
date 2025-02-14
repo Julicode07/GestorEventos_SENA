@@ -39,7 +39,9 @@ export async function createSpaceInventory(
   }
 }
 
-export async function getSpaceInventoryByIdSpace(id_space: number): Promise<number> {
+export async function getSpaceInventoryByIdSpace(
+  id_space: number
+): Promise<number> {
   const connection: PoolConnection = await getConnection(pool);
   try {
     const result = await connection.query(
@@ -128,6 +130,33 @@ export async function getSpaceInventoryById(
   } catch (err) {
     console.log(`[inventory repository]: ERROR GETTING INVENTORY: ${err}`);
     return [];
+  } finally {
+    connection.release();
+  }
+}
+
+export async function getInventoryByIdSpace(id_space: number): Promise<number> {
+  const connection: PoolConnection = await getConnection(pool);
+  try {
+    const result = await connection.query(
+      `SELECT 
+      si.id_inventory,
+      si.id_space,
+      si.article_name AS inventory_article_name,
+      si.description AS inventory_description,
+      si.quantity AS inventory_quantity,
+      si.type AS inventory_type,
+      sp.name AS space_name
+    FROM space_inventory si
+    INNER JOIN spaces sp
+    ON si.id_space = sp.id_space
+    WHERE si.id_space = ?`,
+      [id_space]
+    );
+    return result.length == 0 ? [] : result;
+  } catch (err) {
+    console.log(`[inventory repository]: ERROR GETTING INVENTORY: ${err}`);
+    return -1;
   } finally {
     connection.release();
   }

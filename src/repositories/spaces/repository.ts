@@ -100,3 +100,30 @@ export async function updateSpaceById(
     connection.release();
   }
 }
+
+export async function getSpacesBySubEventId(
+  idSubEvent: number
+): Promise<number> {
+  const connection: PoolConnection = await getConnection(pool);
+  try {
+    const result = await connection.query(
+      `
+      SELECT
+          *
+      FROM
+          spaces
+      WHERE id_space IN (
+          SELECT id_space
+          FROM sub_events_has_spaces
+          WHERE id_sub_event = ?
+      )`,
+      [idSubEvent]
+    );
+    return result.length == 0 ? [] : result;
+  } catch (err) {
+    console.error(`[space repository]: ERROR GETTING PLACES: ${err}`);
+    return -1;
+  } finally {
+    connection.release();
+  }
+}

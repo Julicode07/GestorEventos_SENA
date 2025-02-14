@@ -206,3 +206,30 @@ export async function createInsumes(
     connection.release();
   }
 }
+
+export async function getInsumesBySubEventId(
+  idSubEvent: number
+): Promise<number> {
+  const connection: PoolConnection = await getConnection(pool);
+  try {
+    const result = await connection.query(
+      `SELECT 
+      ins.id_insumes,
+      ins.id_sub_event,
+      ins.name AS insumes_name,
+      ins.quantity AS insumes_quantity,
+      sub.name AS sub_event_name
+    FROM insumes ins
+    INNER JOIN sub_events sub
+    ON ins.id_sub_event = sub.id_sub_event
+    WHERE ins.id_sub_event = ?`,
+      [idSubEvent]
+    );
+    return result.length == 0 ? [] : result;
+  } catch (err) {
+    console.error(`[insumes repository]: ${err}`);
+    return -1;
+  } finally {
+    connection.release();
+  }
+}

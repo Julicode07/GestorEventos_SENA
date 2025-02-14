@@ -3,6 +3,7 @@ import {
   GetSpaceInventoryByIdSpaceController,
   updateSpaceInventoryByIdController,
   GetSpaceInventoryByIdController,
+  GetInventoryByIdSpaceController,
 } from "../controllers/inventory";
 import express, { Express, Request, Response } from "express";
 import { databaseRegex } from "../helpers/regex.helper";
@@ -137,5 +138,15 @@ InventoryRouter.get(
     }
   }
 );
+
+InventoryRouter.get("/get/:id_space", async (req: Request, res: Response) => {
+  try {
+    return await GetInventoryByIdSpaceController(req, res);
+  } catch (err) {
+    return res
+      .status(500)
+      .end(JSON.stringify({ message: "Error interno del servidor : (" }));
+  }
+});
 
 export default InventoryRouter;

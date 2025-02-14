@@ -3,6 +3,7 @@ import {
   getSpaceInventoryByIdSpace,
   updateSpaceInventoryById,
   getSpaceInventoryById,
+  getInventoryByIdSpace,
 } from "../repositories/inventory/repository";
 import { Request, Response } from "express";
 import { ISpaceInventory } from "../repositories/inventory/models";
@@ -97,6 +98,21 @@ export async function GetSpaceInventoryByIdController(
     const { id_inventory } = req.params;
     const spaceInventory = await getSpaceInventoryById(Number(id_inventory));
     return res.status(200).send(JSON.stringify(spaceInventory, bigIntReplacer));
+  } catch (err) {
+    return res
+      .status(500)
+      .end(JSON.stringify({ message: "Error interno del servidor :(" }));
+  }
+}
+
+export async function GetInventoryByIdSpaceController(
+  req: Request,
+  res: Response
+) {
+  try {
+    const { id_space } = req.params;
+    const inventory = await getInventoryByIdSpace(Number(id_space));
+    return res.status(200).send(JSON.stringify(inventory, bigIntReplacer));
   } catch (err) {
     return res
       .status(500)

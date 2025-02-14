@@ -6,6 +6,7 @@ import {
   GetSpaceByIdController,
   GetSpacesController,
   updateSpaceByIdController,
+  GetSpacesByIdSubEventController,
 } from "../controllers/spaces";
 
 const SpacesRouter: Express = express();
@@ -57,6 +58,14 @@ SpacesRouter.patch("/update/:id", async (req: Request, res: Response) => {
 SpacesRouter.get("/:id_space", async (req: Request, res: Response) => {
   try {
     return GetSpaceByIdController(req, res);
+  } catch (err) {
+    return res.status(500).json({ message: "Error interno del servidor :(" });
+  }
+});
+
+SpacesRouter.get("/get/:id_sub_event", async (req: Request, res: Response) => {
+  try {
+    return await GetSpacesByIdSubEventController(req, res);
   } catch (err) {
     return res.status(500).json({ message: "Error interno del servidor :(" });
   }

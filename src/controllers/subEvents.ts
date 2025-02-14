@@ -6,6 +6,7 @@ import {
   findAllSubEvents,
   createSubEventHasSpace,
   createInsumes,
+  getInsumesBySubEventId,
 } from "../repositories/subEvents/repository";
 import { Request, Response } from "express";
 import { ISubEvent, ISubEventHasSpace } from "../repositories/subEvents/models";
@@ -133,5 +134,20 @@ export async function GetAllSubEventsController(_req: Request, res: Response) {
     return res
       .status(500)
       .send(JSON.stringify({ message: "Error interno del servidor :(" }));
+  }
+}
+
+export async function getInsumesBySubEventIdController(
+  req: Request,
+  res: Response
+) {
+  try {
+    const { id_sub_event } = req.params;
+    const insumes = await getInsumesBySubEventId(Number(id_sub_event));
+    return res.status(200).send(JSON.stringify(insumes, bigIntReplacer));
+  } catch (err) {
+    return res
+      .status(500)
+      .end(JSON.stringify({ message: "Error interno del servidor :(" }));
   }
 }
