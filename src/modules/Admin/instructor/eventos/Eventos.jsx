@@ -80,10 +80,8 @@ export default function Eventos() {
     if (hasSearchFilter) {
       filteredEvents = filteredEvents.filter(
         (event) =>
-          event.user.name.toLowerCase().includes(filterValue.toLowerCase()) ||
           event.name.toLowerCase().includes(filterValue.toLowerCase()) ||
-          (event.space &&
-            event.space.toLowerCase().includes(filterValue.toLowerCase()))
+          event.details.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
 
@@ -138,13 +136,12 @@ export default function Eventos() {
         return (
           <div className="flex flex-col">
             <p
-              className={`text-bold text-small text-center rounded-lg ${
-                event.status === "Pendiente"
-                  ? "bg-warning-100 text-warning"
-                  : event.status === "Rechazado"
+              className={`text-bold text-small text-center rounded-lg ${event.status === "Pendiente"
+                ? "bg-warning-100 text-warning"
+                : event.status === "Rechazado"
                   ? "bg-danger-100 text-danger"
                   : "bg-success-100 text-success"
-              }`}
+                }`}
             >
               {event.status}
             </p>
@@ -182,7 +179,7 @@ export default function Eventos() {
                     setGlobalEventName(event.name);
                   }}
                 >
-                  Actualizar Evento
+                  <span className="flex justify-between group">Actualizar Evento <i className=" rtl:rotate-180  transition-transform duration-300 ease-in-out group-hover:rotate-90 group-hover:scale-110 ri-refresh-line"></i></span>
                 </DropdownItem>
                 <DropdownItem
                   textValue="Crear subeventos"
@@ -206,13 +203,13 @@ export default function Eventos() {
                     setGlobalEventName(event.name);
                   }}
                 >
-                  Crear subeventos <i className="ri-add-line"></i>
+                  <span className="flex justify-between group">Crear subeventos <i className="  transition-transform duration-300 ease-in-out group-hover:scale-125 ri-add-line"></i></span>
                 </DropdownItem>
                 <DropdownItem textValue="SubEventos">
                   <Link
                     to={`/admin/instructor/subeventos/${event.id_global_event}`}
                   >
-                    SubEventos <i className="ri-list-check"></i>
+                    <span className="flex justify-between group">SubEventos  <i className="transition-transform duration-300 ease-in-out group-hover:scale-125 ri-calendar-2-line"></i></span>
                   </Link>
                 </DropdownItem>
               </DropdownMenu>
@@ -278,6 +275,7 @@ export default function Eventos() {
         bottomContentPlacement="outside"
         columns={headerColumns}
         items={sortedItems}
+        emptyContent="No hay eventos registrados"
         renderCell={renderCell}
         id="id_global_event"
         aria="Table to show the data of global events"

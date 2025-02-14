@@ -38,11 +38,13 @@ const FullView = () => {
               id={globalEvent.id_global_event}
               details={globalEvent.global_event_observations}
             />
-            <SubEvents subEvents={globalEvent.sub_events} />
+            {/* Validación adicional para evitar valores undefined */}
+            <SubEvents subEvents={globalEvent.sub_events ?? []} />
           </div>
         ))}
       </div>
     </>
   );
 };
+
 export default FullView;

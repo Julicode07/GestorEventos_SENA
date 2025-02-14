@@ -29,6 +29,7 @@ const BottomContent = React.lazy(() =>
 );
 
 export default function App() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [showSpaces, setShowSpaces] = useState([]);
   const [idSpaces, setIdSpaces] = useState("");
   const [isInventoryModalOpen, setIsInventoryModalOpen] = useState(false);
@@ -118,11 +119,10 @@ export default function App() {
         case "status":
           return (
             <div
-              className={`${
-                cellValue === "activo"
-                  ? "text-green-700 bg-green-200"
-                  : "text-red-700 bg-red-200"
-              } capitalize text-center px-2 py-0.5 text-xs rounded-lg w-fit`}
+              className={`${cellValue === "activo"
+                ? "text-green-700 bg-green-200"
+                : "text-red-700 bg-red-200"
+                } capitalize text-center px-2 py-0.5 text-xs rounded-lg w-fit`}
             >
               {cellValue}
             </div>
@@ -143,26 +143,25 @@ export default function App() {
                     <Link
                       to={`/admin/coordinador/inventario/espacio/${space.id_space}`}
                     >
-                      Inventario <i className="ri-list-check"></i>
+                      <span className="flex justify-between group">Inventario <i className="  transition-transform duration-300 ease-in-out group-hover:scale-110  ri-list-check"></i></span>
                     </Link>
                   </DropdownItem>
                   <DropdownItem
                     textValue="Actualizar"
                     onClick={() => {
                       setIdSpaces(space.id_space);
-                      setUpdateModalSpace(!updateModalSpace);
+                      setIsModalOpen(true);
                     }}
                   >
-                    Actualizar <i className="ri-refresh-fill"></i>
+                    <span className="flex justify-between group">Actualizar <i className=" rtl:rotate-180  transition-transform duration-300 ease-in-out group-hover:rotate-90 group-hover:scale-110 ri-refresh-line"></i></span>
                   </DropdownItem>
                   <DropdownItem
                     onClick={() => {
                       setIdSpaces(space.id_space);
                       setIsInventoryModalOpen(true);
                     }}
-                    endContent={<PlusIcon />}
                   >
-                    Añadir Inventario
+                    <span className="flex justify-between group">Añadir Inventario <span className="  transition-transform duration-300 ease-in-out group-hover:scale-110"><PlusIcon /></span></span>
                   </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
@@ -212,6 +211,11 @@ export default function App() {
           </Breadcrumbs>
         </div>
         <section>
+          <ModalEspaciosActualizar
+            idSpaces={idSpaces}
+            isModalOpen={isModalOpen}
+            setIsModalOpen={setIsModalOpen}
+          />
           <TableShowData
             sortDescriptor={sortDescriptor}
             onSortChange={setSortDescriptor}

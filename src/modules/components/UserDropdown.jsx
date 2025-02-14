@@ -13,7 +13,6 @@ import PropTypes from "prop-types";
 const UserDropdown = ({
   role,
   profileLink,
-  logoutLink,
   textColor,
   textRole,
 }) => {
@@ -27,13 +26,8 @@ const UserDropdown = ({
     await fetch(`${import.meta.env.VITE_API_URL}/api/auth/logout`);
     window.location.href = "/";
   };
-  const getInitials = (name) => {
-    const parts = name.split(" ");
-    return parts.map((part) => part.charAt(0)).join("");
-  };
 
   const fullName = `${names.name || "Usuario"} ${names.lastName || ""}`;
-  const initials = getInitials(fullName);
 
   return (
     <Dropdown placement="bottom-start">
@@ -47,17 +41,14 @@ const UserDropdown = ({
           className={`transition-transform ${textColor}`}
           name={
             <>
-              <span className="hidden md:block text-sm font-semibold">
+              <span className="block text-sm font-semibold">
                 {fullName}
-              </span>
-              <span className="block md:hidden text-sm font-semibold">
-                {initials}
               </span>
             </>
           }
           description={
             <span
-              className={`hidden lg:block text-sm font-semibold${textRole}`}
+              className={`block text-sm font-semibold${textRole}`}
             >
               {role}
             </span>
@@ -91,11 +82,10 @@ const UserDropdown = ({
         </DropdownItem>
         <DropdownItem
           as={Link}
-          to={`${
-            userSession.role === "Coordinador"
-              ? "/admin/coordinador/perfil"
-              : "/admin/instructor/perfil"
-          } `}
+          to={`${userSession.role === "Coordinador"
+            ? "/admin/coordinador/perfil"
+            : "/admin/instructor/perfil"
+            } `}
           key="profile"
           showDivider
           className="text-lg"

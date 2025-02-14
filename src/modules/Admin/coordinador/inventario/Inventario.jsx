@@ -137,7 +137,7 @@ export default function App() {
                     setUpdateModalInventory(true);
                   }}
                 >
-                  Actualizar
+                  <span className="flex justify-between group">Actualizar <i className=" rtl:rotate-180  transition-transform duration-300 ease-in-out group-hover:rotate-90 group-hover:scale-110 ri-refresh-line"></i></span>
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
@@ -151,8 +151,8 @@ export default function App() {
   return (
     <main className="flex flex-col gap-2">
       <ModalInventarioActualizar
-        isOpen={updateModalInventory}
-        setIsOpen={setUpdateModalInventory}
+        isModalOpen={updateModalInventory}
+        setIsModalOpen={setUpdateModalInventory}
         idInventory={Number(idInventory)}
       />
       <div>

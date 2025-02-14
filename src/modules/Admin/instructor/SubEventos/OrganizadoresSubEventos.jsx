@@ -12,8 +12,7 @@ const OrganizadoresSubEventos = ({
     try {
       setOrganizersByIdSubEvents([]);
       const response = await fetch(
-        `${
-          import.meta.env.VITE_API_URL
+        `${import.meta.env.VITE_API_URL
         }/api/organizers/sub-events/${idSubEvents}`
       );
       const data = await response.json();
@@ -39,7 +38,7 @@ const OrganizadoresSubEventos = ({
       {isOrganizersModal && (
         <>
           <div
-            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-40"
+            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-40"
             onClick={(e) => {
               if (e.target === e.currentTarget) {
                 setIsOrganizersModal(false);
@@ -52,7 +51,7 @@ const OrganizadoresSubEventos = ({
                   <h1 className="font-bold text-2xl">
                     Organizadores del evento de{" ''"}
                     {organizersByIdSubEvents.length > 0 &&
-                    organizersByIdSubEvents[0].sub_event_name
+                      organizersByIdSubEvents[0].sub_event_name
                       ? organizersByIdSubEvents[0].sub_event_name
                       : "No hay organizadores"}
                     {" ''"}

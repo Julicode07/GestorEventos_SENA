@@ -4,42 +4,48 @@ import Inventory from "./Inventory";
 
 const Spaces = memo(({ spaces }) => {
   return (
-    <div className="border-1 rounded-lg p-3 mt-3">
-      <h1 className="font-bold text-2xl">
-        <i className="ri-map-pin-line"></i> Espacios
+    <div className="bg-gray-200 rounded-lg p-4 mt-4 shadow">
+      <h1 className="font-bold text-2xl flex items-center gap-2 text-gray-800">
+        <i className="ri-map-pin-line text-primary"></i> Espacios
       </h1>
       {spaces.length > 0 ? (
-        spaces.map((space) => (
-          <div className="mt-3 border-1 rounded-lg p-3" key={space.id_space}>
-            <h2 className="font-bold text-xl">{space?.space_name}</h2>
-            <div className="flex space-x-2 mt-3">
-              <span className="font-bold">Capacidad: </span>{" "}
-              <p>{space?.space_capacity}</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+          {spaces.map((space) => (
+            <div
+              key={space.id_space}
+              className="bg-gray-100 shadow-md rounded-lg p-4"
+            >
+              <h2 className="font-semibold text-xl text-gray-700">{space?.space_name}</h2>
+
+              <div className="mt-2 space-y-2 text-gray-600">
+                <p>
+                  <span className="font-bold">Capacidad:</span> {space?.space_capacity}
+                </p>
+                <p>
+                  <span className="font-bold">Tipo:</span> {space?.type}
+                </p>
+                <p>
+                  <span className="font-bold">Detalles:</span> {space?.space_details}
+                </p>
+                <p className="flex items-center">
+                  <span className="font-bold">Estado:</span>{" "}
+                  <span
+                    className={`ml-2 px-3 py-1 rounded-full text-xs font-semibold ${space?.space_status === "activo"
+                      ? "bg-green-700 text-white"
+                      : "text-red-700 bg-red-300"
+                      }`}
+                  >
+                    {space?.space_status}
+                  </span>
+                </p>
+              </div>
+
+              <Inventory inventories={space.inventory} />
             </div>
-            <div className="flex space-x-2">
-              <span className="font-bold">Tipo: </span> <p>{space?.type}</p>
-            </div>
-            <div className="flex space-x-2 items-center">
-              <span className="font-bold">Estado: </span>{" "}
-              <p
-                className={`rounded-full p-2 text-xs w-fit ${
-                  space?.space_status === "activo"
-                    ? "text-green-800 bg-green-300"
-                    : "text-red-700 bg-red-300"
-                }`}
-              >
-                {space?.space_status}
-              </p>
-            </div>
-            <div className="flex space-x-2">
-              <span className="font-bold">Detalles: </span>{" "}
-              <p>{space?.space_details}</p>
-            </div>
-            <Inventory inventories={space.inventory} />
-          </div>
-        ))
+          ))}
+        </div>
       ) : (
-        <p>No hay espacios</p>
+        <p className="text-gray-700 text-center font-bold mt-3">No hay espacios disponibles.</p>
       )}
     </div>
   );
@@ -48,7 +54,7 @@ const Spaces = memo(({ spaces }) => {
 Spaces.displayName = "Spaces";
 
 Spaces.propTypes = {
-  spaces: PropTypes.array,
+  spaces: PropTypes.array.isRequired,
 };
 
 export default Spaces;

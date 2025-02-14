@@ -3,37 +3,39 @@ import { memo } from "react";
 
 const Inventory = memo(({ inventories }) => {
   return (
-    <div className="p-3 border-1 rounded-lg mt-3">
-      <h1 className="font-bold text-2xl">
-        <i className="ri-table-fill"></i> Inventario
+    <div className="bg-white rounded-lg p-4 mt-4 shadow">
+      <h1 className="font-bold text-2xl flex items-center gap-2 text-gray-800">
+        <i className="ri-table-fill text-primary"></i> Inventario
       </h1>
+
       {inventories.length > 0 ? (
-        inventories.map((inventory) => (
-          <div
-            className="mt-3 border-1 rounded-lg p-3"
-            key={inventory.id_inventory}
-          >
-            <h2 className="font-bold text-xl">{inventory?.space_name}</h2>
-            <div className="flex space-x-2 mt-3">
-              <span className="font-bold">Nombre: </span>{" "}
-              <p>{inventory?.article_name}</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+          {inventories.map((inventory) => (
+            <div
+              key={inventory.id_inventory}
+              className="bg-gray-100 shadow-md rounded-lg p-2"
+            >
+              <h2 className="font-semibold text-xl text-gray-700">{inventory?.space_name}</h2>
+
+              <div className="mt-2 space-y-2 text-gray-600">
+                <p>
+                  <span className="font-bold">Nombre:</span> {inventory?.article_name}
+                </p>
+                <p>
+                  <span className="font-bold">Descripción:</span> {inventory?.inventory_description}
+                </p>
+                <p>
+                  <span className="font-bold">Cantidad:</span> {inventory?.inventory_quantity}
+                </p>
+                <p>
+                  <span className="font-bold">Tipo:</span> {inventory?.inventory_type}
+                </p>
+              </div>
             </div>
-            <div className="flex space-x-2">
-              <span className="font-bold">Descripción: </span>{" "}
-              <p>{inventory?.inventory_description}</p>
-            </div>
-            <div className="flex space-x-2">
-              <span className="font-bold">Cantidad: </span>{" "}
-              <p>{inventory?.inventory_quantity}</p>
-            </div>
-            <div className="flex space-x-2">
-              <span className="font-bold">Tipo: </span>{" "}
-              <p>{inventory?.inventory_type}</p>
-            </div>
-          </div>
-        ))
+          ))}
+        </div>
       ) : (
-        <p>No hay espacios</p>
+        <p className="text-gray-500 text-center mt-3">No hay inventario disponible.</p>
       )}
     </div>
   );
@@ -42,7 +44,7 @@ const Inventory = memo(({ inventories }) => {
 Inventory.displayName = "Inventory";
 
 Inventory.propTypes = {
-  inventories: PropTypes.array,
+  inventories: PropTypes.array.isRequired,
 };
 
 export default Inventory;
