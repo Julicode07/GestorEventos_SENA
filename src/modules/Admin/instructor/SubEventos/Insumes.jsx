@@ -22,26 +22,33 @@ const Insumes = memo(({ id }) => {
   }, [getInsumes, id]);
 
   return (
-    <div className="border-1 rounded-lg p-3 mt-3">
-      <h1 className="font-bold text-2xl">
-        <i className="ri-tools-line"></i> Insumos
+    <div className="bg-gray-200 rounded-lg p-4 mt-4 shadow">
+      <h1 className="font-bold text-2xl flex items-center gap-2 text-gray-800">
+        <i className="ri-tools-line text-primary"></i> Insumos
       </h1>
       {insumes.length > 0 ? (
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-4">
           {insumes.map((insume) => (
             <div
               key={insume.id_insumes}
-              className="flex justify-between border-1 p-2"
+              className="bg-gray-100 shadow-md rounded-lg p-4 flex flex-col gap-2 border border-gray-200"
             >
-              <span>{insume.insumes_name}</span>
-              <p className="bg-black text-white rounded-full p-2">
-                {insume.insumes_quantity}
+              <span className="text-lg font-semibold text-gray-700">
+                {insume.insumes_name}
+              </span>
+              <p className="text-sm font-bold text-gray-600">
+                Cantidad:{" "}
+                <span className="bg-primary text-white px-3 rounded-full font-medium">
+                  {insume.insumes_quantity}
+                </span>
               </p>
             </div>
           ))}
         </div>
       ) : (
-        <p>No hay insumos</p>
+        <p className="text-gray-700 text-center font-bold mt-3">
+          No hay insumos disponibles.
+        </p>
       )}
     </div>
   );

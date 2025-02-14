@@ -141,16 +141,10 @@ export default function SubEventos() {
         return (
           <div className="flex flex-col">
             <p
-<<<<<<< HEAD
               className={`text-bold text-small text-center p-1 rounded-lg ${
                 subEvent.subeventConfirmation === "Confirmado"
                   ? "bg-green-300 text-green-800"
                   : subEvent.subeventConfirmation === "Rechazado"
-=======
-              className={`text-bold text-small text-center rounded-lg ${subEvent.subeventConfirmation === "Confirmado"
-                ? "bg-green-300 text-green-800"
-                : subEvent.subeventConfirmation === "Rechazado"
->>>>>>> debd4dcf7ef757ce07581f48e1f391d13260ac40
                   ? "bg-red-300 text-red-800"
                   : "bg-orange-300 text-orange-800"
                 }`}
@@ -161,7 +155,6 @@ export default function SubEventos() {
         );
       case "info":
         return (
-<<<<<<< HEAD
           <Link to={`/admin/instructor/subeventos/info/${subEvent.id_sub_event}`}>
             <EyeIcon
               className="block m-auto text-green-600 hover:bg-gray-300 hover:rounded-lg hover:cursor-pointer"
@@ -171,15 +164,6 @@ export default function SubEventos() {
               // }}
             />
           </Link>
-=======
-          <EyeIcon
-            className="block m-auto text-primary hover:bg-primary hover:text-white rounded-lg hover:cursor-pointer transition-all duration-300"
-            onClick={() => {
-              setIdSubEvents(subEvent.id_sub_event);
-              setIsOrganizersModal(true);
-            }}
-          />
->>>>>>> debd4dcf7ef757ce07581f48e1f391d13260ac40
         );
       case "actions":
         return (
