@@ -76,7 +76,7 @@ export default function SubEventos() {
     );
     const data = await response.json();
     const userSubEvents = data.filter(
-      (event) => event.id_user === names.id_user
+      (event) => event.id_host_user === names.id_user
     );
     if (userSubEvents.length === 0) {
       navigate("/*");
