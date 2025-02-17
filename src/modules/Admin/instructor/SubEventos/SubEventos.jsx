@@ -78,12 +78,13 @@ export default function SubEventos() {
     const userSubEvents = data.filter(
       (event) => event.id_host_user === names.id_user
     );
-    if (userSubEvents.length === 0) {
-      navigate("/admin/instructor/eventos");
-    } else {
-      setSubEvents(Array.isArray(userSubEvents) ? userSubEvents : []);
-    }
-  }, [id, names, navigate]);
+    // if (userSubEvents.length === 0) {
+    //   navigate("/admin/instructor/eventos");
+    // } else {
+    //   setSubEvents(Array.isArray(userSubEvents) ? userSubEvents : []);
+    // }
+    setSubEvents(Array.isArray(userSubEvents) ? userSubEvents : []);
+  }, [id, names]);
 
   useEffect(() => {
     getSubEvents();
