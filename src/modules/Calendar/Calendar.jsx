@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import "dayjs/locale/es";
 import updateLocale from "dayjs/plugin/updateLocale";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { generateDate } from "./util/calendar";
 import cn from "./util/cn";
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
@@ -24,56 +24,29 @@ dayjs.updateLocale("es", {
     "Diciembre",
   ],
 });
-const events = {
-  "2024-08-30": [
-    {
-      title: "Reunión de instructores",
-      description: "Desarrollo curricular",
-      time: "10:00 AM",
-    },
-    {
-      title: "Dia del aprendiz",
-      description: "Evento del aprendiz",
-      time: "4:00 PM",
-    },
-  ],
-  "2024-09-01": [
-    {
-      title: "Reunion de fichas",
-      description: "Plan para mejorar los espacios del SENA",
-      time: "9:00 AM",
-    },
-    {
-      title: "Exporicion de proyectos",
-      description: "Presentación de proyectos",
-      time: "11:30 AM",
-    },
-  ],
-  "2024-09-10": [
-    {
-      title: "Graduación",
-      description: "Proceso de graduación",
-      time: "2:00 PM",
-    },
-  ],
-};
 
 export default function Calendar() {
   const days = ["D", "L", "M", "X", "J", "V", "S"];
   const currentDate = dayjs();
-  const [today, setToday] = useState(currentDate);
+  const [today, setToday] = useState(dayjs());
   const [selectDate, setSelectDate] = useState(currentDate);
   const [selectedYear, setSelectedYear] = useState(currentDate.year());
   const [selectedEvent, setSelectedEvent] = useState(null);
 
+  //getEvents info
+  const [eventsByMonth, setEventsByMonth] = useState([]);
+  //
+
   const goToPreviousMonth = () => {
     const previousMonth = today.subtract(1, "month");
     setToday(previousMonth);
+    setSelectedYear(previousMonth.year());
   };
 
   const goToNextMonth = () => {
     const nextMonth = today.add(1, "month");
     setToday(nextMonth);
+    setSelectedYear(nextMonth.year());
   };
 
   const handleYearChange = (event) => {
@@ -81,6 +54,54 @@ export default function Calendar() {
     setSelectedYear(year);
     setToday(today.year(year));
   };
+
+  function transformarEventos(eventos) {
+    const eventosPorFecha = {};
+
+    eventos.forEach((globalEvent) => {
+      globalEvent.sub_events.forEach((subEvent) => {
+        const fecha = subEvent.start_date.split("T")[0]; // Extraer solo la fecha (YYYY-MM-DD)
+
+        if (!eventosPorFecha[fecha]) {
+          eventosPorFecha[fecha] = [];
+        }
+
+        eventosPorFecha[fecha].push({
+          title: subEvent.sub_event_name,
+          description: subEvent.sub_event_description,
+          status: subEvent.sub_event_status,
+          startDate: subEvent.start_date,
+          endDate: subEvent.end_date,
+          location: subEvent.headquarters,
+          spaces: subEvent.spaces,
+          organizers: subEvent.organizers,
+        });
+      });
+    }) ?? [];
+
+    return eventosPorFecha;
+  }
+
+  const getEventsByMonth = useCallback(async () => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/events/calendar/${selectedYear}/${
+          today.month() + 1
+        }`
+      );
+      const data = await response.json();
+      const eventosTransformados = transformarEventos(
+        Array.isArray(data) ? data : []
+      );
+      setEventsByMonth(eventosTransformados);
+    } catch (err) {
+      console.error("Ocurrió un error al traer la data", err);
+    }
+  }, [selectedYear, today]);
+
+  useEffect(() => {
+    getEventsByMonth();
+  }, [getEventsByMonth]);
 
   return (
     <div
@@ -113,8 +134,8 @@ export default function Calendar() {
                 className="bg-slate-300 cursor-pointer hover:scale-105 transition-all rounded-lg p-1"
               >
                 {[...Array(10).keys()].map((i) => (
-                  <option key={i} value={currentDate.year() + i}>
-                    {currentDate.year() + i}
+                  <option key={i} value={currentDate.year() + i - 5}>
+                    {currentDate.year() + i - 5}
                   </option>
                 ))}
               </select>
@@ -141,7 +162,7 @@ export default function Calendar() {
             {generateDate(today.month(), today.year()).map(
               ({ date, currentMonth, today }, index) => {
                 const formattedDate = date.format("YYYY-MM-DD");
-                const hasEvents = events[formattedDate];
+                const hasEvents = eventsByMonth[formattedDate];
                 const isSelected =
                   selectDate.format("YYYY-MM-DD") === formattedDate;
 
@@ -183,27 +204,32 @@ export default function Calendar() {
             Agenda para {selectDate.format("dddd, D MMMM YYYY")}
           </h1>
           <div className="flex-1 overflow-auto">
-            {events[selectDate.format("YYYY-MM-DD")] ? (
+            {eventsByMonth[selectDate.format("YYYY-MM-DD")] ? (
               <div>
-                {events[selectDate.format("YYYY-MM-DD")].map((event, index) => (
-                  <div
-                    key={index}
-                    className="bg-gray-100 border border-gray-200 rounded-lg p-4 mb-4 shadow-sm flex justify-between items-center"
-                  >
-                    <div>
-                      <h2 className="font-semibold text-md mb-2">
-                        {event.title} - {event.time}
-                      </h2>
-                      <p className="text-gray-600">{event.description}</p>
-                    </div>
-                    <button
-                      className="bg-secondary text-white font-bold text-sm rounded-lg p-3 hover:bg-secondary transition-colors"
-                      onClick={() => setSelectedEvent(event)}
+                {eventsByMonth[selectDate.format("YYYY-MM-DD")].map(
+                  (event, index) => (
+                    <div
+                      key={index}
+                      className="bg-gray-100 border border-gray-200 rounded-lg p-4 mb-4 shadow-sm flex justify-between items-center"
                     >
-                      Ver evento
-                    </button>
-                  </div>
-                ))}
+                      <div>
+                        <h2 className="font-semibold text-md mb-2">
+                          {event.title} -{" "}
+                          {dayjs(event.startDate).format(
+                            "YYYY-MM-DD dddd HH:mm"
+                          )}
+                        </h2>
+                        <p className="text-gray-600">{event.description}</p>
+                      </div>
+                      <button
+                        className="bg-secondary text-white font-bold text-sm rounded-lg p-3 hover:bg-secondary transition-colors"
+                        onClick={() => setSelectedEvent(event)}
+                      >
+                        Ver evento
+                      </button>
+                    </div>
+                  )
+                )}
               </div>
             ) : (
               <p className="text-gray-500">No hay reuniones para hoy.</p>
@@ -249,26 +275,46 @@ export default function Calendar() {
                     {selectDate.format("dddd, D MMMM YYYY")}
                   </p>
                   <p className="text-gray-600 text-md text-center">
-                    Hora: {selectedEvent.time}
+                    Hora: {dayjs(selectedEvent.startDate).format("HH:mm")}
                   </p>
 
                   <hr className="border-t border-gray-300 w-full my-4" />
 
                   <p className="text-gray-500 text-center mt-2">
-                    <strong>Ubicación:</strong> Sala de conferencias 2, Edificio
-                    A
+                    <strong>Ubicación:</strong> {selectedEvent.location}
                   </p>
 
                   <p className="text-gray-700 text-center mt-4 px-4">
                     {selectedEvent.description}
                   </p>
-
-                  <p className="text-gray-600 text-center mt-2 px-4">
-                    Esta es una oportunidad excelente para discutir sobre los
-                    nuevos proyectos y alinearnos con los objetivos del próximo
-                    trimestre. Se recomienda llegar al menos 15 minutos antes
-                    para una mejor organización.
-                  </p>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <h2 className="font-bold text-xl">Espacios:</h2>
+                    <ul>
+                      {selectedEvent.spaces.length > 0 ? (
+                        selectedEvent.spaces.map((space, index) => (
+                          <li key={index} className="list-disc">
+                            {space.space_name}
+                          </li>
+                        ))
+                      ) : (
+                        <li>No hay espacios</li>
+                      )}
+                    </ul>
+                  </div>
+                  <div>
+                    <h2 className="font-bold text-xl">Organizadores:</h2>
+                    <ul>
+                      {selectedEvent.organizers.length > 0 ? (
+                        selectedEvent.organizers.map((organizer, index) => (
+                          <li key={index}>{organizer.organizer_name}</li>
+                        ))
+                      ) : (
+                        <li>No hay organizadores</li>
+                      )}
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>

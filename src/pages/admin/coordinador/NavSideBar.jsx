@@ -50,12 +50,6 @@ const NavSideBar = () => {
     getRequests();
   }, [getRequests]);
 
-  // const filteredEvents = events.filter((event) =>
-  //   Array.from(statusFilter).includes(event.status)
-  // );
-
-  // const pendingEventsCount = filteredEvents.length;
-
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };
@@ -177,6 +171,11 @@ const NavSideBar = () => {
                 {pendientRequestsCount}
               </span>
             </ItemsList>
+            <ItemsList
+              to={"/admin/coordinador/registrarse"}
+              logo="ri-group-fill flex w-5 h-5 text-xl justify-center items-center text-primary transition duration-75 group-hover:text-gray-600"
+              title="Registrar Usuarios"
+            />
           </ul>
         </div>
       </aside>

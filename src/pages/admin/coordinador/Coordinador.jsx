@@ -11,6 +11,8 @@ import Organizadores from "@/modules/Admin/coordinador/organizadores/Organizador
 import InfoEvento from "@/modules/Admin/coordinador/eventos/InfoEvento.jsx";
 import Profile from "../../../modules/Admin/coordinador/perfil/Perfil.jsx";
 import FullView from "@/modules/Admin/coordinador/solicitudes/FullView.jsx";
+import React from "react";
+const Registrarse = React.lazy(() => import("@/modules/Auth/Registrarse.jsx"));
 
 function Coordinador() {
   return (
@@ -30,6 +32,7 @@ function Coordinador() {
             <Route path="/inventario/espacio/:id" element={<Inventario />} />
             <Route path="/organizadores" element={<Organizadores />} />
             <Route path="/solicitudes/ver/:id" element={<FullView />} />
+            <Route path="/registrarse" element={<Registrarse />} />
           </Routes>
         </div>
       </div>

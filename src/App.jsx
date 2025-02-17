@@ -14,7 +14,6 @@ const NotFound = React.lazy(() => import("@/pages/NotFound.jsx"));
 const IniciarSesion = React.lazy(() =>
   import("@/modules/Auth/IniciarSesion.jsx")
 );
-const Registrarse = React.lazy(() => import("@/modules/Auth/Registrarse.jsx"));
 
 function App() {
   const { updateSession } = useContext(SessionContext);
@@ -30,7 +29,6 @@ function App() {
           <Route path="*" element={<NotFound />} />
           <Route path="/" element={<MainPage />} />
           <Route path="/iniciarsesion" element={<IniciarSesion />} />
-          <Route path="/registrarse" element={<Registrarse />} />
           <Route path="/admin/coordinador/*" element={<Coordinador />} />
           <Route path="/admin/instructor/*" element={<Instructor />} />
         </Routes>

@@ -46,26 +46,19 @@ const Navbar = () => {
               >
                 Iniciar sesión
               </Link>
-              <Link
-                to="/registrarse"
-                type="button"
-                className="text-black bg-white focus:outline-none font-bold rounded-lg text-sm md:text-base px-3 py-2 md:px-4 md:py-2 text-center"
-              >
-                Registrarse
-              </Link>
             </>
           )}
 
           {(userSession.role === "Coordinador" ||
             userSession.role === "Instructor") && (
-              <UserDropdown
-                role={userSession.role}
-                profileLink={getPanelLink()}
-                logoutLink="/"
-                textColor="text-white"
-                textRole="text-gray-200"
-              />
-            )}
+            <UserDropdown
+              role={userSession.role}
+              profileLink={getPanelLink()}
+              logoutLink="/"
+              textColor="text-white"
+              textRole="text-gray-200"
+            />
+          )}
         </div>
       </div>
     </nav>

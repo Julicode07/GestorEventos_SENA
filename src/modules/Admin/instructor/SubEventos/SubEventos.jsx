@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import {
   Button,
   DropdownTrigger,
@@ -10,13 +10,13 @@ import {
 } from "@nextui-org/react";
 import { VerticalDotsIcon } from "@modules/Admin/components/VerticalDotsIcon";
 import { EyeIcon } from "../../components/EyeIcon";
-
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { capitalize, INITIAL_VISIBLE_COLUMNS, columns } from "./utils/utils";
 import BottomContent from "../../components/BottonContent";
 import TopContent from "./../../components/TopContent";
 import ModalSubEventosActualizar from "../eventos/ModalSubEventosActualizar";
 import Alert from "../../components/Alert";
+import { SessionContext } from "../../../../context/SessionContext";
 const TableShowData = React.lazy(() =>
   import("./../../components/TableShowData")
 );
@@ -28,6 +28,8 @@ const SubEventConfirmationModal = React.lazy(() =>
 );
 
 export default function SubEventos() {
+  const { updateSession, names } = useContext(SessionContext);
+  const navigate = useNavigate();
   const { id } = useParams();
   const [filterValue, setFilterValue] = React.useState("");
   const [visibleColumns, setVisibleColumns] = React.useState(
@@ -40,6 +42,18 @@ export default function SubEventos() {
     column: "age",
     direction: "ascending",
   });
+
+  useEffect(() => {
+    const fetchSession = async () => {
+      try {
+        await updateSession();
+      } catch (err) {
+        console.error("Ocurrio un error al traer la data", err);
+      }
+    };
+
+    fetchSession();
+  }, [updateSession]);
 
   //update subevents
   const [isModalUpdateSubEventsOpen, setIsModalUpdateSubEventsOpen] =
@@ -61,13 +75,23 @@ export default function SubEventos() {
       `${import.meta.env.VITE_API_URL}/api/subEvents/globalEvent/${id}`
     );
     const data = await response.json();
-    setSubEvents(Array.isArray(data) ? data : []);
-  }, [id]);
+    const userSubEvents = data.filter(
+      (event) => event.id_user === names.id_user
+    );
+    if (userSubEvents.length === 0) {
+      navigate("/*");
+    } else {
+      setSubEvents(Array.isArray(data) ? data : []);
+    }
+  }, [id, names, navigate]);
 
   useEffect(() => {
     getSubEvents();
   }, [getSubEvents]);
 
+  useEffect(() => {
+    console.log(subEvents);
+  }, [subEvents]);
   //
 
   const hasSearchFilter = Boolean(filterValue);
@@ -133,7 +157,6 @@ export default function SubEventos() {
     setPage(1);
   }, []);
 
-
   const renderCell = React.useCallback((subEvent, columnKey) => {
     const cellValue = subEvent[columnKey];
     switch (columnKey) {
@@ -147,7 +170,7 @@ export default function SubEventos() {
                   : subEvent.subeventConfirmation === "Rechazado"
                   ? "bg-red-300 text-red-800"
                   : "bg-orange-300 text-orange-800"
-                }`}
+              }`}
             >
               {subEvent.subeventConfirmation}
             </p>
@@ -155,14 +178,10 @@ export default function SubEventos() {
         );
       case "info":
         return (
-          <Link to={`/admin/instructor/subeventos/info/${subEvent.id_sub_event}`}>
-            <EyeIcon
-              className="block m-auto text-green-600 hover:bg-gray-300 hover:rounded-lg hover:cursor-pointer"
-              // onClick={() => {
-              //   setIdSubEvents(subEvent.id_sub_event);
-              //   setIsOrganizersModal(true);
-              // }}
-            />
+          <Link
+            to={`/admin/instructor/subeventos/info/${subEvent.id_sub_event}`}
+          >
+            <EyeIcon className="block m-auto text-green-600 hover:bg-gray-300 hover:rounded-lg hover:cursor-pointer" />
           </Link>
         );
       case "actions":

@@ -4,7 +4,7 @@ import { EyeSlashFilledIcon } from "./components/EyeSlashFilledIcon.jsx";
 import { EyeFilledIcon } from "./components/EyeFilledIcon.jsx";
 import Images from "@/assets/img/images.js";
 import { useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useRegister from "../hooks/useRegister.jsx";
 import {
   regexDocument,
@@ -84,7 +84,7 @@ const Registrarse = () => {
         email: "",
         phone: "",
         role: "Instructor",
-        password: ","
+        password: ",",
       });
       navigate("/iniciarsesion");
     } catch (error) {
@@ -99,20 +99,6 @@ const Registrarse = () => {
 
   return (
     <div className="flex flex-col items-center justify-center pt-8 py-2 px-4 gap-6 max-w-[700px] m-auto">
-      <Link
-        to="/"
-        className="flex gap-1 items-center absolute top-2 left-2 bg-primary text-white p-2 rounded-lg"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="rgba(255,255,255,1)"
-          className="w-5 h-5"
-        >
-          <path d="M7.82843 10.9999H20V12.9999H7.82843L13.1924 18.3638L11.7782 19.778L4 11.9999L11.7782 4.22168L13.1924 5.63589L7.82843 10.9999Z"></path>
-        </svg>
-        Ir al inicio
-      </Link>
       <header>
         <img
           src={Images.logoVerde}
@@ -124,7 +110,7 @@ const Registrarse = () => {
       <main>
         <section className="flex flex-col gap-7">
           <div>
-            <h1 className="text-4xl font-bold text-center">Crea tu cuenta</h1>
+            <h1 className="text-4xl font-bold text-center">Crea una cuenta</h1>
           </div>
           <div>
             <form
@@ -339,14 +325,6 @@ const Registrarse = () => {
           </div>
         </section>
       </main>
-      <footer className="my-3">
-        <p className="text-black font-medium text-sm text-center">
-          ¿Ya tienes una cuenta?{" "}
-          <Link to="/iniciarsesion" className="text-primary">
-            Iniciar sesión
-          </Link>
-        </p>
-      </footer>
     </div>
   );
 };

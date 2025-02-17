@@ -219,14 +219,14 @@ export default function Eventos() {
                   </span>
                 </DropdownItem>
                 <DropdownItem textValue="SubEventos">
-                  <Link
-                    to={`/admin/instructor/subeventos/${event.id_global_event}`}
-                  >
-                    <span className="flex justify-between group">
-                      SubEventos{" "}
-                      <i className="transition-transform duration-300 ease-in-out group-hover:scale-125 ri-calendar-2-line"></i>
-                    </span>
-                  </Link>
+                    <Link
+                      to={`/admin/instructor/subeventos/${event.id_global_event}`}
+                    >
+                      <span className="flex justify-between group">
+                        SubEventos{" "}
+                        <i className="transition-transform duration-300 ease-in-out group-hover:scale-125 ri-calendar-2-line"></i>
+                      </span>
+                    </Link>
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
