@@ -514,7 +514,9 @@ export async function getAllGlobalEventsByUserId(
         si.article_name,
         si.description AS inventory_description,
         si.quantity AS inventory_quantity,
-        si.type AS inventory_type
+        si.type AS inventory_type,
+        u.id_user as id_host_user,
+        u.name as host_name
       FROM global_events ge
       LEFT JOIN sub_events se ON ge.id_global_event = se.id_global_event
       LEFT JOIN users u ON ge.id_user = u.id_user 
