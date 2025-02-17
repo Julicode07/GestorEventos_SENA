@@ -173,8 +173,12 @@ export async function getAllInfoGLobalEventsById(
         si.article_name,
         si.description AS inventory_description,
         si.quantity AS inventory_quantity,
-        si.type AS inventory_type
+        si.type AS inventory_type,
+
+        us.id_user as id_host_user,
+        us.name as host_name
       FROM global_events ge
+      INNER JOIN users us ON ge.id_user = us.id_user
       LEFT JOIN sub_events se ON ge.id_global_event = se.id_global_event
       LEFT JOIN insumes ins ON se.id_sub_event = ins.id_sub_event
       LEFT JOIN organizers org ON se.id_sub_event = org.id_sub_event
@@ -292,11 +296,18 @@ export async function getAllInfoGLobalEventsById(
   }
 }
 
-export async function getAllEventsByMonthAndYear(month: number, year: number): Promise<GlobalEventInfo[] | null> {
+export async function getAllEventsByMonthAndYear(
+  month: number,
+  year: number
+): Promise<GlobalEventInfo[] | null> {
   const connection: PoolConnection = await getConnection(pool);
   try {
     const startOfMonth = `${year}-${String(month).padStart(2, "0")}-01`;
-    const endOfMonth = `${year}-${String(month).padStart(2, "0")}-${new Date(year, month, 0).getDate()}`;
+    const endOfMonth = `${year}-${String(month).padStart(2, "0")}-${new Date(
+      year,
+      month,
+      0
+    ).getDate()}`;
 
     const result = await connection.query(
       `SELECT 
