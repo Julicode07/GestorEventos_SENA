@@ -1,20 +1,36 @@
 import { BreadcrumbItem, Breadcrumbs } from "@nextui-org/react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import GlobalEvent from "./GlobalEvent";
 import SubEvents from "./SubEvents";
-
+import { SessionContext } from "../../../../context/SessionContext";
 const FullView = () => {
+  const { updateSession, names } = useContext(SessionContext);
   const { id } = useParams();
   const [getAllInfoGlobalEvent, setGetAllInfoGlobalEvent] = useState([]);
+
+  useEffect(() => {
+    const fetchSession = async () => {
+      try {
+        await updateSession();
+      } catch (err) {
+        console.error("Ocurrio un error al traer la data", err);
+      }
+    };
+
+    fetchSession();
+  }, [updateSession]);
 
   const getData = useCallback(async () => {
     const response = await fetch(
       `${import.meta.env.VITE_API_URL}/api/events/global/info/${id}`
     );
     const data = await response.json();
-    setGetAllInfoGlobalEvent(Array.isArray(data) ? data : [data]);
-  }, [id]);
+    const userRequests = data.filter(
+      (event) => event.id_user === names.id_user
+    );
+    setGetAllInfoGlobalEvent(Array.isArray(userRequests) ? userRequests : []);
+  }, [id, names]);
 
   useEffect(() => {
     getData();

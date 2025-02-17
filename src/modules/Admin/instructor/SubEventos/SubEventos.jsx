@@ -10,7 +10,7 @@ import {
 } from "@nextui-org/react";
 import { VerticalDotsIcon } from "@modules/Admin/components/VerticalDotsIcon";
 import { EyeIcon } from "../../components/EyeIcon";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { capitalize, INITIAL_VISIBLE_COLUMNS, columns } from "./utils/utils";
 import BottomContent from "../../components/BottonContent";
 import TopContent from "./../../components/TopContent";
@@ -29,7 +29,6 @@ const SubEventConfirmationModal = React.lazy(() =>
 
 export default function SubEventos() {
   const { updateSession, names } = useContext(SessionContext);
-  const navigate = useNavigate();
   const { id } = useParams();
   const [filterValue, setFilterValue] = React.useState("");
   const [visibleColumns, setVisibleColumns] = React.useState(
@@ -78,11 +77,6 @@ export default function SubEventos() {
     const userSubEvents = data.filter(
       (event) => event.id_host_user === names.id_user
     );
-    // if (userSubEvents.length === 0) {
-    //   navigate("/admin/instructor/eventos");
-    // } else {
-    //   setSubEvents(Array.isArray(userSubEvents) ? userSubEvents : []);
-    // }
     setSubEvents(Array.isArray(userSubEvents) ? userSubEvents : []);
   }, [id, names]);
 
