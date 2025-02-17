@@ -51,11 +51,14 @@ export async function getSubEventsByGlobalEventId(
       se.start_date,
       se.end_date,
       se.description,
-      se.subeventConfirmation
+      se.subeventConfirmation,
+      us.id_user as id_host_user,
+      us.name as host_name
     FROM
       sub_events se
       INNER JOIN global_events ge
       ON se.id_global_event = ge.id_global_event 
+      INNER JOIN users us ON ge.id_user = us.id_user
     WHERE 
       se.id_sub_event = ?
   `,
