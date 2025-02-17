@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React, { memo, useCallback, useEffect, useState } from "react";
 const Inventory = React.lazy(() => import("./Inventory"));
 
-const Spaces = memo(({ id }) => {
+const Spaces = memo(({ id, idUser }) => {
   const [spaces, setSpaces] = useState([]);
 
   const getSpaces = useCallback(async () => {
@@ -80,6 +80,7 @@ Spaces.displayName = "Spaces";
 
 Spaces.propTypes = {
   id: PropTypes.number,
+  idUser: PropTypes.number,
 };
 
 export default Spaces;

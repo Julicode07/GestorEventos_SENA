@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { memo, useCallback, useEffect, useState } from "react";
 
-const Organizers = memo(({ id }) => {
+const Organizers = memo(({ id, idUser }) => {
   const [organizers, setOrganizers] = useState([]);
 
   const getOrganizers = useCallback(async () => {
@@ -64,6 +64,7 @@ Organizers.displayName = "Organizers";
 
 Organizers.propTypes = {
   id: PropTypes.number,
+  idUser: PropTypes.number,
 };
 
 export default Organizers;

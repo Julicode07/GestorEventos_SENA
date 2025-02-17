@@ -1,8 +1,21 @@
 import PropTypes from "prop-types";
-import { memo, useCallback, useEffect, useState } from "react";
+import { memo, useCallback, useContext, useEffect, useState } from "react";
+import { SessionContext } from "../../../../context/SessionContext";
 
-const Insumes = memo(({ id }) => {
+const Insumes = memo(({ id, idUser }) => {
+  const { updateSession, names } = useContext(SessionContext);
   const [insumes, setInsumes] = useState([]);
+
+  useEffect(() => {
+    const fetchSession = async () => {
+      try {
+        await updateSession();
+      } catch (err) {
+        console.error("Ocurrio un error al traer la data", err);
+      }
+    };
+    fetchSession();
+  }, [updateSession]);
 
   const getInsumes = useCallback(async () => {
     try {
@@ -10,11 +23,15 @@ const Insumes = memo(({ id }) => {
         `${import.meta.env.VITE_API_URL}/api/subEvents/get/insumes/${id}`
       );
       const data = await response.json();
-      setInsumes(Array.isArray(data) ? data : []);
+      const arrayInsumes = Array.isArray(data) ? data : [data];
+      const userInsumes = arrayInsumes.filter(
+        (insume) => idUser === names.id_user
+      );
+      setInsumes(Array.isArray(userInsumes) ? userInsumes : []);
     } catch (err) {
       console.error("Ocurrio un error al traer la data", err);
     }
-  }, [id]);
+  }, [id, names, idUser]);
 
   useEffect(() => {
     if (!id) return;
@@ -58,6 +75,7 @@ Insumes.displayName = "Insumes";
 
 Insumes.propTypes = {
   id: PropTypes.number,
+  idUser: PropTypes.number,
 };
 
 export default Insumes;
