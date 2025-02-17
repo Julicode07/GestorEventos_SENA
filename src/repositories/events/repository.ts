@@ -292,15 +292,11 @@ export async function getAllInfoGLobalEventsById(
   }
 }
 
-export async function getAllGlobalEventsByMonthAndYear(month: number, year: number): Promise<GlobalEventInfo[] | null> {
+export async function getAllEventsByMonthAndYear(month: number, year: number): Promise<GlobalEventInfo[] | null> {
   const connection: PoolConnection = await getConnection(pool);
   try {
     const startOfMonth = `${year}-${String(month).padStart(2, "0")}-01`;
-    const endOfMonth = `${year}-${String(month).padStart(2, "0")}-${new Date(
-      year,
-      month,
-      0
-    ).getDate()}`;
+    const endOfMonth = `${year}-${String(month).padStart(2, "0")}-${new Date(year, month, 0).getDate()}`;
 
     const result = await connection.query(
       `SELECT 

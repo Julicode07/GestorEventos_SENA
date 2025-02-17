@@ -71,6 +71,8 @@ export async function getSubEventsByGlobalEventId(
   }
 }
 
+
+
 export async function getSubEventsByIdGlobalEvent(
   id_global_event: number
 ): Promise<number> {

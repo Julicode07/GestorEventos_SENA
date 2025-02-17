@@ -7,6 +7,7 @@ import {
   getAllInfoGLobalEventsById,
   updateStateGlobalEventById,
   getAllGlobalEventsByUserId,
+  getAllEventsByMonthAndYear
 } from "../repositories/events/repository";
 import { findUserByDocument } from "../repositories/users/repository";
 import { Request, Response } from "express";
@@ -51,6 +52,17 @@ export async function GetGlobalEventsController(req: Request, res: Response) {
   try {
     const global_events_results = await findAllGlobalEvents();
     return res.status(200).send(JSON.stringify(global_events_results)).end();
+  } catch (err) {
+    return res
+      .status(500)
+      .end(JSON.stringify({ message: "Error interno del servidor :(" }));
+  }
+}
+
+export async function GetEventsByMonthAndDateController(req: Request, res: Response) {
+  try {
+    const events_results = await getAllEventsByMonthAndYear(Number(req.params.month), Number(req.params.year));
+    return res.status(200).send(JSON.stringify(events_results)).end();
   } catch (err) {
     return res
       .status(500)

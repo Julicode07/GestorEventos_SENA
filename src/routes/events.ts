@@ -5,7 +5,8 @@ import {
   updateGlobalEventsByIdController,
   getAllInfoGlobalEventByIdController,
   updateStateGlobalEventByIdController,
-  getAllGlobalEventsByUserIdController
+  getAllGlobalEventsByUserIdController,
+  GetEventsByMonthAndDateController
 } from "../controllers/events";
 import express, { Express, Request, Response } from "express";
 import { databaseRegex } from "../helpers/regex.helper";
@@ -43,6 +44,16 @@ EventsRouter.post(
 EventsRouter.get("/global/all", async (req: Request, res: Response) => {
   try {
     return GetGlobalEventsController(req, res);
+  } catch (err) {
+    res
+      .status(500)
+      .end(JSON.stringify({ message: "Error interno del servidor :(" }));
+  }
+});
+
+EventsRouter.get("/calendar/:year/:month", async (req: Request, res: Response) => {
+  try {
+    return GetEventsByMonthAndDateController(req, res);
   } catch (err) {
     res
       .status(500)
