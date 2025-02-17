@@ -27,7 +27,7 @@ const FullView = () => {
     );
     const data = await response.json();
     const userRequests = data.filter(
-      (event) => event.id_user === names.id_user
+      (event) => event.id_host_user === names.id_user
     );
     setGetAllInfoGlobalEvent(Array.isArray(userRequests) ? userRequests : []);
   }, [id, names]);
