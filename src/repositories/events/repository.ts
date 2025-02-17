@@ -196,6 +196,8 @@ export async function getAllInfoGLobalEventsById(
       global_event_name: result[0].global_event_name,
       global_event_observations: result[0].global_event_observations,
       global_event_status: result[0].global_event_status,
+      id_host_user: result[0].id_host_user,
+      host_name: result[0].host_name,
       sub_events: [],
     };
 
@@ -342,8 +344,11 @@ export async function getAllEventsByMonthAndYear(
         si.description AS inventory_description,
         si.quantity AS inventory_quantity,
         si.type AS inventory_type
+        us.id_user as id_host_user,
+        us.name as host_name
       FROM global_events ge
       LEFT JOIN sub_events se ON ge.id_global_event = se.id_global_event
+      INNER JOIN users us ON ge.id_user = us.id_user
       LEFT JOIN users u ON ge.id_user = u.id_user 
       LEFT JOIN insumes ins ON se.id_sub_event = ins.id_sub_event
       LEFT JOIN organizers org ON se.id_sub_event = org.id_sub_event
@@ -376,6 +381,8 @@ export async function getAllEventsByMonthAndYear(
           global_event_name: row.global_event_name,
           global_event_observations: row.global_event_observations,
           global_event_status: row.global_event_status,
+          id_host_user: row.id_user,
+          host_name: row.host_name,
           sub_events: [],
         };
         globalEvents.push(globalEvent);
@@ -547,6 +554,8 @@ export async function getAllGlobalEventsByUserId(
           global_event_name: row.global_event_name,
           global_event_observations: row.global_event_observations,
           global_event_status: row.global_event_status,
+          id_host_user: row.id_host_user,
+          host_name: row.host_name,
           sub_events: [],
         };
         globalEvents.push(globalEvent);

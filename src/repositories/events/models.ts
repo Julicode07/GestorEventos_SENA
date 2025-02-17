@@ -60,6 +60,8 @@ export type GlobalEventInfo = {
   global_event_name: string;
   global_event_observations: string;
   global_event_status: string;
+  id_host_user: number;
+  host_name: string;
   sub_events?: SubEvent[];
 };
 
