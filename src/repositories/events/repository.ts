@@ -348,7 +348,6 @@ export async function getAllEventsByMonthAndYear(
         us.name as host_name
       FROM global_events ge
       LEFT JOIN sub_events se ON ge.id_global_event = se.id_global_event
-      INNER JOIN users us ON ge.id_user = us.id_user
       LEFT JOIN users u ON ge.id_user = u.id_user 
       LEFT JOIN insumes ins ON se.id_sub_event = ins.id_sub_event
       LEFT JOIN organizers org ON se.id_sub_event = org.id_sub_event
