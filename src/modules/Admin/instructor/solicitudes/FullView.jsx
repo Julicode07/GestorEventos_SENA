@@ -26,15 +26,26 @@ const FullView = () => {
       `${import.meta.env.VITE_API_URL}/api/events/global/info/${id}`
     );
     const data = await response.json();
-    const userRequests = data.filter(
+    const arrayData = Array.isArray(data) ? data : [data];
+    const userRequests = arrayData.filter(
       (event) => event.id_host_user === names.id_user
     );
-    setGetAllInfoGlobalEvent(Array.isArray(userRequests) ? userRequests : []);
+    setGetAllInfoGlobalEvent(
+      Array.isArray(userRequests) ? userRequests : [userRequests]
+    );
   }, [id, names]);
 
   useEffect(() => {
     getData();
   }, [getData]);
+
+  useEffect(() => {
+    console.log(getAllInfoGlobalEvent);
+  }, [getAllInfoGlobalEvent]);
+
+  useEffect(() => {
+    console.log(names);
+  }, [names]);
 
   return (
     <>

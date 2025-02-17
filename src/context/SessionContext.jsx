@@ -36,7 +36,7 @@ export const SessionContextProvider = ({ children }) => {
           role: null,
         });
         setNames({
-          id_user: null,
+          id_user: 5,
           name: null,
           lastName: null,
         });
