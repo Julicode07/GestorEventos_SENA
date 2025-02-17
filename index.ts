@@ -1,6 +1,6 @@
 import express, { Express, Request, Response } from "express";
 import AuthRouter from "./src/routes/auth";
-import { createSchemas } from "./src/db/schema.handler";
+import createSchemas from "./src/db/schema.handler";
 import session from "express-session";
 import UsersRouter from "./src/routes/users";
 import MariaDBStore from "express-session-mariadb-store";
