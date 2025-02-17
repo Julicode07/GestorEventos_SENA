@@ -49,7 +49,7 @@ export default function Eventos() {
 
   const getGlobalEvents = useCallback(async () => {
     const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/events/global/all`
+      `${import.meta.env.VITE_API_URL}/api/events/global/self/all`
     );
     const data = await response.json();
     setShowGlobalEvent(Array.isArray(data) ? data : []);

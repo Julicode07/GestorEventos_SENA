@@ -79,7 +79,7 @@ export default function SubEventos() {
       (event) => event.id_host_user === names.id_user
     );
     if (userSubEvents.length === 0) {
-      navigate("/*");
+      navigate("/admin/instructor/eventos");
     } else {
       setSubEvents(Array.isArray(data) ? data : []);
     }
@@ -89,9 +89,6 @@ export default function SubEventos() {
     getSubEvents();
   }, [getSubEvents]);
 
-  useEffect(() => {
-    console.log(subEvents);
-  }, [subEvents]);
   //
 
   const hasSearchFilter = Boolean(filterValue);
