@@ -81,7 +81,7 @@ export default function SubEventos() {
     if (userSubEvents.length === 0) {
       navigate("/admin/instructor/eventos");
     } else {
-      setSubEvents(Array.isArray(data) ? data : []);
+      setSubEvents(Array.isArray(userSubEvents) ? userSubEvents : []);
     }
   }, [id, names, navigate]);
 
