@@ -72,9 +72,9 @@ const Info = () => {
               <span className="font-bold">Detalles: </span>
               {subEvent.description}
             </p>
-            <Organizers id={Number(id)} idUser={subEvent.id_host_user} />
-            <Insumes id={Number(id)} idUser={subEvent.id_host_user} />
-            <Spaces id={Number(id)} idUser={subEvent.id_host_user} />
+            <Organizers id={Number(id)} />
+            <Insumes id={Number(id)} />
+            <Spaces id={Number(id)} />
           </div>
         ))}
       </div>
