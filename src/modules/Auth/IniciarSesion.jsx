@@ -196,21 +196,20 @@ const IniciarSesion = () => {
                 />
                 <p ref={passwordRef}></p>
               </div>
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2 text-center">
                 <a
-                  href="/auth/recuperar"
+                  href="/recuperarcontrasena"
                   className="text-primary font-medium text-sm"
                 >
-                  ¿Olvidaste tu contraseña?
+                  ¿Has olvidado la contraseña?
                 </a>
               </div>
               <button
                 type="submit"
                 className={`mt-4 w-full  font-bold rounded-lg text-lg px-5 py-2.5 text-center
-                  ${
-                    regexDocumentState && regexPasswordState
-                      ? "bg-[#277400] text-white hover:bg-[#277400]"
-                      : "bg-gray-300 text-black cursor-not-allowed"
+                  ${regexDocumentState && regexPasswordState
+                    ? "bg-[#277400] text-white hover:bg-[#277400]"
+                    : "bg-gray-300 text-black cursor-not-allowed"
                   }`}
                 disabled={!(regexDocumentState && regexPasswordState)}
               >
