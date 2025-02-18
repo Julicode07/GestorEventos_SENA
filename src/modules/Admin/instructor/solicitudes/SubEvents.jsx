@@ -3,6 +3,7 @@ import { memo } from "react";
 import Insumes from "./Insumes";
 import Organizers from "./Organizers";
 import Spaces from "./Spaces";
+import dayjs from "dayjs";
 
 const SubEvents = memo(({ subEvents }) => {
   const validSubEvents = subEvents.filter(subEvent => subEvent.id_sub_event !== null);
@@ -19,8 +20,8 @@ const SubEvents = memo(({ subEvents }) => {
           <div key={subEvent.id_sub_event} className="flex flex-col rounded-lg p-3 space-y-2  bg-gray-100">
             <h2 className="font-bold text-xl">Subevento: {subEvent.sub_event_name}</h2>
             <p><span className="font-bold">Sede: </span>{subEvent.headquarters}</p>
-            <p><span className="font-bold">Fecha Inicio: </span>{subEvent.start_date}</p>
-            <p><span className="font-bold">Fecha Fin: </span>{subEvent.end_date}</p>
+            <p><span className="font-bold">Fecha Inicio: </span>{dayjs(subEvent.start_date).format("DD/MM/YYYY HH:mm:ss")}</p>
+            <p><span className="font-bold">Fecha Fin: </span>{dayjs(subEvent.end_date).format("DD/MM/YYYY HH:mm:ss")}</p>
             <p><span className="font-bold">Descripción: </span>{subEvent.sub_event_description}</p>
             <div className="flex items-center space-x-3">
               <span className="font-bold">Estado: </span>

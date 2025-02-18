@@ -4,7 +4,6 @@ import { EyeSlashFilledIcon } from "./components/EyeSlashFilledIcon.jsx";
 import { EyeFilledIcon } from "./components/EyeFilledIcon.jsx";
 import Images from "@/assets/img/images.js";
 import { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import useRegister from "../hooks/useRegister.jsx";
 import {
   regexDocument,
@@ -16,8 +15,6 @@ import {
 } from "./validations/registerValidation.js";
 
 const Registrarse = () => {
-  const navigate = useNavigate();
-
   const { register } = useRegister();
   const [formData, setFormData] = useState({
     document: "",
@@ -86,7 +83,7 @@ const Registrarse = () => {
         role: "Instructor",
         password: ",",
       });
-      navigate("/iniciarsesion");
+      window.location.reload();
     } catch (error) {
       setErrorMessage(error.message);
       console.error("Error registering user:", error);

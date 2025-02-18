@@ -28,7 +28,7 @@ const FullView = () => {
     const data = await response.json();
     const arrayData = Array.isArray(data) ? data : [data];
     const userRequests = arrayData.filter(
-      (event) => event.id_host_user === names.id_user
+      (event) => event?.id_host_user === names.id_user
     );
     setGetAllInfoGlobalEvent(
       Array.isArray(userRequests) ? userRequests : [userRequests]
@@ -38,14 +38,6 @@ const FullView = () => {
   useEffect(() => {
     getData();
   }, [getData]);
-
-  useEffect(() => {
-    console.log(getAllInfoGlobalEvent);
-  }, [getAllInfoGlobalEvent]);
-
-  useEffect(() => {
-    console.log(names);
-  }, [names]);
 
   return (
     <>

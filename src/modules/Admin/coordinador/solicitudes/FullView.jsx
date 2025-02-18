@@ -13,7 +13,7 @@ const FullView = () => {
       `${import.meta.env.VITE_API_URL}/api/events/global/info/${id}`
     );
     const data = await response.json();
-    setGetAllInfoGlobalEvent(Array.isArray(data) ? data : [data]);
+    setGetAllInfoGlobalEvent(Array.isArray(data) ? data : []);
   }, [id]);
 
   useEffect(() => {
