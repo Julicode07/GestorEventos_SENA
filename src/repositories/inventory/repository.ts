@@ -146,19 +146,11 @@ export async function getInventoryByIdSpace(id_space: number): Promise<number> {
     si.description AS inventory_description,
     si.quantity AS inventory_quantity,
     si.type AS inventory_type,
-    sp.name AS space_name,
-    MIN(ge.id_user) AS id_host_user 
+    s.id_space
 FROM space_inventory si
-INNER JOIN spaces sp 
-    ON si.id_space = sp.id_space
-INNER JOIN sub_events_has_spaces seh
-    ON sp.id_space = seh.id_space
-INNER JOIN sub_events se
-    ON seh.id_sub_event = se.id_sub_event
-INNER JOIN global_events ge
-    ON se.id_global_event = ge.id_global_event
-WHERE si.id_space = ?
-GROUP BY si.id_inventory, si.id_space, si.article_name, si.description, si.quantity, si.type, sp.name`,
+INNER JOIN spaces s
+ON si.id_space = s.id_space
+WHERE si.id_space = ?`,
       [id_space]
     );
     return result.length == 0 ? [] : result;
