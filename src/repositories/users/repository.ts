@@ -42,10 +42,7 @@ export async function createUser(user: IUser): Promise<number> {
   }
 }
 
-export async function updateUser(
-  id: number,
-  userData: Partial<IUser>
-): Promise<number> {
+export async function updateUser(id: number, userData: Partial<IUser>): Promise<number> {
   const connection: PoolConnection = await getConnection(pool);
   try {
     const result = await connection.query(
@@ -75,6 +72,49 @@ export async function updateUser(
   } catch (err) {
     console.error(`[user repository]: ERROR UPDATING USER PROFILE: ${err}`);
     return -1;
+  } finally {
+    connection.release();
+  }
+}
+
+export async function updateUserPassword(id_user: number, userData: Partial<IUser>): Promise<number> {
+  const connection: PoolConnection = await getConnection(pool);
+  try {
+    const salt_rounds = 10;
+    const hashedPassword = await bcrypt.hash(userData.password as string, salt_rounds);
+    const result = await connection.query(
+      `
+            UPDATE
+                users
+            SET
+                password = ?
+            WHERE 
+              id_user = ?`,
+      [
+        hashedPassword,
+        id_user
+      ]
+    );
+    if (result.affectedRows > 0) return 1;
+    else throw new Error(`Could not update user ${id_user}`);
+  } catch (err) {
+    console.error(`[user repository]: ERROR UPDATING USER PROFILE: ${err}`);
+    return -1;
+  } finally {
+    connection.release();
+  }
+}
+
+export async function findUserByResetPasswordToken(resetPasswordToken: string): Promise<IUser[]> {
+  const connection: PoolConnection = await getConnection(pool);
+  try {
+    const results = await connection.query(
+      `SELECT * FROM users WHERE resetPasswordToken = ?`, [resetPasswordToken]
+    );
+    return results.length === 0 ? [] : results;
+  } catch (err) {
+    console.error(`[user repository]: ${err}`);
+    return [];
   } finally {
     connection.release();
   }

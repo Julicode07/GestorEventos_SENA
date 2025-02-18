@@ -27,7 +27,7 @@ export async function createUsersSchema(): Promise<Number> {
             phone BIGINT(16) NOT NULL,
             role VARCHAR(45) NOT NULL,
             password VARCHAR(512) NOT NULL,
-            resetPasswordToken VARCHAR(32),
+            resetPasswordToken VARCHAR(64),
             resetTokenExpireAt BIGINT
         )`);
         console.log(`[user repository - models]: CREATED users SCHEMA.`);

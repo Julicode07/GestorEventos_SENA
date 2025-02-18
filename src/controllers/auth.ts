@@ -1,4 +1,4 @@
-import { findUserByDocument, getUserById, updateResetPasswordTokenByUserId } from "../repositories/users/repository";
+import { findUserByDocument, findUserByResetPasswordToken, getUserById, updateResetPasswordTokenByUserId, updateUser, updateUserPassword } from "../repositories/users/repository";
 import { Request, Response } from "express";
 import { hasActiveSession } from "../helpers/session.checker";
 import { bigIntReplacer } from "../helpers/json.helper";
@@ -196,4 +196,84 @@ export async function ForgotPasswordController(req: Request, res: Response){
       message: "Ocurrió un error interno.",
     });
   }
+};
+
+export async function ResetPasswordController(req: Request, res: Response) {
+  try {
+    const { token } = req.params;
+    const { password } = req.body;
+
+    const user = await findUserByResetPasswordToken(token);
+
+    if (user.length == 0 || Date.now() > (user[0].resetTokenExpireAt as number)) {
+      return res.status(400).json({
+        success: false,
+        message: "Token inválido o expirado.",
+      });
+    }
+    await updateUserPassword(user[0].id_user as number, password);
+
+    sendEmail(user[0].email, "¡Contraseña restablecida!", `
+      <!DOCTYPE html>
+      <html>
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Contraseña Restablecida</title>
+          <style>
+              body {
+                  font-family: Arial, sans-serif;
+                  background-color: #f4f4f4;
+                  margin: 0;
+                  padding: 20px;
+              }
+              .container {
+                  max-width: 600px;
+                  margin: 0 auto;
+                  background: #ffffff;
+                  padding: 20px;
+                  border-radius: 8px;
+                  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+              }
+              h2 {
+                  color: #333;
+              }
+              p {
+                  color: #555;
+                  line-height: 1.6;
+              }
+              .footer {
+                  margin-top: 20px;
+                  font-size: 12px;
+                  color: #888;
+              }
+          </style>
+      </head>
+      <body>
+          <div class="container">
+              <h2>¡Tu contraseña ha sido restablecida con éxito!</h2>
+              <p>Hola,</p>
+              <p>Te informamos que tu contraseña ha sido cambiada correctamente.</p>
+              <p>Si realizaste este cambio, no es necesario que tomes ninguna acción adicional.</p>
+              <p>Si no realizaste esta solicitud o tienes algún problema, por favor contacta al coordinador de tu sistema lo antes posible.</p>
+              <p>Gracias,</p>
+              <p>Gestor de eventos - SENA</p>
+              <p class="footer">Si necesitas asistencia, o no fuiste quien cambió la contraseña, no dudes en comunicarte con los coordinadores de tu centro.</p>
+          </div>
+      </body>
+      </html>
+        
+    `)
+
+    return res.status(200).json({
+      success: true,
+      message: "Contraseña cambiada correctamente.",
+    });
+  } catch (error) {
+    console.error("Error resetting password", error);
+    res.status(400).json({
+      success: false,
+      message: "Error al actualizar la contraseña.",
+    });
+  }
 };
