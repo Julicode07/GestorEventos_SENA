@@ -10,7 +10,9 @@ export interface IUser {
     email: string,
     phone: number,
     role: string,
-    password: string
+    password: string,
+    resetPasswordToken: string | undefined,
+    resetTokenExpireAt: number | undefined
 }
 
 export async function createUsersSchema(): Promise<Number> {
@@ -24,7 +26,9 @@ export async function createUsersSchema(): Promise<Number> {
             email VARCHAR(255) NOT NULL,
             phone BIGINT(16) NOT NULL,
             role VARCHAR(45) NOT NULL,
-            password VARCHAR(512) NOT NULL
+            password VARCHAR(512) NOT NULL,
+            resetPasswordToken VARCHAR(32),
+            resetTokenExpireAt BIGINT
         )`);
         console.log(`[user repository - models]: CREATED users SCHEMA.`);
         return 1;

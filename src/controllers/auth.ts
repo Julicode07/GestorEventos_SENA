@@ -1,9 +1,11 @@
-import { findUserByDocument } from "../repositories/users/repository";
+import { findUserByDocument, getUserById, updateResetPasswordTokenByUserId } from "../repositories/users/repository";
 import { Request, Response } from "express";
 import { hasActiveSession } from "../helpers/session.checker";
 import { bigIntReplacer } from "../helpers/json.helper";
-import { findUserById } from "../repositories/users/repository";
+import { sendEmail } from "../helpers/email";
+import { findUserByEmail } from "../repositories/users/repository";
 import bcrypt from "bcrypt";
+import crypto from "crypto";
 
 export async function LogInController(req: Request, res: Response) {
   if (!hasActiveSession(req, "*")) {
@@ -101,3 +103,97 @@ export async function LogOutController(req: Request, res: Response) {
       })
       .end();
 }
+
+export async function ForgotPasswordController(req: Request, res: Response){
+  const { email } = req.body;
+  try {
+    const user = await findUserByEmail(email);
+
+    if (user.length == 0) {
+      return res.status(400).json({
+        success: false,
+        message: "No existe un usuario vinculado a esa cuenta.",
+      });
+    }
+
+    const resetToken = crypto.randomBytes(20).toString("hex");
+    const resetTokenExpireAt = Date.now() + 1 * 60 * 60 * 1000;
+    await updateResetPasswordTokenByUserId(user[0].id_user as number, resetToken, resetTokenExpireAt);
+
+    const resetPasswordHTML = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Restablecimiento de Contraseña</title>
+          <style>
+              body {
+                  font-family: Arial, sans-serif;
+                  background-color: #f4f4f4;
+                  margin: 0;
+                  padding: 20px;
+              }
+              .container {
+                  max-width: 600px;
+                  margin: 0 auto;
+                  background: #ffffff;
+                  padding: 20px;
+                  border-radius: 8px;
+                  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+              }
+              h2 {
+                  color: #333;
+              }
+              p {
+                  color: #555;
+                  line-height: 1.6;
+              }
+              .button {
+                  display: inline-block;
+                  padding: 12px 20px;
+                  margin-top: 10px;
+                  background-color: #007bff;
+                  color: #ffffff;
+                  text-decoration: none;
+                  border-radius: 5px;
+              }
+              .footer {
+                  margin-top: 20px;
+                  font-size: 12px;
+                  color: #888;
+              }
+          </style>
+      </head>
+      <body>
+          <div class="container">
+              <h2>Solicitud de Restablecimiento de Contraseña</h2>
+              <p>Hola,</p>
+              <p>Hemos recibido una solicitud para restablecer tu contraseña. Para continuar con el proceso, haz clic en el siguiente enlace:</p>
+              <p><a href="${process.env.VITE_API_URL}/reset-password/${resetToken}" class="button">Restablecer Contraseña</a></p>
+              <p>Si no realizaste esta solicitud, puedes ignorar este mensaje. El enlace expirará en 1 hora.</p>
+              <p>Gracias,</p>
+              <p>El equipo de Soporte</p>
+              <p class="footer">Si tienes problemas con el botón, copia y pega el siguiente enlace en tu navegador: <br> <a href="{{resetLink}}">{{resetLink}}</a></p>
+          </div>
+      </body>
+      </html>
+    `;
+
+    await sendEmail(
+      user[0].email,
+      `Restablecimiento de contraseña - Gestor de Eventos SENA`,
+      resetPasswordHTML
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "Se envió el link de restablecimiento de contraseña a tu correo.",
+    });
+  } catch (error) {
+    console.error("Error resetting password", error);
+    res.status(400).json({
+      message: "Ocurrió un error interno.",
+    });
+  }
+};

@@ -158,3 +158,24 @@ export async function getUserById(id_user: number): Promise<number> {
     connection.release();
   }
 }
+
+export async function updateResetPasswordTokenByUserId(id_user: number, token: string, expiresAt: number): Promise<Number> {
+  const connection: PoolConnection = await getConnection(pool);
+  try {
+    const result = await connection.query(`
+        UPDATE
+          users
+        SET
+          resetPasswordToken = ?,
+          resetTokenExpireAt = ?
+        WHERE 
+          id_user = ?`,
+        [token, expiresAt, id_user]);
+    return result.affectedRows;
+  } catch (err) {
+    console.error(`[user repository]: ${err}`);
+    return -1;
+  } finally {
+    connection.release();
+  }
+}
