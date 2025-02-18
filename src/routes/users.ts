@@ -7,6 +7,7 @@ import {
   getUserByIdController,
 } from "../controllers/users";
 import { databaseRegex } from "../helpers/regex.helper";
+import { ForgotPasswordController } from "../controllers/auth";
 
 const UsersRouter: Express = express();
 
@@ -23,6 +24,23 @@ UsersRouter.post("/", async (req: Request, res: Response) => {
       databaseRegex.users.role.test(req.body.role)
     ) {
       CreateUserController(req, res);
+    } else
+      return res.status(400).end(
+        JSON.stringify({
+          message: "Los parámetros enviados al servidor son incorrectos :(",
+        })
+      );
+  } catch (err) {
+    return res
+      .status(500)
+      .end(JSON.stringify({ message: "Error interno del servidor :(" }));
+  }
+});
+
+UsersRouter.post("/forgot-password", async (req: Request, res: Response) => {
+  try {
+    if (databaseRegex.users.email.test(req.body.email)) {
+      ForgotPasswordController(req, res);
     } else
       return res.status(400).end(
         JSON.stringify({
