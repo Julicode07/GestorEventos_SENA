@@ -141,7 +141,7 @@ export async function getInventoryByIdSpace(id_space: number): Promise<number> {
     const result = await connection.query(
       `SELECT 
     si.id_inventory,
-    si.id_space,
+    si.id_space AS inventory_id_space,
     si.article_name AS inventory_article_name,
     si.description AS inventory_description,
     si.quantity AS inventory_quantity,
