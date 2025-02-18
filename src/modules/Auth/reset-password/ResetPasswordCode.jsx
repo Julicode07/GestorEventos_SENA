@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useRef } from "react";
-import ConfirmationResetPassword from "./ConfirmationResetPassword";
 
 const ResetPasswordCode = () => {
     const navigate = useNavigate();
@@ -101,8 +100,13 @@ const ResetPasswordCode = () => {
                                     />
                                 ))}
                             </div>
-                            <ConfirmationResetPassword
-                            />
+                            <button
+                                type="submit"
+                                className="w-full bg-primary text-white py-3 rounded-lg hover:bg-primary-dark transition-all"
+                                onClick={() => navigate("/recuperarcontrasena/nuevacontrasena")}
+                            >
+                                Verificar código
+                            </button>
                         </form>
                     </section>
                 </main>

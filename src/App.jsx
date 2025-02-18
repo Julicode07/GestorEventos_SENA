@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { SessionContext } from "@/context/SessionContext.jsx";
 import { useContext, useEffect } from "react";
 import Loader from "./Loader/Loader";
+import NewPassword from "./modules/Auth/reset-password/NewPassword";
 const MainPage = React.lazy(() => import("@/modules/MainPage/MainPage.jsx"));
 const Coordinador = React.lazy(() =>
   import("@/pages/admin/coordinador/Coordinador.jsx")
@@ -11,10 +12,10 @@ const Instructor = React.lazy(() =>
   import("@/pages/admin/instructor/Instructor.jsx")
 );
 const ResetPassword = React.lazy(() =>
-  import("@/modules/Auth/ResetPassword.jsx")
+  import("@/modules/Auth/reset-password/ResetPassword.jsx")
 );
 const ResetPasswordCode = React.lazy(() =>
-  import("@/modules/Auth/ResetPasswordCode.jsx")
+  import("@/modules/Auth/reset-password/ResetPasswordCode.jsx")
 );
 const NotFound = React.lazy(() => import("@/pages/NotFound.jsx"));
 const IniciarSesion = React.lazy(() =>
@@ -37,6 +38,7 @@ function App() {
           <Route path="/iniciarsesion" element={<IniciarSesion />} />
           <Route path="/recuperarcontrasena" element={<ResetPassword />} />
           <Route path="/recuperarcontrasena/codigo" element={<ResetPasswordCode />} />
+          <Route path="/recuperarcontrasena/nuevacontrasena" element={<NewPassword />} />
           <Route path="/admin/coordinador/*" element={<Coordinador />} />
           <Route path="/admin/instructor/*" element={<Instructor />} />
         </Routes>
