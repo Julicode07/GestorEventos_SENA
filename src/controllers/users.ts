@@ -35,6 +35,8 @@ export async function CreateUserController(req: Request, res: Response) {
       phone: req.body.phone,
       role: req.body.role,
       password: req.body.password,
+      resetPasswordToken: undefined,
+      resetTokenExpireAt: undefined
     });
     return result == 1
       ? res
