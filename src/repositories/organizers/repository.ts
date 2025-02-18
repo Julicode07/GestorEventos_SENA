@@ -109,7 +109,6 @@ export async function getOrganizersBySubEventId(
       `
       SELECT
     org.id_organizers,
-    org.email,
     org.id_sub_event,
     org.name,
     org.rol,
