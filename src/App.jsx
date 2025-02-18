@@ -14,9 +14,7 @@ const Instructor = React.lazy(() =>
 const ResetPassword = React.lazy(() =>
   import("@/modules/Auth/reset-password/ResetPassword.jsx")
 );
-const ResetPasswordCode = React.lazy(() =>
-  import("@/modules/Auth/reset-password/ResetPasswordCode.jsx")
-);
+
 const NotFound = React.lazy(() => import("@/pages/NotFound.jsx"));
 const IniciarSesion = React.lazy(() =>
   import("@/modules/Auth/IniciarSesion.jsx")
@@ -37,8 +35,10 @@ function App() {
           <Route path="/" element={<MainPage />} />
           <Route path="/iniciarsesion" element={<IniciarSesion />} />
           <Route path="/recuperarcontrasena" element={<ResetPassword />} />
-          <Route path="/recuperarcontrasena/codigo" element={<ResetPasswordCode />} />
-          <Route path="/recuperarcontrasena/nuevacontrasena" element={<NewPassword />} />
+          <Route
+            path="/recuperarcontrasena/nuevacontrasena/:token"
+            element={<NewPassword />}
+          />
           <Route path="/admin/coordinador/*" element={<Coordinador />} />
           <Route path="/admin/instructor/*" element={<Instructor />} />
         </Routes>

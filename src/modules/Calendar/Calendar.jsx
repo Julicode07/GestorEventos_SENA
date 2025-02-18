@@ -85,7 +85,8 @@ export default function Calendar() {
   const getEventsByMonth = useCallback(async () => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/events/calendar/${selectedYear}/${today.month() + 1
+        `${import.meta.env.VITE_API_URL}/api/events/calendar/${selectedYear}/${
+          today.month() + 1
         }`
       );
       const data = await response.json();
@@ -167,7 +168,14 @@ export default function Calendar() {
                 const hasEvents = eventsByMonth[formattedDate];
                 const isSelected =
                   selectDate.format("YYYY-MM-DD") === formattedDate;
-                const eventCount = hasEvents ? eventsByMonth[formattedDate].length : 0;
+                const eventCount = hasEvents
+                  ? eventsByMonth[formattedDate].length
+                  : 0;
+
+                // Solo renderizar si es el mes actual
+                if (!currentMonth) {
+                  return <div key={index} className="h-14"></div>;
+                }
 
                 return (
                   <div
@@ -176,13 +184,12 @@ export default function Calendar() {
                   >
                     <h1
                       className={cn(
-                        currentMonth ? "" : "text-gray-600",
                         today ? "bg-secondary text-white" : "",
                         isSelected
                           ? "bg-black text-white"
                           : hasEvents
-                            ? "bg-gray-200"
-                            : "",
+                          ? "bg-gray-200"
+                          : "",
                         "h-10 w-10 rounded-full grid place-content-center hover:bg-black hover:text-white transition-all cursor-pointer select-none"
                       )}
                       onClick={() => {
@@ -211,31 +218,37 @@ export default function Calendar() {
           <div className="flex-1 overflow-y-auto max-h-96">
             {eventsByMonth[selectDate.format("YYYY-MM-DD")] ? (
               <div>
-                {eventsByMonth[selectDate.format("YYYY-MM-DD")].map((event, index) => (
-                  <div
-                    key={index}
-                    className="bg-gray-100 border border-gray-200 rounded-lg p-4 mb-4 shadow-sm flex justify-between items-center"
-                  >
-                    <div className="flex flex-col w-full pr-4">
-                      <h2 className="font-semibold text-md mb-2 truncate w-full lg:max-w-72 ">
-                        {event.title} - {dayjs(event.startDate).format("YYYY-MM-DD dddd HH:mm")}
-                      </h2>
-                      <p className="text-gray-600 text-sm truncate">{event.description}</p>
-                    </div>
-                    <button
-                      className="bg-secondary text-white font-bold text-sm rounded-lg p-3 hover:bg-secondary transition-colors whitespace-nowrap"
-                      onClick={() => setSelectedEvent(event)}
+                {eventsByMonth[selectDate.format("YYYY-MM-DD")].map(
+                  (event, index) => (
+                    <div
+                      key={index}
+                      className="bg-gray-100 border border-gray-200 rounded-lg p-4 mb-4 shadow-sm flex justify-between items-center"
                     >
-                      Ver evento
-                    </button>
-                  </div>
-                ))}
+                      <div className="flex flex-col w-full pr-4">
+                        <h2 className="font-semibold text-md mb-2 truncate w-full lg:max-w-72 ">
+                          {event.title} -{" "}
+                          {dayjs(event.startDate).format(
+                            "YYYY-MM-DD dddd HH:mm"
+                          )}
+                        </h2>
+                        <p className="text-gray-600 text-sm truncate">
+                          {event.description}
+                        </p>
+                      </div>
+                      <button
+                        className="bg-secondary text-white font-bold text-sm rounded-lg p-3 hover:bg-secondary transition-colors whitespace-nowrap"
+                        onClick={() => setSelectedEvent(event)}
+                      >
+                        Ver evento
+                      </button>
+                    </div>
+                  )
+                )}
               </div>
             ) : (
               <p className="text-gray-500">No hay reuniones para hoy.</p>
             )}
           </div>
-
 
           {selectedEvent && (
             <div
@@ -244,8 +257,9 @@ export default function Calendar() {
             >
               <div
                 className={`bg-white border border-gray-300 shadow-2xl p-8 rounded-2xl w-4/5 max-w-2xl flex flex-col items-center relative transition-transform transform scale-95 opacity-0
-        ${selectedEvent ? "scale-100 opacity-100" : "scale-95 opacity-0"
-                  } transition-all duration-300 ease-out`}
+        ${
+          selectedEvent ? "scale-100 opacity-100" : "scale-95 opacity-0"
+        } transition-all duration-300 ease-out`}
                 onClick={(e) => e.stopPropagation()}
               >
                 <button
@@ -263,7 +277,9 @@ export default function Calendar() {
                 </button>
 
                 <div className="bg-primary text-white rounded-full w-20 h-20 flex justify-center items-center mb-6">
-                  <span className="text-4xl"><i className="ri-calendar-event-fill"></i></span>
+                  <span className="text-4xl">
+                    <i className="ri-calendar-event-fill"></i>
+                  </span>
                 </div>
 
                 <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">

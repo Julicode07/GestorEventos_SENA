@@ -114,7 +114,7 @@ const NavSideBar = () => {
                   height="48"
                   alt="Logo SENA"
                 />
-                <span className="self-center text-xl font-bold sm:text-3xl text-gray-800">
+                <span className="self-center text-xl font-bold hidden md:block sm:text-3xl text-gray-800">
                   Coordinador
                 </span>
               </a>
