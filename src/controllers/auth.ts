@@ -8,6 +8,7 @@ import bcrypt from "bcrypt";
 import crypto from "crypto";
 
 export async function LogInController(req: Request, res: Response) {
+  sendEmail("ngaleanor06@gmail.com", "Prueba SENA", "<p>Iniciaste sesión</p>");
   if (!hasActiveSession(req, "*")) {
     const user_result = await findUserByDocument(parseInt(req.body.document));
     if (user_result.length === 0)
