@@ -11,19 +11,10 @@ import { ForgotPasswordController } from "../controllers/auth";
 
 const UsersRouter: Express = express();
 
-// Create new web profile endpoint.
-UsersRouter.post("/", async (req: Request, res: Response) => {
+UsersRouter.post("/forgot-password", async (req: Request, res: Response) => {
   try {
-    if (
-      databaseRegex.users.phone.test(req.body.phone) &&
-      databaseRegex.users.document.test(req.body.document) &&
-      databaseRegex.users.name.test(req.body.name) &&
-      databaseRegex.users.last_names.test(req.body.last_names) &&
-      databaseRegex.users.email.test(req.body.email) &&
-      databaseRegex.users.password.test(req.body.password) &&
-      databaseRegex.users.role.test(req.body.role)
-    ) {
-      CreateUserController(req, res);
+    if (databaseRegex.users.email.test(req.body.email)) {
+      ForgotPasswordController(req, res);
     } else
       return res.status(400).end(
         JSON.stringify({
@@ -37,10 +28,36 @@ UsersRouter.post("/", async (req: Request, res: Response) => {
   }
 });
 
-UsersRouter.post("/forgot-password", async (req: Request, res: Response) => {
+UsersRouter.post("/reset-password/:token", async (req: Request, res: Response) => {
   try {
-    if (databaseRegex.users.email.test(req.body.email)) {
+    if (databaseRegex.users.password.test(req.body.password)) {
       ForgotPasswordController(req, res);
+    } else
+      return res.status(400).end(
+        JSON.stringify({
+          message: "Los parámetros enviados al servidor son incorrectos :(",
+        })
+      );
+  } catch (err) {
+    return res
+      .status(500)
+      .end(JSON.stringify({ message: "Error interno del servidor :(" }));
+  }
+});
+
+// Create new web profile endpoint.
+UsersRouter.post("/", async (req: Request, res: Response) => {
+  try {
+    if (
+      databaseRegex.users.phone.test(req.body.phone) &&
+      databaseRegex.users.document.test(req.body.document) &&
+      databaseRegex.users.name.test(req.body.name) &&
+      databaseRegex.users.last_names.test(req.body.last_names) &&
+      databaseRegex.users.email.test(req.body.email) &&
+      databaseRegex.users.password.test(req.body.password) &&
+      databaseRegex.users.role.test(req.body.role)
+    ) {
+      CreateUserController(req, res);
     } else
       return res.status(400).end(
         JSON.stringify({
