@@ -109,7 +109,12 @@ export async function getSpacesBySubEventId(
     const result = await connection.query(
       `
       SELECT
-    s.*,
+    s.id_space,
+    s.name,
+    s.capacity,
+    s.type,
+    s.status,
+    s.details,
     ge.id_user
 FROM
     spaces s
