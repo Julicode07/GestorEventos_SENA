@@ -12,7 +12,7 @@ const ConfirmationResetPassword = () => {
                 className="w-full bg-primary text-white py-3 rounded-lg hover:bg-primary-dark transition-all"
                 onClick={() => setIsModalOpen(true)}
             >
-                Verificar código
+                Guardar contraseña
             </button>
             {IsModalOpen && (
                 <div
@@ -57,7 +57,7 @@ const ConfirmationResetPassword = () => {
                             className="mt-6 px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-all"
                             onClick={() => {
                                 setIsModalOpen(false);
-                                navigate("/recuperarcontrasena");
+                                navigate("/iniciarsesion");
                             }}
                         >
                             Aceptar
