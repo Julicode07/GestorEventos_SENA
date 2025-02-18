@@ -1,23 +1,44 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import dayjs from "dayjs";
 import { BreadcrumbItem, Breadcrumbs } from "@nextui-org/breadcrumbs";
+import { SessionContext } from "../../../../context/SessionContext";
 const Organizers = React.lazy(() => import("./Organizers"));
 const Insumes = React.lazy(() => import("./Insumes"));
 const Spaces = React.lazy(() => import("./Spaces"));
 
 const Info = () => {
   const { id } = useParams();
+  const { updateSession, names } = useContext(SessionContext);
   const [subEvent, setSubEvent] = useState([]);
   const [idGlobalEvent, setIdGlobalEvent] = useState("");
 
+  useEffect(() => {
+    const fetchSession = async () => {
+      try {
+        await updateSession();
+      } catch (err) {
+        console.error("Ocurrio un error al traer la data", err);
+      }
+    };
+    fetchSession();
+  }, [updateSession]);
+
   const getSubEvents = useCallback(async () => {
-    const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/subEvents/${id}`
-    );
-    const data = await response.json();
-    setSubEvent(Array.isArray(data) ? data : []);
-  }, [id]);
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/subEvents/${id}`
+      );
+      const data = await response.json();
+      const arrayData = Array.isArray(data) ? data : [data];
+      const userRequests = arrayData.filter(
+        (subEvent) => subEvent.id_host_user === names.id_user
+      );
+      setSubEvent(Array.isArray(userRequests) ? userRequests : []);
+    } catch (err) {
+      console.error("Ocurrio un error al traer la data", err);
+    }
+  }, [id, names]);
 
   useEffect(() => {
     getSubEvents();
