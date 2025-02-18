@@ -112,10 +112,11 @@ export async function getSpacesBySubEventId(
       *
 FROM
     spaces s
-    INNER JOIN sub_events_has_spaces shs
-    ON s.id_space = shs.id_space
+INNER JOIN sub_events_has_spaces seh
+    ON s.id_space = seh.id_space
 WHERE
-    shs.id_sub_event = ?`,
+    seh.id_sub_event = ?
+`,
       [idSubEvent]
     );
     return result.length == 0 ? [] : result;
