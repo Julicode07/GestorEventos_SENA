@@ -115,8 +115,7 @@ FROM
     INNER JOIN sub_events_has_spaces shs
     ON s.id_space = shs.id_space
 WHERE
-    shs.id_sub_event = ?
-      )`,
+    shs.id_sub_event = ?`,
       [idSubEvent]
     );
     return result.length == 0 ? [] : result;
