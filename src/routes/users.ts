@@ -7,7 +7,7 @@ import {
   getUserByIdController,
 } from "../controllers/users";
 import { databaseRegex } from "../helpers/regex.helper";
-import { ForgotPasswordController } from "../controllers/auth";
+import { ForgotPasswordController, ResetPasswordController } from "../controllers/auth";
 
 const UsersRouter: Express = express();
 
@@ -31,7 +31,7 @@ UsersRouter.post("/forgot-password", async (req: Request, res: Response) => {
 UsersRouter.post("/reset-password/:token", async (req: Request, res: Response) => {
   try {
     if (databaseRegex.users.password.test(req.body.password)) {
-      ForgotPasswordController(req, res);
+      ResetPasswordController(req, res);
     } else
       return res.status(400).end(
         JSON.stringify({
