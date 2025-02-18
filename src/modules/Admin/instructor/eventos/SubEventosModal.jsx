@@ -377,7 +377,7 @@ const SubEventosModal = ({
                                       <Select
                                         size="xs"
                                         id="sede"
-                                        label="Ecoge la sede"
+                                        placeholder="Ecoge la sede"
                                         name="headquarters"
                                         data-testid="tipo-espacios"
                                         onChange={(e) =>

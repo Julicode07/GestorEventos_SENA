@@ -31,39 +31,40 @@ const Spaces = memo(({ id }) => {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
           {spaces.map((space) => (
             <div
-              key={space.id_space}
+              key={space.space_id}
               className="bg-gray-100 shadow-md rounded-lg p-4"
             >
               <h2 className="font-semibold text-xl text-gray-700">
-                {space?.name}
+                {space?.space_name}
               </h2>
 
               <div className="mt-2 space-y-2 text-gray-600">
                 <p>
                   <span className="font-bold">Capacidad:</span>{" "}
-                  {space?.capacity}
+                  {space?.space_capacity}
                 </p>
                 <p>
-                  <span className="font-bold">Tipo:</span> {space?.type}
+                  <span className="font-bold">Tipo:</span> {space?.space_type}
                 </p>
                 <p>
-                  <span className="font-bold">Detalles:</span> {space?.details}
+                  <span className="font-bold">Detalles:</span>{" "}
+                  {space?.space_details}
                 </p>
                 <p className="flex items-center">
                   <span className="font-bold">Estado:</span>{" "}
                   <span
                     className={`ml-2 px-3 py-1 rounded-full text-xs font-semibold ${
-                      space?.status === "activo"
+                      space?.space_status === "activo"
                         ? "bg-green-700 text-white"
                         : "text-red-700 bg-red-300"
                     }`}
                   >
-                    {space?.status}
+                    {space?.space_status}
                   </span>
                 </p>
               </div>
 
-              <Inventory id={space.id_space} />
+              <Inventory id={space.space_id} />
             </div>
           ))}
         </div>
