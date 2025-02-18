@@ -174,7 +174,11 @@ export async function ForgotPasswordController(req: Request, res: Response){
               <p>Si no realizaste esta solicitud, puedes ignorar este mensaje. El enlace expirará en 1 hora.</p>
               <p>Gracias,</p>
               <p>El equipo de Soporte</p>
-              <p class="footer">Si tienes problemas con el botón, copia y pega el siguiente enlace en tu navegador: <br> <a href="{{resetLink}}">{{resetLink}}</a></p>
+              <p class="footer">Si tienes problemas con el botón, copia y pega el siguiente enlace en tu navegador: <br> 
+                <a href="${process.env.VITE_API_URL}/restablecercontrasena/nuevacontrasena/${resetToken}">
+                  ${process.env.VITE_API_URL}/restablecercontrasena/nuevacontrasena/${resetToken}
+                </a>
+              </p>
           </div>
       </body>
       </html>
