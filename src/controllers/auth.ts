@@ -170,7 +170,7 @@ export async function ForgotPasswordController(req: Request, res: Response){
               <h2>Solicitud de Restablecimiento de Contraseña</h2>
               <p>Hola,</p>
               <p>Hemos recibido una solicitud para restablecer tu contraseña. Para continuar con el proceso, haz clic en el siguiente enlace:</p>
-              <p><a href="${process.env.VITE_API_URL}/reset-password/${resetToken}" class="button">Restablecer Contraseña</a></p>
+              <p><a href="${process.env.VITE_API_URL}/restablecercontrasena/nuevacontrasena/${resetToken}" class="button">Restablecer Contraseña</a></p>
               <p>Si no realizaste esta solicitud, puedes ignorar este mensaje. El enlace expirará en 1 hora.</p>
               <p>Gracias,</p>
               <p>El equipo de Soporte</p>
