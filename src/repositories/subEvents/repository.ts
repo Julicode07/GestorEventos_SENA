@@ -227,10 +227,12 @@ export async function getInsumesBySubEventId(
       ins.id_sub_event,
       ins.name AS insumes_name,
       ins.quantity AS insumes_quantity,
-      sub.name AS sub_event_name
+      sub.name AS sub_event_name,
+      ge.id_user AS id_host_user
     FROM insumes ins
     INNER JOIN sub_events sub
     ON ins.id_sub_event = sub.id_sub_event
+    INNER JOIN global_events ge ON sub.id_global_event = ge.id_global_event
     WHERE ins.id_sub_event = ?`,
       [idSubEvent]
     );

@@ -107,20 +107,23 @@ export async function getOrganizersBySubEventId(
   try {
     const result = await connection.query(
       `
-      SELECT 
-        org.id_organizers,
-        org.id_sub_event,
-        org.name,
-        org.rol,
-        org.email,
-        org.address,
-        su.name AS sub_event_name
-      FROM 
-        organizers org
-        INNER JOIN sub_events su
-        ON org.id_sub_event = su.id_sub_event
-      WHERE org.id_sub_event = ?
-      `,
+      SELECT
+    org.id_organizers,
+    org.email,
+    org.id_sub_event,
+    org.name,
+    org.rol,
+    org.email,
+    org.address,
+    su.name AS sub_event_name,
+    ge.id_user AS id_host_user
+FROM
+    organizers org
+INNER JOIN sub_events su
+    ON org.id_sub_event = su.id_sub_event
+INNER JOIN global_events ge
+    ON su.id_global_event = ge.id_global_event
+WHERE org.id_sub_event = ?`,
       [id_sub_event]
     );
 
