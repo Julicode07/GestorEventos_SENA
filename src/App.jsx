@@ -36,7 +36,7 @@ function App() {
           <Route path="/iniciarsesion" element={<IniciarSesion />} />
           <Route path="/recuperarcontrasena" element={<ResetPassword />} />
           <Route
-            path="/recuperarcontrasena/nuevacontrasena/:token"
+            path="/restablecercontrasena/nuevacontrasena/:token"
             element={<NewPassword />}
           />
           <Route path="/admin/coordinador/*" element={<Coordinador />} />
