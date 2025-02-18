@@ -1,10 +1,16 @@
-import { createOrganizers, getOrganizers, getOrganizerById, updateOrganizerById, getOrganizersBySubEventId } from "../repositories/organizers/repository";
+import {
+  createOrganizers,
+  getOrganizers,
+  getOrganizerById,
+  updateOrganizerById,
+  getOrganizersBySubEventId,
+} from "../repositories/organizers/repository";
 import { bigIntReplacer } from "../helpers/json.helper";
 import { Request, Response } from "express";
 
 export async function CreateOrganizersController(req: Request, res: Response) {
   try {
-    const result = await createOrganizers({
+    const result = await createOrganizers(req.body.id_sub_event, {
       id_organizers: undefined,
       id_sub_event: req.body.id_sub_event,
       name: req.body.name,
@@ -46,23 +52,39 @@ export async function GetOrganizersController(_req: Request, res: Response) {
 
 export async function GetOrganizerByIdController(req: Request, res: Response) {
   try {
-    const organizer = await getOrganizerById(parseInt(req.params.id_organizers));
+    const organizer = await getOrganizerById(
+      parseInt(req.params.id_organizers)
+    );
     if (organizer == undefined) {
-      return res.status(500).send(JSON.stringify({ message: "El organizador no existe." }));
+      return res
+        .status(500)
+        .send(JSON.stringify({ message: "El organizador no existe." }));
     }
     return res.status(200).send(JSON.stringify(organizer, bigIntReplacer));
   } catch (err) {
-    return res.status(500).send(JSON.stringify({ message: "Error interno del servidor :(" }));
+    return res
+      .status(500)
+      .send(JSON.stringify({ message: "Error interno del servidor :(" }));
   }
 }
 
-export async function GetOrganizersBySubEventIdController(req: Request, res: Response) {
+export async function GetOrganizersBySubEventIdController(
+  req: Request,
+  res: Response
+) {
   try {
-    const organizers = await getOrganizersBySubEventId(parseInt(req.params.id_sub_event));
-    if (organizers == undefined) return res.status(500).send(JSON.stringify({ message: "El organizador no existe." }));
+    const organizers = await getOrganizersBySubEventId(
+      parseInt(req.params.id_sub_event)
+    );
+    if (organizers == undefined)
+      return res
+        .status(500)
+        .send(JSON.stringify({ message: "El organizador no existe." }));
     return res.status(200).send(JSON.stringify(organizers, bigIntReplacer));
   } catch (err) {
-    return res.status(500).send(JSON.stringify({ message: "Error interno del servidor :(" }));
+    return res
+      .status(500)
+      .send(JSON.stringify({ message: "Error interno del servidor :(" }));
   }
 }
 
@@ -70,10 +92,19 @@ export async function UpdateOrganizerController(req: Request, res: Response) {
   try {
     const organizer = await getOrganizerById(parseInt(req.params.id_organizer));
     if (organizer == undefined) {
-      return res.status(500).send(JSON.stringify({ message: "El organizador no existe." }));
+      return res
+        .status(500)
+        .send(JSON.stringify({ message: "El organizador no existe." }));
     }
     await updateOrganizerById(parseInt(req.params.id_organizer), req.body);
-    return res.status(200).send(JSON.stringify({ message: "Organizador actualizado correctamente." }, bigIntReplacer));
+    return res
+      .status(200)
+      .send(
+        JSON.stringify(
+          { message: "Organizador actualizado correctamente." },
+          bigIntReplacer
+        )
+      );
   } catch (err) {
     return res
       .status(500)
