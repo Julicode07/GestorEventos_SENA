@@ -12,7 +12,6 @@ const ModalUpdateGlobalEventState = ({
   const { update } = useUpdate();
   const [globalEventStatus, setGlobalEventStatus] = useState([]);
   const [updateStatus, setUpdateStatus] = useState("");
-  const [succesMessage, setSuccesMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleStatus = (status) => {
@@ -42,17 +41,14 @@ const ModalUpdateGlobalEventState = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const result = await update(
+      await update(
         { status: updateStatus },
         `/api/events/update/state/${idGlobalEvents}`
       );
-      console.log(result);
-      setSuccesMessage("El evento se actualizó exitosamente");
       setErrorMessage("");
       setUpdateStatus("");
-      setTimeout(() => window.location.reload(), 1000);
+      window.location.reload();
     } catch (error) {
-      setSuccesMessage("");
       setErrorMessage("No se pudo actualizar la data");
       console.error("No se pudo actualizar la data", error);
     }
@@ -94,19 +90,22 @@ const ModalUpdateGlobalEventState = ({
                       Estado del subEvento:
                     </label>
                     <p
-                      className={`text-sm font-bold text-center rounded-lg p-2 mt-2 ${globalEventStatus[0]?.global_event_status === "Aceptado"
-                        ? "bg-green-500 text-white"
-                        : globalEventStatus[0]?.global_event_status === "Rechazado"
+                      className={`text-sm font-bold text-center rounded-lg p-2 mt-2 ${
+                        globalEventStatus[0]?.global_event_status === "Aceptado"
+                          ? "bg-green-500 text-white"
+                          : globalEventStatus[0]?.global_event_status ===
+                            "Rechazado"
                           ? "bg-red-500 text-white"
                           : "bg-orange-300 text-orange-800"
-                        }`}
+                      }`}
                     >
                       {globalEventStatus[0]?.global_event_status}
                     </p>
                   </div>
                   <p className="text-lg font-semibold">Seleccione el estado:</p>
                   <div className="flex justify-center space-x-4">
-                    {globalEventStatus[0]?.global_event_status === "Pendiente" ? (
+                    {globalEventStatus[0]?.global_event_status ===
+                    "Pendiente" ? (
                       <>
                         <Button
                           type="submit"
@@ -123,7 +122,8 @@ const ModalUpdateGlobalEventState = ({
                           Rechazar
                         </Button>
                       </>
-                    ) : globalEventStatus[0]?.global_event_status === "Aceptado" ? (
+                    ) : globalEventStatus[0]?.global_event_status ===
+                      "Aceptado" ? (
                       <Button
                         type="submit"
                         className="bg-red-700 text-white text-base font-semibold rounded-lg w-full p-3 flex justify-center items-center"
@@ -141,13 +141,9 @@ const ModalUpdateGlobalEventState = ({
                       </Button>
                     )}
                   </div>
-                  {succesMessage && (
-                    <p className="text-green-600 text-center font-medium">
-                      {succesMessage}
-                    </p>
-                  )}
+
                   {errorMessage && (
-                    <p className="text-red-600 text-center font-medium">
+                    <p className="text-red-600 text-center font-medium my-2">
                       {errorMessage}
                     </p>
                   )}

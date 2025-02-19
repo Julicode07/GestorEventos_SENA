@@ -18,7 +18,6 @@ function Profile() {
     phone: "",
     role: "",
   });
-  const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   const [isEditing, setIsEditing] = useState(false);
@@ -73,11 +72,7 @@ function Profile() {
         ...data,
         document: Number(document),
       };
-      const result = await update(
-        newData,
-        `/api/users/update/${userById[0]?.id_user}`
-      );
-      setSuccessMessage("Usuario actualizado correctamente!");
+      await update(newData, `/api/users/update/${userById[0]?.id_user}`);
       setErrorMessage("");
       setUserUpdated({
         document: "",
@@ -88,10 +83,8 @@ function Profile() {
         role: "",
       });
       setIsEditing(false);
-      console.log(result);
       window.location.reload();
     } catch (err) {
-      setSuccessMessage("");
       setErrorMessage("No se pudo actualizar tu info!");
       console.error("No se pudo actualizar la data", err);
     }
@@ -234,17 +227,9 @@ function Profile() {
           </div>
         </form>
         <div>
-          {successMessage && (
-            <div
-              className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative"
-              role="alert"
-            >
-              <span className="block sm:inline">{successMessage}</span>
-            </div>
-          )}
           {errorMessage && (
             <div
-              className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+              className="bg-red-100 text-red-700 px-4 py-3 rounded relative mt-4"
               role="alert"
             >
               <span className="block sm:inline">{errorMessage}</span>

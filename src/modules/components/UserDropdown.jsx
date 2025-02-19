@@ -91,28 +91,32 @@ const UserDropdown = ({ role, profileLink, textColor, textRole }) => {
           <span className="text-base font-medium">Perfil</span>
         </DropdownItem>
         <DropdownItem
+          key="Home"
+          showDivider
+          className="text-lg"
+          textValue="Inicio"
+          onClick={() => navigate("/")}
+        >
+          <span className="text-base font-medium">Inicio</span>
+        </DropdownItem>
+        <DropdownItem
           key="logout"
           color="danger"
           className="flex bg-red-100 mt-2"
           textValue="Cerrar sesión"
+          onClick={logOut}
         >
-          <button
-            onClick={logOut}
-            type="submit"
-            className="h-full flex items-center justify-between text-red-500"
-          >
-            <span className="font-bold flex h-full justify-between">
-              Cerrar sesión
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                className="w-4 h-4 ms-2"
-              >
-                <path d="M5 2H19C19.5523 2 20 2.44772 20 3V21C20 21.5523 19.5523 22 19 22H5C4.44772 22 4 21.5523 4 21V3C4 2.44772 4.44772 2 5 2ZM9 11V8L4 12L9 16V13H15V11H9Z"></path>
-              </svg>
-            </span>
-          </button>
+          <span className="font-bold flex h-full items-center justify-between text-red-500">
+            Cerrar sesión
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              className="w-4 h-4 ms-2"
+            >
+              <path d="M5 2H19C19.5523 2 20 2.44772 20 3V21C20 21.5523 19.5523 22 19 22H5C4.44772 22 4 21.5523 4 21V3C4 2.44772 4.44772 2 5 2ZM9 11V8L4 12L9 16V13H15V11H9Z"></path>
+            </svg>
+          </span>
         </DropdownItem>
       </DropdownMenu>
     </Dropdown>

@@ -123,7 +123,7 @@ export default function App() {
         return (
           <div className="flex flex-col">
             <p
-              className={`text-bold text-small text-center rounded-lg ${
+              className={`text-bold text-small text-center rounded-lg p-2 ${
                 event.status === "Pendiente"
                   ? "bg-warning-100 text-warning"
                   : event.status === "Rechazado"
