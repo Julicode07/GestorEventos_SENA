@@ -35,19 +35,27 @@ export default function App() {
   const [isInventoryModalOpen, setIsInventoryModalOpen] = useState(false);
 
   const getAllSpaces = useCallback(async () => {
-    const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/spaces/all`
-    );
-    const data = await response.json();
-    return data;
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/spaces/all`
+      );
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Ocurrio un error al traer la data", error);
+    }
   }, []);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const data = await getAllSpaces();
-      setShowSpaces(data);
-    };
-    fetchData();
+    try {
+      const fetchData = async () => {
+        const data = await getAllSpaces();
+        setShowSpaces(data);
+      };
+      fetchData();
+    } catch (error) {
+      console.error("Ocurrio un error al traer la data", error);
+    }
   }, [getAllSpaces]);
 
   const [filterValue, setFilterValue] = useState("");
@@ -161,6 +169,7 @@ export default function App() {
                   </span>
                 </DropdownItem>
                 <DropdownItem
+                  textValue="Inventario"
                   onClick={() => {
                     setIdSpaces(space.id_space);
                     setIsInventoryModalOpen(true);
@@ -215,7 +224,7 @@ export default function App() {
         </div>
         <section>
           <ModalEspaciosActualizar
-            idSpaces={idSpaces}
+            idSpaces={Number(idSpaces)}
             isModalOpen={isModalOpen}
             setIsModalOpen={setIsModalOpen}
           />

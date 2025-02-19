@@ -6,12 +6,14 @@ import {
   User,
 } from "@nextui-org/react";
 import { useContext, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { SessionContext } from "../../context/SessionContext";
 import PropTypes from "prop-types";
 
 const UserDropdown = ({ role, profileLink, textColor, textRole }) => {
   const { names, updateSession, userSession } = useContext(SessionContext);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     updateSession();
@@ -71,26 +73,22 @@ const UserDropdown = ({ role, profileLink, textColor, textRole }) => {
           showDivider
           className="text-lg"
           textValue="Ir al panel"
+          onClick={() => navigate(profileLink)}
         >
-          <Link to={profileLink}>
-            <span className="text-base font-medium">Ir al panel</span>
-          </Link>
+          <span className="text-base font-medium">Ir al panel</span>
         </DropdownItem>
         <DropdownItem
           key="profile"
           showDivider
           className="text-lg"
           textValue="Perfil"
+          onClick={() =>
+            userSession.role === "Coordinador"
+              ? navigate("/admin/coordinador/perfil")
+              : navigate("/admin/instructor/perfil")
+          }
         >
-          <Link
-            to={`${
-              userSession.role === "Coordinador"
-                ? "/admin/coordinador/perfil"
-                : "/admin/instructor/perfil"
-            }`}
-          >
-            <span className="text-base font-medium">Perfil</span>
-          </Link>
+          <span className="text-base font-medium">Perfil</span>
         </DropdownItem>
         <DropdownItem
           key="logout"

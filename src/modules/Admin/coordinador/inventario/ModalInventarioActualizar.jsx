@@ -4,7 +4,11 @@ import { useCallback, useEffect, useState } from "react";
 import useUpdate from "../../../hooks/useUpdate";
 import PropTypes from "prop-types";
 
-const ModalInventarioActualizar = ({ isModalOpen, setIsModalOpen, idInventory }) => {
+const ModalInventarioActualizar = ({
+  isModalOpen,
+  setIsModalOpen,
+  idInventory,
+}) => {
   const { update } = useUpdate();
   const [getInventoryById, setGetInventoryById] = useState([]);
   const [updateInventory, setUpdateInventory] = useState({
@@ -15,15 +19,16 @@ const ModalInventarioActualizar = ({ isModalOpen, setIsModalOpen, idInventory })
   });
 
   const getInventory = useCallback(async () => {
-    const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/inventory/get/${idInventory}`
-    );
-    const data = await response.json();
-    setGetInventoryById(Array.isArray(data) ? data : [data]);
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/inventory/get/${idInventory}`
+      );
+      const data = await response.json();
+      setGetInventoryById(Array.isArray(data) ? data : [data]);
+    } catch (error) {
+      console.error("Ocurrio un error al traer la data", error);
+    }
   }, [idInventory]);
-  useEffect(() => {
-    console.log(getInventoryById);
-  }, [getInventoryById]);
 
   useEffect(() => {
     if (getInventoryById.length > 0) {
@@ -40,8 +45,7 @@ const ModalInventarioActualizar = ({ isModalOpen, setIsModalOpen, idInventory })
     getInventory();
   }, [getInventory]);
 
-  const [successMessage, setSuccessMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState(true);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -53,14 +57,12 @@ const ModalInventarioActualizar = ({ isModalOpen, setIsModalOpen, idInventory })
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(updateInventory);
     try {
-      const result = await update(
+      await update(
         updateInventory,
         `/api/inventory/update/space/${idInventory}`
       );
-      setSuccessMessage(result.message);
-      setSuccessMessage("Se actualizo exitosamente");
+
       setUpdateInventory({
         id_inventory: "",
         id_space: "",
@@ -89,8 +91,9 @@ const ModalInventarioActualizar = ({ isModalOpen, setIsModalOpen, idInventory })
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                className={`bg-white border border-gray-300 shadow-2xl px-8 pt-8 rounded-2xl w-4/5 max-w-2xl flex flex-col items-center relative transition-transform transform ${isModalOpen ? "scale-100 opacity-100" : "scale-95 opacity-0"
-                  } transition-all duration-300 ease-out`}
+                className={`bg-white border border-gray-300 shadow-2xl px-8 pt-8 rounded-2xl w-4/5 max-w-2xl flex flex-col items-center relative transition-transform transform ${
+                  isModalOpen ? "scale-100 opacity-100" : "scale-95 opacity-0"
+                } transition-all duration-300 ease-out`}
                 onClick={(e) => e.stopPropagation()}
                 style={{ maxHeight: "90vh" }}
               >
@@ -179,12 +182,8 @@ const ModalInventarioActualizar = ({ isModalOpen, setIsModalOpen, idInventory })
                 </div>
 
                 <div className="w-full h-full sticky -bottom-2 z-50 p-2 bg-white border-t border-gray-200 mt-3">
-
                   <div className="flex items-center justify-center space-x-4 my-3 md:my-0">
-                    <Button
-                      type="submit"
-                      color="primary"
-                    >
+                    <Button type="submit" color="primary">
                       Actualizar Inventario
                     </Button>
                     <Button
@@ -194,9 +193,8 @@ const ModalInventarioActualizar = ({ isModalOpen, setIsModalOpen, idInventory })
                       Cancelar
                     </Button>
                   </div>
-                  {(successMessage || errorMessage) && (
-                    <div className="col-span-2 text-center mt-2">
-                      {successMessage && <p className="text-green-600">{successMessage}</p>}
+                  {errorMessage && (
+                    <div className="col-span-2 text-center my-4">
                       {errorMessage && (
                         <p className="text-red-600">{errorMessage}</p>
                       )}

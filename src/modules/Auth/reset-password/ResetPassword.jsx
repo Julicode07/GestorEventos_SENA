@@ -10,7 +10,7 @@ const ResetPassword = () => {
     email: "",
   });
 
-  const [clickedTimes, setClickedTimes] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [statusPassword, setStatusPassword] = useState(null);
 
   const handleChange = (e) => {
@@ -23,7 +23,8 @@ const ResetPassword = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (clickedTimes > 0) return;
+    if (isSubmitting) return;
+    setIsSubmitting(true);
     try {
       const result = await register(sendEmail, "/api/users/forgot-password");
       setStatusPassword(result.success);
@@ -31,7 +32,7 @@ const ResetPassword = () => {
     } catch {
       setStatusPassword(true);
     } finally {
-      setClickedTimes(1);
+      setTimeout(() => setIsSubmitting(false), 5000);
     }
   };
 
@@ -85,14 +86,14 @@ const ResetPassword = () => {
 
               <button
                 type="submit"
-                disabled={clickedTimes > 0}
+                disabled={isSubmitting}
                 className={`w-full  text-white py-3 rounded-lg  relative ${
-                  clickedTimes > 0
+                  isSubmitting
                     ? "opacity-50 bg-gray-500 cursor-not-allowed"
                     : "bg-primary hover:bg-primary-dark transition-all cursor-pointer"
                 }`}
               >
-                Enviar enlace
+                {isSubmitting ? "Enviando..." : "Enviar enlace"}
               </button>
             </form>
           </section>

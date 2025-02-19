@@ -30,7 +30,9 @@ const FullView = React.lazy(() =>
 const InfoSubEvents = React.lazy(() =>
   import("@/modules/Admin/instructor/SubEventos/Info")
 );
-
+const Organizadores = React.lazy(() =>
+  import("@/modules/Admin/instructor/organizadores/Organizadores")
+);
 import { SessionContext } from "../../../context/SessionContext";
 function Coordinador() {
   const { updateSession, userSession } = useContext(SessionContext);
@@ -67,6 +69,7 @@ function Coordinador() {
               <Route path="/espacios" element={<Espacios />} />
               <Route path="/eventos" element={<Eventos />} />
               <Route path="/subeventos/:id" element={<SubEventos />} />
+              <Route path="/organizadores" element={<Organizadores />} />
               <Route path="/solicitudes" element={<Solicitudes />} />
               <Route path="/solicitudes/ver/:id" element={<FullView />} />
               <Route path="/subeventos/info/:id" element={<InfoSubEvents />} />

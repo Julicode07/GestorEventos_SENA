@@ -43,7 +43,9 @@ const OrganizersModal = memo(
                 <button
                   className="flex items-end justify-end w-full"
                   type="button"
-                  onClick={() => onRemoveOrganizer(subEventIndex, organizerIndex)}
+                  onClick={() =>
+                    onRemoveOrganizer(subEventIndex, organizerIndex)
+                  }
                 >
                   <i className="ri-close-line text-2xl"></i>
                 </button>
@@ -74,7 +76,7 @@ const OrganizersModal = memo(
                   <Select
                     id="role"
                     size="xl"
-                    placeholder="Rol"
+                    label="Rol"
                     name="rol"
                     value={organizer.rol}
                     onChange={(e) =>
@@ -85,7 +87,9 @@ const OrganizersModal = memo(
                     <SelectItem key="Docente">Docente</SelectItem>
                     <SelectItem key="Coordinador">Coordinador</SelectItem>
                     <SelectItem key="Personal">Personal</SelectItem>
-                    <SelectItem key="Persona externa">Persona externa</SelectItem>
+                    <SelectItem key="Persona externa">
+                      Persona externa
+                    </SelectItem>
                   </Select>
                 </div>
                 <div>
@@ -131,7 +135,7 @@ const OrganizersModal = memo(
 OrganizersModal.displayName = "OrganizersModal";
 
 OrganizersModal.propTypes = {
-  organizers: PropTypes.object,
+  organizers: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
   subEventIndex: PropTypes.number,
   onAddOrganizer: PropTypes.func,
   onRemoveOrganizer: PropTypes.func,

@@ -17,6 +17,7 @@ import TopContent from "./../../components/TopContent";
 import ModalSubEventosActualizar from "../eventos/ModalSubEventosActualizar";
 import Alert from "../../components/Alert";
 import { SessionContext } from "../../../../context/SessionContext";
+import dayjs from "dayjs";
 const TableShowData = React.lazy(() =>
   import("./../../components/TableShowData")
 );
@@ -74,7 +75,8 @@ export default function SubEventos() {
       `${import.meta.env.VITE_API_URL}/api/subEvents/globalEvent/${id}`
     );
     const data = await response.json();
-    const userSubEvents = data.filter(
+    const arrayData = Array.isArray(data) ? data : [];
+    const userSubEvents = arrayData.filter(
       (event) => event.id_host_user === names.id_user
     );
     setSubEvents(Array.isArray(userSubEvents) ? userSubEvents : []);
@@ -152,6 +154,12 @@ export default function SubEventos() {
   const renderCell = React.useCallback((subEvent, columnKey) => {
     const cellValue = subEvent[columnKey];
     switch (columnKey) {
+      case "start_date":
+        return (
+          <p>{dayjs(subEvent.start_date).format("DD/MM/YYYY HH:mm:ss")}</p>
+        );
+      case "end_date":
+        return <p>{dayjs(subEvent.end_date).format("DD/MM/YYYY HH:mm:ss")}</p>;
       case "subeventConfirmation":
         return (
           <div className="flex flex-col">

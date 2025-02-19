@@ -160,6 +160,12 @@ const NavSideBar = () => {
               title="Eventos"
             />
             <ItemsList
+              to={"/admin/instructor/organizadores"}
+              logo="ri-team-fill flex w-5 h-5 text-xl justify-center items-center text-primary transition duration-75 group-hover:text-gray-600"
+              title="Organizadores"
+            />
+
+            <ItemsList
               to={"/admin/instructor/solicitudes"}
               logo="ri-pencil-ruler-fill flex w-5 h-5 text-xl justify-center items-center text-primary transition duration-75 group-hover:text-gray-600"
               title="Solicitudes"

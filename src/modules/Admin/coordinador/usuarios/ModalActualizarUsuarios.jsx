@@ -18,7 +18,6 @@ const ModalActualizarUsuarios = ({
     role: "",
   });
   const [originalUserData, setOriginalUserData] = useState({});
-  const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   const fetchUserData = useCallback(async () => {
@@ -50,13 +49,11 @@ const ModalActualizarUsuarios = ({
       const { document, ...data } = userData;
       const updatedData = { ...data, document: Number(document) };
       await update(updatedData, `/api/users/update/${idUsers}`);
-      setSuccessMessage("Usuario actualizado correctamente!");
       setErrorMessage("");
-      setTimeout(() => window.location.reload(), 1000);
+      window.location.reload();
     } catch (error) {
       console.error("Error updating user data:", error);
       setErrorMessage("No se pudo actualizar la información!");
-      setSuccessMessage("");
     }
   };
 
@@ -174,10 +171,7 @@ const ModalActualizarUsuarios = ({
                 </div>
 
                 <div className="col-span-2 flex items-center justify-center p-4 space-x-3 border-t border-gray-200">
-                  <Button
-                    type="submit"
-                    color="primary"
-                  >
+                  <Button type="submit" color="primary">
                     Actualizar Usuario
                   </Button>
                   <Button
@@ -187,11 +181,8 @@ const ModalActualizarUsuarios = ({
                     Cancelar
                   </Button>
                 </div>
-                {(successMessage || errorMessage) && (
-                  <div className="col-span-2 text-center">
-                    {successMessage && (
-                      <p className="text-green-600">{successMessage}</p>
-                    )}
+                {errorMessage && (
+                  <div className="col-span-2 text-center mb-5">
                     {errorMessage && (
                       <p className="text-red-600">{errorMessage}</p>
                     )}

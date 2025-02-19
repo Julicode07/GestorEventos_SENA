@@ -30,18 +30,24 @@ const FullView = () => {
       </Breadcrumbs>
       <div>
         <h1 className="font-bold text-3xl">Detalles del evento global {id}</h1>
-        {getAllInfoGlobalEvent.map((globalEvent) => (
-          <div key={globalEvent.id_global_event}>
-            <GlobalEvent
-              globalEventitle={globalEvent.global_event_name}
-              status={globalEvent.global_event_status}
-              id={globalEvent.id_global_event}
-              details={globalEvent.global_event_observations}
-            />
-            {/* Validación adicional para evitar valores undefined */}
-            <SubEvents subEvents={globalEvent.sub_events ?? []} />
-          </div>
-        ))}
+        {getAllInfoGlobalEvent.length > 0 ? (
+          getAllInfoGlobalEvent.map((globalEvent) => (
+            <div key={globalEvent.id_global_event}>
+              <GlobalEvent
+                globalEventitle={globalEvent.global_event_name}
+                status={globalEvent.global_event_status}
+                id={globalEvent.id_global_event}
+                details={globalEvent.global_event_observations}
+              />
+              {/* Validación adicional para evitar valores undefined */}
+              <SubEvents subEvents={globalEvent.sub_events ?? []} />
+            </div>
+          ))
+        ) : (
+          <p className="text-gray-500 text-center mt-3">
+            No hay eventos para mostrar.
+          </p>
+        )}
       </div>
     </>
   );

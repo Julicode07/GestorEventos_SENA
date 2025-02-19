@@ -10,7 +10,6 @@ const ModalEventos = () => {
   const { names, updateSession } = useContext(SessionContext);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [succesMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   // Sesión
@@ -36,12 +35,9 @@ const ModalEventos = () => {
 
   const handleSubmitEvent = async (e) => {
     e.preventDefault();
-    console.log(registerEvent);
     try {
-      const result = await register(registerEvent, "/api/events/global");
-      setSuccessMessage("Registro exitoso");
+      await register(registerEvent, "/api/events/global");
       setErrorMessage("");
-      console.log("the data is: ", result);
       setRegisterEvent({
         name: "",
         details: "",
@@ -50,7 +46,6 @@ const ModalEventos = () => {
       window.location.reload();
     } catch (error) {
       setErrorMessage("Ocurrio un error al registrar el evento", error);
-      setSuccessMessage("");
     }
   };
 
@@ -161,17 +156,12 @@ const ModalEventos = () => {
                         </Button>
                       </div>
                       <div className="flex justify-center">
-                        {succesMessage && (
-                          <p className="text-green-600 text-center">
-                            {succesMessage}
-                          </p>
-                        )}
                         {errorMessage === "Evento creado correctamente" ? (
-                          <p className="text-green-600 text-center">
+                          <p className="text-green-600 text-center my-3">
                             {errorMessage}
                           </p>
                         ) : (
-                          <p className="text-red-600 text-center">
+                          <p className="text-red-600 text-center my-3">
                             {errorMessage}
                           </p>
                         )}

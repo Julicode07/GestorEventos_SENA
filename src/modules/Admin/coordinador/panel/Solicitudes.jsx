@@ -10,17 +10,21 @@ function Solicitudes() {
   const [pendientRequests, setPendientRequests] = useState([]);
 
   const getRequests = useCallback(async () => {
-    const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/events/global/all`
-    );
-    const data = await response.json();
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/events/global/all`
+      );
+      const data = await response.json();
 
-    // Ordenar en orden descendente (más reciente primero)
-    const sortedData = Array.isArray(data)
-      ? data.sort((a, b) => b.id_global_event - a.id_global_event)
-      : [data];
+      // Ordenar en orden descendente (más reciente primero)
+      const sortedData = Array.isArray(data)
+        ? data.sort((a, b) => b.id_global_event - a.id_global_event)
+        : [data];
 
-    setPendientRequests(sortedData);
+      setPendientRequests(sortedData);
+    } catch (err) {
+      console.error("Ocurrio un error al traer la data", err);
+    }
   }, []);
 
   useEffect(() => {
@@ -71,8 +75,7 @@ function Solicitudes() {
           href="/admin/coordinador/solicitudes"
           className="bg-secondary text-white p-2 text-sm sm:text-base text-center md:text-left font-medium rounded-lg transition-all duration-300 mt-3 md:mt-0"
         >
-          Ver todas{" "}
-          <i className="ri-arrow-right-line"></i>
+          Ver todas <i className="ri-arrow-right-line"></i>
         </a>
       </div>
 
@@ -82,15 +85,23 @@ function Solicitudes() {
             <li key={event.id_global_event} className="py-2 sm:py-3">
               <div className="flex items-center justify-between gap-2">
                 <Tooltip color="" content="Ver la solicitud">
-                  <Link to={`/admin/coordinador/solicitudes/ver/${event.id_global_event}`} className="flex-1 px-2 py-1 rounded-xl hover:bg-gray-100 transition-all duration-300">
+                  <Link
+                    to={`/admin/coordinador/solicitudes/ver/${event.id_global_event}`}
+                    className="flex-1 px-2 py-1 rounded-xl hover:bg-gray-100 transition-all duration-300"
+                  >
                     <p className="text-sm font-medium text-gray-900 truncate">
                       {event.name}
                     </p>
-                    <p className="text-sm bg-warning-100 text-warning inline-block px-2 rounded-full">{event.status}</p>
+                    <p className="text-sm bg-warning-100 text-warning inline-block px-2 rounded-full">
+                      {event.status}
+                    </p>
                   </Link>
                 </Tooltip>
                 <form className="flex space-x-2" onSubmit={handleSubmit}>
-                  <Tooltip className="bg-primary text-white" content="Aceptar solicitud">
+                  <Tooltip
+                    className="bg-primary text-white"
+                    content="Aceptar solicitud"
+                  >
                     <Button
                       isIconOnly
                       type="submit"

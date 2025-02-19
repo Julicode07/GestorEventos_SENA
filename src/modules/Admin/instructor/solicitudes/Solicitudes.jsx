@@ -28,20 +28,20 @@ export default function App() {
   const [showGlobalEvent, setShowGlobalEvent] = useState([]);
 
   const getGlobalEvents = useCallback(async () => {
-    const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/events/global/self/all`
-    );
-    const data = await response.json();
-    setShowGlobalEvent(Array.isArray(data) ? data : [data]);
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/events/global/self/all`
+      );
+      const data = await response.json();
+      setShowGlobalEvent(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error("Ocurrio un error al traer la data", err);
+    }
   }, []);
 
   useEffect(() => {
     getGlobalEvents();
   }, [getGlobalEvents]);
-
-  useEffect(() => {
-    console.log(showGlobalEvent);
-  }, [showGlobalEvent]);
   //
 
   const headerColumns = React.useMemo(() => {

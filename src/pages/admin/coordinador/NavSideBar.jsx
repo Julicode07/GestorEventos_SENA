@@ -157,12 +157,6 @@ const NavSideBar = () => {
             />
 
             <ItemsList
-              to={"/admin/coordinador/organizadores"}
-              logo="ri-team-fill flex w-5 h-5 text-xl justify-center items-center text-primary transition duration-75 group-hover:text-gray-600"
-              title="Organizadores"
-            />
-
-            <ItemsList
               to={"/admin/coordinador/solicitudes"}
               logo="ri-mail-unread-fill flex w-5 h-5 text-xl justify-center items-center text-primary transition duration-75 group-hover:text-gray-600"
               title="Solicitudes"

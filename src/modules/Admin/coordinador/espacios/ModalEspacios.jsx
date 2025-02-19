@@ -16,7 +16,6 @@ const ModalEspacios = () => {
     status: "",
     details: "",
   });
-  const [success, setSuccess] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleChangeRegisterSpaces = (e) => {
@@ -39,10 +38,8 @@ const ModalEspacios = () => {
         capacity: Number(capacity),
       };
       console.log(newDataToSend);
-      const result = await register(newDataToSend, "/api/spaces/new");
-      setSuccess("Espacio registrado con exito!");
+      await register(newDataToSend, "/api/spaces/new");
       setErrorMessage("");
-      console.log("Espacio registrado:", result);
       setFormData({
         name: "",
         capacity: "",
@@ -54,7 +51,6 @@ const ModalEspacios = () => {
     } catch (error) {
       setErrorMessage("Error al registrar el espacio");
       console.error("Error registering user:", error);
-      setSuccess("");
     }
   };
   return (
@@ -196,7 +192,6 @@ const ModalEspacios = () => {
                     </div>
                     {/* Los botones dentro del formulario */}
                     <div className="w-full h-full sticky -bottom-2 z-50 p-2 bg-white border-t border-gray-200 mt-3">
-
                       <div className="flex items-center justify-center space-x-4 my-3 md:my-0">
                         <Button
                           type="submit"
@@ -212,9 +207,8 @@ const ModalEspacios = () => {
                           Cancelar
                         </Button>
                       </div>
-                      {(success || errorMessage) && (
+                      {errorMessage && (
                         <div className="col-span-2 text-center mt-2">
-                          {success && <p className="text-green-600">{success}</p>}
                           {errorMessage && (
                             <p className="text-red-600">{errorMessage}</p>
                           )}

@@ -147,6 +147,7 @@ export default function App() {
               </DropdownTrigger>
               <DropdownMenu>
                 <DropdownItem
+                textValue="Actualizar"
                   key="view"
                   onClick={() => {
                     setIdOrganizer(organizers.id_organizers);

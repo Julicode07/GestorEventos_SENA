@@ -7,11 +7,15 @@ function Panel() {
   const [subEvents, setSubEvents] = useState([]);
 
   const getSubEvents = useCallback(async () => {
-    const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/subEvents/get/all`
-    );
-    const data = await response.json();
-    setSubEvents(data);
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/events/global/all`
+      );
+      const data = await response.json();
+      setSubEvents(data);
+    } catch (err) {
+      console.error("Ocurrio un error al traer la data", err);
+    }
   }, []);
 
   useEffect(() => {

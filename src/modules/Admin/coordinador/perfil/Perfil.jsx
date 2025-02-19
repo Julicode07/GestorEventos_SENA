@@ -3,7 +3,7 @@ import useUpdate from "../../../hooks/useUpdate";
 import { SessionContext } from "@/context/SessionContext.jsx";
 
 function Profile() {
-  const { updateSession, userSession } = useContext(SessionContext);
+  const { updateSession } = useContext(SessionContext);
   const { update } = useUpdate();
 
   useEffect(() => {

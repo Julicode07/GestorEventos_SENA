@@ -131,6 +131,7 @@ export default function App() {
               </DropdownTrigger>
               <DropdownMenu>
                 <DropdownItem
+                  textValue="Actualizar inventario"
                   key="edit"
                   onClick={() => {
                     setIdInventory(user.id_inventory);

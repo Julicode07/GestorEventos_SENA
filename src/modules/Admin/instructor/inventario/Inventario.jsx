@@ -33,11 +33,15 @@ export default function App() {
   const [inventory, setInventory] = useState([]);
 
   const getInventory = useCallback(async () => {
-    const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/inventory/space/${id}`
-    );
-    const data = await response.json();
-    setInventory(data);
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/inventory/space/${id}`
+      );
+      const data = await response.json();
+      setInventory(Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.error("Ocurrio un error al traer la data", error);
+    }
   }, [id]);
 
   useEffect(() => {
@@ -174,7 +178,10 @@ export default function App() {
               </TableColumn>
             )}
           </TableHeader>
-          <TableBody emptyContent={"No hay inventario para mostrar"} items={sortedItems}>
+          <TableBody
+            emptyContent={"No hay inventario para mostrar"}
+            items={sortedItems}
+          >
             {(item) => (
               <TableRow key={item.id_inventory}>
                 {(columnKey) => (

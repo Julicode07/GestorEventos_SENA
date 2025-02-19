@@ -17,7 +17,6 @@ const ModalOrganizador = () => {
     email: "",
     address: "",
   });
-  const [success, setSuccess] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [subEvents, setSubEvents] = useState([]);
 
@@ -27,7 +26,7 @@ const ModalOrganizador = () => {
         `${import.meta.env.VITE_API_URL}/api/subEvents/get/all`
       );
       const data = await response.json();
-      setSubEvents(data);
+      setSubEvents(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error("Ocurrio un error al traer la data", err);
     }
@@ -56,11 +55,8 @@ const ModalOrganizador = () => {
         id_sub_event: Number(id_sub_event),
         ...data,
       };
-      console.log(newData);
-      const result = await register(newData, "/api/organizers/new");
-      setSuccess("Organizador registrado con exito!");
+      await register(newData, "/api/organizers/new");
       setErrorMessage("");
-      console.log("Organizador registrado:", result);
       setFormData({
         id_sub_event: "",
         name: "",
@@ -72,11 +68,9 @@ const ModalOrganizador = () => {
     } catch (error) {
       setErrorMessage(error.message);
       console.error("Error registering organizer:", error);
-      setSuccess("");
     }
   };
 
-  // const [selectedOption, setSelectedOption] = useState("");
   return (
     <>
       <Button
@@ -164,7 +158,7 @@ const ModalOrganizador = () => {
                         <Select
                           id="role"
                           size="xl"
-                          placeholder="Rol"
+                          label="Rol"
                           name="rol"
                           value={formData.rol}
                           onChange={handleChangeSubEvents}
@@ -208,12 +202,8 @@ const ModalOrganizador = () => {
                     </div>
 
                     <div className="w-full h-full sticky -bottom-2 z-50 p-2 bg-white border-t border-gray-200 mt-3">
-
                       <div className="flex items-center justify-center space-x-4 my-3 md:my-0">
-                        <Button
-                          type="submit"
-                          color="primary"
-                        >
+                        <Button type="submit" color="primary">
                           Crear Invetario
                         </Button>
                         <Button
@@ -223,14 +213,11 @@ const ModalOrganizador = () => {
                           Cancelar
                         </Button>
                       </div>
-                      {(success || errorMessage) && (
-                        <div className="col-span-2 text-center mt-2">
-                          {success && <p className="text-green-600">{success}</p>}
-                          {errorMessage && (
-                            <p className="text-red-600">{errorMessage}</p>
-                          )}
-                        </div>
-                      )}
+                      <div className="col-span-2 text-center my-4">
+                        {errorMessage && (
+                          <p className="text-red-600">{errorMessage}</p>
+                        )}
+                      </div>
                     </div>
                   </form>
                 </div>

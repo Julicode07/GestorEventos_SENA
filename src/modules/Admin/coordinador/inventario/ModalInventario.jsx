@@ -22,8 +22,7 @@ const ModalInventario = ({
     },
   ]);
 
-  const [success, setSuccess] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState(true);
 
   useEffect(() => {
     if (idSpaces !== 0) {
@@ -63,16 +62,9 @@ const ModalInventario = ({
         ...item,
         quantity: Number(item.quantity),
       }));
-
       const dataToSend = [{ id_space: Number(id_space) }, ...newDataToSend];
-
-      console.log(dataToSend);
-      const result = await register(dataToSend, "/api/inventory/create");
-
-      setSuccess("Inventario registrado con éxito!");
+      await register(dataToSend, "/api/inventory/create");
       setErrorMessage("");
-      console.log("Inventario registrado:", result);
-
       setFormData([
         { id_space: "" },
         { article_name: "", description: "", quantity: "", type: "" },
@@ -81,7 +73,6 @@ const ModalInventario = ({
     } catch (error) {
       setErrorMessage("Error al registrar el inventario");
       console.error("Error registering inventory:", error);
-      setSuccess("");
     }
   };
 
@@ -115,14 +106,16 @@ const ModalInventario = ({
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                className={`bg-white border border-gray-300 shadow-2xl px-8 pt-8 rounded-2xl w-4/5 max-w-2xl flex flex-col items-center relative transition-transform transform ${isInventoryModalOpen
-                  ? "scale-100 opacity-100"
-                  : "scale-95 opacity-0"
-                  } transition-all duration-300 ease-out`}
+                className={`bg-white border border-gray-300 shadow-2xl px-8 pt-8 rounded-2xl w-4/5 max-w-2xl flex flex-col items-center relative transition-transform transform ${
+                  isInventoryModalOpen
+                    ? "scale-100 opacity-100"
+                    : "scale-95 opacity-0"
+                } transition-all duration-300 ease-out`}
                 onClick={(e) => e.stopPropagation()}
                 style={{ maxHeight: "90vh" }}
               >
                 <button
+                  type="button"
                   className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
                   onClick={() => setIsInventoryModalOpen(false)}
                 >
@@ -238,12 +231,8 @@ const ModalInventario = ({
                 </Button>
 
                 <div className="w-full h-full sticky -bottom-2 z-50 p-2 bg-white border-t border-gray-200 mt-3">
-
                   <div className="flex items-center justify-center space-x-4 my-3 md:my-0">
-                    <Button
-                      type="submit"
-                      color="primary"
-                    >
+                    <Button type="submit" color="primary">
                       Crear Invetario
                     </Button>
                     <Button
@@ -253,9 +242,8 @@ const ModalInventario = ({
                       Cancelar
                     </Button>
                   </div>
-                  {(success || errorMessage) && (
-                    <div className="col-span-2 text-center mt-2">
-                      {success && <p className="text-green-600">{success}</p>}
+                  {errorMessage && (
+                    <div className="col-span-2 text-center my-4">
                       {errorMessage && (
                         <p className="text-red-600">{errorMessage}</p>
                       )}
