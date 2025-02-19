@@ -41,10 +41,6 @@ function Profile() {
   }, [getUserById]);
 
   useEffect(() => {
-    console.log("data ", userById);
-  }, [userById]);
-
-  useEffect(() => {
     if (userById.length > 0) {
       setUserUpdated({
         document: userById[0].document,

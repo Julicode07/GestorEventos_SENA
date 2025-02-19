@@ -1,5 +1,5 @@
 import Images from "@/assets/img/images.js";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { EyeSlashFilledIcon } from "../components/EyeSlashFilledIcon";
 import { EyeFilledIcon } from "../components/EyeFilledIcon";
@@ -49,6 +49,8 @@ const NewPassword = () => {
         `/api/users/reset-password/${token}`
       );
       console.log(result);
+      navigate("/iniciarsesion");
+      setError("");
     } catch (err) {
       setError(err.message);
     }

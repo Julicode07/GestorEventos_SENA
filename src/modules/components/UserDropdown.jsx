@@ -10,12 +10,7 @@ import { Link } from "react-router-dom";
 import { SessionContext } from "../../context/SessionContext";
 import PropTypes from "prop-types";
 
-const UserDropdown = ({
-  role,
-  profileLink,
-  textColor,
-  textRole,
-}) => {
+const UserDropdown = ({ role, profileLink, textColor, textRole }) => {
   const { names, updateSession, userSession } = useContext(SessionContext);
 
   useEffect(() => {
@@ -41,15 +36,11 @@ const UserDropdown = ({
           className={`transition-transform ${textColor}`}
           name={
             <>
-              <span className="block text-sm font-semibold">
-                {fullName}
-              </span>
+              <span className="block text-sm font-semibold">{fullName}</span>
             </>
           }
           description={
-            <span
-              className={`block text-sm font-semibold${textRole}`}
-            >
+            <span className={`block text-sm font-semibold${textRole}`}>
               {role}
             </span>
           }
@@ -60,7 +51,11 @@ const UserDropdown = ({
         variant="flat"
         className="divide-y"
       >
-        <DropdownItem key="profile" className="h-14 gap-2 border-b">
+        <DropdownItem
+          key="user-profile"
+          className="h-14 gap-2 border-b"
+          textValue="Perfil"
+        >
           <User
             as="button"
             avatarProps={{
@@ -72,31 +67,36 @@ const UserDropdown = ({
           />
         </DropdownItem>
         <DropdownItem
-          as={Link}
-          to={profileLink}
           key="panel"
           showDivider
           className="text-lg"
+          textValue="Ir al panel"
         >
-          <span className="text-base font-medium">Ir al panel</span>
+          <Link to={profileLink}>
+            <span className="text-base font-medium">Ir al panel</span>
+          </Link>
         </DropdownItem>
         <DropdownItem
-          as={Link}
-          to={`${userSession.role === "Coordinador"
-            ? "/admin/coordinador/perfil"
-            : "/admin/instructor/perfil"
-            } `}
           key="profile"
           showDivider
           className="text-lg"
+          textValue="Perfil"
         >
-          <span className="text-base font-medium">Perfil</span>
+          <Link
+            to={`${
+              userSession.role === "Coordinador"
+                ? "/admin/coordinador/perfil"
+                : "/admin/instructor/perfil"
+            }`}
+          >
+            <span className="text-base font-medium">Perfil</span>
+          </Link>
         </DropdownItem>
         <DropdownItem
-          as={Link}
           key="logout"
           color="danger"
           className="flex bg-red-100 mt-2"
+          textValue="Cerrar sesión"
         >
           <button
             onClick={logOut}
