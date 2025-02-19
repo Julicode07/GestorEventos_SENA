@@ -46,12 +46,14 @@ async function createDefaultUser(): Promise<void> {
     const defaultUser = {
       id_user: undefined,
       document: 123456789,
-      name: "Administrador",
+      name: "Coordinador",
       last_names: "Por Defecto",
       email: "admin@sena.com",
       phone: Number(phone),
       role: "Coordinador",
       password: password,
+      resetPasswordToken: undefined,
+      resetTokenExpireAt: undefined
     };
 
     // Create the default user
