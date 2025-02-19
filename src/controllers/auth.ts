@@ -215,7 +215,7 @@ export async function ResetPasswordController(req: Request, res: Response) {
         message: "Token inválido o expirado.",
       });
     }
-    await updateUserPassword(user[0].id_user as number, password);
+    await updateUserPassword(user[0].id_user as number, { password });
 
     sendEmail(user[0].email, "¡Contraseña restablecida!", `
       <!DOCTYPE html>

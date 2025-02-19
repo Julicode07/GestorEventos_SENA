@@ -82,6 +82,7 @@ export async function updateUserPassword(id_user: number, userData: Partial<IUse
   try {
     const salt_rounds = 10;
     const hashedPassword = await bcrypt.hash(userData.password as string, salt_rounds);
+    console.log(userData.password)
     const result = await connection.query(
       `
             UPDATE
