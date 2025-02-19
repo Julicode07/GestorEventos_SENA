@@ -96,6 +96,7 @@ export async function updateUserPassword(id_user: number, userData: Partial<IUse
         id_user
       ]
     );
+    console.log(result.affectedRows);
     if (result.affectedRows > 0) return 1;
     else throw new Error(`Could not update user ${id_user}`);
   } catch (err) {
