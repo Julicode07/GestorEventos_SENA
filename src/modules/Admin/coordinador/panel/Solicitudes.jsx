@@ -68,9 +68,9 @@ function Solicitudes() {
   return (
     <div className="relative flex flex-col items-center w-full px-4 pt-4 pb-2 bg-white border border-gray-200 rounded-lg shadow sm:pt-6">
       <div className="w-full flex flex-col md:flex-row md:items-center md:justify-between mb-4">
-        <h5 className="text-xl sm:text-2xl text-center md:text-left font-bold text-gray-900">
+        <h1 className="text-xl sm:text-2xl text-center md:text-left font-bold text-gray-900">
           Solicitudes Pendientes
-        </h5>
+        </h1>
         <a
           href="/admin/coordinador/solicitudes"
           className="bg-secondary text-white p-2 text-sm sm:text-base text-center md:text-left font-medium rounded-lg transition-all duration-300 mt-3 md:mt-0"
@@ -86,6 +86,7 @@ function Solicitudes() {
               <div className="flex items-center justify-between gap-2">
                 <Tooltip color="" content="Ver la solicitud">
                   <Link
+                    aria-label="Ver la solicitud"
                     to={`/admin/coordinador/solicitudes/ver/${event.id_global_event}`}
                     className="flex-1 px-2 py-1 rounded-xl hover:bg-gray-100 transition-all duration-300"
                   >
@@ -104,6 +105,7 @@ function Solicitudes() {
                   >
                     <Button
                       isIconOnly
+                      aria-label="Aceptar solicitud"
                       type="submit"
                       className="text-white bg-primary"
                       onClick={() =>
@@ -116,6 +118,7 @@ function Solicitudes() {
                   <Tooltip color="danger" content="Rechazar solicitud">
                     <Button
                       isIconOnly
+                      aria-label="Rechazar solicitud"
                       type="submit"
                       className="text-red-800 bg-red-300"
                       onClick={() =>
