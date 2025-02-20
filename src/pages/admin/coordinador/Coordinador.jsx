@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { SessionContext } from "../../../context/SessionContext.jsx";
 const NavSideBar = React.lazy(() => import("./NavSideBar"));
@@ -31,21 +31,25 @@ const FullView = React.lazy(() =>
   import("@/modules/Admin/coordinador/solicitudes/FullView.jsx")
 );
 const Registrarse = React.lazy(() => import("@/modules/Auth/Registrarse.jsx"));
+const Loader = React.lazy(() => import("../../../Loader/Loader"));
 
 function Coordinador() {
   const { updateSession, userSession } = useContext(SessionContext);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchSession = async () => {
       try {
         await updateSession();
-      } catch (error) {
-        console.log(error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchSession();
   }, [updateSession]);
+
+  if (loading) return <Loader />;
 
   return (
     <>
