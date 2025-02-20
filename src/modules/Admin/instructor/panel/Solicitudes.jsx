@@ -36,9 +36,9 @@ function Solicitudes() {
   if (pendient.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center w-full px-4 pt-4 pb-2 bg-white border border-gray-200 rounded-lg shadow sm:pt-6">
-        <h5 className="text-xl sm:text-4xl font-bold text-gray-900 py-10 sm:py-0">
+        <h1 className="text-xl sm:text-4xl font-bold text-gray-900 py-10 sm:py-0">
           No hay solicitudes aceptadas
-        </h5>
+        </h1>
       </div>
     );
   }
@@ -66,6 +66,7 @@ function Solicitudes() {
                   <Link
                     to={`/admin/instructor/solicitudes/ver/${event.id_global_event}`}
                     className="flex-1 px-2 py-1 rounded-xl hover:bg-gray-100 transition-all duration-300"
+                    aria-label="Ver solicitud"
                   >
                     <p className="text-sm font-medium text-gray-900 truncate">
                       <span className="font-bold">Nombre: </span>

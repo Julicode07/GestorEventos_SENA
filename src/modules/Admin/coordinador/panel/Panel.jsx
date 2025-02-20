@@ -26,7 +26,7 @@ function Panel() {
     <main className="flex flex-col gap-2">
       <div>
         <Breadcrumbs>
-          <BreadcrumbItem href=""> </BreadcrumbItem>
+          <BreadcrumbItem href="#"> </BreadcrumbItem>
           <BreadcrumbItem href="/admin/coordinador">Panel</BreadcrumbItem>
         </Breadcrumbs>
       </div>

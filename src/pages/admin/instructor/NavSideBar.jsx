@@ -89,6 +89,7 @@ const NavSideBar = () => {
               <button
                 onClick={toggleSidebar}
                 aria-controls="sidebar"
+                id="sidebar"
                 type="button"
                 className="inline-flex items-center p-2 text-gray-800 rounded-lg sm:hidden hover:bg-gray-100"
               >

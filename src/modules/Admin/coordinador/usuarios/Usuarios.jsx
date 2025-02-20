@@ -117,7 +117,7 @@ export default function Usuarios() {
           <div className="relative flex justify-end items-center gap-2">
             <Dropdown>
               <DropdownTrigger>
-                <Button isIconOnly size="sm" variant="light">
+                <Button isIconOnly size="sm" variant="light" aria-label="Actions">
                   <VerticalDotsIcon className="text-default-300" />
                 </Button>
               </DropdownTrigger>

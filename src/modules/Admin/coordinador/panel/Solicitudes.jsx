@@ -58,9 +58,9 @@ function Solicitudes() {
   if (pendient.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center w-full px-4 pt-4 pb-2 bg-white border border-gray-200 rounded-lg shadow sm:pt-6">
-        <h5 className="text-xl sm:text-4xl font-bold text-gray-900 py-10 sm:py-0">
+        <h1 className="text-xl sm:text-4xl font-bold text-gray-900 py-10 sm:py-0">
           No hay solicitudes pendientes
-        </h5>
+        </h1>
       </div>
     );
   }

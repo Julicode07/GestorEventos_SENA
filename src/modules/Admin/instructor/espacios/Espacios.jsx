@@ -114,6 +114,7 @@ export default function App() {
             <Link
               to={`/admin/instructor/inventario/espacio/${space.id_space}`}
               className="block m-auto bg-primary/80 text-white p-2 rounded-lg"
+              aria-label="Ver Inventario"
             >
               Ver Inventario <i className="ri-list-check"></i>
             </Link>

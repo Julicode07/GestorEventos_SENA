@@ -140,6 +140,7 @@ export default function App() {
           <div className="relative flex justify-end items-center gap-2">
             <Link
               to={`/admin/coordinador/solicitudes/ver/${event.id_global_event}`}
+              aria-label="Ver"
             >
               <EyeIcon className="block m-auto text-green-600 hover:bg-gray-300 hover:rounded-lg hover:cursor-pointer" />
             </Link>
@@ -150,6 +151,7 @@ export default function App() {
           <div>
             <Button
               color="success"
+              aria-label="Aceptar solicitud"
               className="text-white"
               onClick={() => {
                 setIdGlobalEvents(event.id_global_event);

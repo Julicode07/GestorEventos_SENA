@@ -226,7 +226,7 @@ const IniciarSesion = () => {
       <footer>
         <p className=" text-black font-medium text-sm text-center">
           ¿No tienes una cuenta?{" "}
-          <Link to="/registrarse" className="text-primary font-medium text-sm">
+          <Link to="/registrarse" className="text-primary/100 font-medium text-sm">
             Regístrate
           </Link>
         </p>

@@ -89,7 +89,7 @@ const NavSideBar = () => {
                 onClick={toggleSidebar}
                 aria-controls="sidebar"
                 type="button"
-                id="logo sidebar"
+                id="sidebar"
                 className="inline-flex items-center p-2 text-gray-800 rounded-lg sm:hidden hover:bg-gray-100"
               >
                 <span className="sr-only">Abrir menú</span>
@@ -107,7 +107,7 @@ const NavSideBar = () => {
                   ></path>
                 </svg>
               </button>
-              <a href="" className="flex items-center gap-3 ms-2 md:me-24">
+              <a href="#" className="flex items-center gap-3 ms-2 md:me-24">
                 <img
                   src={Images.logoVerde}
                   className="h-10 w-auto"
@@ -125,6 +125,7 @@ const NavSideBar = () => {
               logoutLink="/"
               textColor="text-black"
               textRole="text-black"
+              aria-label="User menu"
             />
           </div>
         </div>
@@ -144,22 +145,26 @@ const NavSideBar = () => {
               to={"/admin/coordinador"}
               logo="ri-dashboard-horizontal-fill flex w-5 h-5 text-xl justify-center items-center text-primary transition duration-75 group-hover:text-gray-600"
               title="Panel"
+              aria-label="Panel"
             />
             <ItemsList
               to={"/admin/coordinador/usuarios"}
               logo="ri-user-fill flex w-5 h-5 text-xl justify-center items-center text-primary transition duration-75 group-hover:text-gray-600"
               title="Usuarios"
+              aria-label="Usuarios"
             />
             <ItemsList
               to={"/admin/coordinador/espacios"}
               logo="ri-road-map-fill flex w-5 h-5 text-xl justify-center items-center text-primary transition duration-75 group-hover:text-gray-600"
               title="Espacios e Inventario"
+              aria-label="Espacios e Inventario"
             />
 
             <ItemsList
               to={"/admin/coordinador/solicitudes"}
               logo="ri-mail-unread-fill flex w-5 h-5 text-xl justify-center items-center text-primary transition duration-75 group-hover:text-gray-600"
               title="Solicitudes"
+              aria-label="Solicitudes"
             >
               <span className="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-white bg-primary rounded-full">
                 {pendientRequestsCount}
@@ -169,6 +174,7 @@ const NavSideBar = () => {
               to={"/admin/coordinador/registrarse"}
               logo="ri-group-fill flex w-5 h-5 text-xl justify-center items-center text-primary transition duration-75 group-hover:text-gray-600"
               title="Registrar Usuarios"
+              aria-label="Registrar Usuarios"
             />
           </ul>
         </div>
