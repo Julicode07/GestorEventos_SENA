@@ -85,8 +85,7 @@ export default function Calendar() {
   const getEventsByMonth = useCallback(async () => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/events/calendar/${selectedYear}/${
-          today.month() + 1
+        `${import.meta.env.VITE_API_URL}/api/events/calendar/${selectedYear}/${today.month() + 1
         }`
       );
       const data = await response.json();
@@ -168,14 +167,7 @@ export default function Calendar() {
                 const hasEvents = eventsByMonth[formattedDate];
                 const isSelected =
                   selectDate.format("YYYY-MM-DD") === formattedDate;
-                const eventCount = hasEvents
-                  ? eventsByMonth[formattedDate].length
-                  : 0;
-
-                // Solo renderizar si es el mes actual
-                if (!currentMonth) {
-                  return <div key={index} className="h-14"></div>;
-                }
+                const eventCount = hasEvents ? eventsByMonth[formattedDate].length : 0;
 
                 return (
                   <div
@@ -184,13 +176,14 @@ export default function Calendar() {
                   >
                     <h1
                       className={cn(
+                        currentMonth ? "" : "text-gray-600",
                         today ? "bg-secondary text-white" : "",
                         isSelected
                           ? "bg-black text-white"
                           : hasEvents
-                          ? "bg-gray-200"
-                          : "",
-                        "h-10 w-10 rounded-full grid place-content-center hover:bg-black hover:text-white transition-all cursor-pointer select-none"
+                            ? "bg-primary text-white"
+                            : "",
+                        "h-10 w-10 rounded-full grid place-content-center hover:bg-gray-200 hover:text-black transition-all cursor-pointer select-none"
                       )}
                       onClick={() => {
                         setSelectDate(date);
@@ -200,7 +193,7 @@ export default function Calendar() {
                     </h1>
 
                     {hasEvents && (
-                      <div className="absolute top-0 left-0 bg-primary text-white text-xs rounded-full w-6 h-6 flex items-center justify-center">
+                      <div className="absolute top-0 left-0 bg-secondary text-white text-xs rounded-full w-6 h-6 flex items-center justify-center">
                         {eventCount}
                       </div>
                     )}
@@ -211,123 +204,125 @@ export default function Calendar() {
           </div>
         </div>
 
+
         <div className="w-full lg:w-1/2 bg-white shadow-md rounded-lg p-4 flex flex-col h-full lg:h-auto mt-4 lg:mt-0">
           <h1 className="font-semibold text-lg mb-4">
             Agenda para {selectDate.format("dddd, D MMMM YYYY")}
           </h1>
-          <div className="flex-1 overflow-y-auto max-h-96">
+          <div className="flex-1 overflow-y-auto max-h-96 w-full p-2">
             {eventsByMonth[selectDate.format("YYYY-MM-DD")] ? (
-              <div>
-                {eventsByMonth[selectDate.format("YYYY-MM-DD")].map(
-                  (event, index) => (
-                    <div
-                      key={index}
-                      className="bg-gray-100 border border-gray-200 rounded-lg p-4 mb-4 shadow-sm flex justify-between items-center"
-                    >
-                      <div className="flex flex-col w-full pr-4">
-                        <h2 className="font-semibold text-md mb-2 truncate w-full lg:max-w-72 ">
-                          {event.title} -{" "}
-                          {dayjs(event.startDate).format(
-                            "YYYY-MM-DD dddd HH:mm"
-                          )}
-                        </h2>
-                        <p className="text-gray-600 text-sm truncate">
-                          {event.description}
-                        </p>
-                      </div>
-                      <button
-                        className="bg-secondary text-white font-bold text-sm rounded-lg p-3 hover:bg-secondary transition-colors whitespace-nowrap"
-                        onClick={() => setSelectedEvent(event)}
-                      >
-                        Ver evento
-                      </button>
+              <div className="space-y-4">
+                {eventsByMonth[selectDate.format("YYYY-MM-DD")].map((event, index) => (
+                  <div
+                    key={index}
+                    className="bg-gray-100 border border-gray-200 rounded-lg p-4 shadow-sm flex flex-col lg:flex-row items-start lg:items-center justify-between"
+                  >
+                    <div className="flex flex-col w-full lg:w-auto lg:max-w-md truncate">
+                      <h2 className="font-semibold text-md mb-1 truncate w-full">
+                        {event.title}
+                      </h2>
+                      <p className="text-gray-600 text-sm truncate w-full lg:max-w-xs">
+                        {event.description}
+                      </p>
                     </div>
-                  )
-                )}
+                    <button
+                      className="bg-secondary text-white font-bold text-sm rounded-lg px-4 py-2 mt-2 lg:mt-0 hover:bg-secondary-dark transition-colors whitespace-nowrap"
+                      onClick={() => setSelectedEvent(event)}
+                    >
+                      Ver evento
+                    </button>
+                  </div>
+                ))}
               </div>
             ) : (
-              <p className="text-gray-500">No hay reuniones para hoy.</p>
+              <p className="text-gray-500 text-center">No hay reuniones para hoy.</p>
             )}
           </div>
 
           {selectedEvent && (
             <div
-              className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50 h-screen"
+              className="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm flex justify-center items-center z-50 h-screen p-4"
               onClick={() => setSelectedEvent(null)}
             >
               <div
-                className={`bg-white border border-gray-300 shadow-2xl p-8 rounded-2xl w-4/5 max-w-2xl flex flex-col items-center relative transition-transform transform scale-95 opacity-0
-        ${
-          selectedEvent ? "scale-100 opacity-100" : "scale-95 opacity-0"
-        } transition-all duration-300 ease-out`}
+                className={`
+                bg-white border border-gray-200 shadow-2xl p-6 md:p-8 rounded-2xl w-full max-w-2xl flex   flex-col items-center relative transition-transform transform duration-300 ease-out
+                  ${selectedEvent ? "scale-100 opacity-100" : "scale-95 opacity-0"}
+                `}
                 onClick={(e) => e.stopPropagation()}
               >
+
                 <button
-                  className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+                  className="absolute top-4 right-4 text-gray-500 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center "
                   onClick={() => setSelectedEvent(null)}
                 >
                   <svg
+                    className="w-4 h-4"
+                    aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    className="w-6 h-6"
+                    fill="none"
+                    viewBox="0 0 14 14"
                   >
-                    <path d="M10.5859 12L2.79297 4.20706L4.20718 2.79285L12.0001 10.5857L19.793 2.79285L21.2072 4.20706L13.4143 12L21.2072 19.7928L19.793 21.2071L12.0001 13.4142L4.20718 21.2071L2.79297 19.7928L10.5859 12Z"></path>
+                    <path
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="m1 1 6 6m0 0 6-6M7 7l6 6m-6-6-6 6"
+                    />
                   </svg>
                 </button>
 
-                <div className="bg-primary text-white rounded-full w-20 h-20 flex justify-center items-center mb-6">
-                  <span className="text-4xl">
-                    <i className="ri-calendar-event-fill"></i>
-                  </span>
+                <div className="bg-gradient-to-r from-green-700 to-primary text-white rounded-full w-20 h-20 flex justify-center items-center mb-6 shadow-md">
+                  <span className="text-4xl"><i className="ri-calendar-event-fill"></i></span>
                 </div>
 
-                <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
-                  Evento: {selectedEvent.title}
+                <h2 className="text-3xl font-bold mb-4 text-center text-gray-900">
+                  {selectedEvent.title}
                 </h2>
 
-                <div className="flex flex-col items-center mb-6 w-full">
-                  <p className="text-gray-700 text-lg text-center mb-2">
-                    {selectDate.format("dddd, D MMMM YYYY")}
+                <div className="bg-gray-50 w-full p-4 rounded-xl shadow-md">
+                  <p className="text-gray-700 text-lg">
+                    <span className="font-bold text-gray-800">📅 Fecha:</span> {selectDate.format("dddd, D MMMM YYYY")}
                   </p>
-                  <p className="text-gray-600 text-md text-center">
-                    Hora: {dayjs(selectedEvent.startDate).format("HH:mm")}
-                  </p>
-
-                  <hr className="border-t border-gray-300 w-full my-4" />
-
-                  <p className="text-gray-500 text-center mt-2">
-                    <strong>Ubicación:</strong> {selectedEvent.location}
+                  <p className="text-gray-700 text-lg mt-1">
+                    <span className="font-bold text-gray-800">⏰ Hora:</span> {dayjs(selectedEvent.startDate).format("HH:mm")}
                   </p>
 
-                  <p className="text-gray-700 text-center mt-4 px-4">
+                  <hr className="border-t border-gray-300 my-4" />
+
+                  <p className="text-gray-700">
+                    <span className="font-bold text-gray-800">📍 Ubicación:</span> {selectedEvent.location}
+                  </p>
+
+                  <p className="text-gray-700 mt-4">
                     {selectedEvent.description}
                   </p>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <h2 className="font-bold text-xl">Espacios:</h2>
-                    <ul>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full mt-6">
+                  <div className="bg-gray-100 p-4 rounded-lg shadow-sm">
+                    <h2 className="font-bold text-xl text-primary mb-2">🏢 Espacios:</h2>
+                    <ul className="text-gray-700">
                       {selectedEvent.spaces.length > 0 ? (
                         selectedEvent.spaces.map((space, index) => (
-                          <li key={index} className="list-disc">
-                            {space.space_name}
-                          </li>
+                          <li key={index} className="list-disc ml-4">{space.space_name}</li>
                         ))
                       ) : (
-                        <li>No hay espacios</li>
+                        <li className="text-gray-500">No hay espacios</li>
                       )}
                     </ul>
                   </div>
-                  <div>
-                    <h2 className="font-bold text-xl">Organizadores:</h2>
-                    <ul>
+
+                  <div className="bg-gray-100 p-4 rounded-lg shadow-sm">
+                    <h2 className="font-bold text-xl text-primary mb-2">👤 Organizadores:</h2>
+                    <ul className="text-gray-700">
                       {selectedEvent.organizers.length > 0 ? (
                         selectedEvent.organizers.map((organizer, index) => (
-                          <li key={index}>{organizer.organizer_name}</li>
+                          <li key={index} className="list-disc ml-4">{organizer.organizer_name}</li>
                         ))
                       ) : (
-                        <li>No hay organizadores</li>
+                        <li className="text-gray-500">No hay organizadores</li>
                       )}
                     </ul>
                   </div>
