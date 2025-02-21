@@ -56,36 +56,36 @@ function Coordinador() {
 
   return (
     <>
-      {userSession.role === "Instructor" ? (
-        <div>
-          <NavSideBar />
-          <div className="py-4 px-1 sm:ml-56">
-            <div className="mt-12 p-4 h-full">
-              <Routes>
-                <Route path="/*" element={<NotFoundAdmin />} />
-                <Route
-                  path="/inventario/espacio/:id"
-                  element={<Inventario />}
-                />
-                <Route path="/" element={<Panel />} />
-                <Route path="/perfil" element={<Profile />} />
-                <Route path="/espacios" element={<Espacios />} />
-                <Route path="/eventos" element={<Eventos />} />
-                <Route path="/subeventos/:id" element={<SubEventos />} />
-                <Route path="/organizadores" element={<Organizadores />} />
-                <Route path="/solicitudes" element={<Solicitudes />} />
-                <Route path="/solicitudes/ver/:id" element={<FullView />} />
-                <Route
-                  path="/subeventos/info/:id"
-                  element={<InfoSubEvents />}
-                />
-              </Routes>
-            </div>
+      {/*  {userSession.role === "Instructor" ? ( */}
+      <div>
+        <NavSideBar />
+        <div className="py-4 px-1 sm:ml-56">
+          <div className="mt-12 p-4 h-full">
+            <Routes>
+              <Route path="/*" element={<NotFoundAdmin />} />
+              <Route
+                path="/inventario/espacio/:id"
+                element={<Inventario />}
+              />
+              <Route path="/" element={<Panel />} />
+              <Route path="/perfil" element={<Profile />} />
+              <Route path="/espacios" element={<Espacios />} />
+              <Route path="/eventos" element={<Eventos />} />
+              <Route path="/subeventos/:id" element={<SubEventos />} />
+              <Route path="/organizadores" element={<Organizadores />} />
+              <Route path="/solicitudes" element={<Solicitudes />} />
+              <Route path="/solicitudes/ver/:id" element={<FullView />} />
+              <Route
+                path="/subeventos/info/:id"
+                element={<InfoSubEvents />}
+              />
+            </Routes>
           </div>
         </div>
-      ) : (
+      </div>
+      {/*  ) : (
         <Navigate to="/iniciarsesion" />
-      )}
+      )} */}
     </>
   );
 }

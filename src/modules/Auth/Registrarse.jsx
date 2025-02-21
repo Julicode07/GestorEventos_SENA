@@ -1,8 +1,7 @@
-import React from "react";
 import { Input } from "@nextui-org/input";
 import { EyeSlashFilledIcon } from "./components/EyeSlashFilledIcon.jsx";
 import { EyeFilledIcon } from "./components/EyeFilledIcon.jsx";
-import Images from "@/assets/img/images.js";
+/* import Images from "@/assets/img/images.js"; */
 import { useRef, useState } from "react";
 import useRegister from "../hooks/useRegister.jsx";
 import {
@@ -11,8 +10,8 @@ import {
   regexLastNames,
   regexEmail,
   regexPhone,
-  regexPassword,
 } from "./validations/registerValidation.js";
+import { Select, SelectItem } from "@nextui-org/react";
 
 const Registrarse = () => {
   const { register } = useRegister();
@@ -34,14 +33,12 @@ const Registrarse = () => {
   const feedbackRegexLastNames = useRef(null);
   const feedbackRegexEmail = useRef(null);
   const feedbackRegexPhone = useRef(null);
-  const feedbackRegexPassword = useRef(null);
 
   const [documentEvent, setDocumentEvent] = useState(false);
   const [nameEvent, setNameEvent] = useState(false);
   const [lastNamesEvent, setLastNamesEvent] = useState(false);
   const [emailEvent, setEmailEvent] = useState(false);
   const [phoneEvent, setPhoneEvent] = useState(false);
-  const [passwordEvent, setPasswordEvent] = useState(false);
 
   const handleChangeRegisterUser = (e) => {
     const { name, value } = e.target;
@@ -60,8 +57,6 @@ const Registrarse = () => {
         regexEmail(value, feedbackRegexEmail, setEmailEvent);
       } else if (name === "phone") {
         regexPhone(value, feedbackRegexPhone, setPhoneEvent);
-      } else if (name === "password") {
-        regexPassword(value, feedbackRegexPassword, setPasswordEvent);
       }
       return newDataRegister;
     });
@@ -91,23 +86,41 @@ const Registrarse = () => {
     }
   };
 
-  const [isVisible, setIsVisible] = React.useState(false);
-  const toggleVisibility = () => setIsVisible(!isVisible);
+  const [isVisible, setIsVisible] = useState(false);
+  const [validations, setValidations] = useState([false, false, false, false, false]);
 
+  const toggleVisibility = () => {
+    setIsVisible(!isVisible);
+  };
+  const requirements = [
+    { regex: /.{8,}/, message: "Al menos 8 caracteres de longitud" },
+    { regex: /[0-9]/, message: "Al menos 1 número (0...9)" },
+    { regex: /[a-z]/, message: "Al menos 1 letra minúscula (a...z)" },
+    { regex: /[^A-Za-z0-9]/, message: "Al menos 1 símbolo especial (!...$)" },
+    { regex: /[A-Z]/, message: "Al menos 1 letra mayúscula (A...Z)" },
+  ];
+
+
+  const handlePasswordChange = (e) => {
+    handleChangeRegisterUser(e);
+    const value = e.target.value;
+    const updatedValidations = requirements.map((req) => req.regex.test(value));
+    setValidations(updatedValidations);
+  };
   return (
-    <div className="flex flex-col items-center justify-center pt-8 py-2 px-4 gap-6 max-w-[700px] m-auto">
-      <header>
+    <div className="flex flex-col items-center justify-center px-4 gap-6 max-w-[700px] m-auto">
+      {/*       <header>
         <img
           src={Images.logoVerde}
           className="h-24 md:h-30"
           alt="Logo Blanco SENA"
         />
-      </header>
+      </header> */}
 
       <main>
         <section className="flex flex-col gap-7">
           <div>
-            <h1 className="text-4xl font-bold text-center">Crea una cuenta</h1>
+            <h1 className="text-3xl font-bold text-center">Crea una cuenta</h1>
           </div>
           <div>
             <form
@@ -118,33 +131,33 @@ const Registrarse = () => {
                 <div>
                   <label
                     htmlFor="role"
-                    className=" block mb-1 text-base font-bold text-primary "
+                    className="block mb-1 text-sm font-bold text-primary "
                   >
                     Rol de cuenta
                   </label>
-                  <select
+                  <Select
+                    size="xs"
                     id="role"
                     name="role"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg block w-full px-2.5 py-3"
+                    placeholder="Selecciona tu rol"
                     value={formData.role}
                     onChange={handleChangeRegisterUser}
                   >
-                    <option value="Coordinador">Coordinador</option>
-                    <option value="Instructor">Instructor</option>
-                  </select>
+                    <SelectItem value="Coordinador">Coordinador</SelectItem>
+                    <SelectItem value="Instructor">Instructor</SelectItem>
+                  </Select>
                 </div>
                 <div>
                   <label
                     htmlFor="document"
-                    className="block mb-1 text-base font-bold text-primary "
+                    className="block mb-1 text-sm font-bold text-primary "
                   >
                     Documento
                   </label>
-                  <input
+                  <Input
                     id="document"
                     type="number"
                     placeholder="Ingresa tu documento"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg block w-full px-2.5 py-3"
                     name="document"
                     required
                     value={formData.document}
@@ -158,15 +171,14 @@ const Registrarse = () => {
                 <div>
                   <label
                     htmlFor="name"
-                    className="block mb-1 text-base font-bold text-primary "
+                    className="block mb-1 text-sm font-bold text-primary "
                   >
                     Nombres
                   </label>
-                  <input
+                  <Input
                     id="name"
                     type="text"
                     placeholder="Ingresa tus nombres"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg block w-full px-2.5 py-3"
                     name="name"
                     required
                     value={formData.name}
@@ -180,15 +192,14 @@ const Registrarse = () => {
                 <div>
                   <label
                     htmlFor="last_names"
-                    className="block mb-1 text-base font-bold text-primary "
+                    className="block mb-1 text-sm font-bold text-primary "
                   >
                     Apellidos
                   </label>
-                  <input
+                  <Input
                     id="last_names"
                     type="text"
                     placeholder="Ingresa tus apellidos"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg block w-full px-2.5 py-3"
                     name="last_names"
                     required
                     value={formData.last_names}
@@ -202,15 +213,14 @@ const Registrarse = () => {
                 <div>
                   <label
                     htmlFor="email"
-                    className="block mb-1 text-base font-bold text-primary "
+                    className="block mb-1 text-sm font-bold text-primary "
                   >
                     Correo electrónico
                   </label>
-                  <input
+                  <Input
                     id="email"
                     type="email"
                     placeholder="Ingresa tu correo"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg block w-full px-2.5 py-3"
                     name="email"
                     required
                     value={formData.email}
@@ -224,15 +234,14 @@ const Registrarse = () => {
                 <div>
                   <label
                     htmlFor="phone"
-                    className="block mb-1 text-base font-bold text-primary "
+                    className="block mb-1 text-sm font-bold text-primary "
                   >
                     Teléfono
                   </label>
-                  <input
+                  <Input
                     id="phone"
                     type="number"
                     placeholder="Ingresa tu número de teléfono"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg block w-full px-2.5 py-3"
                     name="phone"
                     required
                     value={formData.phone}
@@ -246,19 +255,18 @@ const Registrarse = () => {
                 <div className="col-span-2">
                   <label
                     htmlFor="password"
-                    className="block mb-1 text-base font-bold text-primary "
+                    className="block mb-1 text-sm font-bold text-primary "
                   >
                     Contraseña
                   </label>
-                  <div className="relative">
+                  <div className="relative mb-4">
                     <Input
-                      size="lg"
+                      size="base"
                       id="password"
                       name="password"
                       placeholder="Crea una contraseña"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-2xl block w-full "
                       value={formData.password}
-                      onChange={handleChangeRegisterUser}
+                      onChange={handlePasswordChange}
                       required
                       endContent={
                         <button
@@ -277,10 +285,17 @@ const Registrarse = () => {
                       type={isVisible ? "text" : "password"}
                     />
                   </div>
-                  <span
-                    ref={feedbackRegexPassword}
-                    className="text-xs font-semibold"
-                  ></span>
+                  <div className="bg-gray-100 p-4 rounded-xl shadow-md">
+                    <p className="text-sm font-semibold text-gray-700">La contraseña debe contener:</p>
+                    <ul className="mt-2 space-y-1 text-sm text-gray-600">
+                      {requirements.map((req, index) => (
+                        <li key={index} className={`flex items-center gap-2 ${validations[index] ? "text-green-600" : ""}`}>
+                          <i className={`fa-solid ${validations[index] ? "fa-check text-green-500" : "fa-circle text-gray-400"}`}></i>
+                          <span>{req.message}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               </div>
               {successMessage && (
@@ -295,24 +310,21 @@ const Registrarse = () => {
               )}
               <button
                 type="submit"
-                className={`mt-4 w-full font-bold rounded-lg text-lg px-5 py-2.5 text-center ${
-                  documentEvent &&
+                className={`mt-4 w-full font-bold rounded-lg text-lg px-5 py-2.5 text-center ${documentEvent &&
                   nameEvent &&
                   lastNamesEvent &&
                   emailEvent &&
-                  phoneEvent &&
-                  passwordEvent
-                    ? "bg-[#277400] text-white hover:bg-[#277400]"
-                    : "bg-gray-300 text-black cursor-not-allowed"
-                }`}
+                  phoneEvent
+                  ? "bg-[#277400] text-white hover:bg-[#277400]"
+                  : "bg-gray-300 text-black cursor-not-allowed"
+                  }`}
                 disabled={
                   !(
                     documentEvent &&
                     nameEvent &&
                     lastNamesEvent &&
                     emailEvent &&
-                    phoneEvent &&
-                    passwordEvent
+                    phoneEvent
                   )
                 }
               >
@@ -320,9 +332,9 @@ const Registrarse = () => {
               </button>
             </form>
           </div>
-        </section>
-      </main>
-    </div>
+        </section >
+      </main >
+    </div >
   );
 };
 

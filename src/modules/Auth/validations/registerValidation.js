@@ -73,18 +73,3 @@ export const regexPhone = (phone, feedBackRef, setEvent) => {
   }
 };
 
-export const regexPassword = (password, feedBackRef, setEvent) => {
-  const regexPassword =
-    /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,256}$/;
-  const passwordHasCorrectRegex = regexPassword.test(password);
-
-  if (!passwordHasCorrectRegex) {
-    feedBackRef.current.textContent = "Contraseña inválida";
-    feedBackRef.current.style.color = "red";
-    setEvent(false);
-  } else {
-    feedBackRef.current.textContent = "";
-    feedBackRef.current.style.color = "green";
-    setEvent(true);
-  }
-};
