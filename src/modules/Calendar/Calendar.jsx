@@ -176,21 +176,25 @@ export default function Calendar() {
                   >
                     <h1
                       className={cn(
-                        currentMonth ? "" : "text-gray-600",
+                        currentMonth
+                          ? "cursor-pointer select-none hover:bg-gray-200 hover:text-black transition-all"
+                          : "text-gray-400 pointer-events-none", // Días fuera del mes actual en rojo y no seleccionables
                         today ? "bg-secondary text-white" : "",
                         isSelected
                           ? "bg-black text-white"
                           : hasEvents
                             ? "bg-primary text-white"
                             : "",
-                        "h-10 w-10 rounded-full grid place-content-center hover:bg-gray-200 hover:text-black transition-all cursor-pointer select-none"
+                        "h-10 w-10 rounded-full grid place-content-center"
                       )}
                       onClick={() => {
-                        setSelectDate(date);
+                        if (currentMonth) setSelectDate(date); // Evita la selección de días fuera del mes
                       }}
                     >
                       {date.date()}
                     </h1>
+
+
 
                     {hasEvents && (
                       <div className="absolute top-0 left-0 bg-secondary text-white text-xs rounded-full w-6 h-6 flex items-center justify-center">
