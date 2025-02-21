@@ -11,7 +11,6 @@ function Solicitudes() {
     );
     const data = await response.json();
 
-    // // Ordenar en orden descendente (más reciente primero)
     const sortedData = Array.isArray(data)
       ? [...data].sort((a, b) => b.id_global_event - a.id_global_event)
       : [];
@@ -27,8 +26,8 @@ function Solicitudes() {
     () =>
       acceptedRequests.length > 0
         ? acceptedRequests
-            .filter((request) => request !== null && request !== undefined)
-            .filter((request) => request.global_event_status === "Aceptado")
+          .filter((request) => request !== null && request !== undefined)
+          .filter((request) => request.global_event_status === "Aceptado")
         : [],
     [acceptedRequests]
   );

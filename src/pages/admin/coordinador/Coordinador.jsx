@@ -53,33 +53,33 @@ function Coordinador() {
 
   return (
     <>
-      {/*  {userSession.role === "Coordinador" ? ( */}
-      <div>
-        <NavSideBar />
-        <div className="py-4 px-1 sm:ml-56">
-          <div className="mt-12 p-4 h-full">
-            <Routes>
-              <Route path="/*" element={<NotFoundAdmin />} />
-              <Route path="/perfil" element={<Profile />} />
-              <Route path="/" element={<Panel />} />
-              <Route path="/usuarios" element={<Usuarios />} />
-              <Route path="/espacios" element={<Espacios />} />
-              <Route path="/solicitudes" element={<Solicitudes />} />
-              <Route path="/eventos" element={<Eventos />} />
-              <Route path="/eventos/:id" element={<InfoEvento />} />
-              <Route
-                path="/inventario/espacio/:id"
-                element={<Inventario />}
-              />
-              <Route path="/solicitudes/ver/:id" element={<FullView />} />
-              <Route path="/registrarse" element={<Registrarse />} />
-            </Routes>
+      {userSession.role === "Coordinador" ? (
+        <div>
+          <NavSideBar />
+          <div className="py-4 px-1 sm:ml-56">
+            <div className="mt-12 p-4 h-full">
+              <Routes>
+                <Route path="/*" element={<NotFoundAdmin />} />
+                <Route path="/perfil" element={<Profile />} />
+                <Route path="/" element={<Panel />} />
+                <Route path="/usuarios" element={<Usuarios />} />
+                <Route path="/espacios" element={<Espacios />} />
+                <Route path="/solicitudes" element={<Solicitudes />} />
+                <Route path="/eventos" element={<Eventos />} />
+                <Route path="/eventos/:id" element={<InfoEvento />} />
+                <Route
+                  path="/inventario/espacio/:id"
+                  element={<Inventario />}
+                />
+                <Route path="/solicitudes/ver/:id" element={<FullView />} />
+                <Route path="/registrarse" element={<Registrarse />} />
+              </Routes>
+            </div>
           </div>
         </div>
-      </div>
-      {/* ) : (
+      ) : (
         <Navigate to="/iniciarsesion" />
-      )} */}
+      )}
     </>
   );
 }

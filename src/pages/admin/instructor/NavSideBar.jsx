@@ -56,7 +56,7 @@ const NavSideBar = () => {
       if (
         sidebarRef.current &&
         !sidebarRef.current.contains(event.target) &&
-        !event.target.closest('[aria-controls="sidebar"]') // Asegúrate de que no proviene del botón
+        !event.target.closest('[aria-controls="sidebar"]')
       ) {
         setSidebarOpen(false);
       }
@@ -134,9 +134,8 @@ const NavSideBar = () => {
       <aside
         ref={sidebarRef}
         id="logo-sidebar"
-        className={`fixed top-0 left-0 z-30 w-56 h-screen pt-20 transition-transform ${
-          sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } bg-white shadow-xl sm:translate-x-0`}
+        className={`fixed top-0 left-0 z-30 w-56 h-screen pt-20 transition-transform ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
+          } bg-white shadow-xl sm:translate-x-0`}
         aria-label="Sidebar"
       >
         <div className="h-full px-3 pb-4 overflow-y-auto">

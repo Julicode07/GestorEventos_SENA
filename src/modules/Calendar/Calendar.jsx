@@ -178,7 +178,7 @@ export default function Calendar() {
                       className={cn(
                         currentMonth
                           ? "cursor-pointer select-none hover:bg-gray-200 hover:text-black transition-all"
-                          : "text-gray-400 pointer-events-none", // Días fuera del mes actual en rojo y no seleccionables
+                          : "text-gray-400 pointer-events-none",
                         today ? "bg-secondary text-white" : "",
                         isSelected
                           ? "bg-black text-white"
@@ -259,7 +259,7 @@ export default function Calendar() {
                   className="bg-white border border-gray-200 shadow-2xl p-6 md:p-8 rounded-2xl w-full max-w-2xl flex flex-col items-center relative transition-transform transform duration-300 ease-out
           scale-100 opacity-100"
                   onClick={(e) => e.stopPropagation()}
-                  style={{ maxHeight: "90vh", height: "90vh", display: "flex", flexDirection: "column" }} // Fijar altura
+                  style={{ maxHeight: "90vh", height: "90vh", display: "flex", flexDirection: "column" }}
                 >
                   <button
                     className="absolute top-4 right-4 text-gray-500 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8"

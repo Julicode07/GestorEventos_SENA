@@ -81,7 +81,7 @@ export default function App() {
 
   const filteredItems = useMemo(() => {
     if (!Array.isArray(showSpaces)) {
-      return []; // O un valor por defecto que prefieras
+      return [];
     }
     let filterSpaces = [...showSpaces];
 
@@ -125,11 +125,10 @@ export default function App() {
       case "status":
         return (
           <div
-            className={`${
-              cellValue === "activo"
+            className={`${cellValue === "activo"
                 ? "text-green-700 bg-green-200"
                 : "text-red-700 bg-red-200"
-            } capitalize text-center px-2 py-0.5 text-xs rounded-lg w-fit`}
+              } capitalize text-center px-2 py-0.5 text-xs rounded-lg w-fit`}
           >
             {cellValue}
           </div>

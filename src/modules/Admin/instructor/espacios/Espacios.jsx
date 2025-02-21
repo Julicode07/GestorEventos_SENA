@@ -54,7 +54,7 @@ export default function App() {
 
   const filteredItems = useMemo(() => {
     if (!Array.isArray(showSpaces)) {
-      return []; // O un valor por defecto que prefieras
+      return [];
     }
     let filterSpaces = [...showSpaces];
 
