@@ -215,18 +215,18 @@ export default function Calendar() {
                 {eventsByMonth[selectDate.format("YYYY-MM-DD")].map((event, index) => (
                   <div
                     key={index}
-                    className="bg-gray-100 border border-gray-200 rounded-lg p-4 shadow-sm flex flex-col lg:flex-row items-start lg:items-center justify-between"
+                    className="bg-gray-100 border border-gray-200 rounded-lg p-4 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4"
                   >
-                    <div className="flex flex-col w-full lg:w-auto lg:max-w-md truncate">
-                      <h2 className="font-semibold text-md mb-1 truncate w-full">
+                    <div className="flex flex-col w-full md:w-auto md:max-w-md truncate">
+                      <h2 className="font-semibold text-md mb-1 truncate w-full text-gray-900">
                         {event.title}
                       </h2>
-                      <p className="text-gray-600 text-sm truncate w-full lg:max-w-xs">
+                      <p className="text-gray-600 text-sm truncate w-full md:max-w-xs">
                         {event.description}
                       </p>
                     </div>
                     <button
-                      className="bg-secondary text-white font-bold text-sm rounded-lg px-4 py-2 mt-2 lg:mt-0 hover:bg-secondary-dark transition-colors whitespace-nowrap"
+                      className="bg-secondary text-white font-bold text-sm rounded-lg px-3 py-2 md:px-4 md:py-2 mt-2 md:mt-0 hover:bg-secondary-dark transition-colors whitespace-nowrap w-full md:w-auto"
                       onClick={() => setSelectedEvent(event)}
                     >
                       Ver evento
@@ -238,6 +238,7 @@ export default function Calendar() {
               <p className="text-gray-500 text-center">No hay reuniones para hoy.</p>
             )}
           </div>
+
 
           {selectedEvent && (
             <>
