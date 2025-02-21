@@ -240,95 +240,95 @@ export default function Calendar() {
           </div>
 
           {selectedEvent && (
-            <div
-              className="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm flex justify-center items-center z-50 h-screen p-4"
-              onClick={() => setSelectedEvent(null)}
-            >
+            <>
+              {document.body.classList.add("overflow-hidden")}
+
               <div
-                className={`
-                bg-white border border-gray-200 shadow-2xl p-6 md:p-8 rounded-2xl w-full max-w-2xl flex   flex-col items-center relative transition-transform transform duration-300 ease-out
-                  ${selectedEvent ? "scale-100 opacity-100" : "scale-95 opacity-0"}
-                `}
-                onClick={(e) => e.stopPropagation()}
+                className="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm flex justify-center items-center z-50 p-4"
+                onClick={() => {
+                  setSelectedEvent(null);
+                  document.body.classList.remove("overflow-hidden");
+                }}
               >
-
-                <button
-                  className="absolute top-4 right-4 text-gray-500 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center "
-                  onClick={() => setSelectedEvent(null)}
+                <div
+                  className="bg-white border border-gray-200 shadow-2xl p-6 md:p-8 rounded-2xl w-full max-w-2xl flex flex-col items-center relative transition-transform transform duration-300 ease-out
+          scale-100 opacity-100"
+                  onClick={(e) => e.stopPropagation()}
+                  style={{ maxHeight: "90vh", height: "90vh", display: "flex", flexDirection: "column" }} // Fijar altura
                 >
-                  <svg
-                    className="w-4 h-4"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 14 14"
+                  <button
+                    className="absolute top-4 right-4 text-gray-500 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8"
+                    onClick={() => {
+                      setSelectedEvent(null);
+                      document.body.classList.remove("overflow-hidden");
+                    }}
                   >
-                    <path
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="m1 1 6 6m0 0 6-6M7 7l6 6m-6-6-6 6"
-                    />
-                  </svg>
-                </button>
+                    <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                      <path
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="m1 1 6 6m0 0 6-6M7 7l6 6m-6-6-6 6"
+                      />
+                    </svg>
+                  </button>
 
-                <div className="bg-gradient-to-r from-green-700 to-primary text-white rounded-full w-20 h-20 flex justify-center items-center mb-6 shadow-md">
-                  <span className="text-4xl"><i className="ri-calendar-event-fill"></i></span>
-                </div>
+                  <div className="overflow-y-auto w-full px-4 flex-1" style={{ maxHeight: "calc(90vh - 50px)" }}>
+                    <div className="bg-gradient-to-r from-green-700 to-primary text-white rounded-full w-20 h-20 flex justify-center items-center mb-6 shadow-md">
+                      <span className="text-4xl"><i className="ri-calendar-event-fill"></i></span>
+                    </div>
 
-                <h2 className="text-3xl font-bold mb-4 text-center text-gray-900">
-                  {selectedEvent.title}
-                </h2>
+                    <h2 className="text-3xl font-bold mb-4 text-center text-gray-900">{selectedEvent.title}</h2>
 
-                <div className="bg-gray-50 w-full p-4 rounded-xl shadow-md">
-                  <p className="text-gray-700 text-lg">
-                    <span className="font-bold text-gray-800">📅 Fecha:</span> {selectDate.format("dddd, D MMMM YYYY")}
-                  </p>
-                  <p className="text-gray-700 text-lg mt-1">
-                    <span className="font-bold text-gray-800">⏰ Hora:</span> {dayjs(selectedEvent.startDate).format("HH:mm")}
-                  </p>
+                    <div className="bg-gray-50 w-full p-4 rounded-xl shadow-md">
+                      <p className="text-gray-700 text-lg">
+                        <span className="font-bold text-gray-800">📅 Fecha:</span> {selectDate.format("dddd, D MMMM YYYY")}
+                      </p>
+                      <p className="text-gray-700 text-lg mt-1">
+                        <span className="font-bold text-gray-800">⏰ Hora:</span> {dayjs(selectedEvent.startDate).format("HH:mm")}
+                      </p>
 
-                  <hr className="border-t border-gray-300 my-4" />
+                      <hr className="border-t border-gray-300 my-4" />
 
-                  <p className="text-gray-700">
-                    <span className="font-bold text-gray-800">📍 Ubicación:</span> {selectedEvent.location}
-                  </p>
+                      <p className="text-gray-700">
+                        <span className="font-bold text-gray-800">📍 Ubicación:</span> {selectedEvent.location}
+                      </p>
 
-                  <p className="text-gray-700 mt-4">
-                    {selectedEvent.description}
-                  </p>
-                </div>
+                      <p className="text-gray-700 mt-4">{selectedEvent.description}</p>
+                    </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full mt-6">
-                  <div className="bg-gray-100 p-4 rounded-lg shadow-sm">
-                    <h2 className="font-bold text-xl text-primary mb-2">🏢 Espacios:</h2>
-                    <ul className="text-gray-700">
-                      {selectedEvent.spaces.length > 0 ? (
-                        selectedEvent.spaces.map((space, index) => (
-                          <li key={index} className="list-disc ml-4">{space.space_name}</li>
-                        ))
-                      ) : (
-                        <li className="text-gray-500">No hay espacios</li>
-                      )}
-                    </ul>
-                  </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full mt-6">
+                      <div className="bg-gray-100 p-4 rounded-lg shadow-sm">
+                        <h2 className="font-bold text-xl text-primary mb-2">🏢 Espacios:</h2>
+                        <ul className="text-gray-700">
+                          {selectedEvent.spaces.length > 0 ? (
+                            selectedEvent.spaces.map((space, index) => (
+                              <li key={index} className="list-disc ml-4">{space.space_name}</li>
+                            ))
+                          ) : (
+                            <li className="text-gray-500">No hay espacios</li>
+                          )}
+                        </ul>
+                      </div>
 
-                  <div className="bg-gray-100 p-4 rounded-lg shadow-sm">
-                    <h2 className="font-bold text-xl text-primary mb-2">👤 Organizadores:</h2>
-                    <ul className="text-gray-700">
-                      {selectedEvent.organizers.length > 0 ? (
-                        selectedEvent.organizers.map((organizer, index) => (
-                          <li key={index} className="list-disc ml-4">{organizer.organizer_name}</li>
-                        ))
-                      ) : (
-                        <li className="text-gray-500">No hay organizadores</li>
-                      )}
-                    </ul>
+                      <div className="bg-gray-100 p-4 rounded-lg shadow-sm">
+                        <h2 className="font-bold text-xl text-primary mb-2">👤 Organizadores:</h2>
+                        <ul className="text-gray-700">
+                          {selectedEvent.organizers.length > 0 ? (
+                            selectedEvent.organizers.map((organizer, index) => (
+                              <li key={index} className="list-disc ml-4">{organizer.organizer_name}</li>
+                            ))
+                          ) : (
+                            <li className="text-gray-500">No hay organizadores</li>
+                          )}
+                        </ul>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            </>
           )}
         </div>
       </div>
