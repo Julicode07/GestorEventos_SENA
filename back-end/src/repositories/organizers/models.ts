@@ -1,4 +1,4 @@
-import { PoolConnection } from "mariadb";
+import { PoolConnection } from "mysql2/promise";
 import { getConnection, pool } from "../../db/connection";
 
 export interface IOrganizers {
@@ -29,7 +29,7 @@ export async function createOrganizersSchema(): Promise<number> {
   } catch (err) {
     console.error(
       `[organizers repository - models]: ERROR CREATING organizers SCHEMA: ` +
-        err
+      err
     );
     return -1;
   } finally {

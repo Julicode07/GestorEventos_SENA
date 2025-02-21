@@ -1,4 +1,4 @@
-import { PoolConnection } from "mariadb";
+import { PoolConnection } from "mysql2/promise";
 import { getConnection, pool } from "../../db/connection";
 
 export interface ISubEvent {
@@ -72,7 +72,7 @@ export async function createSubEventHasSpaceSchema(): Promise<Number> {
   } catch (err) {
     console.error(
       `[subevents_has_spaces repository - models]: ERROR CREATING subevents_has_spaces SCHEMA: ` +
-        err
+      err
     );
     return -1;
   } finally {

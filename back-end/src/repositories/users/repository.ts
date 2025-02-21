@@ -1,4 +1,4 @@
-import { PoolConnection } from "mariadb";
+import { PoolConnection } from "mysql2/promise";
 import { getConnection, pool } from "../../db/connection";
 import { IUser } from "./models";
 import bcrypt from "bcrypt";
@@ -212,7 +212,7 @@ export async function updateResetPasswordTokenByUserId(id_user: number, token: s
           resetTokenExpireAt = ?
         WHERE 
           id_user = ?`,
-        [token, expiresAt, id_user]);
+      [token, expiresAt, id_user]);
     return result.affectedRows;
   } catch (err) {
     console.error(`[user repository]: ${err}`);

@@ -1,4 +1,4 @@
-import { PoolConnection } from "mariadb";
+import { PoolConnection } from "mysql2/promise";
 import { getConnection, pool } from "../../db/connection";
 
 export interface ISpaceInventory {
@@ -21,14 +21,14 @@ export async function createSpaceInventorySchema(): Promise<Number> {
             quantity INT NOT NULL,
             type VARCHAR(45) NOT NULL,
             CONSTRAINT fk_space_inventory_has_space FOREIGN KEY (id_space) REFERENCES spaces(id_space))`);
-    console.log( 
+    console.log(
       `[inventory repository - models]: CREATED space inventory SCHEMA.`
     );
     return 1;
   } catch (err) {
     console.error(
       `[inventory repository - models]: ERROR CREATING space inventory SCHEMA: ` +
-        err
+      err
     );
     return -1;
   } finally {
