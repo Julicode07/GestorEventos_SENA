@@ -5,7 +5,7 @@ import { IGlobalEvent, GlobalEventInfo } from "./models";
 export async function createGlobalEvent(
   globalEventData: IGlobalEvent
 ): Promise<number> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     const result = await connection.query(
       `
@@ -40,7 +40,7 @@ export async function createGlobalEvent(
 }
 
 export async function findAllGlobalEvents(): Promise<IGlobalEvent[]> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     return await connection.query(`
             SELECT
@@ -68,7 +68,7 @@ export async function updateGlobalEventById(
   id_event: number,
   eventData: IGlobalEvent
 ): Promise<Number> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     const result = await connection.query(
       `
@@ -100,7 +100,7 @@ WHERE id_global_event = ?
 }
 
 export async function getGlobalEventById(id_event: number): Promise<number> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     const result = await connection.query(
       `
@@ -134,7 +134,7 @@ export async function getAllInfoGLobalEventsById(
   idGlobalEvent: number
 ): Promise<GlobalEventInfo | null> {
   // Aquí definimos el tipo de retorno
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
 
   try {
     const result = await connection.query(
@@ -302,7 +302,7 @@ export async function getAllEventsByMonthAndYear(
   month: number,
   year: number
 ): Promise<GlobalEventInfo[] | null> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     const startOfMonth = `${year}-${String(month).padStart(2, "0")}-01`;
     const endOfMonth = `${year}-${String(month).padStart(2, "0")}-${new Date(
@@ -486,7 +486,7 @@ export async function getAllEventsByMonthAndYear(
 export async function getAllGlobalEventsByUserId(
   id_user: number
 ): Promise<GlobalEventInfo[] | null> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     const result = await connection.query(
       `SELECT 
@@ -660,7 +660,7 @@ export async function updateStateGlobalEventById(
   idEvent: number,
   statusData: { status: string }
 ): Promise<Number> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     const result = await connection.query(
       `
