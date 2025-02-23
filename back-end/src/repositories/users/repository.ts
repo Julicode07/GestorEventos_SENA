@@ -4,7 +4,7 @@ import { IUser } from "./models";
 import bcrypt from "bcrypt";
 
 export async function createUser(user: IUser): Promise<number> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     const salt_rounds = 10;
     const hashedPassword = await bcrypt.hash(user.password, salt_rounds);
@@ -43,7 +43,7 @@ export async function createUser(user: IUser): Promise<number> {
 }
 
 export async function updateUser(id: number, userData: Partial<IUser>): Promise<number> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     const result = await connection.query(
       `
@@ -78,7 +78,7 @@ export async function updateUser(id: number, userData: Partial<IUser>): Promise<
 }
 
 export async function updateUserPassword(id_user: number, userData: Partial<IUser>): Promise<number> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     const salt_rounds = 10;
     const hashedPassword = await bcrypt.hash(userData.password as string, salt_rounds);
@@ -108,7 +108,7 @@ export async function updateUserPassword(id_user: number, userData: Partial<IUse
 }
 
 export async function findUserByResetPasswordToken(resetPasswordToken: string): Promise<IUser[]> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     const results = await connection.query(
       `SELECT * FROM users WHERE resetPasswordToken = ?`, [resetPasswordToken]
@@ -123,7 +123,7 @@ export async function findUserByResetPasswordToken(resetPasswordToken: string): 
 }
 
 export async function findAllUsers(): Promise<IUser[]> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     const results = await connection.query(
       `SELECT id_user, document, name, last_names, email, phone, role FROM users`
@@ -138,7 +138,7 @@ export async function findAllUsers(): Promise<IUser[]> {
 }
 
 export async function findUserByDocument(document: number): Promise<IUser[]> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     const results = await connection.query(
       `SELECT * FROM users WHERE document = ?`,
@@ -154,7 +154,7 @@ export async function findUserByDocument(document: number): Promise<IUser[]> {
 }
 
 export async function findUserByEmail(email: string): Promise<IUser[]> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     const results = await connection.query(
       `SELECT * FROM users WHERE email = ?`,
@@ -170,7 +170,7 @@ export async function findUserByEmail(email: string): Promise<IUser[]> {
 }
 
 export async function findUserById(id_user: number): Promise<IUser[]> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     const results = await connection.query(
       `SELECT * FROM users WHERE id_user = ?`,
@@ -186,7 +186,7 @@ export async function findUserById(id_user: number): Promise<IUser[]> {
 }
 
 export async function getUserById(id_user: number): Promise<number> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     const result = await connection.query(
       `SELECT * FROM users WHERE id_user = ?`,
@@ -202,7 +202,7 @@ export async function getUserById(id_user: number): Promise<number> {
 }
 
 export async function updateResetPasswordTokenByUserId(id_user: number, token: string, expiresAt: number): Promise<Number> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     const result = await connection.query(`
         UPDATE
@@ -212,7 +212,7 @@ export async function updateResetPasswordTokenByUserId(id_user: number, token: s
           resetTokenExpireAt = ?
         WHERE 
           id_user = ?`,
-        [token, expiresAt, id_user]);
+      [token, expiresAt, id_user]);
     return result.affectedRows;
   } catch (err) {
     console.error(`[user repository]: ${err}`);

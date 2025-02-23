@@ -31,7 +31,7 @@ function prompt(query: string): Promise<string> {
 }
 
 async function createDefaultUser(): Promise<void> {
-  const sqlConnection = await getConnection(pool);
+  const sqlConnection = await getConnection();
 
   try {
     const [result] = await sqlConnection.query(`SELECT COUNT(*) as count FROM users`);
@@ -71,7 +71,7 @@ async function createDefaultUser(): Promise<void> {
 }
 
 export default async function createSchemas(): Promise<Number> {
-  const sqlConnection = await getConnection(pool);
+  const sqlConnection = await getConnection();
 
   try {
     await sqlConnection.query(`CREATE DATABASE IF NOT EXISTS ${process.env.DB_NAME}`);

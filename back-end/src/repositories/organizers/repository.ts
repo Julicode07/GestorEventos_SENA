@@ -6,7 +6,7 @@ export async function createOrganizers(
   idSubEvent: number,
   organizersData: IOrganizers
 ): Promise<number> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     const result = await connection.query(
       `
@@ -38,7 +38,7 @@ export async function createOrganizers(
 }
 
 export async function getOrganizers(): Promise<number> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     const result = await connection.query(`SELECT 
         org.id_organizers,
@@ -64,7 +64,7 @@ export async function getOrganizers(): Promise<number> {
 export async function getOrganizerById(
   id_organizers: number
 ): Promise<IOrganizers | null> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     const result = await connection.query(
       `
@@ -103,7 +103,7 @@ export async function getOrganizerById(
 export async function getOrganizersBySubEventId(
   id_sub_event: number
 ): Promise<IOrganizers | null> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     const result = await connection.query(
       `
@@ -145,7 +145,7 @@ export async function updateOrganizerById(
   id_organizer: number,
   organizersData: Partial<IOrganizers>
 ): Promise<number> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     // Build the query dynamically to include only the fields being updated
     const fieldsToUpdate = [];

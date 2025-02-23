@@ -66,7 +66,7 @@ export type GlobalEventInfo = {
 };
 
 export async function createGlobalEventsSchema(): Promise<Number> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     await connection.query(`CREATE TABLE IF NOT EXISTS global_events(
             id_global_event INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -81,7 +81,7 @@ export async function createGlobalEventsSchema(): Promise<Number> {
   } catch (err) {
     console.error(
       `[events repository - models]: ERROR CREATING global events SCHEMA: ` +
-        err
+      err
     );
     return -1;
   } finally {

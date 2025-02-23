@@ -5,7 +5,7 @@ import { ISpaceInventory } from "./models";
 export async function createSpaceInventory(
   spaceInventoryData: ISpaceInventory
 ): Promise<number> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     const result = await connection.query(
       `
@@ -42,7 +42,7 @@ export async function createSpaceInventory(
 export async function getSpaceInventoryByIdSpace(
   id_space: number
 ): Promise<number> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     const result = await connection.query(
       `
@@ -73,7 +73,7 @@ export async function updateSpaceInventoryById(
   id_inventory: number,
   spaceInventoryData: ISpaceInventory
 ): Promise<Number> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     const result = await connection.query(
       `
@@ -108,7 +108,7 @@ export async function updateSpaceInventoryById(
 export async function getSpaceInventoryById(
   id_space: number
 ): Promise<ISpaceInventory[]> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     const result: ISpaceInventory[] = await connection.query(
       `
@@ -136,7 +136,7 @@ export async function getSpaceInventoryById(
 }
 
 export async function getInventoryByIdSpace(id_space: number): Promise<number> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     const result = await connection.query(
       `SELECT 

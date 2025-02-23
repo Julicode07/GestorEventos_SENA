@@ -11,7 +11,7 @@ export interface ISpace {
 }
 
 export async function createSpacesSchema(): Promise<Number> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     await connection.query(`CREATE TABLE IF NOT EXISTS spaces(
             id_space INT PRIMARY KEY NOT NULL AUTO_INCREMENT,

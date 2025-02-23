@@ -2,7 +2,7 @@ import { PoolConnection } from "mariadb";
 import { getConnection, pool } from "../../db/connection";
 
 export async function createWebSessionsSchema(): Promise<number> {
-    const connection:PoolConnection = await getConnection(pool);
+    const connection: PoolConnection = await getConnection();
     try {
         await connection.query(`CREATE TABLE IF NOT EXISTS session(
             sid varchar(255) NOT NULL,

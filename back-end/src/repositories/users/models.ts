@@ -16,7 +16,7 @@ export interface IUser {
 }
 
 export async function createUsersSchema(): Promise<Number> {
-    const connection:PoolConnection = await getConnection(pool);
+    const connection: PoolConnection = await getConnection();
     try {
         await connection.query(`CREATE TABLE IF NOT EXISTS users(
             id_user INT PRIMARY KEY NOT NULL AUTO_INCREMENT,

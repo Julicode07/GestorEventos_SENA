@@ -11,7 +11,7 @@ export interface IOrganizers {
 }
 
 export async function createOrganizersSchema(): Promise<number> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     await connection.query(`CREATE TABLE IF NOT EXISTS organizers (
     id_organizers INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
@@ -29,7 +29,7 @@ export async function createOrganizersSchema(): Promise<number> {
   } catch (err) {
     console.error(
       `[organizers repository - models]: ERROR CREATING organizers SCHEMA: ` +
-        err
+      err
     );
     return -1;
   } finally {

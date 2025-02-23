@@ -3,7 +3,7 @@ import { getConnection, pool } from "../../db/connection";
 import { ISubEvent, Iinsumes } from "./models";
 
 export async function createSubEvent(subEventData: ISubEvent): Promise<number> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     const result = await connection.query(
       `
@@ -38,7 +38,7 @@ export async function createSubEvent(subEventData: ISubEvent): Promise<number> {
 export async function getSubEventsByGlobalEventId(
   id_sub_event: number
 ): Promise<number> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     const result = await connection.query(
       `
@@ -79,7 +79,7 @@ export async function getSubEventsByGlobalEventId(
 export async function getSubEventsByIdGlobalEvent(
   id_global_event: number
 ): Promise<number> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     const result = await connection.query(
       `
@@ -119,7 +119,7 @@ export async function updateSubEventsById(
   id_sub_event: number,
   subEventsdata: ISubEvent
 ): Promise<number> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     const result = await connection.query(
       `
@@ -156,7 +156,7 @@ export async function updateSubEventsById(
 }
 
 export async function findAllSubEvents(): Promise<number> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     const result = await connection.query(`SELECT
       sub.id_sub_event,
@@ -182,7 +182,7 @@ export async function createSubEventHasSpace(
   id_sub_event: number,
   id_space: number
 ): Promise<Boolean> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     const results = await connection.query(
       `INSERT INTO sub_events_has_spaces (id_sub_event, id_space) VALUES (?,?)`,
@@ -201,7 +201,7 @@ export async function createInsumes(
   id_sub_event: number,
   insumesData: Iinsumes
 ): Promise<Boolean> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     const results = await connection.query(
       `INSERT INTO insumes (id_sub_event, name, quantity) VALUES (?,?,?)`,
@@ -219,7 +219,7 @@ export async function createInsumes(
 export async function getInsumesBySubEventId(
   idSubEvent: number
 ): Promise<number> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     const result = await connection.query(
       `SELECT 

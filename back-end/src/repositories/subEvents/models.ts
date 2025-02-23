@@ -29,7 +29,7 @@ export interface Iinsumes {
 }
 
 export async function createSubeventSchema(): Promise<Number> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     await connection.query(`CREATE TABLE IF NOT EXISTS sub_events (
     id_sub_event INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -55,7 +55,7 @@ export async function createSubeventSchema(): Promise<Number> {
 }
 
 export async function createSubEventHasSpaceSchema(): Promise<Number> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     await connection.query(`CREATE TABLE IF NOT EXISTS sub_events_has_spaces (
       id_sub_event_has_space INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -72,7 +72,7 @@ export async function createSubEventHasSpaceSchema(): Promise<Number> {
   } catch (err) {
     console.error(
       `[subevents_has_spaces repository - models]: ERROR CREATING subevents_has_spaces SCHEMA: ` +
-        err
+      err
     );
     return -1;
   } finally {
@@ -81,7 +81,7 @@ export async function createSubEventHasSpaceSchema(): Promise<Number> {
 }
 
 export async function createInsumesSchema(): Promise<Number> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     await connection.query(`CREATE TABLE IF NOT EXISTS insumes (
     id_insumes INT AUTO_INCREMENT PRIMARY KEY,

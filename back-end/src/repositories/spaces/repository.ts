@@ -3,7 +3,7 @@ import { getConnection, pool } from "../../db/connection";
 import { ISpace } from "./models";
 
 export async function createSpace(space: ISpace): Promise<number> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     const result = await connection.query(
       `
@@ -32,7 +32,7 @@ export async function createSpace(space: ISpace): Promise<number> {
 }
 
 export async function getSpaces(): Promise<number> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     const result = await connection.query(`
             SELECT
@@ -49,7 +49,7 @@ export async function getSpaces(): Promise<number> {
 }
 
 export async function getSpaceById(id_space: number): Promise<number> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     const result = await connection.query(
       `
@@ -69,7 +69,7 @@ export async function updateSpaceById(
   id_space: number,
   spaceData: ISpace
 ): Promise<Number> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     const result = await connection.query(
       `
@@ -104,7 +104,7 @@ export async function updateSpaceById(
 export async function getSpacesBySubEventId(
   idSubEvent: number
 ): Promise<number> {
-  const connection: PoolConnection = await getConnection(pool);
+  const connection: PoolConnection = await getConnection();
   try {
     const result = await connection.query(
       `
