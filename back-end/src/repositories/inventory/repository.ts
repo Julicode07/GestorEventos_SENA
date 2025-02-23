@@ -1,4 +1,4 @@
-import { PoolConnection } from "mysql2/promise";
+import { PoolConnection } from "mariadb";
 import { getConnection, pool } from "../../db/connection";
 import { ISpaceInventory } from "./models";
 

@@ -1,4 +1,4 @@
-import { PoolConnection } from "mysql2/promise";
+import { PoolConnection } from "mariadb";
 import { getConnection, pool } from "../../db/connection";
 
 export interface IGlobalEvent {
@@ -81,7 +81,7 @@ export async function createGlobalEventsSchema(): Promise<Number> {
   } catch (err) {
     console.error(
       `[events repository - models]: ERROR CREATING global events SCHEMA: ` +
-      err
+        err
     );
     return -1;
   } finally {

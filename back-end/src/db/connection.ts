@@ -1,27 +1,26 @@
-import mysql, { PoolOptions, Pool } from 'mysql2/promise';
-import dotenv from 'dotenv';
+import mariadb, { PoolConfig, Pool } from 'mariadb';
+import dotenv from "dotenv";
 
 dotenv.config();
 
-const poolConfig: PoolOptions = {
-  host: process.env.MYSQLHOST,
-  user: process.env.MYSQLUSER,
-  password: process.env.MYSQLPASSWORD,
-  database: process.env.MYSQLDATABASE,
-  port: Number(process.env.MYSQLPORT) || 3306,
-  waitForConnections: true,
+const poolConfig: PoolConfig = {
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  port: Number(process.env.DB_PORT),
   connectionLimit: 50,
-  queueLimit: 0,
+  ssl: { rejectUnauthorized: true }
 };
 
-const pool: Pool = mysql.createPool(poolConfig);
+const pool: Pool = mariadb.createPool(poolConfig);
 
 async function getConnection() {
   try {
     const connection = await pool.getConnection();
     return connection;
   } catch (err) {
-    console.error('❌ Error getting a connection from the pool:', err);
+    console.error('❌ Error obteniendo conexión de la base de datos:', err);
     throw err;
   }
 }

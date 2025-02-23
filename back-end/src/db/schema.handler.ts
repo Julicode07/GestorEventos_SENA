@@ -2,6 +2,7 @@ import { getConnection, pool } from "./connection";
 import { createUsersSchema } from "../repositories/users/models";
 import { createWebSessionsSchema } from "../repositories/web-sessions/models";
 import { createGlobalEventsSchema } from "../repositories/events/models";
+import { SqlError } from "mariadb";
 import dotenv from "dotenv";
 import { createSpace } from "../repositories/spaces/repository";
 import { createSpacesSchema } from "../repositories/spaces/models";
@@ -30,19 +31,17 @@ function prompt(query: string): Promise<string> {
 }
 
 async function createDefaultUser(): Promise<void> {
-  const sqlConnection = await getConnection();
+  const sqlConnection = await getConnection(pool);
 
   try {
-    const [rows] = await sqlConnection.query("SELECT COUNT(*) as count FROM users");
-    const result = rows as { count: number }[];
-
-    if (result[0].count > 0) {
+    const [result] = await sqlConnection.query(`SELECT COUNT(*) as count FROM users`);
+    if (result.count > 0) {
       console.log("[schema handler]: There are users, skipping default user creation");
       return;
     }
 
     const password = await prompt("Ingrese la contraseña de la cuenta administradora por defecto: ");
-    const phone = await prompt("Ingrese el número de teléfono de la cuenta administradora:");
+    const phone = await prompt("Ingrese el número de teléfono de la cuenta administradora:")
 
     const defaultUser = {
       id_user: undefined,
@@ -71,23 +70,23 @@ async function createDefaultUser(): Promise<void> {
   }
 }
 
-export default async function createSchemas(): Promise<number> {
-  const sqlConnection = await getConnection();
+export default async function createSchemas(): Promise<Number> {
+  const sqlConnection = await getConnection(pool);
 
   try {
     await sqlConnection.query(`CREATE DATABASE IF NOT EXISTS ${process.env.DB_NAME}`);
-    console.log("[schema handler]: Database checked/created.");
+    console.log(`[schema handler]: Database checked/created.`);
 
     // Create tables
-    if ((await createUsersSchema()) === -1) throw new Error("Couldn't create users schema.");
-    if ((await createWebSessionsSchema()) === -1) throw new Error("Couldn't create web sessions schema.");
-    if ((await createGlobalEventsSchema()) === -1) throw new Error("Couldn't create global events schema.");
-    if ((await createSpacesSchema()) === -1) throw new Error("Couldn't create spaces schema.");
-    if ((await createSpaceInventorySchema()) === -1) throw new Error("Couldn't create space inventories schema.");
-    if ((await createSubeventSchema()) === -1) throw new Error("Couldn't create sub events schema.");
-    if ((await createSubEventHasSpaceSchema()) === -1) throw new Error("Couldn't create subEvents_has_spaces schema.");
-    if ((await createInsumesSchema()) === -1) throw new Error("Couldn't create insumes schema.");
-    if ((await createOrganizersSchema()) === -1) throw new Error("Couldn't create organizers schema.");
+    if ((await createUsersSchema()) == -1) throw new Error("Couldn't create users schema.");
+    if ((await createWebSessionsSchema()) == -1) throw new Error("Couldn't create web sessions schema.");
+    if ((await createGlobalEventsSchema()) == -1) throw new Error("Couldn't create global events schema.");
+    if ((await createSpacesSchema()) == -1) throw new Error("Couldn't create spaces schema.");
+    if ((await createSpaceInventorySchema()) == -1) throw new Error("Couldn't create space inventories schema.");
+    if ((await createSubeventSchema()) == -1) throw new Error("Couldn't create sub events schema.");
+    if ((await createSubEventHasSpaceSchema()) == -1) throw new Error("Couldn't create subEvents_has_spaces schema.");
+    if ((await createInsumesSchema()) == -1) throw new Error("Couldn't create insumes schema.");
+    if ((await createOrganizersSchema()) == -1) throw new Error("Couldn't create organizers schema.");
 
     await createDefaultUser();
 
