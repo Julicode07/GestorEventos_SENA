@@ -76,7 +76,7 @@ const Registrarse = () => {
         email: "",
         phone: "",
         role: "Instructor",
-        password: ",",
+        password: "",
       });
       window.location.reload();
     } catch (error) {
