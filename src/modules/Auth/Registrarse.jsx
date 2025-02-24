@@ -87,7 +87,13 @@ const Registrarse = () => {
   };
 
   const [isVisible, setIsVisible] = useState(false);
-  const [validations, setValidations] = useState([false, false, false, false, false]);
+  const [validations, setValidations] = useState([
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
 
   const toggleVisibility = () => {
     setIsVisible(!isVisible);
@@ -99,7 +105,6 @@ const Registrarse = () => {
     { regex: /[^A-Za-z0-9]/, message: "Al menos 1 símbolo especial (!...$)" },
     { regex: /[A-Z]/, message: "Al menos 1 letra mayúscula (A...Z)" },
   ];
-
 
   const handlePasswordChange = (e) => {
     handleChangeRegisterUser(e);
@@ -142,9 +147,14 @@ const Registrarse = () => {
                     placeholder="Selecciona tu rol"
                     value={formData.role}
                     onChange={handleChangeRegisterUser}
+                    aria-label="Selecciona tu rol"
                   >
-                    <SelectItem value="Coordinador">Coordinador</SelectItem>
-                    <SelectItem value="Instructor">Instructor</SelectItem>
+                    <SelectItem value="Coordinador" key={"Coordinador"}>
+                      Coordinador
+                    </SelectItem>
+                    <SelectItem value="Instructor" key={"Instructor"}>
+                      Instructor
+                    </SelectItem>
                   </Select>
                 </div>
                 <div>
@@ -286,11 +296,24 @@ const Registrarse = () => {
                     />
                   </div>
                   <div className="bg-gray-100 p-4 rounded-xl shadow-md">
-                    <p className="text-sm font-semibold text-gray-700">La contraseña debe contener:</p>
+                    <p className="text-sm font-semibold text-gray-700">
+                      La contraseña debe contener:
+                    </p>
                     <ul className="mt-2 space-y-1 text-sm text-gray-600">
                       {requirements.map((req, index) => (
-                        <li key={index} className={`flex items-center gap-2 ${validations[index] ? "text-green-600" : ""}`}>
-                          <i className={`fa-solid ${validations[index] ? "fa-check text-green-500" : "fa-circle text-gray-400"}`}></i>
+                        <li
+                          key={index}
+                          className={`flex items-center gap-2 ${
+                            validations[index] ? "text-green-600" : ""
+                          }`}
+                        >
+                          <i
+                            className={`fa-solid ${
+                              validations[index]
+                                ? "fa-check text-green-500"
+                                : "fa-circle text-gray-400"
+                            }`}
+                          ></i>
                           <span>{req.message}</span>
                         </li>
                       ))}
@@ -310,14 +333,15 @@ const Registrarse = () => {
               )}
               <button
                 type="submit"
-                className={`mt-4 w-full font-bold rounded-lg text-lg px-5 py-2.5 text-center ${documentEvent &&
+                className={`mt-4 w-full font-bold rounded-lg text-lg px-5 py-2.5 text-center ${
+                  documentEvent &&
                   nameEvent &&
                   lastNamesEvent &&
                   emailEvent &&
                   phoneEvent
-                  ? "bg-[#277400] text-white hover:bg-[#277400]"
-                  : "bg-gray-300 text-black cursor-not-allowed"
-                  }`}
+                    ? "bg-[#277400] text-white hover:bg-[#277400]"
+                    : "bg-gray-300 text-black cursor-not-allowed"
+                }`}
                 disabled={
                   !(
                     documentEvent &&
@@ -332,9 +356,9 @@ const Registrarse = () => {
               </button>
             </form>
           </div>
-        </section >
-      </main >
-    </div >
+        </section>
+      </main>
+    </div>
   );
 };
 
