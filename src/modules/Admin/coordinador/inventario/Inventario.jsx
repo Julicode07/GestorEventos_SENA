@@ -69,8 +69,19 @@ export default function App() {
     let filteredUsers = [...inventory];
 
     if (hasSearchFilter) {
-      filteredUsers = filteredUsers.filter((user) =>
-        user.name.toLowerCase().includes(filterValue.toLowerCase())
+      filteredUsers = filteredUsers.filter(
+        (inventory) =>
+          inventory.name.toLowerCase().includes(filterValue.toLowerCase()) ||
+          inventory.article_name
+            .toLowerCase()
+            .includes(filterValue.toLowerCase()) ||
+          inventory.description
+            .toLowerCase()
+            .includes(filterValue.toLowerCase()) ||
+          inventory.quantity
+            .toLowerCase()
+            .includes(filterValue.toLowerCase()) ||
+          inventory.type.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
     return filteredUsers;
@@ -125,7 +136,12 @@ export default function App() {
           <div className="relative flex justify-end items-center gap-2">
             <Dropdown>
               <DropdownTrigger>
-                <Button isIconOnly size="sm" variant="light" aria-label="Actions">
+                <Button
+                  isIconOnly
+                  size="sm"
+                  variant="light"
+                  aria-label="Actions"
+                >
                   <VerticalDotsIcon className="text-default-300" />
                 </Button>
               </DropdownTrigger>

@@ -86,8 +86,13 @@ export default function App() {
     let filterSpaces = [...showSpaces];
 
     if (hasSearchFilter) {
-      filterSpaces = filterSpaces.filter((space) =>
-        space.name.toLowerCase().includes(filterValue.toLowerCase())
+      filterSpaces = filterSpaces.filter(
+        (space) =>
+          space.name.toLowerCase().includes(filterValue.toLowerCase()) ||
+          space.capacity.toLowerCase().includes(filterValue.toLowerCase()) ||
+          space.type.toLowerCase().includes(filterValue.toLowerCase()) ||
+          space.status.toLowerCase().includes(filterValue.toLowerCase()) ||
+          space.details.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
 
@@ -125,10 +130,11 @@ export default function App() {
       case "status":
         return (
           <div
-            className={`${cellValue === "activo"
+            className={`${
+              cellValue === "activo"
                 ? "text-green-700 bg-green-200"
                 : "text-red-700 bg-red-200"
-              } capitalize text-center px-2 py-0.5 text-xs rounded-lg w-fit`}
+            } capitalize text-center px-2 py-0.5 text-xs rounded-lg w-fit`}
           >
             {cellValue}
           </div>
@@ -140,7 +146,12 @@ export default function App() {
           <div className="relative flex justify-end items-center gap-2">
             <Dropdown>
               <DropdownTrigger>
-                <Button isIconOnly size="sm" variant="light" aria-label="Actions">
+                <Button
+                  isIconOnly
+                  size="sm"
+                  variant="light"
+                  aria-label="Actions"
+                >
                   <VerticalDotsIcon className="text-default-300" />
                 </Button>
               </DropdownTrigger>
