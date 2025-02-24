@@ -338,7 +338,8 @@ const Registrarse = () => {
                   nameEvent &&
                   lastNamesEvent &&
                   emailEvent &&
-                  phoneEvent
+                  phoneEvent &&
+                  validations.every((validation) => validation === true)
                     ? "bg-[#277400] text-white hover:bg-[#277400]"
                     : "bg-gray-300 text-black cursor-not-allowed"
                 }`}
@@ -348,7 +349,8 @@ const Registrarse = () => {
                     nameEvent &&
                     lastNamesEvent &&
                     emailEvent &&
-                    phoneEvent
+                    phoneEvent &&
+                    validations.every((validation) => validation === true)
                   )
                 }
               >
