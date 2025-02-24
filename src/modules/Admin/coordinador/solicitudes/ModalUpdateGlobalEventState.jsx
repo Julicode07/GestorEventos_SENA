@@ -110,7 +110,7 @@ const ModalUpdateGlobalEventState = ({
                         <Button
                           type="submit"
                           className="bg-green-700 text-white text-base font-semibold rounded-lg w-full p-3 flex justify-center items-center"
-                          onClick={() => handleStatus("Confirmado")}
+                          onClick={() => handleStatus("Aceptado")}
                         >
                           Aceptar
                         </Button>

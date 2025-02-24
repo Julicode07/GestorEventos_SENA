@@ -113,13 +113,14 @@ const SubEventConfirmationModal = ({
                     >
                       <b>Estado del subEvento:</b>{" "}
                       <p
-                        className={`text-bold text-small text-center rounded-lg p-1 ${subEventStatus[0]?.subeventConfirmation === "Aceptado"
-                          ? "bg-green-300 text-green-800"
-                          : subEventStatus[0]?.subeventConfirmation ===
-                            "Rechazado"
+                        className={`text-bold text-small text-center rounded-lg p-1 ${
+                          subEventStatus[0]?.subeventConfirmation === "Aceptado"
+                            ? "bg-green-300 text-green-800"
+                            : subEventStatus[0]?.subeventConfirmation ===
+                              "Rechazado"
                             ? "bg-red-300 text-red-800"
                             : "bg-orange-300 text-orange-800"
-                          }`}
+                        }`}
                       >
                         {subEventStatus[0]?.subeventConfirmation}
                       </p>
@@ -144,7 +145,7 @@ const SubEventConfirmationModal = ({
                     <Button
                       type="submit"
                       className="bg-red-700 text-white text-base font-semibold rounded-lg w-full p-3 flex justify-center items-center"
-                      onClick={() => handleStatus("Rechazado")}
+                      onClick={() => handleStatus("Cancelado")}
                     >
                       Rechazado
                     </Button>

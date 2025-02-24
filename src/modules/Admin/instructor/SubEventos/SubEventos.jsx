@@ -167,7 +167,7 @@ export default function SubEventos() {
               className={`text-bold text-small text-center p-1 rounded-lg ${
                 subEvent.subeventConfirmation === "Confirmado"
                   ? "bg-green-300 text-green-800"
-                  : subEvent.subeventConfirmation === "Rechazado"
+                  : subEvent.subeventConfirmation === "Cancelado"
                   ? "bg-red-300 text-red-800"
                   : "bg-orange-300 text-orange-800"
               }`}
