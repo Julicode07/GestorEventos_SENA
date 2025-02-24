@@ -89,7 +89,6 @@ export default function App() {
       filterSpaces = filterSpaces.filter(
         (space) =>
           space.name.toLowerCase().includes(filterValue.toLowerCase()) ||
-          space.capacity.toLowerCase().includes(filterValue.toLowerCase()) ||
           space.type.toLowerCase().includes(filterValue.toLowerCase()) ||
           space.status.toLowerCase().includes(filterValue.toLowerCase()) ||
           space.details.toLowerCase().includes(filterValue.toLowerCase())

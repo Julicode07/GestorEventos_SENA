@@ -78,9 +78,6 @@ export default function App() {
           inventory.description
             .toLowerCase()
             .includes(filterValue.toLowerCase()) ||
-          inventory.quantity
-            .toLowerCase()
-            .includes(filterValue.toLowerCase()) ||
           inventory.type.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
