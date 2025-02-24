@@ -53,7 +53,7 @@ function Coordinador() {
 
   return (
     <>
-      {/* {userSession.role === "Coordinador" ? ( */}
+      {userSession.role === "Coordinador" ? (
         <div>
           <NavSideBar />
           <div className="py-4 px-1 sm:ml-56">
@@ -77,9 +77,9 @@ function Coordinador() {
             </div>
           </div>
         </div>
-      {/* ) : (
+      ) : (
         <Navigate to="/iniciarsesion" />
-      )} */}
+      )}
     </>
   );
 }
