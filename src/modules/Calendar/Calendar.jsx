@@ -280,7 +280,7 @@ export default function Calendar() {
                   </button>
 
                   <div className="overflow-y-auto w-full px-4 flex-1" style={{ maxHeight: "calc(90vh - 50px)" }}>
-                    <div className="bg-gradient-to-r from-green-700 to-primary text-white rounded-full w-20 h-20 flex justify-center items-center mb-6 shadow-md">
+                    <div className="bg-gradient-to-r from-green-700 to-primary text-white rounded-full w-20 h-20 flex justify-center items-center mb-6 shadow-md mx-auto">
                       <span className="text-4xl"><i className="ri-calendar-event-fill"></i></span>
                     </div>
 
