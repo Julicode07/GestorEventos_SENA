@@ -133,7 +133,7 @@ const ModalOrganizador = () => {
                           options={subEvents}
                           value={formData.id_sub_event}
                           onChange={handleChangeSubEvents}
-                          label="Seleccione el evento"
+                          placeholder="Seleccione el evento"
                           name="id_sub_event"
                         />
                       </div>
@@ -204,7 +204,7 @@ const ModalOrganizador = () => {
                     <div className="w-full h-full sticky -bottom-2 z-50 p-2 bg-white border-t border-gray-200 mt-3">
                       <div className="flex items-center justify-center space-x-4 my-3 md:my-0">
                         <Button type="submit" color="primary">
-                          Crear Invetario
+                          Crear Organizador
                         </Button>
                         <Button
                           color="danger"
