@@ -3,7 +3,7 @@ const columns = [
   { name: "Nombre", uid: "global_event_name", sortable: true },
   { name: "Detalles", uid: "global_event_observations" },
   { name: "Estado", uid: "global_event_status" },
-  { name: "ACTIONS", uid: "actions" },
+  { name: "Acciones", uid: "actions" },
 ];
 
 const INITIAL_VISIBLE_COLUMNS = [

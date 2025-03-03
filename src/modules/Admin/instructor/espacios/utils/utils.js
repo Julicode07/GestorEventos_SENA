@@ -5,7 +5,7 @@ const columns = [
   { name: "Tipo", uid: "type", sortable: true },
   { name: "Estado", uid: "status", sortable: true },
   { name: "Detalles", uid: "details" },
-  { name: "ACTIONS", uid: "actions" },
+  { name: "Acciones", uid: "actions" },
 ];
 
 const INITIAL_VISIBLE_COLUMNS = [

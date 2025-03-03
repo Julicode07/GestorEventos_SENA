@@ -171,9 +171,9 @@ const NavSideBar = () => {
             </ItemsList>
             <ItemsList
               to={"/admin/coordinador/registrarse"}
-              logo="ri-group-fill flex w-5 h-5 text-xl justify-center items-center text-primary transition duration-75 group-hover:text-gray-600"
+              logo="ri-add-fill flex w-5 h-5 text-xl justify-center items-center text-primary transition duration-75 group-hover:text-gray-600"
               title="Registrar Usuarios"
-              aria-label="Registrar Usuarios"
+              aria-label="Registrar usuarios"
             />
           </ul>
         </div>

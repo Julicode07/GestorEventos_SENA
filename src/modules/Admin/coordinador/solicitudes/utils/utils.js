@@ -3,7 +3,7 @@ const columns = [
   { name: "NOMBRE", uid: "name", sortable: true },
   { name: "DESCRIPCIÓN", uid: "details", sortable: true },
   { name: "ESTADO", uid: "status", sortable: true },
-  { name: "ACTIONS", uid: "actions" },
+  { name: "Acciones", uid: "actions" },
   { name: "ACEPTAR O RECHAZAR", uid: "actions2" },
 ];
 

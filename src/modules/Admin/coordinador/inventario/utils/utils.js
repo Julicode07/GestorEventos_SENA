@@ -5,7 +5,7 @@ const columns = [
   { name: "DESCRIPCIÓN", uid: "description", sortable: true },
   { name: "CANTIDAD", uid: "quantity", sortable: true },
   { name: "TIPO", uid: "type", sortable: true },
-  { name: "ACTIONS", uid: "actions" },
+  { name: "Acciones", uid: "actions" },
 ];
 
 function capitalize(s) {
