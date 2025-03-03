@@ -262,7 +262,7 @@ export default function Calendar() {
                   style={{ maxHeight: "90vh", height: "90vh", display: "flex", flexDirection: "column" }}
                 >
                   <button
-                    className="absolute top-4 right-4 text-gray-500 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8"
+                    className="absolute top-4 right-4 flex items-center justify-center text-gray-500 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8"
                     onClick={() => {
                       setSelectedEvent(null);
                       document.body.classList.remove("overflow-hidden");
