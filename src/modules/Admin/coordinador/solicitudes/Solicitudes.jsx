@@ -123,13 +123,12 @@ export default function App() {
         return (
           <div className="flex flex-col">
             <p
-              className={`text-bold text-small text-center rounded-lg p-2 ${
-                event.status === "Pendiente"
-                  ? "bg-warning-100 text-warning"
-                  : event.status === "Rechazado"
+              className={`text-bold text-small text-center rounded-lg p-2 ${event.status === "Pendiente"
+                ? "bg-warning-100 text-warning"
+                : event.status === "Rechazado"
                   ? "bg-danger-100 text-danger"
                   : "bg-success-100 text-success"
-              }`}
+                }`}
             >
               {event.status}
             </p>
@@ -142,7 +141,7 @@ export default function App() {
               to={`/admin/coordinador/solicitudes/ver/${event.id_global_event}`}
               aria-label="Ver"
             >
-              <EyeIcon className="block m-auto text-green-600 hover:bg-gray-300 hover:rounded-lg hover:cursor-pointer" />
+              <EyeIcon className="block m-auto bg-secondary rounded-xl text-white p-2 hover:cursor-pointer" />
             </Link>
           </div>
         );
@@ -150,9 +149,8 @@ export default function App() {
         return (
           <div>
             <Button
-              color="success"
               aria-label="Aceptar solicitud"
-              className="text-white"
+              className="bg-primary text-white"
               onClick={() => {
                 setIdGlobalEvents(event.id_global_event);
                 setIsModalUpdateGlobalEventStateOpen(true);

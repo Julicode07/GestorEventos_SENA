@@ -159,7 +159,7 @@ const ModalActualizarUsuarios = ({
                   </label>
                   <Select
                     id="role"
-                    size="sm"
+                    size="xs"
                     label="Rol"
                     name="role"
                     value={userData.role}

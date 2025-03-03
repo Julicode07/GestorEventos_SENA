@@ -110,15 +110,14 @@ export default function App() {
         return <div className="text-small">{cellValue}</div>;
       case "actions":
         return (
-          <div className="relative flex justify-end items-center gap-2">
-            <Link
-              to={`/admin/instructor/inventario/espacio/${space.id_space}`}
-              className="block m-auto bg-primary/80 text-white p-2 rounded-lg"
-              aria-label="Ver Inventario"
-            >
-              Ver Inventario <i className="ri-list-check"></i>
-            </Link>
-          </div>
+          <Link
+            to={`/admin/instructor/inventario/espacio/${space.id_space}`}
+            className="flex items-center gap-2 px-2 m-auto bg-primary/80 text-white p-2 rounded-lg"
+            aria-label="Ver Inventario"
+          >
+            <span className="text-sm whitespace-nowrap">Ver inventario</span> <i className="ri-list-check text-base"></i>
+          </Link>
+
         );
       default:
         return cellValue;

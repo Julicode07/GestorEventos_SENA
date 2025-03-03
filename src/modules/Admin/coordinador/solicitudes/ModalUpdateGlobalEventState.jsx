@@ -74,7 +74,7 @@ const ModalUpdateGlobalEventState = ({
               <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6">
                 <div className="flex items-center justify-between border-b pb-4 mb-4">
                   <h1 className="font-bold text-2xl text-gray-900 dark:text-white">
-                    Estado del evento: {globalEventStatus[0]?.event_name}
+                    Nombre del evento: {globalEventStatus[0]?.event_name}
                   </h1>
                   <button
                     type="button"
@@ -90,14 +90,13 @@ const ModalUpdateGlobalEventState = ({
                       Estado del subEvento:
                     </label>
                     <p
-                      className={`text-sm font-bold text-center rounded-lg p-2 mt-2 ${
-                        globalEventStatus[0]?.global_event_status === "Aceptado"
-                          ? "bg-green-500 text-white"
-                          : globalEventStatus[0]?.global_event_status ===
-                            "Rechazado"
+                      className={`text-base font-bold text-center rounded-lg p-2 mt-2 ${globalEventStatus[0]?.global_event_status === "Aceptado"
+                        ? "bg-green-500 text-white"
+                        : globalEventStatus[0]?.global_event_status ===
+                          "Rechazado"
                           ? "bg-red-500 text-white"
                           : "bg-orange-300 text-orange-800"
-                      }`}
+                        }`}
                     >
                       {globalEventStatus[0]?.global_event_status}
                     </p>
@@ -105,7 +104,7 @@ const ModalUpdateGlobalEventState = ({
                   <p className="text-lg font-semibold">Seleccione el estado:</p>
                   <div className="flex justify-center space-x-4">
                     {globalEventStatus[0]?.global_event_status ===
-                    "Pendiente" ? (
+                      "Pendiente" ? (
                       <>
                         <Button
                           type="submit"
