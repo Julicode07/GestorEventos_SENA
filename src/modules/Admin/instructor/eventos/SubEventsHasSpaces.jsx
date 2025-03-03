@@ -128,7 +128,7 @@ const SubEventsHasSpaces = memo(
               <Select
                 size="sm"
                 id={`space-${spacesIndex}`}
-                label="Elige el espacio"
+                placeholder="Elige el espacio"
                 name="id_space"
                 onChange={(e) => {
                   onChangeSpace(e, SubEventIndex, spacesIndex);

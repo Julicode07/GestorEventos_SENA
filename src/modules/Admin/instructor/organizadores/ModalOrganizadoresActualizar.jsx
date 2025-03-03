@@ -94,11 +94,10 @@ const ModalOrganizadoresActualizar = ({
               onClick={() => setIsOrganizersUpdateModalOpen(false)}
             >
               <div
-                className={`bg-white border border-gray-300 shadow-2xl px-8 pt-8 rounded-2xl w-4/5 max-w-2xl flex flex-col items-center relative transition-transform transform ${
-                  isOrganizersUpdateModalOpen
-                    ? "scale-100 opacity-100"
-                    : "scale-95 opacity-0"
-                } transition-all duration-300 ease-out`}
+                className={`bg-white border border-gray-300 shadow-2xl px-8 pt-8 rounded-2xl w-4/5 max-w-2xl flex flex-col items-center relative transition-transform transform ${isOrganizersUpdateModalOpen
+                  ? "scale-100 opacity-100"
+                  : "scale-95 opacity-0"
+                  } transition-all duration-300 ease-out`}
                 onClick={(e) => e.stopPropagation()}
                 style={{ maxHeight: "90vh" }}
               >
@@ -157,7 +156,7 @@ const ModalOrganizadoresActualizar = ({
                     <Select
                       id="role"
                       size="sm"
-                      label="Rol"
+                      placeholder="Rol"
                       name="rol"
                       value={updateOrganizers.rol}
                       onChange={handleChange}
@@ -177,7 +176,7 @@ const ModalOrganizadoresActualizar = ({
                     </label>
                     <Input
                       id="email"
-                      label="Ingresa el email"
+                      placeholder="Ingresa el email"
                       name="email"
                       type="email"
                       value={updateOrganizers.email || ""}

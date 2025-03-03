@@ -147,7 +147,7 @@ const ModalEspacios = () => {
                         </label>
                         <Select
                           id="tipo-espacio"
-                          label="Tipo de espacio"
+                          placeholder="Tipo de espacio"
                           name="type"
                           value={formData.type}
                           onChange={handleChangeRegisterSpaces}
@@ -165,7 +165,7 @@ const ModalEspacios = () => {
                         </label>
                         <Select
                           id="estado-espacio"
-                          label="Estado del espacio"
+                          Placeholder="Estado del espacio"
                           name="status"
                           value={formData.status}
                           onChange={handleChangeRegisterSpaces}

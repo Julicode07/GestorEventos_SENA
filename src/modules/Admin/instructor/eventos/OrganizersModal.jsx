@@ -76,7 +76,7 @@ const OrganizersModal = memo(
                   <Select
                     id="role"
                     size="xl"
-                    label="Rol"
+                    placeholder="Rol"
                     name="rol"
                     value={organizer.rol}
                     onChange={(e) =>

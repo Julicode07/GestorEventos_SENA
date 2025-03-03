@@ -160,7 +160,7 @@ const ModalActualizarUsuarios = ({
                   <Select
                     id="role"
                     size="xs"
-                    label="Rol"
+                    placeholder="Rol"
                     name="role"
                     value={userData.role}
                     onChange={handleChange}

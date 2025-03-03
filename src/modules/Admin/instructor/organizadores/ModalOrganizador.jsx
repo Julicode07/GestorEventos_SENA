@@ -158,7 +158,7 @@ const ModalOrganizador = () => {
                         <Select
                           id="role"
                           size="xl"
-                          label="Rol"
+                          placeholder="Rol"
                           name="rol"
                           value={formData.rol}
                           onChange={handleChangeSubEvents}

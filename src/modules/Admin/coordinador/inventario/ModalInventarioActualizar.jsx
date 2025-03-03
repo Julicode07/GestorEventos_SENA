@@ -91,9 +91,8 @@ const ModalInventarioActualizar = ({
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                className={`bg-white border border-gray-300 shadow-2xl px-8 pt-8 rounded-2xl w-4/5 max-w-2xl flex flex-col items-center relative transition-transform transform ${
-                  isModalOpen ? "scale-100 opacity-100" : "scale-95 opacity-0"
-                } transition-all duration-300 ease-out`}
+                className={`bg-white border border-gray-300 shadow-2xl px-8 pt-8 rounded-2xl w-4/5 max-w-2xl flex flex-col items-center relative transition-transform transform ${isModalOpen ? "scale-100 opacity-100" : "scale-95 opacity-0"
+                  } transition-all duration-300 ease-out`}
                 onClick={(e) => e.stopPropagation()}
                 style={{ maxHeight: "90vh" }}
               >
@@ -165,7 +164,7 @@ const ModalInventarioActualizar = ({
 
                     <Select
                       id="tipo-objeto"
-                      label="Tipo de objeto"
+                      placeholder="Tipo de objeto"
                       className=""
                       size="sm"
                       name="type"

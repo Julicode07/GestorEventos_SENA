@@ -142,7 +142,7 @@ const ModalEspaciosActualizar = ({ isModalOpen, setIsModalOpen, idSpaces }) => {
                     </span>
                     <Select
                       id="tipo-espacio"
-                      label="Seleccione el tipo"
+                      placeholder="Seleccione el tipo"
                       className=""
                       name="type"
                       value={updateSpace.type || ""}
@@ -165,7 +165,7 @@ const ModalEspaciosActualizar = ({ isModalOpen, setIsModalOpen, idSpaces }) => {
                     </span>
                     <Select
                       id="estado-espacio"
-                      label="Seleccione el estado"
+                      placeholder="Seleccione el estado"
                       className=""
                       name="status"
                       value={updateSpace.status || ""}
