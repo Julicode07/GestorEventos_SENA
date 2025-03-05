@@ -34,7 +34,7 @@ app.use(
   cors({
     origin: ["https://gestro-eventos-sena.netlify.app"],
     credentials: true,
-    allowedHeaders: ["Content-Type", "Authorization"],
+
   })
 );
 
@@ -58,9 +58,9 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      maxAge: 1000 * 60 * 60 * 24 * 3, // 3 días de duración de la sesión
+      maxAge: 1000 * 60 * 60 * 24 * 3,
       httpOnly: true,
-      secure: true,
+      secure: false,
       sameSite: "none",
     },
   })
