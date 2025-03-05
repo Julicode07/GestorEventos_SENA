@@ -17,7 +17,11 @@ export const SessionContextProvider = ({ children }) => {
   const updateSession = useCallback(async () => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/auth/check-my-session`
+        `${import.meta.env.VITE_API_URL}/api/auth/check-my-session`,
+        {
+          method: "GET",
+          credentials: "include",
+        }
       );
       const data = await response.json();
       if (response.ok) {
