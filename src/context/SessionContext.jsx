@@ -35,6 +35,7 @@ export const SessionContextProvider = ({ children }) => {
           lastName: data.data.last_name,
         });
       } else {
+        console.log("Unauthorized: Session invalid or expired.");
         setUserSession({
           document: null,
           role: null,
@@ -46,6 +47,7 @@ export const SessionContextProvider = ({ children }) => {
         });
       }
     } catch (error) {
+      console.log("We had an error", error);
       setUserSession({
         document: null,
         role: null,
@@ -55,7 +57,6 @@ export const SessionContextProvider = ({ children }) => {
         name: null,
         lastName: null,
       });
-      console.log("We had an error", error);
     }
   }, []);
 
