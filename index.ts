@@ -32,7 +32,7 @@ if (!sessionSecret) {
 app.use(compression());
 app.use(
   cors({
-    origin: ["*"],
+    origin: "*",
     credentials: true,
   })
 );
