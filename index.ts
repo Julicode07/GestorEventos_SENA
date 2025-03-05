@@ -32,7 +32,7 @@ if (!sessionSecret) {
 app.use(compression());
 app.use(
   cors({
-    origin: ["https://gestor-eventos-sena.vercel.app"],
+    origin: ["https://gestro-eventos-sena.netlify.app"],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
