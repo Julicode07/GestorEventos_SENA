@@ -47,7 +47,7 @@ app.use(helmet()); // Seguridad
 // Configuración de la sesión con MariaDB
 const sessionStore = new MariaDBStore({
   pool,
-  table: "session",
+  table: "sessions",
   clearExpired: true,
   checkExpirationInterval: 900000,
 }) as unknown as session.Store;
@@ -55,17 +55,20 @@ const sessionStore = new MariaDBStore({
 app.use(
   session({
     name: "ssid_dont_share",
-    secret: sessionSecret,
+    secret: process.env.SESSION_SECRET as string,
     store: sessionStore,
     resave: false,
     saveUninitialized: false,
     cookie: {
+      maxAge: 1000 * 60 * 60 * 24 * 3, // 3 días de duración de la sesión
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      maxAge: 1000 * 60 * 60 * 24 * 3,
+      secure: process.env.NODE_ENV === "production", // Solo habilita secure en producción
+      sameSite: "none", // Permitir cookies entre dominios diferentes
     },
   })
 );
+
+
 
 // Definición de la interfaz para los datos de sesión
 declare module "express-session" {
