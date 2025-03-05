@@ -30,7 +30,16 @@ if (!sessionSecret) {
 
 // Middleware
 app.use(compression());
-app.use(cors({ origin: ["http://localhost:5173"], credentials: true }));
+app.use(
+  cors({
+    origin: ["https://gestor-eventos-sena.vercel.app"],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
+
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public_views")));
 app.use(helmet()); // Seguridad
