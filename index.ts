@@ -29,10 +29,14 @@ if (!sessionSecret) {
 }
 
 // Middleware
+const allowedOrigins = [
+  "https://julicode07.github.io",
+];
+
 app.use(compression());
 app.use(
   cors({
-    origin: ["https://julicode07.github.io/GestorEventos_SENA"],
+    origin: allowedOrigins,
     credentials: true,
   })
 );
