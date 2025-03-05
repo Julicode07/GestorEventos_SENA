@@ -56,11 +56,11 @@ app.use(
     secret: process.env.SESSION_SECRET as string,
     store: sessionStore,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie: {
       maxAge: 1000 * 60 * 60 * 24 * 3, // 3 días de duración de la sesión
       httpOnly: true,
-      secure: process.env.NODE_ENV === "produccion",
+      secure: true,
       sameSite: "none",
     },
   })
