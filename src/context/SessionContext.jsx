@@ -21,6 +21,7 @@ export const SessionContextProvider = ({ children }) => {
         {
           method: "GET",
           credentials: "include",
+          mode: "cors",
         }
       );
       const data = await response.json();
