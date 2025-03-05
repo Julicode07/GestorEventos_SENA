@@ -4,6 +4,7 @@ import path from "path";
 import viteCompression from "vite-plugin-compression";
 
 export default defineConfig(({ mode }) => ({
+  base: "/GestorEventos_SENA/",
   plugins: [react(), viteCompression({ algorithm: "brotli" })],
   test: {
     globals: true,
