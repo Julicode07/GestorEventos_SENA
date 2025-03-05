@@ -54,16 +54,15 @@ const sessionStore = new MariaDBStore({
 
 app.use(
   session({
-    name: "ssid_dont_share",
     secret: process.env.SESSION_SECRET as string,
     store: sessionStore,
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     cookie: {
       maxAge: 1000 * 60 * 60 * 24 * 3, // 3 días de duración de la sesión
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Solo habilita secure en producción
-      sameSite: "none", // Permitir cookies entre dominios diferentes
+      secure: process.env.NODE_ENV === "produccion",
+      sameSite: "none",
     },
   })
 );
