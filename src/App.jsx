@@ -28,7 +28,7 @@ function App() {
   }, [updateSession]);
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/GestorEventos_SENA">
       <Suspense fallback={<Loader />}>
         <Routes>
           <Route path="*" element={<NotFound />} />
