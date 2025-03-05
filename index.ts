@@ -32,9 +32,8 @@ if (!sessionSecret) {
 app.use(compression());
 app.use(
   cors({
-    origin: ["https://gestro-eventos-sena.netlify.app"],
+    origin: ["*"],
     credentials: true,
-
   })
 );
 
