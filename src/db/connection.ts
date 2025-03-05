@@ -3,12 +3,13 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const poolConfig:PoolConfig = {
-  host: process.env.DB_HOST, 
-  user: process.env.DB_USER, 
+const poolConfig: PoolConfig = {
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  connectionLimit: 50
+  connectionLimit: 5,
+  acquireTimeout: 10000
 };
 
 const pool: Pool = mariadb.createPool(poolConfig);
